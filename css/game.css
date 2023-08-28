@@ -1,0 +1,29 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#myCamera {
+    background-color: transparent;
+    overflow: hidden;
+    /*width: fit-content;*/
+    width: 75vw;
+    height: 90vh;
+
+}
+
+#myCanvas {
+    width: fit-content;
+    height: fit-content;
+    touch-action: none;
+}
