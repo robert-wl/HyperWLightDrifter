@@ -1,7 +1,5 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { get_image } from '../../../helper/fileReader.js';
-import Game from "../../Game.js";
-import {playerOffset} from "../Player.js";
 
 const size = 1;
 export default class PlayerIdleState extends PlayerBaseState {

@@ -1,7 +1,6 @@
-import {playerOffset} from "../model/player/Player.js";
+
 
 export default function getEntityOnAttack({ entity, player }) {
-    const hitList = [];
 
     // tx.arc(currPlayer.position.x + playerOffset.x, currPlayer.position.y + playerOffset.y, 100, currPlayer.lookAngle - Math.PI / 3, currPlayer.lookAngle + Math.PI / 3, false);
     // ctx.lineTo(currPlayer.position.x + playerOffset.x, currPlayer.position.y + playerOffset.y);

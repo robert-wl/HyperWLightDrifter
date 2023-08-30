@@ -6,7 +6,6 @@ import PlayerAttackTwoState from './state/PlayerAttackTwoState.js';
 import { get_image } from '../../helper/fileReader.js';
 import PlayerDashState from './state/PlayerDashState.js';
 import Game from '../Game.js';
-import collisionDetector from '../../helper/collisionDetector.js';
 
 export const playerOffset = {
     x: 30,

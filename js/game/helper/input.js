@@ -1,4 +1,4 @@
-import Game, { GAME_SCALE } from "../model/Game.js";
+import Game from "../model/Game.js";
 
 export default function playerInput() {
     $(document).keydown((e) => {

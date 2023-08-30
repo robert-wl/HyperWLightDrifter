@@ -1,6 +1,5 @@
 import Enemy from './Enemy.js';
 import Game from "../Game.js";
-import {get_image} from "../../helper/fileReader.js";
 import CrystalSpiderBaseState from "./state/CrystalSpiderBaseState.js";
 import CrystalSpiderMoveState from "./state/CrystalSpiderMoveState.js";
 import CrystalSpiderAttackState from "./state/CrystalSpiderAttackState.js";
