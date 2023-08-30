@@ -8,6 +8,11 @@ import PlayerDashState from './state/PlayerDashState.js';
 import Game from '../Game.js';
 import collisionDetector from '../../helper/collisionDetector.js';
 
+export const playerOffset = {
+    x: 30,
+    y: 50,
+}
+
 export default class Player {
 
     constructor() {

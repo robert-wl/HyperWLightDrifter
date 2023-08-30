@@ -1,5 +1,7 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { get_image } from '../../../helper/fileReader.js';
+import Game from "../../Game.js";
+import {playerOffset} from "../Player.js";
 
 const size = 1;
 export default class PlayerIdleState extends PlayerBaseState {
@@ -11,6 +13,7 @@ export default class PlayerIdleState extends PlayerBaseState {
         currPlayer.handleSwitchState({ move: true, attackOne: true, dash: true });
     }
     drawImage(currPlayer) {
+
         if (currPlayer.lastDirection === 'd') {
             get_image('move', 'walk_right', 5, function (img) {
                 if (currPlayer.direction) {

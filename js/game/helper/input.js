@@ -36,8 +36,8 @@ export default function playerInput() {
 
         const player = Game.getInstance().player;
         const camera = Game.getInstance().camera;
-        const playerX = (player.position.x - camera.position.x) * GAME_SCALE;
-        const playerY = (player.position.y - camera.position.y) * GAME_SCALE;
+        const playerX = (player.position.x - camera.position.x) * 1.5;
+        const playerY = (player.position.y - camera.position.y) * 1.5;
         player.lookAngle = Math.atan2(y - playerY, x - playerX);
     });
 

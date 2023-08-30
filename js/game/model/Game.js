@@ -85,6 +85,6 @@ export default class Game {
             Game.getInstance().camera.topBackground = img;
         });
         this.player.position.x = 900;
-        this.player.position.y = 1200;
+        this.player.position.y = 400;
     }
 }

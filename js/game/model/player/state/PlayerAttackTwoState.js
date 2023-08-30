@@ -2,6 +2,7 @@ import PlayerBaseState from './PlayerBaseState.js';
 import { get_image } from '../../../helper/fileReader.js';
 import { getMouseDirection } from '../../../helper/directionHandler.js';
 import Game from '../../Game.js';
+import {playerOffset} from "../Player.js";
 
 const scale = 2;
 export default class PlayerAttackTwoState extends PlayerBaseState {
@@ -38,6 +39,16 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
     }
 
     drawImage(currPlayer) {
+        if(Game.getInstance().debug) {
+            const ctx = Game.getInstance().canvasCtx;
+            ctx.beginPath();
+            ctx.arc(currPlayer.position.x + playerOffset.x , currPlayer.position.y + playerOffset.y, 100, currPlayer.lookAngle - Math.PI / 3, currPlayer.lookAngle + Math.PI / 3, false);
+            ctx.lineTo(currPlayer.position.x + playerOffset.x, currPlayer.position.y + playerOffset.y);
+            ctx.fillStyle = "pink";
+            ctx.fill();
+            ctx.closePath();
+        }
+
         if (this.direction === 'w') {
             if (!currPlayer.reversed) {
                 get_image('attack', 'attack2_up', this.attackNumber, function (img) {

@@ -4,6 +4,8 @@ import { getMouseDirection } from '../../../helper/directionHandler.js';
 import Game from '../../Game.js';
 import { drawMirroredY } from '../../../helper/renderer/drawer.js';
 import CrystalSpider from "../../enemy/CrystalSpider.js";
+import {playerOffset} from "../Player.js";
+import getEntityOnAttack from "../../../helper/getEntityOnAttack.js";
 
 const scale = 2;
 
@@ -21,6 +23,10 @@ export default class PlayerAttackState extends PlayerBaseState {
         this.direction = direction;
         currPlayer.lastDirection = direction;
 
+        getEntityOnAttack({
+            player: currPlayer,
+            entity: Game.getInstance().enemyList
+        });
         Game.getInstance().clicks.splice(Game.getInstance().clicks.indexOf('left'), 1);
     }
 
@@ -47,6 +53,16 @@ export default class PlayerAttackState extends PlayerBaseState {
     }
 
     drawImage(currPlayer) {
+        if (Game.getInstance().debug ) {
+            const ctx = Game.getInstance().canvasCtx;
+            ctx.beginPath();
+            ctx.arc(currPlayer.position.x + currPlayer.width / 2, currPlayer.position.y + currPlayer.height / 2, 100, currPlayer.lookAngle - Math.PI / 3, currPlayer.lookAngle + Math.PI / 3, false);
+            ctx.lineTo(currPlayer.position.x + currPlayer.width / 2, currPlayer.position.y + currPlayer.height / 2);
+            ctx.fillStyle = 'pink';
+            ctx.fill();
+            ctx.closePath();
+        }
+
         if (this.direction === 'w') {
             if (currPlayer.reversed) {
                 get_image('attack', 'attack_up', this.attackNumber, function (img) {

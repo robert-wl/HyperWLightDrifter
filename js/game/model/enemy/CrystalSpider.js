@@ -27,38 +27,24 @@ export default class CrystalSpider extends Enemy {
         this.moveState = new CrystalSpiderMoveState();
         this.dieState = new CrystalSpiderDieState();
         this.speed = 3;
-        this.counter = 0;
-        this.animationStage = 0;
+        this.switchState(this.moveState);
+    }
+    switchState(newState) {
+        this.currState.exitState(this);
+        this.currState = newState;
+        this.currState.enterState(this);
     }
 
     update() {
-        this.move();
-        this.render();
-        this.counter++;
-    }
-    move(){
-        const x = Game.getInstance().player.position.x - this.position.x;
-        const y = Game.getInstance().player.position.y - this.position.y;
-        this.angle = Math.atan2(y, x);
-        this.position.x += Math.cos(this.angle) * this.speed;
-        this.position.y += Math.sin(this.angle) * this.speed;
-    }
-    render() {
-        const ctx = Game.getInstance().canvasCtx;
-
-        if(this.counter === 4){
-            this.animationStage = (this.animationStage + 1) % 4;
-            this.counter = 0;
+        if(Game.getInstance().debug) {
+            this.debugMode();
         }
-        get_image("enemy/crystal_spider", "crystal_spider_walk", this.animationStage + 1, (image) => {
-            if(this.angle > 0 && this.angle < Math.PI / 2 || this.angle < 0 && this.angle > -Math.PI / 2){
-                ctx.drawImage(image, this.position.x, this.position.y, this.width, this.height);
-            }
-            else {
-                ctx.scale(-1, 1);
-                ctx.drawImage(image, -this.position.x - this.width, this.position.y, this.width, this.height);
-                ctx.scale(-1, 1);
-            }
-        });
+        this.currState.updateState(this);
+        this.currState.drawImage(this);
+    }
+    debugMode(){
+        const ctx = Game.getInstance().canvasCtx;
+        ctx.fillStyle = "rgb(255, 0, 0, 0.4)";
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 }
