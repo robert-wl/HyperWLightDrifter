@@ -3,6 +3,7 @@ import { get_image } from '../../../helper/fileReader.js';
 import { getMouseDirection } from '../../../helper/directionHandler.js';
 import Game from '../../Game.js';
 import { drawMirroredY } from '../../../helper/renderer/drawer.js';
+import CrystalSpider from "../../enemy/CrystalSpider.js";
 
 const scale = 2;
 

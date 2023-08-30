@@ -2,6 +2,8 @@
 * {
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    background-color: black;
 }
 
 .container {
@@ -11,6 +13,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 #myCamera {
@@ -26,4 +29,5 @@
     width: fit-content;
     height: fit-content;
     touch-action: none;
+    overflow: hidden;
 }

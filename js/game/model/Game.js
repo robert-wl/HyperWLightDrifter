@@ -2,7 +2,8 @@ import Player from './player/Player.js';
 import playerInput from '../helper/input.js';
 import { get_image } from '../helper/fileReader.js';
 import Camera from './camera/Camera.js';
-import stageOneHandler from "../stage/stageOneHandler.js";
+import stageOneHandler from '../stage/stageOneHandler.js';
+import CrystalSpider from './enemy/CrystalSpider.js';
 
 export const GAME_SCALE = 2;
 
@@ -17,9 +18,11 @@ export default class Game {
         this.keys = [];
         this.clicks = [];
         this.collideable = [];
+        this.renderList = [];
+        this.enemyList = [];
         this.canvas = null;
         this.canvasCtx = null;
-        this.debug = true;
+        this.debug = false;
     }
 
     init() {
@@ -29,9 +32,10 @@ export default class Game {
         this.camera = new Camera();
         this.camera.setPosition({
             position: this.player.position,
-            canvas: this.canvasCtx
+            canvas: this.canvasCtx,
         });
         stageOneHandler();
+        CrystalSpider.generate({ x: 1000, y: 800, w: 66, h: 50 });
     }
 
     static getInstance() {
@@ -55,18 +59,30 @@ export default class Game {
     updateGame() {
         this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.camera.updateCamera();
+        for (const enemy of this.enemyList) {
+            enemy.update();
+        }
+
         this.player.updateState();
 
-        if(this.debug) {
-            for(const c of this.collideable) {
+        for (const render of this.renderList) {
+            render.update();
+        }
+        this.camera.renderTopBackground();
+
+        if (this.debug) {
+            for (const c of this.collideable) {
                 c.renderDebug();
             }
         }
     }
 
     firstStage() {
-        get_image('world', 'enemy_room', null, function (img) {
-            Game.getInstance().camera.background = img;
+        get_image('world', 'first_map_bottom', null, function (img) {
+            Game.getInstance().camera.lowerBackground = img;
+        });
+        get_image('world', 'first_map_top', null, function (img) {
+            Game.getInstance().camera.topBackground = img;
         });
         this.player.position.x = 900;
         this.player.position.y = 1200;
