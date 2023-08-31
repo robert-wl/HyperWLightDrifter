@@ -11,20 +11,22 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
         this.angle = currSpider.angle;
     }
     updateState(currSpider){
-        currSpider.position.x += Math.cos(this.angle) * currSpider.speed;
-        currSpider.position.y += Math.sin(this.angle) * currSpider.speed;
         this.number++;
 
         if(currSpider.health <= 0){
             currSpider.switchState(currSpider.dieState);
             return;
         }
-        if(this.number === 10) {
-            currSpider.speed = 10;
+        if(this.number <= 10) {
+            currSpider.speed = 20;
         }
-        if(this.number === 30) {
+        if(this.number === 20) {
             currSpider.switchState(currSpider.moveState)
         }
+        currSpider.speed *= 0.75;
+        // console.log(Math.cos(this.angle) * currSpider.speed)
+        currSpider.position.x += Math.cos(this.angle) * currSpider.speed;
+        currSpider.position.y += Math.sin(this.angle) * currSpider.speed;
     }
     drawImage(currSpider){
         const ctx = Game.getInstance().canvasCtx;
