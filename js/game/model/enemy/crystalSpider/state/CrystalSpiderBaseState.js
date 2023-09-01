@@ -1,9 +1,9 @@
 
 
 export default class CrystalSpiderBaseState {
-    updateState(_currBrute);
-    drawImage(_currBrute);
-    enterState(_currBrute);
-    exitState(_currBrute);
+    updateState(_currSpider){}
+    drawImage(_currSpider){}
+    enterState(_currSpider){}
+    exitState(_currSpider){}
 
 }
