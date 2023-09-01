@@ -3,17 +3,16 @@ import PlayerIdleState from './state/PlayerIdleState.js';
 import PlayerMoveState from './state/PlayerMoveState.js';
 import PlayerAttackState from './state/PlayerAttackState.js';
 import PlayerAttackTwoState from './state/PlayerAttackTwoState.js';
-import { get_image } from '../../helper/fileReader.js';
 import PlayerDashState from './state/PlayerDashState.js';
 import Game from '../Game.js';
+import renderShadow from '../../helper/renderer/shadow.js';
 
 export const playerOffset = {
     x: 30,
     y: 50,
-}
+};
 
 export default class Player {
-
     constructor() {
         this.health = 6;
         this.healthPack = 3;
@@ -57,7 +56,13 @@ export default class Player {
     }
 
     updateState() {
-        this.renderShadow();
+        renderShadow({
+            position: {
+                x: this.position.x - 24.5,
+                y: this.position.y - 5,
+            },
+            sizeMultiplier: 1.5,
+        });
         this.updateCounter();
         this.currState.updateState(this);
         this.currState.drawImage(this);
@@ -87,7 +92,7 @@ export default class Player {
         if (Game.getInstance().keys.includes('space') && dash) {
             return this.switchState(this.dashState);
         }
-        if (['w', 'a', 's', 'd'].some(key => Game.getInstance().keys.includes(key)) && move) {
+        if (['w', 'a', 's', 'd'].some((key) => Game.getInstance().keys.includes(key)) && move) {
             return this.switchState(this.moveState);
         }
         return this.switchState(this.idleState);
@@ -105,43 +110,29 @@ export default class Player {
 
         const collideables = Game.getInstance().collideable;
 
-        if(collideables.every(c => {
-            return c.checkCollision({
-                x: this.position.x + this.direction.x,
-                y: this.position.y,
-                w: this.width,
-                h: this.height,
-            });
-        })) {
+        if (
+            collideables.every((c) => {
+                return c.checkCollision({
+                    x: this.position.x + this.direction.x,
+                    y: this.position.y,
+                    w: this.width,
+                    h: this.height,
+                });
+            })
+        ) {
             this.position.x += this.direction.x;
         }
-        if(collideables.every(c => {
-            return c.checkCollision({
-                x: this.position.x,
-                y: this.position.y + this.direction.y,
-                w: this.width,
-                h: this.height,
-            });
-        })) {
+        if (
+            collideables.every((c) => {
+                return c.checkCollision({
+                    x: this.position.x,
+                    y: this.position.y + this.direction.y,
+                    w: this.width,
+                    h: this.height,
+                });
+            })
+        ) {
             this.position.y += this.direction.y;
         }
-        // this.position.x += collisionDetector({
-        //     stage: Game.getInstance().stage,
-        //     position: this.position,
-        //     number: this.direction.x,
-        //     type: "x",
-        // });
-        // this.position.y += collisionDetector({
-        //     stage: Game.getInstance().stage,
-        //     position: this.position,
-        //     number: this.direction.y,
-        //     type: "y",
-        // });
-    }
-
-    renderShadow() {
-        get_image('other', 'shadow', null, (img) => {
-            this.canvas.drawImage(img, this.position.x - 24.5, this.position.y - 5, img.width * 1.5, img.height * 1.5);
-        });
     }
 }

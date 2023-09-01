@@ -3,7 +3,7 @@ import { get_image } from '../../../helper/fileReader.js';
 import { getMouseDirection } from '../../../helper/directionHandler.js';
 import Game from '../../Game.js';
 import { drawMirroredY } from '../../../helper/renderer/drawer.js';
-import getEntityOnAttack from "../../../helper/getEntityOnAttack.js";
+import getEntityOnAttack from '../../../helper/getEntityOnAttack.js';
 
 const scale = 2;
 
@@ -23,7 +23,7 @@ export default class PlayerAttackState extends PlayerBaseState {
 
         getEntityOnAttack({
             player: currPlayer,
-            entity: Game.getInstance().enemyList
+            entity: Game.getInstance().enemyList,
         });
         Game.getInstance().clicks.splice(Game.getInstance().clicks.indexOf('left'), 1);
     }
@@ -51,10 +51,16 @@ export default class PlayerAttackState extends PlayerBaseState {
     }
 
     drawImage(currPlayer) {
-        if (Game.getInstance().debug ) {
+        if (Game.getInstance().debug) {
             const ctx = Game.getInstance().canvasCtx;
             ctx.beginPath();
-            ctx.arc(currPlayer.position.x + currPlayer.width / 2, currPlayer.position.y + currPlayer.height / 2, 100, currPlayer.lookAngle - Math.PI / 3, currPlayer.lookAngle + Math.PI / 3, false);
+            ctx.arc(
+                currPlayer.position.x + currPlayer.width / 2,
+                currPlayer.position.y + currPlayer.height / 2,
+                100, currPlayer.lookAngle - Math.PI / 3,
+                currPlayer.lookAngle + Math.PI / 3,
+                false
+            );
             ctx.lineTo(currPlayer.position.x + currPlayer.width / 2, currPlayer.position.y + currPlayer.height / 2);
             ctx.fillStyle = 'pink';
             ctx.fill();
@@ -66,7 +72,7 @@ export default class PlayerAttackState extends PlayerBaseState {
                 get_image('attack', 'attack_up', this.attackNumber, function (img) {
                     drawMirroredY({
                         canvas: currPlayer.canvas,
-                        img,
+                        img: img,
                         position: {
                             x: currPlayer.position.x - 45,
                             y: currPlayer.position.y - 40,

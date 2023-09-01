@@ -1,5 +1,4 @@
 import Game from '../Game.js';
-import CrystalSpider from "../enemy/CrystalSpider.js";
 
 const CAMERA_X_CONSTANT = -45;
 const CAMERA_Y_CONSTANT = -25;
@@ -53,35 +52,15 @@ export default class Camera {
     }
     renderLowerBackground() {
         const canvasCtx = Game.getInstance().canvasCtx;
-        canvasCtx.drawImage(
-            this.lowerBackground,
-            this.position.x / 2,
-            this.position.y / 2,
-            this.width,
-            this.height,
-            this.position.x,
-            this.position.y,
-            this.lowerBackground.width,
-            this.lowerBackground.height
-        );
+        canvasCtx.drawImage(this.lowerBackground, this.position.x / 2, this.position.y / 2, this.width, this.height, this.position.x, this.position.y, this.lowerBackground.width, this.lowerBackground.height);
     }
 
     renderTopBackground() {
-        if(!this.topBackground) {
+        if (!this.topBackground) {
             return;
         }
         const canvasCtx = Game.getInstance().canvasCtx;
-        canvasCtx.drawImage(
-            this.topBackground,
-            this.position.x / 2,
-            this.position.y / 2,
-            this.width,
-            this.height,
-            this.position.x,
-            this.position.y,
-            this.topBackground.width,
-            this.topBackground.height
-        );
+        canvasCtx.drawImage(this.topBackground, this.position.x / 2, this.position.y / 2, this.width, this.height, this.position.x, this.position.y, this.topBackground.width, this.topBackground.height);
     }
 
     moveCamera() {

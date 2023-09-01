@@ -11,10 +11,10 @@ export default class Enemy {
         this.height = h;
         this.image = null;
     }
-    update() {
-        this.render();
-    }
-    render() {
 
+    debugMode() {
+        const ctx = Game.getInstance().canvasCtx;
+        ctx.fillStyle = 'rgb(255, 0, 0, 0.4)';
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 }

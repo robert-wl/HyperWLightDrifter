@@ -11,17 +11,10 @@ export default class PlayerIdleState extends PlayerBaseState {
         currPlayer.handleSwitchState({ move: true, attackOne: true, dash: true });
     }
     drawImage(currPlayer) {
-
         if (currPlayer.lastDirection === 'd') {
             get_image('move', 'walk_right', 5, function (img) {
                 if (currPlayer.direction) {
-                    currPlayer.canvas.drawImage(
-                        img,
-                        currPlayer.position.x - 10,
-                        currPlayer.position.y,
-                        img.width * size,
-                        img.height * size
-                    );
+                    currPlayer.canvas.drawImage(img, currPlayer.position.x - 10, currPlayer.position.y, img.width * size, img.height * size);
                 }
             });
         } else if (currPlayer.lastDirection === 'a') {
@@ -38,6 +31,4 @@ export default class PlayerIdleState extends PlayerBaseState {
             });
         }
     }
-    enterState(currPlayer) {}
-    exitState(currPlayer) {}
 }

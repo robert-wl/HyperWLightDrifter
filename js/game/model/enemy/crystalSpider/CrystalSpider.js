@@ -1,9 +1,10 @@
-import Enemy from './Enemy.js';
-import Game from "../Game.js";
-import CrystalSpiderBaseState from "./state/CrystalSpiderBaseState.js";
-import CrystalSpiderMoveState from "./state/CrystalSpiderMoveState.js";
-import CrystalSpiderAttackState from "./state/CrystalSpiderAttackState.js";
-import CrystalSpiderDieState from "./state/CrystalSpiderDieState.js";
+import Enemy from '../Enemy.js';
+import Game from '../../Game.js';
+import CrystalSpiderBaseState from './state/CrystalSpiderBaseState.js';
+import CrystalSpiderMoveState from './state/CrystalSpiderMoveState.js';
+import CrystalSpiderAttackState from './state/CrystalSpiderAttackState.js';
+import CrystalSpiderDieState from './state/CrystalSpiderDieState.js';
+import renderShadow from '../../../helper/renderer/shadow.js';
 
 export default class CrystalSpider extends Enemy {
     static generate({ x, y }) {
@@ -19,7 +20,7 @@ export default class CrystalSpider extends Enemy {
             y,
             w: 66,
             h: 50,
-            health: 1
+            health: 1,
         });
         this.currState = new CrystalSpiderBaseState();
         this.attackState = new CrystalSpiderAttackState();
@@ -35,15 +36,17 @@ export default class CrystalSpider extends Enemy {
     }
 
     update() {
-        if(Game.getInstance().debug) {
+        if (Game.getInstance().debug) {
             this.debugMode();
         }
         this.currState.updateState(this);
+        renderShadow({
+            position: {
+                x: this.position.x - this.width / 2 + 10,
+                y: this.position.y - this.height / 2,
+            },
+            sizeMultiplier: 1.5,
+        });
         this.currState.drawImage(this);
-    }
-    debugMode(){
-        const ctx = Game.getInstance().canvasCtx;
-        ctx.fillStyle = "rgb(255, 0, 0, 0.4)";
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 }

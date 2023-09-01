@@ -1,9 +1,10 @@
 import Player from './player/Player.js';
-import playerInput from '../helper/input.js';
+import playerInput from '../helper/playerInput.js';
 import { get_image } from '../helper/fileReader.js';
 import Camera from './camera/Camera.js';
 import stageOneHandler from '../stage/stageOneHandler.js';
-import CrystalSpider from './enemy/CrystalSpider.js';
+import firefliesSpawner from "./particles/firefliesSpawner.js";
+import CrystalBrute from "./enemy/crystalBrute/CrystalBrute.js";
 
 export const GAME_SCALE = 2;
 
@@ -18,6 +19,7 @@ export default class Game {
         this.keys = [];
         this.clicks = [];
         this.collideable = [];
+        this.particles = [];
         this.renderList = [];
         this.enemyList = [];
         this.canvas = null;
@@ -35,7 +37,7 @@ export default class Game {
             canvas: this.canvasCtx,
         });
         stageOneHandler();
-        CrystalSpider.generate({ x: 1000, y: 800, w: 66, h: 50 });
+        CrystalBrute.generate({ x: 1000, y: 800, w: 66, h: 50 });
     }
 
     static getInstance() {
@@ -57,6 +59,7 @@ export default class Game {
     }
 
     updateGame() {
+        firefliesSpawner();
         this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.camera.updateCamera();
         for (const enemy of this.enemyList) {
@@ -70,6 +73,9 @@ export default class Game {
         }
         this.camera.renderTopBackground();
 
+        for(const particle of this.particles){
+            particle.update();
+        }
         if (this.debug) {
             for (const c of this.collideable) {
                 c.renderDebug();
@@ -78,10 +84,10 @@ export default class Game {
     }
 
     firstStage() {
-        get_image('world', 'first_map_bottom', null, function (img) {
+        get_image('world', 'map_ground', null, function (img) {
             Game.getInstance().camera.lowerBackground = img;
         });
-        get_image('world', 'first_map_top', null, function (img) {
+        get_image('world', 'first_map_full', null, function (img) {
             Game.getInstance().camera.topBackground = img;
         });
         this.player.position.x = 900;
