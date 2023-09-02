@@ -4,6 +4,7 @@ import { getMouseDirection } from '../../../helper/directionHandler.js';
 import Game from '../../Game.js';
 import { drawMirroredY } from '../../../helper/renderer/drawer.js';
 import getEntityOnAttack from '../../../helper/getEntityOnAttack.js';
+import {playerOffset} from "../Player.js";
 
 const scale = 2;
 
@@ -21,9 +22,10 @@ export default class PlayerAttackState extends PlayerBaseState {
         this.direction = direction;
         currPlayer.lastDirection = direction;
 
+
+        this.getHitbox(currPlayer);
         getEntityOnAttack({
             player: currPlayer,
-            entity: Game.getInstance().enemyList,
         });
         Game.getInstance().clicks.splice(Game.getInstance().clicks.indexOf('left'), 1);
     }
@@ -37,6 +39,8 @@ export default class PlayerAttackState extends PlayerBaseState {
 
     updateState(currPlayer) {
         this.number++;
+
+        this.getHitbox(currPlayer);
 
         if (Game.getInstance().clicks.includes('left')) {
             currPlayer.combo = true;
@@ -52,24 +56,13 @@ export default class PlayerAttackState extends PlayerBaseState {
 
     drawImage(currPlayer) {
         if (Game.getInstance().debug) {
-            const ctx = Game.getInstance().canvasCtx;
-            ctx.beginPath();
-            ctx.arc(
-                currPlayer.position.x + currPlayer.width / 2,
-                currPlayer.position.y + currPlayer.height / 2,
-                100, currPlayer.lookAngle - Math.PI / 3,
-                currPlayer.lookAngle + Math.PI / 3,
-                false
-            );
-            ctx.lineTo(currPlayer.position.x + currPlayer.width / 2, currPlayer.position.y + currPlayer.height / 2);
-            ctx.fillStyle = 'pink';
-            ctx.fill();
-            ctx.closePath();
+            currPlayer.canvas.fillStyle = 'red';
+            currPlayer.canvas.fillRect(currPlayer.attackBox.x, currPlayer.attackBox.y, currPlayer.attackBox.w, currPlayer.attackBox.h);
         }
 
         if (this.direction === 'w') {
             if (currPlayer.reversed) {
-                get_image('attack', 'attack_up', this.attackNumber, function (img) {
+                get_image('player/attack', 'attack_up', this.attackNumber, function (img) {
                     drawMirroredY({
                         canvas: currPlayer.canvas,
                         img: img,
@@ -79,14 +72,15 @@ export default class PlayerAttackState extends PlayerBaseState {
                         },
                     });
                 });
+                return;
             }
-            get_image('attack', 'attack_up', this.attackNumber, function (img) {
+            get_image('player/attack', 'attack_up', this.attackNumber, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x - 50, currPlayer.position.y - 40, img.width * scale, img.height * scale);
             });
             return;
         }
         if (this.direction === 'a') {
-            get_image('attack', 'attack_side', this.attackNumber, function (img) {
+            get_image('player/attack', 'attack_side', this.attackNumber, function (img) {
                 currPlayer.canvas.save();
                 currPlayer.canvas?.translate(img.width * scale, 0);
                 currPlayer.canvas.scale(-1, 1);
@@ -96,14 +90,14 @@ export default class PlayerAttackState extends PlayerBaseState {
             return;
         }
         if (this.direction === 'd') {
-            get_image('attack', 'attack_side', this.attackNumber, function (img) {
+            get_image('player/attack', 'attack_side', this.attackNumber, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x - 40, currPlayer.position.y - 30, img.width * scale, img.height * scale);
             });
             return;
         }
         if (this.direction === 's') {
             if (currPlayer.reversed) {
-                get_image('attack', 'attack_bottom', this.attackNumber, function (img) {
+                get_image('player/attack', 'attack_bottom', this.attackNumber, function (img) {
                     currPlayer.canvas.save();
                     currPlayer.canvas?.translate(img.width * scale, 0);
                     currPlayer.canvas.scale(-1, 1);
@@ -112,7 +106,7 @@ export default class PlayerAttackState extends PlayerBaseState {
                 });
                 return;
             }
-            get_image('attack', 'attack_bottom', this.attackNumber, function (img) {
+            get_image('player/attack', 'attack_bottom', this.attackNumber, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x - 50, currPlayer.position.y - 30, img.width * scale, img.height * scale);
             });
         }
@@ -157,7 +151,47 @@ export default class PlayerAttackState extends PlayerBaseState {
             this.attackNumber += 1;
         }
         if (this.attackNumber === 7) {
-            currPlayer.handleSwitchState({ move: true, attackTwo: true, dash: true });
+            currPlayer.handleSwitchState({
+                move: true,
+                attackTwo: true,
+                dash: true,
+                aim: true,
+            });
+        }
+    }
+
+    getHitbox(currPlayer) {
+        if(this.direction === 'w') {
+            currPlayer.attackBox = {
+                x: currPlayer.position.x - 20,
+                y: currPlayer.position.y - 30,
+                w: 100,
+                h: 75,
+            }
+        }
+        if(this.direction === 'a') {
+            currPlayer.attackBox = {
+                x: currPlayer.position.x - 50,
+                y: currPlayer.position.y - 10,
+                w: 100,
+                h: 85,
+            }
+        }
+        if(this.direction === 'd') {
+            currPlayer.attackBox = {
+                x: currPlayer.position.x,
+                y: currPlayer.position.y - 10,
+                w: 110,
+                h: 85,
+            }
+        }
+        if(this.direction === 's') {
+            currPlayer.attackBox = {
+                x: currPlayer.position.x - 25,
+                y: currPlayer.position.y + 10,
+                w: 100,
+                h: 100,
+            }
         }
     }
 }

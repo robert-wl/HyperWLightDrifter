@@ -8,25 +8,30 @@ export default class PlayerIdleState extends PlayerBaseState {
             return;
         }
 
-        currPlayer.handleSwitchState({ move: true, attackOne: true, dash: true });
+        currPlayer.handleSwitchState({
+            move: true,
+            attackOne: true,
+            dash: true,
+            aim: true,
+        });
     }
     drawImage(currPlayer) {
         if (currPlayer.lastDirection === 'd') {
-            get_image('move', 'walk_right', 5, function (img) {
+            get_image('player/idle', 'idle_right', null, function (img) {
                 if (currPlayer.direction) {
                     currPlayer.canvas.drawImage(img, currPlayer.position.x - 10, currPlayer.position.y, img.width * size, img.height * size);
                 }
             });
         } else if (currPlayer.lastDirection === 'a') {
-            get_image('move', 'walk_left', 5, function (img) {
+            get_image('player/idle', 'idle_left', null, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x + 10, currPlayer.position.y, img.width * size, img.height * size);
             });
         } else if (currPlayer.lastDirection === 's') {
-            get_image('move', 'walk_down', 6, function (img) {
+            get_image('player/idle', 'idle_down', null, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
             });
         } else if (currPlayer.lastDirection === 'w') {
-            get_image('move', 'walk_up', 5, function (img) {
+            get_image('player/idle', 'idle_up', null, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
             });
         }

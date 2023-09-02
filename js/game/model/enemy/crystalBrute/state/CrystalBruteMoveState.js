@@ -8,7 +8,7 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         this.number = 0;
         this.animationStage = 0;
         this.clockwise = Math.random() < 0.5;
-        currBrute.speed = 0.5
+        currBrute.speed = 0.5;
     }
     updateState(currBrute){
         this.number += 1;
@@ -21,6 +21,7 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         const x = Game.getInstance().player.position.x - currBrute.position.x;
         const y = Game.getInstance().player.position.y - currBrute.position.y;
 
+        console.log(currBrute.health)
         if(currBrute.health <= 0){
             currBrute.switchState(currBrute.dieState);
             return;

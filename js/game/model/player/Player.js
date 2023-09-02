@@ -6,6 +6,7 @@ import PlayerAttackTwoState from './state/PlayerAttackTwoState.js';
 import PlayerDashState from './state/PlayerDashState.js';
 import Game from '../Game.js';
 import renderShadow from '../../helper/renderer/shadow.js';
+import PlayerAimingState from "./state/PlayerAimingState.js";
 
 export const playerOffset = {
     x: 30,
@@ -18,7 +19,7 @@ export default class Player {
         this.healthPack = 3;
         this.friction = 0.8;
         this.maxSpeed = 4;
-        this.attackMoveSpeed = 16;
+        this.attackMoveSpeed = 4;
         this.dashMoveSpeed = 16;
         this.direction = {
             x: 0,
@@ -40,6 +41,12 @@ export default class Player {
             width: 1000,
             height: 500,
         };
+        this.attackBox = {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0,
+        }
         this.lastDirection = 's';
         this.combo = false;
         this.reversed = false;
@@ -50,9 +57,10 @@ export default class Player {
         this.attackState = new PlayerAttackState();
         this.dashState = new PlayerDashState();
         this.attackTwoState = new PlayerAttackTwoState();
+        this.aimState = new PlayerAimingState();
         this.canvas = null;
-        this.images = {};
         this.currState = this.idleState;
+        this.projectiles = [];
     }
 
     updateState() {
@@ -66,6 +74,9 @@ export default class Player {
         this.updateCounter();
         this.currState.updateState(this);
         this.currState.drawImage(this);
+        for(const projectile of this.projectiles) {
+            projectile.update();
+        }
         this.moveHandler();
         if (Game.getInstance().debug) {
             this.renderDebugBox();
@@ -82,7 +93,10 @@ export default class Player {
         canvasCtx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 
-    handleSwitchState({ move, attackOne, attackTwo, dash }) {
+    handleSwitchState({ move, attackOne, attackTwo, dash, aim }) {
+        if(Game.getInstance().clicks.includes('right') && aim) {
+            return this.switchState(this.aimState);
+        }
         if (Game.getInstance().clicks.includes('left') && attackOne) {
             return this.switchState(this.attackState);
         }

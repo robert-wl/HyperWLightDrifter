@@ -18,6 +18,12 @@ export default class CrystalSpider extends Enemy {
         super({
             x,
             y,
+            hitbox: {
+                x: 10,
+                y: 10,
+                w: 20,
+                h: 10,
+            },
             w: 66,
             h: 50,
             health: 1,

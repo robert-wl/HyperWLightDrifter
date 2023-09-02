@@ -3,6 +3,7 @@ import { get_image } from '../../../helper/fileReader.js';
 import { getMouseDirection } from '../../../helper/directionHandler.js';
 import Game from '../../Game.js';
 import {playerOffset} from "../Player.js";
+import getEntityOnAttack from "../../../helper/getEntityOnAttack.js";
 
 const scale = 2;
 export default class PlayerAttackTwoState extends PlayerBaseState {
@@ -18,6 +19,10 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         this.direction = direction;
         currPlayer.lastDirection = direction;
 
+        getEntityOnAttack({
+            player: currPlayer,
+            entity: Game.getInstance().enemyList,
+        });
         Game.getInstance().clicks.splice(Game.getInstance().clicks.indexOf('left'), 1);
     }
 
@@ -42,7 +47,13 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         if(Game.getInstance().debug) {
             const ctx = Game.getInstance().canvasCtx;
             ctx.beginPath();
-            ctx.arc(currPlayer.position.x + playerOffset.x , currPlayer.position.y + playerOffset.y, 100, currPlayer.lookAngle - Math.PI / 3, currPlayer.lookAngle + Math.PI / 3, false);
+            ctx.arc(
+                currPlayer.position.x + playerOffset.x ,
+                currPlayer.position.y + playerOffset.y,
+                100, currPlayer.lookAngle - Math.PI / 3,
+                currPlayer.lookAngle + Math.PI / 3,
+                false
+            );
             ctx.lineTo(currPlayer.position.x + playerOffset.x, currPlayer.position.y + playerOffset.y);
             ctx.fillStyle = "pink";
             ctx.fill();
@@ -51,7 +62,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
 
         if (this.direction === 'w') {
             if (!currPlayer.reversed) {
-                get_image('attack', 'attack2_up', this.attackNumber, function (img) {
+                get_image('player/attack', 'attack2_up', this.attackNumber, function (img) {
                     currPlayer.canvas.save();
                     currPlayer.canvas?.translate(img.width * scale, 0);
                     currPlayer.canvas.scale(-1, 1);
@@ -60,13 +71,13 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
                 });
                 return;
             }
-            get_image('attack', 'attack2_up', this.attackNumber, function (img) {
+            get_image('player/attack', 'attack2_up', this.attackNumber, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x - 50, currPlayer.position.y - 40, img.width * scale, img.height * scale);
             });
             return;
         }
         if (this.direction === 'a') {
-            get_image('attack', 'attack2_side', this.attackNumber, function (img) {
+            get_image('player/attack', 'attack2_side', this.attackNumber, function (img) {
                 currPlayer.canvas.save();
                 currPlayer.canvas?.translate(img.width * scale, 0);
                 currPlayer.canvas.scale(-1, 1);
@@ -76,14 +87,14 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
             return;
         }
         if (this.direction === 'd') {
-            get_image('attack', 'attack2_side', this.attackNumber, function (img) {
+            get_image('player/attack', 'attack2_side', this.attackNumber, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x - 40, currPlayer.position.y - 30, img.width * scale, img.height * scale);
             });
             return;
         }
         if (this.direction === 's') {
             if (!currPlayer.reversed) {
-                get_image('attack', 'attack2_bottom', this.attackNumber, function (img) {
+                get_image('player/attack', 'attack2_bottom', this.attackNumber, function (img) {
                     currPlayer.canvas.save();
                     currPlayer.canvas?.translate(img.width * scale, 0);
                     currPlayer.canvas.scale(-1, 1);
@@ -92,7 +103,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
                 });
                 return;
             }
-            get_image('attack', 'attack2_bottom', this.attackNumber, function (img) {
+            get_image('player/attack', 'attack2_bottom', this.attackNumber, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x - 50, currPlayer.position.y - 30, img.width * scale, img.height * scale);
             });
         }
@@ -114,7 +125,12 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
             this.attackNumber += 1;
         }
         if (this.attackNumber === 8) {
-            currPlayer.handleSwitchState({ move: true, attackOne: true, dash: true });
+            currPlayer.handleSwitchState({
+                move: true,
+                attackOne: true,
+                dash: true,
+                aim: true,
+            });
         }
     }
 
@@ -129,7 +145,12 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
             this.attackNumber += 1;
         }
         if (this.attackNumber === 7) {
-            currPlayer.handleSwitchState({ move: true, attackOne: true, dash: true });
+            currPlayer.handleSwitchState({
+                move: true,
+                attackOne: true,
+                dash: true,
+                aim: true,
+            });
         }
     }
 }

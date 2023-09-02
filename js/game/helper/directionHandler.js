@@ -1,13 +1,13 @@
 
 export function getMouseDirection({ angle }) {
-    if (angle <= (Math.PI) / 4 && angle > (-Math.PI) / 4) {
-        return 'd';
-    }
-    if (angle <= (Math.PI * 3) / 4 && angle > (Math.PI) / 4) {
+    if (angle <= (Math.PI * 5) / 6 && angle > (Math.PI) / 6) {
         return 's';
     }
-    if (angle <= (-Math.PI) / 4 && angle > (-Math.PI * 3) / 4) {
+    if (angle <= (-Math.PI) / 6 && angle > (-Math.PI * 5) / 6) {
         return 'w';
+    }
+    if (angle <= (Math.PI) / 4 && angle > (-Math.PI) / 4) {
+        return 'd';
     }
     if (angle <= (-Math.PI * 3) / 4 || angle >= (Math.PI * 3) / 4) {
         return 'a';

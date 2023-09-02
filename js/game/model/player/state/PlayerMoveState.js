@@ -25,61 +25,36 @@ export default class PlayerMoveState extends PlayerBaseState {
         }
         this.number += 1;
 
-        currPlayer.handleSwitchState({ move: true, attackOne: true, dash: true });
+        currPlayer.handleSwitchState({
+            move: true,
+            attackOne: true,
+            dash: true,
+            aim: true,
+        });
     }
     drawImage(currPlayer) {
         if (this.direction === 'w') {
-            if (currPlayer.direction.y < -3) {
-                get_image('move', 'run_up', (this.number % 12) + 1, function (img) {
-                    currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
-                });
-                return;
-            }
-            get_image('move', 'walk_up', (this.number % 10) + 1, function (img) {
+            get_image('player/move', 'run_up', (this.number % 12) + 1, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
             });
             return;
         }
         if (this.direction === 's') {
-            if (currPlayer.direction.y > 3) {
-                get_image('move', 'run_down', (this.number % 12) + 1, function (img) {
-                    currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
-                });
-                return;
-            }
-            get_image('move', 'walk_down', (this.number % 10) + 1, function (img) {
+            get_image('player/move', 'run_down', (this.number % 12) + 1, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
             });
             return;
         }
         if (this.direction === 'd') {
-            if (currPlayer.direction.x > 3) {
-                get_image('move', 'run_right', (this.number % 12) + 1, function (img) {
-                    currPlayer.canvas.drawImage(img, currPlayer.position.x - 10, currPlayer.position.y, img.width * size, img.height * size);
-                });
-                return;
-            }
-            get_image('move', 'walk_right', (this.number % 10) + 1, function (img) {
+            get_image('player/move', 'run_right', (this.number % 12) + 1, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x - 10, currPlayer.position.y, img.width * size, img.height * size);
             });
             return;
         }
         if (this.direction === 'a') {
-            if (currPlayer.direction.x < -3) {
-                get_image('move', 'run_left', (this.number % 12) + 1, function (img) {
-                    currPlayer.canvas.drawImage(img, currPlayer.position.x + 10, currPlayer.position.y, img.width * size, img.height * size);
-                });
-                return;
-            }
-            get_image('move', 'walk_left', (this.number % 10) + 1, function (img) {
+            get_image('player/move', 'run_left', (this.number % 12) + 1, function (img) {
                 currPlayer.canvas.drawImage(img, currPlayer.position.x + 10, currPlayer.position.y, img.width * size, img.height * size);
             });
         }
-    }
-    enterState(currPlayer) {
-        /* TODO document why this method 'enterState' is empty */
-    }
-    exitState(currPlayer) {
-        /* TODO document why this method 'enterState' is empty */
     }
 }

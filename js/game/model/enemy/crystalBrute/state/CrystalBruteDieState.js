@@ -9,7 +9,7 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
         currSpider.position.y += Math.sin(currSpider.angle) * currSpider.speed;
         currSpider.speed *= 0.9;
         const ctx = Game.getInstance().canvasCtx;
-        get_image('enemy/crystal_spider', 'crystal_spider_die', null, (image) => {
+        get_image('enemy/crystal_brute', 'crystal_brute_die', null, (image) => {
             if ((currSpider.angle > 0 && currSpider.angle < Math.PI / 2) || (currSpider.angle < 0 && currSpider.angle > -Math.PI / 2)) {
                 ctx.drawImage(image, currSpider.position.x, currSpider.position.y, currSpider.width, currSpider.height);
             } else {

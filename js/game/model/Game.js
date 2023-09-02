@@ -5,6 +5,9 @@ import Camera from './camera/Camera.js';
 import stageOneHandler from '../stage/stageOneHandler.js';
 import firefliesSpawner from "./particles/firefliesSpawner.js";
 import CrystalBrute from "./enemy/crystalBrute/CrystalBrute.js";
+import Door from "./collideable/Door.js";
+import Trader from "./collideable/Trader.js";
+import CrystalSpider from "./enemy/crystalSpider/CrystalSpider.js";
 
 export const GAME_SCALE = 2;
 
@@ -37,7 +40,8 @@ export default class Game {
             canvas: this.canvasCtx,
         });
         stageOneHandler();
-        CrystalBrute.generate({ x: 1000, y: 800, w: 66, h: 50 });
+        CrystalSpider.generate({ x: 1000, y: 800 });
+        CrystalBrute.generate({ x: 1000, y: 800 });
     }
 
     static getInstance() {
@@ -56,6 +60,7 @@ export default class Game {
         ctx.scale(GAME_SCALE, GAME_SCALE);
         this.canvasCtx = ctx;
         this.player.canvas = ctx;
+        Trader.generate({x: 800, y: 1500, collideable: true});
     }
 
     updateGame() {
@@ -76,10 +81,8 @@ export default class Game {
         for(const particle of this.particles){
             particle.update();
         }
-        if (this.debug) {
-            for (const c of this.collideable) {
-                c.renderDebug();
-            }
+        for (const c of this.collideable) {
+            c.update();
         }
     }
 

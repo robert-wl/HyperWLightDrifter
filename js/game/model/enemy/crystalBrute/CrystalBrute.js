@@ -5,6 +5,7 @@ import CrystalBruteBaseState from "./state/CrystalBruteBaseState.js";
 import CrystalBruteAttackState from "./state/CrystalBruteAttackState.js";
 import CrystalBruteDieState from "./state/CrystalBruteDieState.js";
 import CrystalBruteMoveState from "./state/CrystalBruteMoveState.js";
+import HealthBar from "../healthBar/HealthBar.js";
 
 export default class CrystalBrute extends Enemy {
     static generate({ x, y }) {
@@ -18,9 +19,16 @@ export default class CrystalBrute extends Enemy {
         super({
             x,
             y,
+            hitbox: {
+                x: 30,
+                y: 30,
+                w: 60,
+                h: 30,
+            },
             w: 136,
             h: 140,
             health: 10,
+            maxHealth: 10,
         });
         this.currState = new CrystalBruteBaseState();
         this.attackState = new CrystalBruteAttackState();
@@ -28,8 +36,17 @@ export default class CrystalBrute extends Enemy {
         this.dieState = new CrystalBruteDieState();
         this.speed = 3;
         this.attack = [];
+        this.healthBar = HealthBar.generate({
+            position: this.position,
+            offset: {
+                x: this.width / 2,
+                y: 130,
+            },
+            maxHealth: this.maxHealth,
+        });
         this.switchState(this.moveState);
     }
+
     switchState(newState) {
         this.currState.exitState(this);
         this.currState = newState;
@@ -48,6 +65,13 @@ export default class CrystalBrute extends Enemy {
             },
             sizeMultiplier: 3,
         });
+
+        if(this.currState !== this.dieState){
+            this.healthBar.update({
+                health: this.health
+            });
+        }
+
 
         for (const attack of this.attack) {
             const remove = attack.update();

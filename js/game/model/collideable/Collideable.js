@@ -16,8 +16,8 @@ export default class Collideable {
     constructor({ x, y, w, h, collideable }) {
         this.x = x;
         this.y = y;
-        this.w = w;
-        this.h = h;
+        this.width = w;
+        this.height = h;
         this.collideable = collideable || true;
     }
 

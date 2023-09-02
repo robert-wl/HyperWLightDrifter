@@ -16,20 +16,59 @@ export default class Camera {
                 x: 0,
                 y: 0,
             },
-            width: 1000,
+            width: 900,
             height: 500,
         };
         this.lowerBackground = null;
         this.topBackground = null;
+        this.offset = {
+            x: 0,
+            y: 0
+        }
+        this.shakeOffset = {
+            x: 0,
+            y: 0
+        }
+        this.shake = false;
     }
-
     setPosition({ position, canvas }) {
         canvas.translate(-(position.x - this.cameraBox.width / 2), -(position.y - this.cameraBox.height / 2));
         this.position.x += position.x - this.cameraBox.width / 2;
         this.position.y += position.y - this.cameraBox.height / 2;
     }
-
+    move({ offset }) {
+        this.offset = {
+            x: offset.x,
+            y: offset.y
+        }
+    }
+    shakeCamera({ offset }) {
+        this.shake = true;
+        this.shakeOffset.x = offset.x;
+        this.shakeOffset.y = offset.y;
+    }
     updateCamera() {
+        const ctx = Game.getInstance().canvasCtx;
+
+        if(this.shake) {
+            this.shake = false;
+            this.offset.x += this.shakeOffset.x;
+            this.offset.y += this.shakeOffset.y;
+            this.position.y -= this.shakeOffset.y;
+            this.position.x -= this.shakeOffset.x;
+            ctx.translate(this.offset.x, this.offset.y);
+        }
+        if(this.offset.y > 0.001 || this.offset.x > 0.001 || this.offset.y < -0.001 || this.offset.x < -0.001) {
+            const displacementX = this.offset.x * 0.1;
+            const displacementY = this.offset.y * 0.1;
+            this.offset.x -= displacementX;
+            this.offset.y -= displacementY;
+            this.position.x += displacementX;
+            this.position.y += displacementY;
+            ctx.translate(-displacementX, -displacementY);
+        }
+
+
         if (this.lowerBackground) {
             this.moveCamera();
             this.renderLowerBackground();
@@ -39,8 +78,13 @@ export default class Camera {
         const player = Game.getInstance().player;
         this.cameraBox.position.x = player.position.x - (this.cameraBox.width / 2 + CAMERA_X_CONSTANT);
         this.cameraBox.position.y = player.position.y - (this.cameraBox.height / 2 + CAMERA_Y_CONSTANT);
+        // this.cameraBox.position.x += this.offset.x;
+        // this.cameraBox.position.y += this.offset.y;
+        //
+        // this.offset.x *= 0.9;
+        // this.offset.y *= 0.9;
 
-        if (Game.getInstance().debug) {
+        if (Game.getInstance().debug ) {
             this.renderDebugBox();
         }
     }
@@ -52,7 +96,17 @@ export default class Camera {
     }
     renderLowerBackground() {
         const canvasCtx = Game.getInstance().canvasCtx;
-        canvasCtx.drawImage(this.lowerBackground, this.position.x / 2, this.position.y / 2, this.width, this.height, this.position.x, this.position.y, this.lowerBackground.width, this.lowerBackground.height);
+        canvasCtx.drawImage(
+            this.lowerBackground,
+            (this.position.x / 2) - this.offset.x,
+            this.position.y / 2 - this.offset.y,
+            this.width + this.offset.x,
+            this.height + this.offset.y,
+            this.position.x - Math.abs(this.offset.x),
+            this.position.y - Math.abs(this.offset.y),
+            this.lowerBackground.width + Math.abs(this.offset.x),
+            this.lowerBackground.height + Math.abs(this.offset.y)
+        );
     }
 
     renderTopBackground() {
@@ -60,7 +114,17 @@ export default class Camera {
             return;
         }
         const canvasCtx = Game.getInstance().canvasCtx;
-        canvasCtx.drawImage(this.topBackground, this.position.x / 2, this.position.y / 2, this.width, this.height, this.position.x, this.position.y, this.topBackground.width, this.topBackground.height);
+        canvasCtx.drawImage(
+            this.topBackground,
+            (this.position.x / 2) - this.offset.x,
+            this.position.y / 2 - this.offset.y,
+            this.width + this.offset.x,
+            this.height + this.offset.y,
+            this.position.x - Math.abs(this.offset.x),
+            this.position.y - Math.abs(this.offset.y),
+            this.topBackground.width + Math.abs(this.offset.x),
+            this.topBackground.height + Math.abs(this.offset.y)
+        );
     }
 
     moveCamera() {

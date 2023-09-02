@@ -23,7 +23,7 @@ export default class CrystalAttack {
         this.position.x += this.speed * Math.cos(this.angle);
         this.position.y += this.speed * Math.sin(this.angle);
 
-        if (this.number % 10 === 0) {
+        if (this.number % 7 === 0) {
             this.spikes.push(
                 CrystalSpike.generate({
                     position: {

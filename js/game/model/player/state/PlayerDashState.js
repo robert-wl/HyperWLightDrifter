@@ -92,7 +92,12 @@ export default class PlayerDashState extends PlayerBaseState {
                 this.lastData.shift();
                 return;
             }
-            currPlayer.handleSwitchState({ move: true, attackOne: true, dash: true });
+            currPlayer.handleSwitchState({
+                move: true,
+                attackOne: true,
+                dash: true,
+                aim: true,
+            });
         }
     }
 
@@ -111,7 +116,12 @@ export default class PlayerDashState extends PlayerBaseState {
                 this.lastData.shift();
                 return;
             }
-            currPlayer.handleSwitchState({ move: true, attackOne: true, dash: true });
+            currPlayer.handleSwitchState({
+                move: true,
+                attackOne: true,
+                dash: true,
+                aim: true,
+            });
         }
     }
 
@@ -130,7 +140,12 @@ export default class PlayerDashState extends PlayerBaseState {
                 this.lastData.shift();
                 return;
             }
-            currPlayer.handleSwitchState({ move: true, attackOne: true, dash: true });
+            currPlayer.handleSwitchState({
+                move: true,
+                attackOne: true,
+                dash: true,
+                aim: true,
+            });
         }
     }
 }

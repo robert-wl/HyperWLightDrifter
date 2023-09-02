@@ -69,7 +69,13 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
 
         const type = Math.floor(Math.random() * 3);
 
-        console.log(type);
+        Game.getInstance().camera.shakeCamera({
+            offset: {
+                x: 0,
+                y: 5,
+            }
+        });
+
         if (type === 0) {
             currBrute.attack.push(
                 CrystalAttack.generate({

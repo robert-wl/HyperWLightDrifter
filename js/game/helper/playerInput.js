@@ -33,6 +33,26 @@ export default function playerInput() {
             }
             Game.getInstance().clicks.push('left');
         }
+        if (e.which === 3) {
+            if (Game.getInstance().clicks.includes('right')) {
+                return;
+            }
+            Game.getInstance().clicks.push('right');
+        }
+    });
+
+
+    $(document).mouseup((e) => {
+       if (e.which === 3) {
+           const index = Game.getInstance().clicks.indexOf('right');
+           if (index > -1) {
+               Game.getInstance().clicks.splice(index, 1);
+           }
+       }
+    });
+
+    $(document).on('contextmenu', (e) => {
+        e.preventDefault();
     });
 
     $(document).mousemove((e) => {
