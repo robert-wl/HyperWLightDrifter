@@ -21,7 +21,6 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         const x = Game.getInstance().player.position.x - currBrute.position.x;
         const y = Game.getInstance().player.position.y - currBrute.position.y;
 
-        console.log(currBrute.health)
         if(currBrute.health <= 0){
             currBrute.switchState(currBrute.dieState);
             return;
@@ -34,7 +33,7 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
             const angle2 = currBrute.angle + Math.PI/2 * (this.clockwise ? 1 : -1);
             currBrute.position.x += Math.cos(angle2) * currBrute.speed;
             currBrute.position.y += Math.sin(angle2) * currBrute.speed;
-        } else {
+        } else { //TODO
             currBrute.angle = Math.atan2(y, x);
             currBrute.position.x += Math.cos(currBrute.angle) * currBrute.speed;
             currBrute.position.y += Math.sin(currBrute.angle) * currBrute.speed;

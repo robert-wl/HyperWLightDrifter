@@ -1,4 +1,4 @@
-import Game from "../model/Game.js";
+import Game from "../../model/Game.js";
 
 
 export default function getEntityOnAttack({ player }) {
@@ -21,10 +21,6 @@ export default function getEntityOnAttack({ player }) {
         const playerX2 = player.attackBox.x + player.attackBox.w;
         const playerY1 = player.attackBox.y;
         const playerY2 = player.attackBox.y + player.attackBox.h;
-        console.log(enemyX1 < playerX2)
-        console.log(enemyX2 > playerX1)
-        console.log(enemyY1 < playerY2)
-        console.log(enemyY2 > playerY1)
 
         if(
             enemyX1 < playerX2 &&
@@ -33,6 +29,10 @@ export default function getEntityOnAttack({ player }) {
             enemyY2 > playerY1
         ) {
             enemy.health -= 1;
+
+            if(player.bullets < 3) {
+                player.bullets++;
+            }
         }
     }
 }

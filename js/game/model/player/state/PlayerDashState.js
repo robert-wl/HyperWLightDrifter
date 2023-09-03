@@ -15,9 +15,8 @@ export default class PlayerDashState extends PlayerBaseState {
         this.direction = direction;
         currPlayer.lastDirection = direction;
 
+        currPlayer.stamina -= 10;
         this.lastPosition = { ...currPlayer.position };
-
-        Game.getInstance().keys.splice(Game.getInstance().keys.indexOf('space'), 1);
     }
     updateState(currPlayer) {
         this.number++;

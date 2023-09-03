@@ -24,7 +24,8 @@ export default class PlayerAimingState extends PlayerBaseState {
                 dash: true,
             });
         }
-        if(Game.getInstance().clicks.includes('left')){
+        if(Game.getInstance().clicks.includes('left') && currPlayer.bullets > 0){
+            currPlayer.bullets--;
             const projectilePosition = {
                 x: currPlayer.position.x + currPlayer.width / 2 + 45 * Math.cos(angle),
                 y: currPlayer.position.y + currPlayer.height / 2 + 45 * Math.sin(angle),

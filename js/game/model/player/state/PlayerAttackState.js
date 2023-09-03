@@ -3,7 +3,7 @@ import { get_image } from '../../../helper/fileReader.js';
 import { getMouseDirection } from '../../../helper/directionHandler.js';
 import Game from '../../Game.js';
 import { drawMirroredY } from '../../../helper/renderer/drawer.js';
-import getEntityOnAttack from '../../../helper/getEntityOnAttack.js';
+import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
 import {playerOffset} from "../Player.js";
 
 const scale = 2;

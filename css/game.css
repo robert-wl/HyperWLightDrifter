@@ -14,20 +14,29 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: relative;
 }
 
-#myCamera {
-    background-color: transparent;
-    overflow: hidden;
-    /*width: fit-content;*/
-    width: 75vw;
-    height: 90vh;
-
-}
 
 #myCanvas {
     width: fit-content;
     height: fit-content;
     touch-action: none;
     overflow: hidden;
+}
+
+.ui {
+    position: absolute;
+    max-width: 1900px;
+    max-height: 1080px;
+    width: 100vw;
+    height: 55vw;
+    background-color: transparent;
+}
+#HUD {
+    display: flex;
+    margin-top: calc(4rem);
+    background-color: transparent;
+    max-width: 1900px;
+    width: 100vw;
 }

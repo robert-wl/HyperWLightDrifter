@@ -1,13 +1,13 @@
 import Player from './player/Player.js';
-import playerInput from '../helper/playerInput.js';
-import { get_image } from '../helper/fileReader.js';
+import playerInput from '../helper/player/playerInput.js';
+import {get_image} from '../helper/fileReader.js';
 import Camera from './camera/Camera.js';
 import stageOneHandler from '../stage/stageOneHandler.js';
 import firefliesSpawner from "./particles/firefliesSpawner.js";
 import CrystalBrute from "./enemy/crystalBrute/CrystalBrute.js";
-import Door from "./collideable/Door.js";
 import Trader from "./collideable/Trader.js";
 import CrystalSpider from "./enemy/crystalSpider/CrystalSpider.js";
+import hudHandler from "../helper/player/hudHandler.js";
 
 export const GAME_SCALE = 2;
 
@@ -54,6 +54,10 @@ export default class Game {
     prepareCanvas() {
         const canvas = document.getElementById('myCanvas');
         this.canvas = canvas;
+        const HUD = document.getElementById('HUD');
+        this.HUD = HUD.getContext('2d');
+        this.HUD.imageSmoothingEnabled = false;
+        this.HUD.scale(GAME_SCALE, GAME_SCALE);
 
         const ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
@@ -65,6 +69,7 @@ export default class Game {
 
     updateGame() {
         firefliesSpawner();
+
         this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.camera.updateCamera();
         for (const enemy of this.enemyList) {
@@ -84,6 +89,14 @@ export default class Game {
         for (const c of this.collideable) {
             c.update();
         }
+        this.drawHUD();
+    }
+
+    drawHUD() {
+        hudHandler({
+            HUD: this.HUD,
+            player: this.player
+        })
     }
 
     firstStage() {

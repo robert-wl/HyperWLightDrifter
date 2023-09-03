@@ -3,7 +3,7 @@ import { get_image } from '../../../helper/fileReader.js';
 import { getMouseDirection } from '../../../helper/directionHandler.js';
 import Game from '../../Game.js';
 import {playerOffset} from "../Player.js";
-import getEntityOnAttack from "../../../helper/getEntityOnAttack.js";
+import getEntityOnAttack from "../../../helper/player/getEntityOnAttack.js";
 
 const scale = 2;
 export default class PlayerAttackTwoState extends PlayerBaseState {

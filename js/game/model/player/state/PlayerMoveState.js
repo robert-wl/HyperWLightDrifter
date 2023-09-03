@@ -8,6 +8,9 @@ export default class PlayerMoveState extends PlayerBaseState {
     number = 0;
 
     updateState(currPlayer) {
+        if(currPlayer.stamina < 100){
+            currPlayer.stamina += 0.5;
+        }
         const {direction, playerDirection } = getMoveDirection({
             keys: Game.getInstance().keys,
             currPlayer,

@@ -1,4 +1,4 @@
-import Game from '../model/Game.js';
+import Game from '../../model/Game.js';
 
 export default function playerInput() {
     $(document).keydown((e) => {
@@ -23,6 +23,12 @@ export default function playerInput() {
                 Game.getInstance().keys.splice(index, 1);
             }
             Game.getInstance().lastDirection = e.key;
+        }
+        if (e.key === ' ') {
+            const index = Game.getInstance().keys.indexOf('space');
+            if (index > -1) {
+                Game.getInstance().keys.splice(index, 1);
+            }
         }
     });
 

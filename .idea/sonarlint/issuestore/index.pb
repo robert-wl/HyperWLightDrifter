@@ -5,14 +5,10 @@ S
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
 ;
 .prettierrc,2\0\20137a9e94744624390b6748bc96df5ca1579b71
-?
-html/index.html,a\8\a8bedfaa63656640e851f999fb4a7e07fed63bdc
 8
 index.js,a\7\a77b15c0d64cf6111e025645e562faf8ccabb9d7
 S
 #js/game/helper/collisionDetector.js,6\2\62959ed4f2fd572040a2dc0a5fb3e464d54168b8
-<
-css/game.css,b\8\b883c664cb638d0b022860e9eb52d7fec909a274
 P
  js/game/stage/stageOneHandler.js,f\b\fb292b3c794d197c1d1554ce845832f66ce648c1
 U

@@ -15,8 +15,12 @@ export const playerOffset = {
 
 export default class Player {
     constructor() {
+        this.maxhealth = 6;
         this.health = 6;
         this.healthPack = 3;
+        this.stamina = 100;
+        this.bombs = 2;
+        this.bullets = 3;
         this.friction = 0.8;
         this.maxSpeed = 4;
         this.attackMoveSpeed = 4;
@@ -103,7 +107,7 @@ export default class Player {
         if (this.combo && attackTwo) {
             return this.switchState(this.attackTwoState);
         }
-        if (Game.getInstance().keys.includes('space') && dash) {
+        if (Game.getInstance().keys.includes('space') && dash && this.stamina >= 10) {
             return this.switchState(this.dashState);
         }
         if (['w', 'a', 's', 'd'].some((key) => Game.getInstance().keys.includes(key)) && move) {
@@ -111,6 +115,8 @@ export default class Player {
         }
         return this.switchState(this.idleState);
     }
+
+
     switchState(newState) {
         this.currState.exitState(this);
         this.currState = newState;

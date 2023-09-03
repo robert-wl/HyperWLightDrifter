@@ -4,6 +4,9 @@ import { get_image } from '../../../helper/fileReader.js';
 const size = 1;
 export default class PlayerIdleState extends PlayerBaseState {
     updateState(currPlayer) {
+        if(currPlayer.stamina < 100){
+            currPlayer.stamina += 0.5;
+        }
         if (currPlayer.counter !== 6) {
             return;
         }
