@@ -51,7 +51,7 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
         } else if (this.number === 5 && this.animationStage >= 5 && this.animationStage < 10) {
             this.animationStage++;
             this.number = 0;
-            if (this.animationStage == 9) {
+            if (this.animationStage === 9) {
                 this.handleAttack(currBrute);
             }
         } else if (this.number === 50 && this.animationStage === 10) {
@@ -76,79 +76,19 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
             }
         });
 
-        if (type === 0) {
+        const constant = {
+            0: [0],
+            1: [0, -1/6, 1/6],
+            2: [1/10, -1/10, 2/10, -2/10],
+        }
+        for(const num of constant[type]) {
             currBrute.attack.push(
                 CrystalAttack.generate({
                     position: {
                         x: x,
                         y: y,
                     },
-                    angle: angle,
-                }),
-            );
-        } else if (type === 1) {
-            currBrute.attack.push(
-                CrystalAttack.generate({
-                    position: {
-                        x: x,
-                        y: y,
-                    },
-                    angle: angle,
-                }),
-            );
-            currBrute.attack.push(
-                CrystalAttack.generate({
-                    position: {
-                        x: x,
-                        y: y,
-                    },
-                    angle: angle + Math.PI / 6,
-                }),
-            );
-            currBrute.attack.push(
-                CrystalAttack.generate({
-                    position: {
-                        x: x,
-                        y: y,
-                    },
-                    angle: angle - Math.PI / 6,
-                }),
-            );
-        } else if (type === 2) {
-            currBrute.attack.push(
-                CrystalAttack.generate({
-                    position: {
-                        x: x,
-                        y: y,
-                    },
-                    angle: angle + Math.PI / 10,
-                }),
-            );
-            currBrute.attack.push(
-                CrystalAttack.generate({
-                    position: {
-                        x: x,
-                        y: y,
-                    },
-                    angle: angle - Math.PI / 10,
-                }),
-            );
-            currBrute.attack.push(
-                CrystalAttack.generate({
-                    position: {
-                        x: x,
-                        y: y,
-                    },
-                    angle: angle + (2 * Math.PI) / 10,
-                }),
-            );
-            currBrute.attack.push(
-                CrystalAttack.generate({
-                    position: {
-                        x: x,
-                        y: y,
-                    },
-                    angle: angle - (2 * Math.PI) / 10,
+                    angle: angle + Math.PI * num,
                 }),
             );
         }

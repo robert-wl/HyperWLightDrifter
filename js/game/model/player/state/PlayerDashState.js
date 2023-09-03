@@ -1,5 +1,5 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getMouseDirection } from '../../../helper/directionHandler.js';
+import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import playerDashDrawer from '../../../helper/renderer/playerDashDrawer.js';
 import Game from '../../Game.js';
 

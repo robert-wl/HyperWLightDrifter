@@ -2,6 +2,8 @@ import Game from '../Game.js';
 
 const CAMERA_X_CONSTANT = -45;
 const CAMERA_Y_CONSTANT = -25;
+const SCREEN_WIDTH = 1920;
+const SCREEN_HEIGHT = 1080;
 
 export default class Camera {
     constructor() {
@@ -95,6 +97,7 @@ export default class Camera {
         canvasCtx.fillRect(this.cameraBox.position.x, this.cameraBox.position.y, this.cameraBox.width, this.cameraBox.height);
     }
     renderLowerBackground() {
+
         const canvasCtx = Game.getInstance().canvasCtx;
         canvasCtx.drawImage(
             this.lowerBackground,
@@ -104,7 +107,7 @@ export default class Camera {
             this.height + this.offset.y,
             this.position.x - Math.abs(this.offset.x),
             this.position.y - Math.abs(this.offset.y),
-            this.lowerBackground.width + Math.abs(this.offset.x),
+            (SCREEN_WIDTH / 2) + Math.abs(this.offset.x),
             this.lowerBackground.height + Math.abs(this.offset.y)
         );
     }
@@ -122,7 +125,7 @@ export default class Camera {
             this.height + this.offset.y,
             this.position.x - Math.abs(this.offset.x),
             this.position.y - Math.abs(this.offset.y),
-            this.topBackground.width + Math.abs(this.offset.x),
+            (SCREEN_WIDTH / 2) + Math.abs(this.offset.x),
             this.topBackground.height + Math.abs(this.offset.y)
         );
     }

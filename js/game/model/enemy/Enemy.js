@@ -12,6 +12,29 @@ export default class Enemy {
         this.width = w;
         this.height = h;
         this.image = null;
+        this.damaged = false;
+        this.velocity = {
+            value: 0,
+            angle: 0,
+        }
+    }
+
+    damage({ amount, angle }) {
+        this.health -= amount;
+        this.damaged = 5;
+        if (this.health <= 0) {
+            this.health = 0;
+        }
+        this.velocity = {
+            value: 2,
+            angle: angle,
+        }
+    }
+
+    knockback() {
+        this.position.x += Math.cos(this.velocity.angle) * this.velocity.value
+        this.position.y += Math.sin(this.velocity.angle) * this.velocity.value
+        this.velocity.value *= 0.9;
     }
 
     debugMode() {

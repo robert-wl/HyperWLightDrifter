@@ -6,7 +6,8 @@ import PlayerAttackTwoState from './state/PlayerAttackTwoState.js';
 import PlayerDashState from './state/PlayerDashState.js';
 import Game from '../Game.js';
 import renderShadow from '../../helper/renderer/shadow.js';
-import PlayerAimingState from "./state/PlayerAimingState.js";
+import PlayerAimingState from './state/PlayerAimingState.js';
+import PlayerHurtState from './state/PlayerHurtState.js';
 
 export const playerOffset = {
     x: 30,
@@ -37,20 +38,18 @@ export default class Player {
         };
         this.width = 50;
         this.height = 60;
-        this.cameraBox = {
-            position: {
-                x: this.position.x,
-                y: this.position.y,
-            },
-            width: 1000,
-            height: 500,
+        this.hitbox = {
+            x: 15,
+            y: 0,
+            w: 15,
+            h: 0,
         };
         this.attackBox = {
             x: 0,
             y: 0,
             w: 0,
             h: 0,
-        }
+        };
         this.lastDirection = 's';
         this.combo = false;
         this.reversed = false;
@@ -62,12 +61,17 @@ export default class Player {
         this.dashState = new PlayerDashState();
         this.attackTwoState = new PlayerAttackTwoState();
         this.aimState = new PlayerAimingState();
+        this.hurtState = new PlayerHurtState();
         this.canvas = null;
         this.currState = this.idleState;
+        this.immunity = 30;
         this.projectiles = [];
     }
 
     updateState() {
+        if (this.immunity < 30) {
+            this.immunity++;
+        }
         renderShadow({
             position: {
                 x: this.position.x - 24.5,
@@ -77,8 +81,14 @@ export default class Player {
         });
         this.updateCounter();
         this.currState.updateState(this);
+        if (this.immunity <= 5) {
+            Game.getInstance().canvasCtx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)';
+        }
         this.currState.drawImage(this);
-        for(const projectile of this.projectiles) {
+        if (this.immunity <= 5) {
+            Game.getInstance().canvasCtx.filter = 'none';
+        }
+        for (const projectile of this.projectiles) {
             projectile.update();
         }
         this.moveHandler();
@@ -94,11 +104,22 @@ export default class Player {
     renderDebugBox() {
         const canvasCtx = Game.getInstance().canvasCtx;
         canvasCtx.fillStyle = 'rgb(0, 255, 0, 0.5)';
-        canvasCtx.fillRect(this.position.x, this.position.y, this.width, this.height);
+        canvasCtx.fillRect(this.position.x + this.hitbox.x, this.position.y + this.hitbox.y, this.width - this.hitbox.w, this.height - this.hitbox.h);
+    }
+
+    damage({ amount, angle }) {
+        this.immunity = 0;
+        this.health -= 1;
+        if (this.currState !== this.hurtState) {
+            this.switchState(this.hurtState);
+        }
+
+        this.direction.x += 5 * Math.cos(angle + Math.PI);
+        this.direction.y += 5 * Math.sin(angle + Math.PI);
     }
 
     handleSwitchState({ move, attackOne, attackTwo, dash, aim }) {
-        if(Game.getInstance().clicks.includes('right') && aim) {
+        if (Game.getInstance().clicks.includes('right') && aim) {
             return this.switchState(this.aimState);
         }
         if (Game.getInstance().clicks.includes('left') && attackOne) {
@@ -116,7 +137,6 @@ export default class Player {
         return this.switchState(this.idleState);
     }
 
-
     switchState(newState) {
         this.currState.exitState(this);
         this.currState = newState;
@@ -124,7 +144,10 @@ export default class Player {
     }
     moveHandler() {
         this.theta = Math.atan2(this.direction.y, this.direction.x);
-        const absVector = Math.sqrt(this.direction.x * this.direction.x + this.direction.y * this.direction.y) * this.friction;
+        const absVector = Math.sqrt(
+            this.direction.x * this.direction.x +
+            this.direction.y * this.direction.y
+        ) * this.friction;
         this.direction.x = absVector * Math.cos(this.theta);
         this.direction.y = absVector * Math.sin(this.theta);
 
@@ -153,6 +176,41 @@ export default class Player {
             })
         ) {
             this.position.y += this.direction.y;
+        }
+    }
+
+    getHitbox({ direction }) {
+        if (direction === 'w') {
+            this.attackBox = {
+                x: this.position.x - 20,
+                y: this.position.y - 30,
+                w: 100,
+                h: 75,
+            };
+        }
+        if (direction === 'a') {
+            this.attackBox = {
+                x: this.position.x - 50,
+                y: this.position.y - 10,
+                w: 100,
+                h: 85,
+            };
+        }
+        if (direction === 'd') {
+            this.attackBox = {
+                x: this.position.x,
+                y: this.position.y - 10,
+                w: 110,
+                h: 85,
+            };
+        }
+        if (direction === 's') {
+            this.attackBox = {
+                x: this.position.x - 25,
+                y: this.position.y + 10,
+                w: 100,
+                h: 100,
+            };
         }
     }
 }

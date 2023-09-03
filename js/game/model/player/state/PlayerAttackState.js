@@ -1,10 +1,9 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { get_image } from '../../../helper/fileReader.js';
-import { getMouseDirection } from '../../../helper/directionHandler.js';
+import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../Game.js';
 import { drawMirroredY } from '../../../helper/renderer/drawer.js';
 import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
-import {playerOffset} from "../Player.js";
 
 const scale = 2;
 
@@ -22,11 +21,14 @@ export default class PlayerAttackState extends PlayerBaseState {
         this.direction = direction;
         currPlayer.lastDirection = direction;
 
+        currPlayer.getHitbox({
+            direction: this.direction,
+        });
 
-        this.getHitbox(currPlayer);
         getEntityOnAttack({
             player: currPlayer,
         });
+
         Game.getInstance().clicks.splice(Game.getInstance().clicks.indexOf('left'), 1);
     }
 
@@ -40,7 +42,9 @@ export default class PlayerAttackState extends PlayerBaseState {
     updateState(currPlayer) {
         this.number++;
 
-        this.getHitbox(currPlayer);
+        currPlayer.getHitbox({
+            direction: this.direction,
+        });
 
         if (Game.getInstance().clicks.includes('left')) {
             currPlayer.combo = true;
@@ -157,41 +161,6 @@ export default class PlayerAttackState extends PlayerBaseState {
                 dash: true,
                 aim: true,
             });
-        }
-    }
-
-    getHitbox(currPlayer) {
-        if(this.direction === 'w') {
-            currPlayer.attackBox = {
-                x: currPlayer.position.x - 20,
-                y: currPlayer.position.y - 30,
-                w: 100,
-                h: 75,
-            }
-        }
-        if(this.direction === 'a') {
-            currPlayer.attackBox = {
-                x: currPlayer.position.x - 50,
-                y: currPlayer.position.y - 10,
-                w: 100,
-                h: 85,
-            }
-        }
-        if(this.direction === 'd') {
-            currPlayer.attackBox = {
-                x: currPlayer.position.x,
-                y: currPlayer.position.y - 10,
-                w: 110,
-                h: 85,
-            }
-        }
-        if(this.direction === 's') {
-            currPlayer.attackBox = {
-                x: currPlayer.position.x - 25,
-                y: currPlayer.position.y + 10,
-                w: 100,
-                h: 100,
-            }
         }
     }
 }

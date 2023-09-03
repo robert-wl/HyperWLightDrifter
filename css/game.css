@@ -26,17 +26,23 @@
 }
 
 .ui {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16/9;
     position: absolute;
-    max-width: 1900px;
-    max-height: 1080px;
+    max-width: 1920px;
+    /*height: 1080px;*/
     width: 100vw;
-    height: 55vw;
+    max-height: 100vh;
     background-color: transparent;
 }
 #HUD {
-    display: flex;
-    margin-top: calc(4rem);
+    position: absolute;
+    top: 0;
     background-color: transparent;
-    max-width: 1900px;
+    max-width: 1920px;
+    max-height: 1080px;
     width: 100vw;
+    height: fit-content;
 }

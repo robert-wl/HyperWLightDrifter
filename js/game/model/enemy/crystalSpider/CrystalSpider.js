@@ -45,14 +45,27 @@ export default class CrystalSpider extends Enemy {
         if (Game.getInstance().debug) {
             this.debugMode();
         }
+
         this.currState.updateState(this);
-        renderShadow({
-            position: {
-                x: this.position.x - this.width / 2 + 10,
-                y: this.position.y - this.height / 2,
-            },
-            sizeMultiplier: 1.5,
-        });
+
+        if(this.currState !== this.dieState) {
+            renderShadow({
+                position: {
+                    x: this.position.x - this.width / 2 + 10,
+                    y: this.position.y - this.height / 2,
+                },
+                sizeMultiplier: 1.5,
+            });
+        }
+
+        const ctx = Game.getInstance().canvasCtx;
+        if(this.damaged >= 0) {
+            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)'
+        }
         this.currState.drawImage(this);
+        if(this.damaged >= 0) {
+            ctx.filter = 'none';
+            this.damaged--;
+        }
     }
 }

@@ -1,6 +1,7 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import { get_image } from '../../../../helper/fileReader.js';
 import Game from '../../../Game.js';
+import playerCollision from "../../../../helper/collision/playerCollision.js";
 
 export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
     angle = 0;
@@ -24,7 +25,15 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
             currSpider.switchState(currSpider.moveState);
         }
         currSpider.speed *= 0.75;
-        // console.log(Math.cos(this.angle) * currSpider.speed)
+
+        playerCollision({
+            position: {
+                x: currSpider.position.x + currSpider.width / 2,
+                y: currSpider.position.y + currSpider.height / 2,
+            },
+            angle: this.angle,
+        })
+
         currSpider.position.x += Math.cos(this.angle) * currSpider.speed;
         currSpider.position.y += Math.sin(this.angle) * currSpider.speed;
     }

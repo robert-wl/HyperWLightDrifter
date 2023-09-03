@@ -36,7 +36,6 @@ export default class Collideable {
             this.y + this.h >= y &&
             this.y <= y + h
         );
-
     }
 
 }

@@ -1,7 +1,7 @@
-import Game from "../model/Game.js";
+import Game from "../../model/Game.js";
 
 
-export default function handleEnemyCollision({ position }) {
+export default function enemyCollision({ position }) {
     const enemies = Game.getInstance().enemyList;
 
     for (const enemy of enemies) {
@@ -9,10 +9,6 @@ export default function handleEnemyCollision({ position }) {
             continue;
         }
 
-        // console.log(enemy.position.x + enemy.hitbox.x)
-        // console.log(enemy.position.x + enemy.width - enemy.hitbox.w)
-        //
-        // console.log(position.x)
         if (
             enemy.position.x + enemy.hitbox.x < position.x &&
             enemy.position.x + enemy.width - enemy.hitbox.w > position.x &&

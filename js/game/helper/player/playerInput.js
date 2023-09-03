@@ -2,7 +2,7 @@ import Game from '../../model/Game.js';
 
 export default function playerInput() {
     $(document).keydown((e) => {
-        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's') {
+        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's') {
             if (Game.getInstance().keys.includes(e.key)) {
                 return;
             }

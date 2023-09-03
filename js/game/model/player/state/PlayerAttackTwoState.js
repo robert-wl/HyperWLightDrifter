@@ -1,9 +1,8 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { get_image } from '../../../helper/fileReader.js';
-import { getMouseDirection } from '../../../helper/directionHandler.js';
+import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../Game.js';
-import {playerOffset} from "../Player.js";
-import getEntityOnAttack from "../../../helper/player/getEntityOnAttack.js";
+import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
 
 const scale = 2;
 export default class PlayerAttackTwoState extends PlayerBaseState {
@@ -18,6 +17,10 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         const direction = getMouseDirection({ angle });
         this.direction = direction;
         currPlayer.lastDirection = direction;
+
+        currPlayer.getHitbox({
+            direction: this.direction,
+        });
 
         getEntityOnAttack({
             player: currPlayer,
@@ -34,6 +37,10 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
     updateState(currPlayer) {
         this.number++;
 
+        currPlayer.getHitbox({
+            direction: this.direction,
+        });
+
         if (this.direction === 'a' || this.direction === 'd') {
             this.attackSideTiming(currPlayer);
             return;
@@ -44,20 +51,9 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
     }
 
     drawImage(currPlayer) {
-        if(Game.getInstance().debug) {
-            const ctx = Game.getInstance().canvasCtx;
-            ctx.beginPath();
-            ctx.arc(
-                currPlayer.position.x + playerOffset.x ,
-                currPlayer.position.y + playerOffset.y,
-                100, currPlayer.lookAngle - Math.PI / 3,
-                currPlayer.lookAngle + Math.PI / 3,
-                false
-            );
-            ctx.lineTo(currPlayer.position.x + playerOffset.x, currPlayer.position.y + playerOffset.y);
-            ctx.fillStyle = "pink";
-            ctx.fill();
-            ctx.closePath();
+        if (Game.getInstance().debug) {
+            currPlayer.canvas.fillStyle = 'red';
+            currPlayer.canvas.fillRect(currPlayer.attackBox.x, currPlayer.attackBox.y, currPlayer.attackBox.w, currPlayer.attackBox.h);
         }
 
         if (this.direction === 'w') {

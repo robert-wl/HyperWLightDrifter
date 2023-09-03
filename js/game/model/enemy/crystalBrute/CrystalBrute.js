@@ -54,17 +54,22 @@ export default class CrystalBrute extends Enemy {
     }
 
     update() {
+        this.knockback();
+        const ctx = Game.getInstance().canvasCtx;
         if (Game.getInstance().debug) {
             this.debugMode();
         }
         this.currState.updateState(this);
-        renderShadow({
-            position: {
-                x: this.position.x - 45,
-                y: this.position.y ,
-            },
-            sizeMultiplier: 3,
-        });
+
+        if(this.currState !== this.dieState) {
+            renderShadow({
+                position: {
+                    x: this.position.x - 45,
+                    y: this.position.y ,
+                },
+                sizeMultiplier: 3,
+            });
+        }
 
         if(this.currState !== this.dieState){
             this.healthBar.update({
@@ -80,6 +85,15 @@ export default class CrystalBrute extends Enemy {
             }
         }
 
+        if(this.damaged >= 0) {
+            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)'
+        }
+
         this.currState.drawImage(this);
+
+        if(this.damaged >= 0) {
+            ctx.filter = 'none';
+            this.damaged--;
+        }
     }
 }

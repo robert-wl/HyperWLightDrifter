@@ -1,6 +1,6 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { get_image } from '../../../helper/fileReader.js';
-import { getMoveDirection } from '../../../helper/directionHandler.js';
+import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../Game.js';
 
 const size = 1;
@@ -38,25 +38,49 @@ export default class PlayerMoveState extends PlayerBaseState {
     drawImage(currPlayer) {
         if (this.direction === 'w') {
             get_image('player/move', 'run_up', (this.number % 12) + 1, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
+                currPlayer.canvas.drawImage(
+                    img,
+                    currPlayer.position.x,
+                    currPlayer.position.y,
+                    img.width * size,
+                    img.height * size
+                );
             });
             return;
         }
         if (this.direction === 's') {
             get_image('player/move', 'run_down', (this.number % 12) + 1, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
+                currPlayer.canvas.drawImage(
+                    img,
+                    currPlayer.position.x,
+                    currPlayer.position.y,
+                    img.width * size,
+                    img.height * size
+                );
             });
             return;
         }
         if (this.direction === 'd') {
             get_image('player/move', 'run_right', (this.number % 12) + 1, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 10, currPlayer.position.y, img.width * size, img.height * size);
+                currPlayer.canvas.drawImage(
+                    img,
+                    currPlayer.position.x - 10,
+                    currPlayer.position.y,
+                    img.width * size,
+                    img.height * size
+                );
             });
             return;
         }
         if (this.direction === 'a') {
             get_image('player/move', 'run_left', (this.number % 12) + 1, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x + 10, currPlayer.position.y, img.width * size, img.height * size);
+                currPlayer.canvas.drawImage(
+                    img,
+                    currPlayer.position.x + 10,
+                    currPlayer.position.y,
+                    img.width * size,
+                    img.height * size
+                );
             });
         }
     }

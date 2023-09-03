@@ -28,7 +28,10 @@ export default function getEntityOnAttack({ player }) {
             enemyY1 < playerY2 &&
             enemyY2 > playerY1
         ) {
-            enemy.health -= 1;
+            enemy.damage({
+                amount: 1,
+                angle: player.lookAngle,
+            });
 
             if(player.bullets < 3) {
                 player.bullets++;

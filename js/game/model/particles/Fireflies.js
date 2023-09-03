@@ -51,7 +51,8 @@ export default class Fireflies extends Particles {
     }
 
     destroy() {
-        Game.getInstance().particles.splice(Game.getInstance().particles.indexOf(this), 1);
+        const index = Game.getInstance().particles.indexOf(this);
+        Game.getInstance().particles.splice(index, 1);
     }
 
     drawImage() {
@@ -59,7 +60,12 @@ export default class Fireflies extends Particles {
 
         get_image('particles/firefly', 'fireflies', (this.lifeSpan % 4) + 1, (image) => {
             ctx.globalAlpha = this.lifeSpan / 22;
-            drawRotated({ canvas: ctx, img: image, angle: this.rotation * Math.PI, position: this.position });
+            drawRotated({
+                canvas: ctx,
+                img: image,
+                angle: this.rotation * Math.PI,
+                position: this.position,
+            });
             ctx.globalAlpha = 1;
         });
     }
