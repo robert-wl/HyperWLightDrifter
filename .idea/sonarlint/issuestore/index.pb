@@ -22,8 +22,6 @@ Q.idea/sonarlint/securityhotspotstore/8/8/88a9255124c95bdc913197c120a8d560edc59c
 Å
 Q.idea/sonarlint/securityhotspotstore/9/f/9fe84ebb15faf917b7def6236dba604453cc61e0,b\b\bbf202272a96de5cd6b6828ffdc55fb3ce45289c
 Å
-Q.idea/sonarlint/securityhotspotstore/6/2/62959ed4f2fd572040a2dc0a5fb3e464d54168b8,6\6\661d02fdb9e48562fa518d04661567acd724b37b
-Å
 Q.idea/sonarlint/securityhotspotstore/f/b/fb292b3c794d197c1d1554ce845832f66ce648c1,2\3\23e48389d4350f99a2f42f346e91e687d85f01b5
 w
 G.idea/sonarlint/issuestore/a/7/a77b15c0d64cf6111e025645e562faf8ccabb9d7,0\6\0623476ad1a0fc0abbc6fac1ab44d1641c5568da
@@ -41,22 +39,14 @@ Ajs/game/model/enemy/crystalSpider/state/CrystalSpiderBaseState.js,0\1\012c5efb
 -js/game/model/player/state/PlayerBaseState.js,6\5\659ba5dcce7de5376e3cfac7bd44f95a2b47a95a
 T
 $js/game/model/particles/Particles.js,b\4\b4d679c8d728de9f72ca26d52d75fdf7afa832ee
-U
-%js/game/model/interactables/Switch.js,a\0\a005c763854e1610197a51d4edba929e150bdf01
 L
 js/game/helper/fileReader.js,d\1\d1ba66b69a1f63283a50d0fe053351c7c0257b7d
-Q
-!js/game/helper/renderer/drawer.js,f\a\fa82aec668fd9da57308745954d2e1e8bdea0be5
 [
 +js/game/helper/renderer/playerDashDrawer.js,6\8\68c78fec47a2b1e7695b16739d4d690c4405f568
 N
 js/game/model/camera/Camera.js,2\6\26883e75ccf7b7eb4f78c07b9513a2fdf5f28ab9
 Q
 !js/game/model/collideable/Door.js,1\d\1dd40569a374aa23693fd7521cfdd0f15c523ae0
-S
-#js/game/model/collideable/Trader.js,2\3\23fe2c9b2018e093d5dafd7da7f8871aa1cf1768
-L
-js/game/model/enemy/Enemy.js,d\b\db3ac3ec27492619bfba9cf1ea119e0d9c1793dc
 a
 1js/game/model/enemy/crystalBrute/CrystalAttack.js,6\c\6c66efcdc1c616e93ebe55653eca8aaaf7483ed2
 Z
@@ -67,8 +57,6 @@ U
 %js/game/model/player/GunProjectile.js,0\1\01b09ca71a3ee593c3b31a66668c3710b4ed32ce
 _
 /js/game/model/player/state/PlayerAimingState.js,1\5\1597aefc43d2fa43b7bc92d7032ef052620951b1
-_
-/js/game/model/player/state/PlayerAttackState.js,a\0\a0aee8d5633c9ed6fa1e0caa6d59f969c1769826
 b
 2js/game/model/player/state/PlayerAttackTwoState.js,d\1\d135d388438885db989634eddabf3b76941c0101
 ]
@@ -89,17 +77,9 @@ Z
 +js/game/helper/collision/playerCollision.js,8\f\8f09586fdde6f30b95a875cde19c835756f281de
 `
 0js/game/model/enemy/crystalBrute/CrystalSpike.js,8\d\8d00f619e7dc392151dc7fd17fbe04483b050d5f
-s
-Cjs/game/model/enemy/crystalSpider/state/CrystalSpiderAttackState.js,3\c\3c62302ee67dc0de10b14fe3534546cb401f183e
 T
 $js/game/model/particles/Fireflies.js,9\c\9c965f488489d17b9c30bbd5e9c156625ba69fa7
 ]
 -js/game/model/player/state/PlayerHurtState.js,9\a\9a358dbad98f3c93e50134abd019118a1811956b
-q
-Ajs/game/model/enemy/crystalSpider/state/CrystalSpiderMoveState.js,f\3\f3603bbadf4691085ec69746db7a21ad834bc1d2
 \
 ,js/game/helper/collision/directionHandler.js,a\6\a672fe0d513e96001e254817959671f98704b315
-X
-(js/game/model/collideable/Collideable.js,5\9\594fb2772b848d97035bced9d1b2932b1d938b8e
-N
-js/game/model/player/Player.js,1\d\1dcdeefc7f9f19901b06e767542b7238acfa8209

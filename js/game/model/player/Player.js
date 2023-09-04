@@ -17,11 +17,11 @@ export const playerOffset = {
 export default class Player {
     constructor() {
         this.maxhealth = 6;
-        this.health = 6;
+        this.health = 1;
         this.healthPack = 3;
         this.stamina = 100;
         this.bombs = 2;
-        this.bullets = 300;
+        this.bullets = 3;
         this.friction = 0.8;
         this.maxSpeed = 4;
         this.attackMoveSpeed = 4;
@@ -63,6 +63,7 @@ export default class Player {
         this.aimState = new PlayerAimingState();
         this.hurtState = new PlayerHurtState();
         this.canvas = null;
+        this.healing = 0;
         this.currState = this.idleState;
         this.immunity = 30;
         this.projectiles = [];
@@ -81,12 +82,34 @@ export default class Player {
         });
         this.updateCounter();
         this.currState.updateState(this);
+
+        const ctx = Game.getInstance().canvasCtx;
         if (this.immunity <= 5) {
-            Game.getInstance().canvasCtx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)';
+            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)';
+        }
+        else if(this.healing > 0){
+            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%)';
+            ctx.strokeStyle = 'rgb(0, 255, 0)';
+            ctx.lineWidth = (this.healing / 3) * 3;
+            ctx.save();
+            ctx.translate(this.position.x + 15, this.position.y + 30);
+            ctx.rotate(Math.PI / 4);
+            // ctx.translate((this.width - this.hitbox.x) / 2, (this.width - this.hitbox.x) / 2);
+            ctx.strokeRect(
+                10,
+                -15,
+                this.width - this.hitbox.x,
+                this.width - this.hitbox.x,
+            );
+            ctx.restore();
+            if(this.health < this.maxhealth) {
+                this.health += 1;
+            }
+            this.healing--;
         }
         this.currState.drawImage(this);
-        if (this.immunity <= 5) {
-            Game.getInstance().canvasCtx.filter = 'none';
+        if (this.immunity <= 5 || this.healing >= 0) {
+            ctx.filter = 'none';
         }
         for (const projectile of this.projectiles) {
             projectile.update();
@@ -107,7 +130,7 @@ export default class Player {
         canvasCtx.fillRect(this.position.x + this.hitbox.x, this.position.y + this.hitbox.y, this.width - this.hitbox.w, this.height - this.hitbox.h);
     }
 
-    damage({ amount, angle }) {
+    damage({ angle }) {
         this.immunity = 0;
         this.health -= 1;
         if (this.currState !== this.hurtState) {

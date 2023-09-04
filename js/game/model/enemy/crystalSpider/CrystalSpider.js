@@ -32,7 +32,7 @@ export default class CrystalSpider extends Enemy {
         this.attackState = new CrystalSpiderAttackState();
         this.moveState = new CrystalSpiderMoveState();
         this.dieState = new CrystalSpiderDieState();
-        this.speed = 3;
+        this.speed = 1 + Math.random() * 3;
         this.switchState(this.moveState);
     }
     switchState(newState) {
@@ -60,7 +60,7 @@ export default class CrystalSpider extends Enemy {
 
         const ctx = Game.getInstance().canvasCtx;
         if(this.damaged >= 0) {
-            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)'
+            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)';
         }
         this.currState.drawImage(this);
         if(this.damaged >= 0) {

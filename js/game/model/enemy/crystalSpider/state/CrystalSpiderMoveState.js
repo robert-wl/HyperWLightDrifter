@@ -4,16 +4,18 @@ import { get_image } from '../../../../helper/fileReader.js';
 
 export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
     clockwise = true;
-    enterState(currSpider) {
+    enterState(_currSpider) {
         this.number = 0;
         this.animationStage = 0;
         this.clockwise = Math.random() < 0.5;
-        currSpider.speed = 3;
     }
     updateState(currSpider) {
         this.number += 1;
 
-        const distance = Math.sqrt(Math.pow(Game.getInstance().player.position.x - currSpider.position.x, 2) + Math.pow(Game.getInstance().player.position.y - currSpider.position.y, 2));
+        const distance = Math.sqrt(
+            Math.pow(Game.getInstance().player.position.x - currSpider.position.x, 2) +
+            Math.pow(Game.getInstance().player.position.y - currSpider.position.y, 2)
+        );
 
         const x = Game.getInstance().player.position.x - currSpider.position.x;
         const y = Game.getInstance().player.position.y - currSpider.position.y;
@@ -45,22 +47,10 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         }
         get_image('enemy/crystal_spider', 'crystal_spider_walk', this.animationStage + 1, (image) => {
             if ((angle > 0 && angle < Math.PI / 2) || (angle < 0 && angle > -Math.PI / 2)) {
-                ctx.drawImage(
-                    image,
-                    currSpider.position.x,
-                    currSpider.position.y,
-                    currSpider.width,
-                    currSpider.height
-                );
+                ctx.drawImage(image, currSpider.position.x, currSpider.position.y, currSpider.width, currSpider.height);
             } else {
                 ctx.scale(-1, 1);
-                ctx.drawImage(
-                    image,
-                    -currSpider.position.x - currSpider.width,
-                    currSpider.position.y,
-                    currSpider.width,
-                    currSpider.height
-                );
+                ctx.drawImage(image, -currSpider.position.x - currSpider.width, currSpider.position.y, currSpider.width, currSpider.height);
                 ctx.scale(-1, 1);
             }
         });

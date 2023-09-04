@@ -1,9 +1,9 @@
 import Game from '../../model/Game.js';
 
 export default function playerInput() {
-    console.log("rawr")
+    // console.log("rawr")
     $(document).keydown((e) => {
-        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's') {
+        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's' || e.key === 'e') {
             if (Game.getInstance().keys.includes(e.key)) {
                 return;
             }
@@ -18,7 +18,7 @@ export default function playerInput() {
     });
 
     $(document).keyup((e) => {
-        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's') {
+        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 'e') {
             const index = Game.getInstance().keys.indexOf(e.key);
             if (index > -1) {
                 Game.getInstance().keys.splice(index, 1);

@@ -5,10 +5,10 @@ import Camera from './camera/Camera.js';
 import stageOneHandler from '../stage/stageOneHandler.js';
 import firefliesSpawner from './particles/firefliesSpawner.js';
 import CrystalBrute from './enemy/crystalBrute/CrystalBrute.js';
-import Trader from './collideable/Trader.js';
 import CrystalSpider from './enemy/crystalSpider/CrystalSpider.js';
 import hudHandler from '../helper/renderer/hudHandler.js';
-import Collideable from "./collideable/Collideable.js";
+import Collideable from './collideable/Collideable.js';
+import Medkit from './interactables/Medkit.js';
 
 export const GAME_SCALE = 2;
 export const SCREEN_WIDTH = 1920;
@@ -86,19 +86,16 @@ export default class Game {
             enemy.update();
         }
 
-        this.player.updateState();
-
-        for (const render of this.renderList) {
-            render.update();
+        for (const c of this.collideable) {
+            c.update();
         }
+
+        this.player.updateState();
 
         this.camera.renderTopBackground();
 
         for (const particle of this.particles) {
             particle.update();
-        }
-        for (const c of this.collideable) {
-            c.update();
         }
 
         this.drawHUD();
@@ -114,34 +111,27 @@ export default class Game {
             const HUD = this.HUD;
             HUD.globalAlpha = Math.sin(Math.abs(this.player.immunity - 30) / 30);
             get_image('UI', 'damaged', null, (img) => {
-                Game.getInstance().HUD.drawImage(
-                    img,
-                    0,
-                    0,
-                    img.width * 2,
-                    img.height * 2
-                );
+                Game.getInstance().HUD.drawImage(img, 0, 0, img.width * 2, img.height * 2);
             });
             HUD.globalAlpha = 1;
         }
     }
 
-    enemySpawnHandler(){
-        if(!this.enemySpawn) {
+    enemySpawnHandler() {
+        if (!this.enemySpawn) {
             return;
         }
         const coordinates = [
             { x: 200, y: 500 },
             { x: 1600, y: 500 },
-        ]
-        if(this.enemyCount <= 0) {
-            for(let i = 0; i < this.difficulty; i++) {
+        ];
+        if (this.enemyCount <= 0) {
+            for (let i = 0; i < this.difficulty; i++) {
                 const radius = 1000 + Math.random() * 100;
 
                 const angle = Math.random() * Math.PI * 2;
 
-
-                if(this.difficulty > 5 && Math.random() > 0.75) {
+                if (this.difficulty > 5 && Math.random() > 0.75) {
                     CrystalBrute.generate({
                         x: SCREEN_WIDTH / 2 + (radius / 1.7) * Math.cos(angle),
                         y: SCREEN_HEIGHT / 2 + (radius / 1.7) * Math.sin(angle),
@@ -179,9 +169,19 @@ export default class Game {
             { x: 100, y: 1550, w: 530, h: 800 },
             { x: 1250, y: 1550, w: 530, h: 800 },
             { x: 630, y: 2150, w: 620, h: 800 },
-        ]
+        ];
         for (const collider of colliders) {
             Collideable.generate(collider);
+        }
+
+        const medkits = [
+            { x: 1400, y: 300 },
+            { x: 1400, y: 800 },
+            { x: 400, y: 500 },
+        ];
+
+        for (const medkit of medkits) {
+            Medkit.generate(medkit);
         }
     }
 }
