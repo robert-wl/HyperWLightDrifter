@@ -21,7 +21,7 @@ export default class Player {
         this.healthPack = 3;
         this.stamina = 100;
         this.bombs = 2;
-        this.bullets = 3;
+        this.bullets = 300;
         this.friction = 0.8;
         this.maxSpeed = 4;
         this.attackMoveSpeed = 4;

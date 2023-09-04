@@ -26,7 +26,7 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
             return;
         }
 
-        if(this.number > 200 + (Math.random() * 50)){
+        if(this.number > 200 + (Math.random() * 1000)){
             currBrute.switchState(currBrute.attackState);
         } else if(distance < 100) {
             currBrute.angle = Math.atan2(y, x);

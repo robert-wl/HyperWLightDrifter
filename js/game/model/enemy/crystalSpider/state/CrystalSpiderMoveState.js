@@ -45,10 +45,22 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         }
         get_image('enemy/crystal_spider', 'crystal_spider_walk', this.animationStage + 1, (image) => {
             if ((angle > 0 && angle < Math.PI / 2) || (angle < 0 && angle > -Math.PI / 2)) {
-                ctx.drawImage(image, currSpider.position.x, currSpider.position.y, currSpider.width, currSpider.height);
+                ctx.drawImage(
+                    image,
+                    currSpider.position.x,
+                    currSpider.position.y,
+                    currSpider.width,
+                    currSpider.height
+                );
             } else {
                 ctx.scale(-1, 1);
-                ctx.drawImage(image, -currSpider.position.x - currSpider.width, currSpider.position.y, currSpider.width, currSpider.height);
+                ctx.drawImage(
+                    image,
+                    -currSpider.position.x - currSpider.width,
+                    currSpider.position.y,
+                    currSpider.width,
+                    currSpider.height
+                );
                 ctx.scale(-1, 1);
             }
         });

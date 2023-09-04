@@ -7,9 +7,12 @@ import firefliesSpawner from './particles/firefliesSpawner.js';
 import CrystalBrute from './enemy/crystalBrute/CrystalBrute.js';
 import Trader from './collideable/Trader.js';
 import CrystalSpider from './enemy/crystalSpider/CrystalSpider.js';
-import hudHandler from '../helper/player/hudHandler.js';
+import hudHandler from '../helper/renderer/hudHandler.js';
+import Collideable from "./collideable/Collideable.js";
 
 export const GAME_SCALE = 2;
+export const SCREEN_WIDTH = 1920;
+export const SCREEN_HEIGHT = 1080;
 
 export default class Game {
     static instance = null;
@@ -17,8 +20,8 @@ export default class Game {
         this.stage = 1;
         this.paused = false;
         this.player = new Player();
-        this.width = 1920;
-        this.height = 1080;
+        this.width = SCREEN_WIDTH;
+        this.height = SCREEN_HEIGHT;
         this.keys = [];
         this.clicks = [];
         this.collideable = [];
@@ -28,6 +31,9 @@ export default class Game {
         this.canvas = null;
         this.canvasCtx = null;
         this.debug = false;
+        this.enemySpawn = true;
+        this.enemyCount = 0;
+        this.difficulty = 1;
     }
 
     init() {
@@ -40,8 +46,6 @@ export default class Game {
             canvas: this.canvasCtx,
         });
         stageOneHandler();
-        CrystalSpider.generate({ x: 1000, y: 800 });
-        CrystalBrute.generate({ x: 1000, y: 800 });
     }
 
     static getInstance() {
@@ -66,11 +70,13 @@ export default class Game {
         this.HUD.imageSmoothingEnabled = false;
         this.HUD.scale(GAME_SCALE, GAME_SCALE);
 
-        Trader.generate({ x: 800, y: 1500, collideable: true });
+        // Trader.generate({ x: 800, y: 1500, collideable: true });
     }
 
     updateGame() {
         this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.enemySpawnHandler();
 
         firefliesSpawner();
 
@@ -120,6 +126,40 @@ export default class Game {
         }
     }
 
+    enemySpawnHandler(){
+        if(!this.enemySpawn) {
+            return;
+        }
+        const coordinates = [
+            { x: 200, y: 500 },
+            { x: 1600, y: 500 },
+        ]
+        if(this.enemyCount <= 0) {
+            for(let i = 0; i < this.difficulty; i++) {
+                const radius = 1000 + Math.random() * 100;
+
+                const angle = Math.random() * Math.PI * 2;
+
+
+                if(this.difficulty > 5 && Math.random() > 0.75) {
+                    CrystalBrute.generate({
+                        x: SCREEN_WIDTH / 2 + (radius / 1.7) * Math.cos(angle),
+                        y: SCREEN_HEIGHT / 2 + (radius / 1.7) * Math.sin(angle),
+                    });
+                    i += 5;
+                    this.enemyCount += 5;
+                    continue;
+                }
+                CrystalSpider.generate({
+                    x: SCREEN_WIDTH / 2 + radius * Math.cos(angle),
+                    y: SCREEN_HEIGHT / 2 + radius * Math.sin(angle),
+                });
+                this.enemyCount++;
+            }
+            this.difficulty++;
+        }
+    }
+
     firstStage() {
         get_image('world', 'map_ground', null, function (img) {
             Game.getInstance().camera.lowerBackground = img;
@@ -129,5 +169,19 @@ export default class Game {
         });
         this.player.position.x = 900;
         this.player.position.y = 400;
+
+        const colliders = [
+            { x: 100, y: 0, w: 300, h: 1000 },
+            { x: 400, y: 0, w: 1025, h: 300 },
+            { x: 1425, y: 0, w: 300, h: 1000 },
+            { x: 100, y: 1050, w: 800, h: 500 },
+            { x: 1000, y: 1050, w: 800, h: 500 },
+            { x: 100, y: 1550, w: 530, h: 800 },
+            { x: 1250, y: 1550, w: 530, h: 800 },
+            { x: 630, y: 2150, w: 620, h: 800 },
+        ]
+        for (const collider of colliders) {
+            Collideable.generate(collider);
+        }
     }
 }

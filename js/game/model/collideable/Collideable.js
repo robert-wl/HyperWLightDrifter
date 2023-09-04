@@ -24,18 +24,24 @@ export default class Collideable {
     renderDebug() {
         const ctx = Game.getInstance().canvasCtx;
         ctx.fillStyle = "rgb(0, 255, 0, 0.2)";
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
     checkCollision({ x, y, w, h }){
         if(!this.collideable) {
             return false;
         }
         return !(
-            this.x + this.w >= x &&
+            this.x + this.width >= x &&
             this.x <= x + w &&
-            this.y + this.h >= y &&
+            this.y + this.height >= y &&
             this.y <= y + h
         );
+    }
+
+    update() {
+        if(Game.getInstance().debug) {
+            this.renderDebug();
+        }
     }
 
 }

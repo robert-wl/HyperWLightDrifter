@@ -3,7 +3,10 @@ import { get_image } from '../../../../helper/fileReader.js';
 import Game from '../../../Game.js';
 
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
-    updateState(currSpider) {}
+    enterState(_currSpider) {
+        Game.getInstance().enemyCount -= 5;
+    }
+
     drawImage(currSpider) {
         currSpider.position.x += Math.cos(currSpider.angle) * currSpider.speed;
         currSpider.position.y += Math.sin(currSpider.angle) * currSpider.speed;
