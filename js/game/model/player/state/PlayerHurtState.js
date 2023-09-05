@@ -22,6 +22,7 @@ export default class PlayerHurtState extends PlayerBaseState {
                 attackOne: true,
                 dash: true,
                 aim: true,
+                throws: true,
             })
         }
     }

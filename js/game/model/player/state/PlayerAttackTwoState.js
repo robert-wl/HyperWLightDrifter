@@ -126,6 +126,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
                 attackOne: true,
                 dash: true,
                 aim: true,
+                throws: true,
             });
         }
     }
@@ -146,6 +147,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
                 attackOne: true,
                 dash: true,
                 aim: true,
+                throws: true,
             });
         }
     }

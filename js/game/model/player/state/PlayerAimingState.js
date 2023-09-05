@@ -21,6 +21,7 @@ export default class PlayerAimingState extends PlayerBaseState {
                 move: true,
                 attackOne: true,
                 dash: true,
+                throws: true,
             });
         }
         if (Game.getInstance().clicks.includes('left') && currPlayer.bullets > 0) {

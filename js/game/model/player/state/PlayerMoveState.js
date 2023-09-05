@@ -33,6 +33,7 @@ export default class PlayerMoveState extends PlayerBaseState {
             attackOne: true,
             dash: true,
             aim: true,
+            throws: true,
         });
     }
     drawImage(currPlayer) {

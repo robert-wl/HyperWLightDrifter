@@ -160,6 +160,7 @@ export default class PlayerAttackState extends PlayerBaseState {
                 attackTwo: true,
                 dash: true,
                 aim: true,
+                throws: true,
             });
         }
     }

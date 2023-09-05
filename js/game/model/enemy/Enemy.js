@@ -12,7 +12,7 @@ export default class Enemy {
         this.width = w;
         this.height = h;
         this.image = null;
-        this.damaged = false;
+        this.damaged = -1;
         this.velocity = {
             value: 0,
             angle: 0,
@@ -20,6 +20,9 @@ export default class Enemy {
     }
 
     damage({ amount, angle }) {
+        if(this.health <= 0) {
+            return;
+        }
         this.health -= amount;
         this.damaged = 5;
         if (this.health <= 0) {

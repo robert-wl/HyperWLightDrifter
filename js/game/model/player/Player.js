@@ -8,6 +8,8 @@ import Game from '../Game.js';
 import renderShadow from '../../helper/renderer/shadow.js';
 import PlayerAimingState from './state/PlayerAimingState.js';
 import PlayerHurtState from './state/PlayerHurtState.js';
+import playerEffectsHandler from "./playerEffectsHandler.js";
+import PlayerThrowingState from "./state/PlayerThrowingState.js";
 
 export const playerOffset = {
     x: 30,
@@ -62,6 +64,7 @@ export default class Player {
         this.attackTwoState = new PlayerAttackTwoState();
         this.aimState = new PlayerAimingState();
         this.hurtState = new PlayerHurtState();
+        this.throwState = new PlayerThrowingState();
         this.canvas = null;
         this.healing = 0;
         this.currState = this.idleState;
@@ -70,8 +73,8 @@ export default class Player {
     }
 
     updateState() {
-        if (this.immunity < 30) {
-            this.immunity++;
+        if(this.bombs < 2) {
+            this.bombs += 0.001;
         }
         renderShadow({
             position: {
@@ -83,34 +86,15 @@ export default class Player {
         this.updateCounter();
         this.currState.updateState(this);
 
-        const ctx = Game.getInstance().canvasCtx;
-        if (this.immunity <= 5) {
-            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)';
-        }
-        else if(this.healing > 0){
-            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%)';
-            ctx.strokeStyle = 'rgb(0, 255, 0)';
-            ctx.lineWidth = (this.healing / 3) * 3;
-            ctx.save();
-            ctx.translate(this.position.x + 15, this.position.y + 30);
-            ctx.rotate(Math.PI / 4);
-            // ctx.translate((this.width - this.hitbox.x) / 2, (this.width - this.hitbox.x) / 2);
-            ctx.strokeRect(
-                10,
-                -15,
-                this.width - this.hitbox.x,
-                this.width - this.hitbox.x,
-            );
-            ctx.restore();
-            if(this.health < this.maxhealth) {
-                this.health += 1;
-            }
-            this.healing--;
-        }
+        playerEffectsHandler({
+            currPlayer: this
+        });
         this.currState.drawImage(this);
-        if (this.immunity <= 5 || this.healing >= 0) {
-            ctx.filter = 'none';
-        }
+        playerEffectsHandler({
+            currPlayer: this,
+            clear: true
+        });
+
         for (const projectile of this.projectiles) {
             projectile.update();
         }
@@ -141,9 +125,13 @@ export default class Player {
         this.direction.y += 5 * Math.sin(angle + Math.PI);
     }
 
-    handleSwitchState({ move, attackOne, attackTwo, dash, aim }) {
+    handleSwitchState({ move, attackOne, attackTwo, dash, aim, throws }) {
         if (Game.getInstance().clicks.includes('right') && aim) {
             return this.switchState(this.aimState);
+        }
+        if(Game.getInstance().keys.includes('c') && throws && this.bombs >= 1){
+            this.bombs--;
+            return this.switchState(this.throwState);
         }
         if (Game.getInstance().clicks.includes('left') && attackOne) {
             return this.switchState(this.attackState);

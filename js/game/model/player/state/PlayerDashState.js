@@ -96,6 +96,7 @@ export default class PlayerDashState extends PlayerBaseState {
                 attackOne: true,
                 dash: true,
                 aim: true,
+                throws: true,
             });
         }
     }
@@ -120,6 +121,7 @@ export default class PlayerDashState extends PlayerBaseState {
                 attackOne: true,
                 dash: true,
                 aim: true,
+                throws: true,
             });
         }
     }
@@ -144,6 +146,7 @@ export default class PlayerDashState extends PlayerBaseState {
                 attackOne: true,
                 dash: true,
                 aim: true,
+                throws: true,
             });
         }
     }

@@ -45,8 +45,6 @@ L
 +js/game/helper/renderer/playerDashDrawer.js,6\8\68c78fec47a2b1e7695b16739d4d690c4405f568
 N
 js/game/model/camera/Camera.js,2\6\26883e75ccf7b7eb4f78c07b9513a2fdf5f28ab9
-Q
-!js/game/model/collideable/Door.js,1\d\1dd40569a374aa23693fd7521cfdd0f15c523ae0
 a
 1js/game/model/enemy/crystalBrute/CrystalAttack.js,6\c\6c66efcdc1c616e93ebe55653eca8aaaf7483ed2
 Z
@@ -55,16 +53,6 @@ Z
 +js/game/model/particles/firefliesSpawner.js,a\8\a826f12789363dabddbb25614ad88459d55f726e
 U
 %js/game/model/player/GunProjectile.js,0\1\01b09ca71a3ee593c3b31a66668c3710b4ed32ce
-_
-/js/game/model/player/state/PlayerAimingState.js,1\5\1597aefc43d2fa43b7bc92d7032ef052620951b1
-b
-2js/game/model/player/state/PlayerAttackTwoState.js,d\1\d135d388438885db989634eddabf3b76941c0101
-]
--js/game/model/player/state/PlayerDashState.js,0\9\095fa1bae6783b7ee1fcd739ccdec6d53b5e7019
-]
--js/game/model/player/state/PlayerIdleState.js,a\6\a6d1b79ff9a89595f87587e5569afae97634843b
-]
--js/game/model/player/state/PlayerMoveState.js,8\b\8b6b6505c97b740bb07229117018f70d73e4488f
 <
 css/game.css,b\8\b883c664cb638d0b022860e9eb52d7fec909a274
 ?
@@ -79,7 +67,5 @@ Z
 0js/game/model/enemy/crystalBrute/CrystalSpike.js,8\d\8d00f619e7dc392151dc7fd17fbe04483b050d5f
 T
 $js/game/model/particles/Fireflies.js,9\c\9c965f488489d17b9c30bbd5e9c156625ba69fa7
-]
--js/game/model/player/state/PlayerHurtState.js,9\a\9a358dbad98f3c93e50134abd019118a1811956b
 \
 ,js/game/helper/collision/directionHandler.js,a\6\a672fe0d513e96001e254817959671f98704b315

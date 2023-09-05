@@ -9,6 +9,7 @@ import CrystalSpider from './enemy/crystalSpider/CrystalSpider.js';
 import hudHandler from '../helper/renderer/hudHandler.js';
 import Collideable from './collideable/Collideable.js';
 import Medkit from './interactables/Medkit.js';
+import Door from "./interactables/Door.js";
 
 export const GAME_SCALE = 2;
 export const SCREEN_WIDTH = 1920;
@@ -33,7 +34,7 @@ export default class Game {
         this.debug = false;
         this.enemySpawn = true;
         this.enemyCount = 0;
-        this.difficulty = 1;
+        this.difficulty = 10;
     }
 
     init() {
@@ -126,7 +127,7 @@ export default class Game {
             { x: 1600, y: 500 },
         ];
         if (this.enemyCount <= 0) {
-            for (let i = 0; i < this.difficulty; i++) {
+            for (let i = 0; i <= this.difficulty; i++) {
                 const radius = 1000 + Math.random() * 100;
 
                 const angle = Math.random() * Math.PI * 2;
@@ -183,5 +184,11 @@ export default class Game {
         for (const medkit of medkits) {
             Medkit.generate(medkit);
         }
+
+        // Door.generate({
+        //     x: 905,
+        //     y: 1022,
+        //     collideable: true
+        // });
     }
 }

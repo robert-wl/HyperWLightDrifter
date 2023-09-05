@@ -16,6 +16,7 @@ export default class PlayerIdleState extends PlayerBaseState {
             attackOne: true,
             dash: true,
             aim: true,
+            throws: true,
         });
     }
     drawImage(currPlayer) {
