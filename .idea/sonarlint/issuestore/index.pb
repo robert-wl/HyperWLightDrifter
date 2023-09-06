@@ -17,8 +17,6 @@ G.idea/sonarlint/issuestore/2/0/20137a9e94744624390b6748bc96df5ca1579b71,a\f\af
 Q.idea/sonarlint/securityhotspotstore/8/8/88a9255124c95bdc913197c120a8d560edc59c8e,9\0\909762385fc6eb20f922a91c6865741308b57f2c
 
 Q.idea/sonarlint/securityhotspotstore/9/f/9fe84ebb15faf917b7def6236dba604453cc61e0,b\b\bbf202272a96de5cd6b6828ffdc55fb3ce45289c
-
-Q.idea/sonarlint/securityhotspotstore/f/b/fb292b3c794d197c1d1554ce845832f66ce648c1,2\3\23e48389d4350f99a2f42f346e91e687d85f01b5
 w
 G.idea/sonarlint/issuestore/a/7/a77b15c0d64cf6111e025645e562faf8ccabb9d7,0\6\0623476ad1a0fc0abbc6fac1ab44d1641c5568da
 
@@ -75,8 +73,6 @@ S
 #js/game/model/collideable/Trader.js,2\3\23fe2c9b2018e093d5dafd7da7f8871aa1cf1768
 Q
 !js/game/helper/renderer/drawer.js,f\a\fa82aec668fd9da57308745954d2e1e8bdea0be5
-T
-$js/game/helper/player/playerInput.js,3\1\31e6b8f797b200eac28fbd7c8997fe5a7963c66f
 s
 Cjs/game/model/enemy/crystalSpider/state/CrystalSpiderAttackState.js,3\c\3c62302ee67dc0de10b14fe3534546cb401f183e
 U
@@ -101,3 +97,25 @@ b
 -js/game/model/player/state/PlayerMoveState.js,8\b\8b6b6505c97b740bb07229117018f70d73e4488f
 a
 1js/game/model/player/state/PlayerThrowingState.js,7\5\75d9d8791eb17b619134b010c227c3b116d98f30
+N
+js/game/model/player/Player.js,1\d\1dcdeefc7f9f19901b06e767542b7238acfa8209
+_
+/js/game/model/player/state/PlayerAimingState.js,1\5\1597aefc43d2fa43b7bc92d7032ef052620951b1
+q
+Ajs/game/model/enemy/crystalBrute/state/CrystalBruteAttackState.js,e\9\e96329182a6cd4a1250e0517776327c3e5715f47
+n
+>js/game/model/enemy/crystalBrute/state/CrystalBruteDieState.js,6\0\6099c9605574c1f93d6f2ec5df26a7ec3e66a421
+o
+?js/game/model/enemy/crystalBrute/state/CrystalBruteMoveState.js,7\3\73d98194ad1c2a2c9308b5d8a667977ffdb90685
+b
+2js/game/model/enemy/crystalSpider/CrystalSpider.js,b\1\b1468b378bf13453513cc1eaf546b53c0df4843c
+q
+Ajs/game/model/enemy/crystalSpider/state/CrystalSpiderMoveState.js,f\3\f3603bbadf4691085ec69746db7a21ad834bc1d2
+O
+js/game/model/player/Grenade.js,7\b\7b86d57143b919e2db0ba51a8989654a1cf9dea9
+N
+js/game/model/camera/Camera.js,2\6\26883e75ccf7b7eb4f78c07b9513a2fdf5f28ab9
+`
+0js/game/model/enemy/crystalBrute/CrystalBrute.js,c\a\ca0dffe278242f5d5f7e608b50b292e8d7577da7
+;
+js/index.js,d\7\d7a7cea160667b981d6978cbf7d682f8b4e73a25

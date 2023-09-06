@@ -23,7 +23,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
 
     drawImage(currJudgement) {
         const ctx = Game.getInstance().canvasCtx;
-        get_image('boss', 'judgement_spawn', this.animationStage, (img) => {
+        get_image('boss/spawn', 'judgement_spawn', this.animationStage, (img) => {
             ctx.drawImage(
                 img,
                 currJudgement.position.x,

@@ -1,9 +1,8 @@
 import Game from '../../model/Game.js';
 
 export default function playerInput() {
-    // console.log("rawr")
     $(document).keydown((e) => {
-        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's' || e.key === 'e' || e.key === 'c') {
+        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's' || e.key === 'e' || e.key === 'c'  || e.key === 'c') {
             if (Game.getInstance().keys.includes(e.key)) {
                 return;
             }
@@ -16,6 +15,7 @@ export default function playerInput() {
             Game.getInstance().keys.push('space');
         }
     });
+
 
     $(document).keyup((e) => {
         if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 'e' || e.key === 'c') {

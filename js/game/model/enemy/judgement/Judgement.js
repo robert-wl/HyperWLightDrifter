@@ -3,6 +3,7 @@ import JudgementBaseState from "./state/JudgementBaseState.js";
 import JudgementSpawnState from "./state/JudgementSpawnState.js";
 import Game from "../../Game.js";
 import JudgementMoveState from "./state/JudgementMoveState.js";
+import JudgementAttackState from "./state/JudgementAttackState.js";
 
 
 export default class Judgement extends Enemy {
@@ -10,10 +11,11 @@ export default class Judgement extends Enemy {
         const newJudgement = new Judgement({
             x,
             y,
+            moveSpeed: 1,
         });
         Game.getInstance().enemyList.push(newJudgement);
     }
-    constructor({ x, y }) {
+    constructor({ x, y, moveSpeed }) {
         super({
             x,
             y,
@@ -29,9 +31,13 @@ export default class Judgement extends Enemy {
             maxHealth: 100,
         });
 
+        this.angle = 0;
+        this.moveSpeed = moveSpeed;
+
         this.currState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
+        this.attackState = new JudgementAttackState();
 
         this.switchState(this.spawnState);
     }
