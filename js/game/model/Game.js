@@ -2,14 +2,12 @@ import Player from './player/Player.js';
 import playerInput from '../helper/player/playerInput.js';
 import { get_image } from '../helper/fileReader.js';
 import Camera from './camera/Camera.js';
-import stageOneHandler from '../stage/stageOneHandler.js';
 import firefliesSpawner from './particles/firefliesSpawner.js';
 import CrystalBrute from './enemy/crystalBrute/CrystalBrute.js';
 import CrystalSpider from './enemy/crystalSpider/CrystalSpider.js';
 import hudHandler from '../helper/renderer/hudHandler.js';
-import Collideable from './collideable/Collideable.js';
-import Medkit from './interactables/Medkit.js';
-import Door from "./interactables/Door.js";
+import {firstStage, secondStage} from "../helper/stages/stageHandler.js";
+
 
 export const GAME_SCALE = 2;
 export const SCREEN_WIDTH = 1920;
@@ -40,13 +38,14 @@ export default class Game {
     init() {
         this.prepareCanvas();
         playerInput();
-        this.firstStage();
         this.camera = new Camera();
+        secondStage({
+            game: this,
+        });
         this.camera.setPosition({
             position: this.player.position,
             canvas: this.canvasCtx,
         });
-        stageOneHandler();
     }
 
     static getInstance() {
@@ -149,46 +148,5 @@ export default class Game {
             }
             this.difficulty++;
         }
-    }
-
-    firstStage() {
-        get_image('world', 'bosroomtemp', null, function (img) {
-            Game.getInstance().camera.lowerBackground = img;
-        });
-        get_image('world', 'first_map_full1', null, function (img) {
-            Game.getInstance().camera.topBackground = img;
-        });
-        this.player.position.x = 900;
-        this.player.position.y = 400;
-
-        const colliders = [
-            { x: 100, y: 0, w: 300, h: 1000 },
-            { x: 400, y: 0, w: 1025, h: 300 },
-            { x: 1425, y: 0, w: 300, h: 1000 },
-            { x: 100, y: 1050, w: 800, h: 500 },
-            { x: 1000, y: 1050, w: 800, h: 500 },
-            { x: 100, y: 1550, w: 530, h: 800 },
-            { x: 1250, y: 1550, w: 530, h: 800 },
-            { x: 630, y: 2150, w: 620, h: 800 },
-        ];
-        for (const collider of colliders) {
-            Collideable.generate(collider);
-        }
-
-        const medkits = [
-            { x: 1400, y: 300 },
-            { x: 1400, y: 800 },
-            { x: 400, y: 500 },
-        ];
-
-        for (const medkit of medkits) {
-            Medkit.generate(medkit);
-        }
-
-        // Door.generate({
-        //     x: 905,
-        //     y: 1022,
-        //     collideable: true
-        // });
     }
 }

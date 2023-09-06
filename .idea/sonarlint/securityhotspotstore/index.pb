@@ -7,12 +7,8 @@ S
 .prettierrc,2\0\20137a9e94744624390b6748bc96df5ca1579b71
 8
 index.js,a\7\a77b15c0d64cf6111e025645e562faf8ccabb9d7
-P
- js/game/stage/stageOneHandler.js,f\b\fb292b3c794d197c1d1554ce845832f66ce648c1
 Q
 !js/game/helper/renderer/shadow.js,9\6\962a9586e750f668294873dbd17ee434b11f7273
-o
-?js/game/model/enemy/crystalBrute/state/CrystalBruteBaseState.js,b\7\b74442a9ac2f85f20dd17f154a479df22c1e39d8
 Å
 Q.idea/sonarlint/securityhotspotstore/2/0/20137a9e94744624390b6748bc96df5ca1579b71,b\d\bd2af7df793354c0f78ae64d1c943ff55f9fd695
 w
@@ -59,8 +55,6 @@ Z
 *js/game/model/enemy/healthBar/HealthBar.js,d\f\df86e7210d29b1f5820b7c8d8def2928cde05d5a
 Z
 *js/game/helper/player/getEntityOnAttack.js,9\a\9ae58c99570b88bc7da463440ca22a9e717aa22b
-N
-js/game/model/camera/Camera.js,2\6\26883e75ccf7b7eb4f78c07b9513a2fdf5f28ab9
 U
 %js/game/model/player/GunProjectile.js,0\1\01b09ca71a3ee593c3b31a66668c3710b4ed32ce
 Z
@@ -69,8 +63,6 @@ T
 $js/game/model/particles/Fireflies.js,9\c\9c965f488489d17b9c30bbd5e9c156625ba69fa7
 \
 ,js/game/helper/collision/directionHandler.js,a\6\a672fe0d513e96001e254817959671f98704b315
-`
-0js/game/model/enemy/crystalBrute/CrystalBrute.js,c\a\ca0dffe278242f5d5f7e608b50b292e8d7577da7
 U
 %js/game/helper/renderer/hudHandler.js,f\2\f2d74439d15d597491ee338700625b337623bad3
 p

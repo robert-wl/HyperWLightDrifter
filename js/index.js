@@ -4,7 +4,7 @@ $(document).ready(() => {
     const game = Game.getInstance();
     game.init();
     game.debug = false;
-    game.enemySpawn = true;
+    game.enemySpawn = false;
 
     const animationLoop = () => {
         game.updateGame();
