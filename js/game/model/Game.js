@@ -34,7 +34,7 @@ export default class Game {
         this.debug = false;
         this.enemySpawn = true;
         this.enemyCount = 0;
-        this.difficulty = 10;
+        this.difficulty = 1;
     }
 
     init() {
@@ -152,10 +152,10 @@ export default class Game {
     }
 
     firstStage() {
-        get_image('world', 'map_ground', null, function (img) {
+        get_image('world', 'bosroomtemp', null, function (img) {
             Game.getInstance().camera.lowerBackground = img;
         });
-        get_image('world', 'first_map_full', null, function (img) {
+        get_image('world', 'first_map_full1', null, function (img) {
             Game.getInstance().camera.topBackground = img;
         });
         this.player.position.x = 900;
