@@ -1,19 +1,20 @@
 import Game from '../../Game.js';
 import { get_image } from '../../../helper/fileReader.js';
 import Enemy from "../Enemy.js";
+import {drawRotated} from "../../../helper/renderer/drawer.js";
 
-export default class JudgementBullet extends Enemy {
+export default class JudgementLaser extends Enemy {
     static generate({ x, y, angle }) {
-        const newJudgementBullet = new JudgementBullet({
+        const newJudgementLaser = new JudgementLaser({
             x,
             y,
             velocity: {
-                value: 1 + Math.random() * 2,
+                value: 12.5,
                 angle: angle,
             },
             lifetime: 200 + Math.random() * 200,
         });
-        Game.getInstance().enemyList.push(newJudgementBullet);
+        Game.getInstance().enemyList.push(newJudgementLaser);
     }
     constructor({ x, y, velocity, lifetime }) {
         super({
@@ -30,14 +31,15 @@ export default class JudgementBullet extends Enemy {
             health: 1,
             maxHealth: 1,
         });
+        this.imageAngle = Math.random() * 2 * Math.PI;
         this.velocity = velocity;
         this.maxLifetime = lifetime;
         this.lifetime = lifetime;
     }
 
+
     damage({amount, angle}) {
-        super.damage({amount, angle});
-        this.knockback();
+
     }
 
     knockback() {
@@ -61,7 +63,17 @@ export default class JudgementBullet extends Enemy {
 
     render() {
         const ctx = Game.getInstance().canvasCtx;
-        get_image('boss/attack/bullet', 'judgement_bullet', Math.round((this.lifetime / this.maxLifetime) * 3) + 1, (img) => {
+        get_image('boss/laser', 'judgement_laser_bullet', null, (img) => {
+            // drawRotated({
+            //     canvas: ctx,
+            //     img: img,
+            //     position: {
+            //         x: this.position.x,
+            //         y: this.position.y,
+            //     },
+            //     angle: this.imageAngle,
+            //     size: 1.5
+            // })
             ctx.drawImage(
                 img,
                 this.position.x,

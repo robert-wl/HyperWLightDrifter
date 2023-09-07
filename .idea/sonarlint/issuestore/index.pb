@@ -49,10 +49,6 @@ U
 css/game.css,b\8\b883c664cb638d0b022860e9eb52d7fec909a274
 ?
 html/index.html,a\8\a8bedfaa63656640e851f999fb4a7e07fed63bdc
-Z
-*js/game/helper/player/getEntityOnAttack.js,9\a\9ae58c99570b88bc7da463440ca22a9e717aa22b
-Z
-*js/game/helper/collision/enemyCollision.js,e\3\e318f853f72fe146c148aed9cb071a0e7b8b4279
 [
 +js/game/helper/collision/playerCollision.js,8\f\8f09586fdde6f30b95a875cde19c835756f281de
 `
@@ -71,8 +67,6 @@ X
 (js/game/model/collideable/Collideable.js,5\9\594fb2772b848d97035bced9d1b2932b1d938b8e
 S
 #js/game/model/collideable/Trader.js,2\3\23fe2c9b2018e093d5dafd7da7f8871aa1cf1768
-Q
-!js/game/helper/renderer/drawer.js,f\a\fa82aec668fd9da57308745954d2e1e8bdea0be5
 s
 Cjs/game/model/enemy/crystalSpider/state/CrystalSpiderAttackState.js,3\c\3c62302ee67dc0de10b14fe3534546cb401f183e
 U
@@ -97,8 +91,6 @@ b
 -js/game/model/player/state/PlayerMoveState.js,8\b\8b6b6505c97b740bb07229117018f70d73e4488f
 a
 1js/game/model/player/state/PlayerThrowingState.js,7\5\75d9d8791eb17b619134b010c227c3b116d98f30
-N
-js/game/model/player/Player.js,1\d\1dcdeefc7f9f19901b06e767542b7238acfa8209
 _
 /js/game/model/player/state/PlayerAimingState.js,1\5\1597aefc43d2fa43b7bc92d7032ef052620951b1
 q
@@ -113,9 +105,9 @@ q
 Ajs/game/model/enemy/crystalSpider/state/CrystalSpiderMoveState.js,f\3\f3603bbadf4691085ec69746db7a21ad834bc1d2
 O
 js/game/model/player/Grenade.js,7\b\7b86d57143b919e2db0ba51a8989654a1cf9dea9
-N
-js/game/model/camera/Camera.js,2\6\26883e75ccf7b7eb4f78c07b9513a2fdf5f28ab9
-`
-0js/game/model/enemy/crystalBrute/CrystalBrute.js,c\a\ca0dffe278242f5d5f7e608b50b292e8d7577da7
-;
-js/index.js,d\7\d7a7cea160667b981d6978cbf7d682f8b4e73a25
+i
+9js/game/model/enemy/judgement/state/JudgementBaseState.js,0\6\065757d3f5a282ce93a6cd2b8a9bd4cd9e952e66
+o
+?js/game/model/enemy/crystalBrute/state/CrystalBruteBaseState.js,b\7\b74442a9ac2f85f20dd17f154a479df22c1e39d8
+U
+%js/game/helper/stages/stageHandler.js,8\5\85ee19225afff7b04325ce49e547247f54ce732c

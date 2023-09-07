@@ -29,7 +29,13 @@ export default class JudgementMoveState extends JudgementBaseState {
         }
 
         if(this.walkTime <= this.animationStage) {
-            currJudgement.switchState(currJudgement.attackState);
+            const rng = Math.random();
+            if(rng < 0.5 && false) {
+                currJudgement.switchState(currJudgement.attackState);
+            }
+            else {
+                currJudgement.switchState(currJudgement.laserState);
+            }
         }
     }
 

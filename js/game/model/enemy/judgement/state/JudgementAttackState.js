@@ -13,7 +13,6 @@ export default class JudgementAttackState extends JudgementBaseState {
         this.attackCount = 0;
         this.attacking = false;
         this.attackAngle = Math.PI * Math.random();
-        this.accel = 0;
     }
 
     updateState(currJudgement) {
@@ -22,10 +21,37 @@ export default class JudgementAttackState extends JudgementBaseState {
             this.number = 0;
             this.animationStage++;
         }
+        // if (Game.getInstance().debug || true) {
+        //     const ctx = Game.getInstance().canvasCtx;
+        //     ctx.beginPath();
+        //     ctx.arc(currJudgement.position.x + currJudgement.width / 2, currJudgement.position.y + currJudgement.height / 2, 100, currJudgement.angle - Math.PI / 3, currJudgement.angle + Math.PI / 3, false);
+        //     ctx.lineTo(currJudgement.position.x + currJudgement.width / 2, currJudgement.position.y + currJudgement.height / 2);
+        //     ctx.fillStyle = 'pink';
+        //     ctx.fill();
+        //     ctx.closePath();
+        // }
 
+        this.attack(currJudgement);
+
+        if(this.animationStage === 8) {
+            this.animationStage -= 2;
+            this.attackCount++;
+        }
+
+        if(this.animationStage === 6) {
+            this.attacking = true;
+        }
+
+
+        if(this.attackCount === this.maxAttackCount) {
+            currJudgement.switchState(currJudgement.moveState);
+        }
+
+    }
+
+    attack(currJudgement) {
         if(this.attacking && this.number % 2 === 0) {
-            this.accel += 0.01;
-            this.attackAngle += ((1/15) * Math.PI + Math.random() * (1/15) * Math.PI);
+            this.attackAngle += ((1 / 30) * Math.PI + Math.random() * (1 / 15) * Math.PI);
 
             let offset = 60;
             if(currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
@@ -43,19 +69,6 @@ export default class JudgementAttackState extends JudgementBaseState {
                 angle: this.attackAngle + Math.PI,
             });
         }
-
-        if(this.animationStage === 5) {
-            this.animationStage -= 2;
-            this.attackCount++;
-            this.attacking = true;
-        }
-
-
-        console.log(this.attackCount, this.maxAttackCount)
-        if(this.attackCount === this.maxAttackCount) {
-            currJudgement.switchState(currJudgement.moveState);
-        }
-
     }
 
     drawImage(currJudgement) {

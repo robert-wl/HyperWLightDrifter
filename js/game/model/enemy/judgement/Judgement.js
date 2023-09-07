@@ -4,6 +4,7 @@ import JudgementSpawnState from "./state/JudgementSpawnState.js";
 import Game from "../../Game.js";
 import JudgementMoveState from "./state/JudgementMoveState.js";
 import JudgementAttackState from "./state/JudgementAttackState.js";
+import JudgementLaserState from "./state/JudgementLaserState.js";
 
 
 export default class Judgement extends Enemy {
@@ -22,8 +23,8 @@ export default class Judgement extends Enemy {
             hitbox: {
                 x: 30,
                 y: 30,
-                w: 60,
-                h: 30,
+                w: 10,
+                h: 10,
             },
             w: 136,
             h: 140,
@@ -38,6 +39,7 @@ export default class Judgement extends Enemy {
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
         this.attackState = new JudgementAttackState();
+        this.laserState = new JudgementLaserState();
 
         this.switchState(this.spawnState);
     }
@@ -47,6 +49,18 @@ export default class Judgement extends Enemy {
         this.currState = newState;
         this.currState.enterState(this);
     }
+
+    // switchStateHandler({ move, attack, laser }){
+    //     if(move) {
+    //         this.switchState(this.moveState);
+    //     }
+    //     else if(attack) {
+    //         this.switchState(this.attackState);
+    //     }
+    //     else if(laser) {
+    //         this.switchState(this.laserState);
+    //     }
+    // }
 
     update() {
         this.currState.updateState(this);
