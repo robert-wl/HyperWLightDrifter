@@ -1,6 +1,6 @@
 import Game from '../../Game.js';
 import { get_image } from '../../../helper/fileReader.js';
-import Enemy from "../Enemy.js";
+import Enemy from '../Enemy.js';
 
 export default class JudgementBullet extends Enemy {
     static generate({ x, y, angle }) {
@@ -13,7 +13,7 @@ export default class JudgementBullet extends Enemy {
             },
             lifetime: 200 + Math.random() * 200,
         });
-        Game.getInstance().enemyList.push(newJudgementBullet);
+        Game.getInstance().bossEntities.push(newJudgementBullet);
     }
     constructor({ x, y, velocity, lifetime }) {
         super({
@@ -35,8 +35,8 @@ export default class JudgementBullet extends Enemy {
         this.lifetime = lifetime;
     }
 
-    damage({amount, angle}) {
-        super.damage({amount, angle});
+    damage({ amount, angle }) {
+        super.damage({ amount, angle });
         this.knockback();
     }
 
@@ -62,13 +62,7 @@ export default class JudgementBullet extends Enemy {
     render() {
         const ctx = Game.getInstance().canvasCtx;
         get_image('boss/attack/bullet', 'judgement_bullet', Math.round((this.lifetime / this.maxLifetime) * 3) + 1, (img) => {
-            ctx.drawImage(
-                img,
-                this.position.x,
-                this.position.y,
-                img.width ,
-                img.height
-            );
+            ctx.drawImage(img, this.position.x, this.position.y, img.width, img.height);
         });
     }
 }

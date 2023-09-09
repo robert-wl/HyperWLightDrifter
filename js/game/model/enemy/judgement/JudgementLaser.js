@@ -1,7 +1,6 @@
 import Game from '../../Game.js';
 import { get_image } from '../../../helper/fileReader.js';
-import Enemy from "../Enemy.js";
-import {drawRotated} from "../../../helper/renderer/drawer.js";
+import Enemy from '../Enemy.js';
 
 export default class JudgementLaser extends Enemy {
     static generate({ x, y, angle }) {
@@ -14,7 +13,7 @@ export default class JudgementLaser extends Enemy {
             },
             lifetime: 200 + Math.random() * 200,
         });
-        Game.getInstance().enemyList.push(newJudgementLaser);
+        Game.getInstance().bossEntities.push(newJudgementLaser);
     }
     constructor({ x, y, velocity, lifetime }) {
         super({
@@ -37,10 +36,7 @@ export default class JudgementLaser extends Enemy {
         this.lifetime = lifetime;
     }
 
-
-    damage({amount, angle}) {
-
-    }
+    damage({ amount, angle }) {}
 
     knockback() {
         this.velocity.value *= 3;
@@ -74,13 +70,7 @@ export default class JudgementLaser extends Enemy {
             //     angle: this.imageAngle,
             //     size: 1.5
             // })
-            ctx.drawImage(
-                img,
-                this.position.x,
-                this.position.y,
-                img.width ,
-                img.height
-            );
+            ctx.drawImage(img, this.position.x, this.position.y, img.width, img.height);
         });
     }
 }

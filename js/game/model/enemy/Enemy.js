@@ -1,4 +1,4 @@
-import Game from "../Game.js";
+import Game from '../Game.js';
 
 export default class Enemy {
     constructor({ x, y, hitbox, w, h, health, maxHealth }) {
@@ -16,11 +16,11 @@ export default class Enemy {
         this.velocity = {
             value: 0,
             angle: 0,
-        }
+        };
     }
 
     damage({ amount, angle }) {
-        if(this.health <= 0) {
+        if (this.health <= 0) {
             return;
         }
         this.health -= amount;
@@ -31,12 +31,12 @@ export default class Enemy {
         this.velocity = {
             value: 2,
             angle: angle,
-        }
+        };
     }
 
     knockback() {
-        this.position.x += Math.cos(this.velocity.angle) * this.velocity.value
-        this.position.y += Math.sin(this.velocity.angle) * this.velocity.value
+        this.position.x += Math.cos(this.velocity.angle) * this.velocity.value;
+        this.position.y += Math.sin(this.velocity.angle) * this.velocity.value;
         this.velocity.value *= 0.9;
     }
 

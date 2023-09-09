@@ -1,12 +1,12 @@
-import Enemy from "../Enemy.js";
-import JudgementBaseState from "./state/JudgementBaseState.js";
-import JudgementSpawnState from "./state/JudgementSpawnState.js";
-import Game from "../../Game.js";
-import JudgementMoveState from "./state/JudgementMoveState.js";
-import JudgementAttackState from "./state/JudgementAttackState.js";
-import JudgementLaserState from "./state/JudgementLaserState.js";
-import JudgementDashState from "./state/JudgementDashState.js";
-
+import Enemy from '../Enemy.js';
+import JudgementBaseState from './state/JudgementBaseState.js';
+import JudgementSpawnState from './state/JudgementSpawnState.js';
+import Game from '../../Game.js';
+import JudgementMoveState from './state/JudgementMoveState.js';
+import JudgementAttackState from './state/JudgementAttackState.js';
+import JudgementLaserState from './state/JudgementLaserState.js';
+import JudgementDashState from './state/JudgementDashState.js';
+import JudgementBombState from './state/JudgementBombState.js';
 
 export default class Judgement extends Enemy {
     static generate({ x, y }) {
@@ -20,9 +20,9 @@ export default class Judgement extends Enemy {
                 { x: 1300, y: 250 },
                 { x: 1300, y: 750 },
                 { x: 900, y: 500 },
-            ]
+            ],
         });
-        Game.getInstance().enemyList.push(newJudgement);
+        Game.getInstance().boss = newJudgement;
     }
     constructor({ x, y, moveSpeed, attackPosition }) {
         super({
@@ -43,6 +43,7 @@ export default class Judgement extends Enemy {
         this.attackPosition = attackPosition;
         this.angle = 0;
         this.moveSpeed = moveSpeed;
+        this.bombs = [];
 
         this.currState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
@@ -50,6 +51,7 @@ export default class Judgement extends Enemy {
         this.dashState = new JudgementDashState();
         this.attackState = new JudgementAttackState();
         this.laserState = new JudgementLaserState();
+        this.bombState = new JudgementBombState();
 
         this.switchState(this.spawnState);
     }
@@ -60,15 +62,15 @@ export default class Judgement extends Enemy {
         this.currState.enterState(this);
     }
 
-    handleSwitchState({ move, dash, attack, laser }){
-        if(Math.random() < 0.6 && dash) {
+    handleSwitchState({ move, dash, attack, laser }) {
+        this.switchState(this.bombState);
+        return;
+        if (Math.random() < 0.6 && dash) {
             this.switchState(this.dashState);
-        }
-        else {
-            if(Math.random() < 0.5 && attack && false) {
+        } else {
+            if (Math.random() < 0.5 && attack && false) {
                 this.switchState(this.attackState);
-            }
-            else if(laser) {
+            } else if (laser) {
                 this.switchState(this.laserState);
             }
         }
@@ -78,8 +80,11 @@ export default class Judgement extends Enemy {
         this.currState.updateState(this);
         this.currState.drawImage(this);
 
+        for (const bomb of this.bombs) {
+            bomb.update();
+        }
 
-        Game.getInstance().canvasCtx.fillStyle = 'rgb(255, 255, 255, 0.1)';
-        Game.getInstance().canvasCtx.fillRect(this.position.x, this.position.y, this.width * 2, this.height * 2);
+        // Game.getInstance().canvasCtx.fillStyle = 'rgb(255, 255, 255, 0.1)';
+        // Game.getInstance().canvasCtx.fillRect(this.position.x, this.position.y, this.width * 2, this.height * 2);
     }
 }

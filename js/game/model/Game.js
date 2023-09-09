@@ -6,8 +6,7 @@ import firefliesSpawner from './particles/firefliesSpawner.js';
 import CrystalBrute from './enemy/crystalBrute/CrystalBrute.js';
 import CrystalSpider from './enemy/crystalSpider/CrystalSpider.js';
 import hudHandler from '../helper/renderer/hudHandler.js';
-import {firstStage, secondStage} from "../helper/stages/stageHandler.js";
-
+import { firstStage, secondStage } from '../helper/stages/stageHandler.js';
 
 export const GAME_SCALE = 2;
 export const SCREEN_WIDTH = 1920;
@@ -27,12 +26,15 @@ export default class Game {
         this.particles = [];
         this.renderList = [];
         this.enemyList = [];
+        this.boss = null;
+        this.bossEntities = [];
         this.canvas = null;
         this.canvasCtx = null;
         this.debug = false;
         this.enemySpawn = true;
         this.enemyCount = 0;
         this.difficulty = 1;
+        this.backgroundOpacity = 1;
     }
 
     init() {
@@ -78,9 +80,13 @@ export default class Game {
 
         this.enemySpawnHandler();
 
-        firefliesSpawner();
+        if (this.stage === 1 && false) {
+            firefliesSpawner();
+        }
 
+        this.canvasCtx.globalAlpha = this.backgroundOpacity;
         this.camera.updateCamera();
+        this.canvasCtx.globalAlpha = 1;
 
         for (const enemy of this.enemyList) {
             enemy.update();
@@ -96,6 +102,14 @@ export default class Game {
 
         for (const particle of this.particles) {
             particle.update();
+        }
+
+        if (this.boss) {
+            this.boss.update();
+
+            for (const entity of this.bossEntities) {
+                entity.update();
+            }
         }
 
         this.drawHUD();
@@ -121,10 +135,10 @@ export default class Game {
         if (!this.enemySpawn) {
             return;
         }
-        const coordinates = [
-            { x: 200, y: 500 },
-            { x: 1600, y: 500 },
-        ];
+        // const coordinates = [
+        //     { x: 200, y: 500 },
+        //     { x: 1600, y: 500 },
+        // ];
         if (this.enemyCount <= 0) {
             for (let i = 0; i <= this.difficulty; i++) {
                 const radius = 1000 + Math.random() * 100;
@@ -138,7 +152,7 @@ export default class Game {
                     });
                     i += 5;
                     this.enemyCount += 5;
-                    continue;
+                    continue; //TODO NOT USE CONTINUE
                 }
                 CrystalSpider.generate({
                     x: SCREEN_WIDTH / 2 + radius * Math.cos(angle),

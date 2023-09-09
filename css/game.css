@@ -23,6 +23,7 @@
     height: fit-content;
     touch-action: none;
     overflow: hidden;
+    background-color: black;
 }
 
 .ui {
