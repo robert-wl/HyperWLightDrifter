@@ -59,13 +59,13 @@ export default class JudgementAttackState extends JudgementBaseState {
             }
             JudgementBullet.generate({
                 x: currJudgement.position.x + currJudgement.width / 2 + offset,
-                y: currJudgement.position.y + currJudgement.height / 2 + 60,
+                y: currJudgement.position.y + currJudgement.height / 2 + 40,
                 angle: this.attackAngle,
             });
 
             JudgementBullet.generate({
                 x: currJudgement.position.x + currJudgement.width / 2 + offset,
-                y: currJudgement.position.y + currJudgement.height / 2 + 60,
+                y: currJudgement.position.y + currJudgement.height / 2 + 40,
                 angle: this.attackAngle + Math.PI,
             });
         }

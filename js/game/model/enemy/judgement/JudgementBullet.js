@@ -8,7 +8,7 @@ export default class JudgementBullet extends Enemy {
             x,
             y,
             velocity: {
-                value: 1 + Math.random() * 2,
+                value: 3 + Math.random() * 2,
                 angle: angle,
             },
             lifetime: 200 + Math.random() * 200,

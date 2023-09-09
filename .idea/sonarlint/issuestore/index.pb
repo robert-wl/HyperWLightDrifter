@@ -35,8 +35,6 @@ T
 $js/game/model/particles/Particles.js,b\4\b4d679c8d728de9f72ca26d52d75fdf7afa832ee
 L
 js/game/helper/fileReader.js,d\1\d1ba66b69a1f63283a50d0fe053351c7c0257b7d
-[
-+js/game/helper/renderer/playerDashDrawer.js,6\8\68c78fec47a2b1e7695b16739d4d690c4405f568
 a
 1js/game/model/enemy/crystalBrute/CrystalAttack.js,6\c\6c66efcdc1c616e93ebe55653eca8aaaf7483ed2
 Z
@@ -75,14 +73,10 @@ c
 3js/game/model/interactables/handleInteractionBar.js,c\3\c3b988b83937668c6cde345a8887ff2b40d571d9
 S
 #js/game/model/interactables/Door.js,9\b\9bb23b8fa874516f828ae6e8687eac96f84a40e0
-\
-,js/game/model/player/playerEffectsHandler.js,9\f\9fdf1433ad41a2b5cefb820c08733dc74b22d773
 _
 /js/game/model/player/state/PlayerAttackState.js,a\0\a0aee8d5633c9ed6fa1e0caa6d59f969c1769826
 b
 2js/game/model/player/state/PlayerAttackTwoState.js,d\1\d135d388438885db989634eddabf3b76941c0101
-]
--js/game/model/player/state/PlayerDashState.js,0\9\095fa1bae6783b7ee1fcd739ccdec6d53b5e7019
 ]
 -js/game/model/player/state/PlayerHurtState.js,9\a\9a358dbad98f3c93e50134abd019118a1811956b
 ]
@@ -111,3 +105,15 @@ o
 ?js/game/model/enemy/crystalBrute/state/CrystalBruteBaseState.js,b\7\b74442a9ac2f85f20dd17f154a479df22c1e39d8
 U
 %js/game/helper/stages/stageHandler.js,8\5\85ee19225afff7b04325ce49e547247f54ce732c
+E
+js/game/model/Game.js,d\4\d4e661c5ea23ab829105120d8cd3f2e4f5e9cd98
+;
+js/index.js,d\7\d7a7cea160667b981d6978cbf7d682f8b4e73a25
+Z
+*js/game/helper/collision/enemyCollision.js,e\3\e318f853f72fe146c148aed9cb071a0e7b8b4279
+`
+0js/game/model/enemy/crystalBrute/CrystalBrute.js,c\a\ca0dffe278242f5d5f7e608b50b292e8d7577da7
+Z
+*js/game/helper/player/getEntityOnAttack.js,9\a\9ae58c99570b88bc7da463440ca22a9e717aa22b
+L
+js/game/model/enemy/Enemy.js,d\b\db3ac3ec27492619bfba9cf1ea119e0d9c1793dc

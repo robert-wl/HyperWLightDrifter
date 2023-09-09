@@ -1,42 +1,51 @@
 import JudgementBaseState from "./JudgementBaseState.js";
-import {get_image} from "../../../../helper/fileReader.js";
 import Game from "../../../Game.js";
+import {get_image} from "../../../../helper/fileReader.js";
 import {drawMirroredY} from "../../../../helper/renderer/drawer.js";
 
 
-export default class JudgementMoveState extends JudgementBaseState {
+export default class JudgementMoveTwoState extends JudgementBaseState {
     enterState(currJudgement) {
         this.number = 0;
         this.animationStage = 1;
-        this.walkTime = Math.random() * 10;
+        this.flyTime = 10;
+        this.destination = currJudgement.attackPosition[
+            Math.floor(Math.random() * currJudgement.attackPosition.length)
+        ];
     }
 
     updateState(currJudgement) {
         this.number++;
 
-        const { position } = Game.getInstance().player;
-        const dx = position.x - (currJudgement.position.x + currJudgement.width / 2);
-        const dy = position.y - (currJudgement.position.y + currJudgement.height / 2);
-
-        currJudgement.angle = Math.atan2(dy, dx);
-
-        currJudgement.position.x += Math.cos(currJudgement.angle) * currJudgement.moveSpeed;
-        currJudgement.position.y += Math.sin(currJudgement.angle) * currJudgement.moveSpeed;
-
         if(this.number === 15) {
             this.number = 0;
             this.animationStage++;
+
+        }
+        const player = Game.getInstance().player;
+        currJudgement.angle = Math.atan2(
+            (player.position.y ) - (currJudgement.position.y + currJudgement.height + 40),
+            (player.position.x ) - (currJudgement.position.x + currJudgement.width / 2),
+        )
+        this.angle = Math.atan2(
+            this.destination.y - (currJudgement.position.y + currJudgement.height / 2),
+            this.destination.x - (currJudgement.position.x + currJudgement.width / 2)
+        );
+
+        const dist = Math.sqrt(
+            Math.pow(this.destination.x - (currJudgement.position.x + currJudgement.width / 2), 2) +
+            Math.pow(this.destination.y - (currJudgement.position.y + currJudgement.height / 2), 2)
+        );
+        if(
+            Math.abs(dist) < 20
+        ) {
+            currJudgement.switchState(currJudgement.attackState);
         }
 
-        if(this.walkTime <= this.animationStage) {
-            const rng = Math.random();
-            if(rng < 0.5 || true) {
-                currJudgement.switchState(currJudgement.moveTwoState);
-            }
-            else {
-                currJudgement.switchState(currJudgement.laserState);
-            }
-        }
+
+        currJudgement.position.x += Math.cos(this.angle) * this.flyTime;
+        currJudgement.position.y += Math.sin(this.angle) * this.flyTime;
+
     }
 
     drawImage(currJudgement) {

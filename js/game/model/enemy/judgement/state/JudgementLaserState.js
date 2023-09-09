@@ -16,32 +16,35 @@ export default class JudgementLaserState extends JudgementBaseState {
 
     updateState(currJudgement) {
         this.number++;
-        if (this.number === 15) {
-            this.number = 0;
+        if (this.number % 15 === 0) {
             this.animationStage++;
 
         }
 
-        this.attackAngle = Math.atan2(
-            Game.getInstance().player.position.y - (currJudgement.position.y + currJudgement.height / 2),
-            Game.getInstance().player.position.x - (currJudgement.position.x + currJudgement.width / 2),
-        )
+        if(this.animationStage === 7){
+            const player = Game.getInstance().player;
+            this.attackAngle = Math.atan2(
+                (player.position.y ) - (currJudgement.position.y + currJudgement.height + 40),
+                (player.position.x ) - (currJudgement.position.x + currJudgement.width / 2),
+            )
+            currJudgement.angle = this.attackAngle;
+        }
 
 
 
        if(this.attacking !== 10 && this.attacking !== 0) {
-           let offset = 60;
+           let offset = 75;
            if(currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
-               offset = -20;
+               offset = -40;
            }
             JudgementLaser.generate({
                 x: currJudgement.position.x + currJudgement.width / 2 + offset,
-                y: currJudgement.position.y + currJudgement.height + 70,
-                angle: this.attackAngle + Math.random() * 0.25 - 0.125 + (Math.PI / 2 * 0.05 * (this.number - 5) % 10)
+                y: currJudgement.position.y + currJudgement.height + 30,
+                angle: this.attackAngle + (Math.random() - 0.5) * 0.25 + Math.sin(this.number * 0.05) * 0.5
             });
        }
 
-        if(this.animationStage === 8 && this.number === 14) {
+        if(this.animationStage === 8 && this.number % 14 === 0) {
             this.attacking--;
         }
         if (this.animationStage === 10 && this.attacking > 0) {

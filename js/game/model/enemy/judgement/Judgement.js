@@ -5,6 +5,7 @@ import Game from "../../Game.js";
 import JudgementMoveState from "./state/JudgementMoveState.js";
 import JudgementAttackState from "./state/JudgementAttackState.js";
 import JudgementLaserState from "./state/JudgementLaserState.js";
+import JudgementMoveTwoState from "./state/JudgementMoveTwoState.js";
 
 
 export default class Judgement extends Enemy {
@@ -13,10 +14,16 @@ export default class Judgement extends Enemy {
             x,
             y,
             moveSpeed: 1,
+            attackPosition: [
+                { x: 500, y: 250 },
+                { x: 500, y: 750 },
+                { x: 1300, y: 250 },
+                { x: 1300, y: 750 },
+            ]
         });
         Game.getInstance().enemyList.push(newJudgement);
     }
-    constructor({ x, y, moveSpeed }) {
+    constructor({ x, y, moveSpeed, attackPosition }) {
         super({
             x,
             y,
@@ -26,18 +33,20 @@ export default class Judgement extends Enemy {
                 w: 10,
                 h: 10,
             },
-            w: 136,
-            h: 140,
+            w: 130,
+            h: 179,
             health: 100,
             maxHealth: 100,
         });
 
+        this.attackPosition = attackPosition;
         this.angle = 0;
         this.moveSpeed = moveSpeed;
 
         this.currState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
+        this.moveTwoState = new JudgementMoveTwoState();
         this.attackState = new JudgementAttackState();
         this.laserState = new JudgementLaserState();
 
@@ -59,11 +68,16 @@ export default class Judgement extends Enemy {
     //     }
     //     else if(laser) {
     //         this.switchState(this.laserState);
-    //     }
+    //     }as
     // }
 
     update() {
         this.currState.updateState(this);
         this.currState.drawImage(this);
+
+        console.log(Game.getInstance().player.position)
+
+        Game.getInstance().canvasCtx.fillStyle = 'rgb(255, 255, 255, 0.1)';
+        Game.getInstance().canvasCtx.fillRect(this.position.x, this.position.y, this.width * 2, this.height * 2);
     }
 }
