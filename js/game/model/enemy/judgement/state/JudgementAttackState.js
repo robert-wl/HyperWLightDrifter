@@ -1,15 +1,14 @@
-import JudgementBaseState from "./JudgementBaseState.js";
-import Game from "../../../Game.js";
-import {get_image} from "../../../../helper/fileReader.js";
-import {drawMirroredY} from "../../../../helper/renderer/drawer.js";
-import JudgementBullet from "../JudgementBullet.js";
-
+import JudgementBaseState from './JudgementBaseState.js';
+import Game from '../../../Game.js';
+import { get_image } from '../../../../helper/fileReader.js';
+import { drawMirroredY } from '../../../../helper/renderer/drawer.js';
+import JudgementBullet from '../JudgementBullet.js';
 
 export default class JudgementAttackState extends JudgementBaseState {
     enterState(currJudgement) {
         this.number = 0;
         this.animationStage = 1;
-        this.maxAttackCount = Math.round(Math.random() * 3) + 3;
+        this.maxAttackCount = null || Math.round(Math.random() * 3) + 3;
         this.attackCount = 0;
         this.attacking = false;
         this.attackAngle = Math.PI * Math.random();
@@ -17,7 +16,7 @@ export default class JudgementAttackState extends JudgementBaseState {
 
     updateState(currJudgement) {
         this.number++;
-        if(this.number === 15) {
+        if (this.number === 15) {
             this.number = 0;
             this.animationStage++;
         }
@@ -33,29 +32,27 @@ export default class JudgementAttackState extends JudgementBaseState {
 
         this.attack(currJudgement);
 
-        if(this.animationStage === 8) {
-            this.animationStage -= 2;
+        if (this.animationStage === 7) {
+            this.animationStage -= 3;
             this.attackCount++;
         }
 
-        if(this.animationStage === 6) {
+        if (this.animationStage === 4) {
             this.attacking = true;
         }
 
-
-        if(this.attackCount === this.maxAttackCount) {
+        if (this.attackCount === this.maxAttackCount) {
             currJudgement.switchState(currJudgement.moveState);
         }
-
     }
 
     attack(currJudgement) {
-        if(this.attacking && this.number % 2 === 0) {
-            this.attackAngle += ((1 / 30) * Math.PI + Math.random() * (1 / 15) * Math.PI);
+        if (this.attacking && this.number % 2 === 0) {
+            this.attackAngle += (2 / 30) * Math.PI + Math.random() * (1 / 45) * Math.PI;
 
             let offset = 60;
-            if(currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
-                offset = 30;
+            if (currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
+                offset = 35;
             }
             JudgementBullet.generate({
                 x: currJudgement.position.x + currJudgement.width / 2 + offset,
@@ -74,7 +71,7 @@ export default class JudgementAttackState extends JudgementBaseState {
     drawImage(currJudgement) {
         const ctx = Game.getInstance().canvasCtx;
         get_image('boss/attack', 'judgement_attack', this.animationStage, (img) => {
-            if(currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
+            if (currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
                 drawMirroredY({
                     canvas: ctx,
                     img: img,
@@ -84,16 +81,9 @@ export default class JudgementAttackState extends JudgementBaseState {
                     },
                     width: img.width * 2,
                     height: img.height * 2,
-                })
-            }
-            else {
-                ctx.drawImage(
-                    img,
-                    currJudgement.position.x,
-                    currJudgement.position.y,
-                    img.width * 2,
-                    img.height * 2
-                );
+                });
+            } else {
+                ctx.drawImage(img, currJudgement.position.x, currJudgement.position.y, img.width * 2, img.height * 2);
             }
         });
     }

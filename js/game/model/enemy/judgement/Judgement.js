@@ -5,7 +5,7 @@ import Game from "../../Game.js";
 import JudgementMoveState from "./state/JudgementMoveState.js";
 import JudgementAttackState from "./state/JudgementAttackState.js";
 import JudgementLaserState from "./state/JudgementLaserState.js";
-import JudgementMoveTwoState from "./state/JudgementMoveTwoState.js";
+import JudgementDashState from "./state/JudgementDashState.js";
 
 
 export default class Judgement extends Enemy {
@@ -19,6 +19,7 @@ export default class Judgement extends Enemy {
                 { x: 500, y: 750 },
                 { x: 1300, y: 250 },
                 { x: 1300, y: 750 },
+                { x: 900, y: 500 },
             ]
         });
         Game.getInstance().enemyList.push(newJudgement);
@@ -46,7 +47,7 @@ export default class Judgement extends Enemy {
         this.currState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
-        this.moveTwoState = new JudgementMoveTwoState();
+        this.dashState = new JudgementDashState();
         this.attackState = new JudgementAttackState();
         this.laserState = new JudgementLaserState();
 
@@ -59,23 +60,24 @@ export default class Judgement extends Enemy {
         this.currState.enterState(this);
     }
 
-    // switchStateHandler({ move, attack, laser }){
-    //     if(move) {
-    //         this.switchState(this.moveState);
-    //     }
-    //     else if(attack) {
-    //         this.switchState(this.attackState);
-    //     }
-    //     else if(laser) {
-    //         this.switchState(this.laserState);
-    //     }as
-    // }
+    handleSwitchState({ move, dash, attack, laser }){
+        if(Math.random() < 0.6 && dash) {
+            this.switchState(this.dashState);
+        }
+        else {
+            if(Math.random() < 0.5 && attack && false) {
+                this.switchState(this.attackState);
+            }
+            else if(laser) {
+                this.switchState(this.laserState);
+            }
+        }
+    }
 
     update() {
         this.currState.updateState(this);
         this.currState.drawImage(this);
 
-        console.log(Game.getInstance().player.position)
 
         Game.getInstance().canvasCtx.fillStyle = 'rgb(255, 255, 255, 0.1)';
         Game.getInstance().canvasCtx.fillRect(this.position.x, this.position.y, this.width * 2, this.height * 2);

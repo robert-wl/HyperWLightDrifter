@@ -8,9 +8,9 @@ export default class JudgementLaserState extends JudgementBaseState {
     enterState(currJudgement) {
         this.number = 0;
         this.animationStage = 1;
-        this.maxAttackCount = Math.round(Math.random() * 3) + 3;
+        this.maxAttackCount = Math.round(Math.random() * 3) + 1;
         this.attackCount = 0;
-        this.attacking = 10;
+        this.attacking = 5;
         this.attackAngle = currJudgement.angle;
     }
 
@@ -32,7 +32,7 @@ export default class JudgementLaserState extends JudgementBaseState {
 
 
 
-       if(this.attacking !== 10 && this.attacking !== 0) {
+       if(this.attacking !== 5 && this.animationStage < 12) {
            let offset = 75;
            if(currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
                offset = -40;
@@ -47,10 +47,10 @@ export default class JudgementLaserState extends JudgementBaseState {
         if(this.animationStage === 8 && this.number % 14 === 0) {
             this.attacking--;
         }
-        if (this.animationStage === 10 && this.attacking > 0) {
-            this.animationStage -= 2;
+        if (this.animationStage === 12 && this.attacking > 0) {
+            this.animationStage -= 4;
         }
-        if(this.animationStage === 12) {
+        if(this.animationStage === 13) {
             currJudgement.switchState(currJudgement.moveState);
         }
 
@@ -58,7 +58,7 @@ export default class JudgementLaserState extends JudgementBaseState {
 
     drawImage(currJudgement) {
         const ctx = Game.getInstance().canvasCtx;
-        get_image('boss/laser', 'judgement_laser', (this.animationStage % 11) + 1, (img) => {
+        get_image('boss/laser', 'judgement_laser', (this.animationStage % 13) + 1, (img) => {
             if(currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
                 drawMirroredY({
                     canvas: ctx,

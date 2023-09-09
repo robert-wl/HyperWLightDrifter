@@ -3,6 +3,7 @@ import Game from '../../model/Game.js';
 export default function playerInput() {
     console.log("hai")
     $(document).keydown((e) => {
+        console.log("hai")
         if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's' || e.key === 'e' || e.key === 'c'  || e.key === 'c') {
             if (Game.getInstance().keys.includes(e.key)) {
                 return;
