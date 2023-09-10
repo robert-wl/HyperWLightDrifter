@@ -150,6 +150,26 @@ const GameSettings = {
                 ref: 'boss/bomb/judgement_explosion.png',
                 name: 'judgement_explosion',
                 amount: 8,
+            },
+            {
+                ref: 'boss/move/judgement_move.png',
+                name: 'judgement_move',
+                amount: 4,
+            },
+            {
+                ref: 'boss/spawn/judgement_spawn.png',
+                name: 'judgement_spawn',
+                amount: 21,
+            },
+            {
+                ref: 'boss/attack/judgement_attack.png',
+                name: 'judgement_attack',
+                amount: 6,
+            },
+            {
+                ref: 'boss/laser/judgement_laser.png',
+                name: 'judgement_laser',
+                amount: 13,
             }
         ]
     }

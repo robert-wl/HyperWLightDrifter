@@ -20,11 +20,14 @@ export function drawRotated({ canvas, img, angle, position, mirrored, size }) {
     ctx.restore();
 }
 
-export function drawMirroredY({ canvas, img, position, width, height }) {
+export function drawMirroredY({ canvas, img, position, width, height, translate = false }) {
     const ctx = Game.getInstance().ctx || canvas;
     const widthM = width || img.width * 2;
     const heightM = height || img.height * 2;
     ctx.save();
+    if(translate) {
+        ctx.translate(-widthM / 2, -heightM / 2);
+    }
     ctx?.translate(img.width * 2, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(img, -position.x, position.y, widthM, heightM);

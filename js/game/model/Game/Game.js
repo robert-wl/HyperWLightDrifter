@@ -103,6 +103,7 @@ export default class Game {
         this.particles.forEach((particle) => particle.update());
 
         this.boss?.update();
+        this.bossEntities?.forEach((entity) => entity.update());
 
         this.drawHUD();
     }
@@ -181,5 +182,21 @@ export default class Game {
         }
 
         this.difficulty += 1;
+
     }
+
+    darkenBackground() {
+        this.backgroundOpacity -= 0.05;
+        if (this.backgroundOpacity < 0.05) {
+            this.backgroundOpacity = 0;
+        }
+    }
+
+    brightenBackground() {
+        this.backgroundOpacity += 0.05;
+        if(this.backgroundOpacity > 1) {
+            this.backgroundOpacity = 1;
+        }
+    }
+
 }

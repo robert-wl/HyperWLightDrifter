@@ -33,8 +33,6 @@ T
 $js/game/model/particles/Particles.js,b\4\b4d679c8d728de9f72ca26d52d75fdf7afa832ee
 [
 +js/game/model/particles/firefliesSpawner.js,a\8\a826f12789363dabddbb25614ad88459d55f726e
-\
-,js/game/helper/collision/directionHandler.js,a\6\a672fe0d513e96001e254817959671f98704b315
 ]
 -js/game/model/player/state/PlayerIdleState.js,a\6\a6d1b79ff9a89595f87587e5569afae97634843b
 i
@@ -43,7 +41,5 @@ o
 ?js/game/model/enemy/crystalBrute/state/CrystalBruteBaseState.js,b\7\b74442a9ac2f85f20dd17f154a479df22c1e39d8
 [
 +js/game/helper/renderer/playerDashDrawer.js,6\8\68c78fec47a2b1e7695b16739d4d690c4405f568
-[
-+js/game/helper/boss/judgmenentDashDrawer.js,4\5\45d387845f014cd4a25ca43cc39313cd3ed74dcb
 <
 css/game.css,b\8\b883c664cb638d0b022860e9eb52d7fec909a274

@@ -1,36 +1,36 @@
-import JudgementBaseState from "./JudgementBaseState.js";
-import {get_image} from "../../../../helper/fileReader.js";
-import Game from "../../../Game/Game.js";
-
+import JudgementBaseState from './JudgementBaseState.js';
+import { getNumberedImage } from '../../../../helper/imageLoader.js';
+import { drawImage } from '../../../../helper/renderer/drawer.js';
 
 export default class JudgementSpawnState extends JudgementBaseState {
-    enterState(currJudgement) {
+    enterState() {
         this.number = 0;
         this.animationStage = 1;
     }
 
     updateState(currJudgement) {
         this.number++;
-        if(this.number === 7) {
+
+        if (this.number === 7) {
             this.number = 0;
             this.animationStage++;
         }
 
-        if(this.animationStage === 22) {
-           currJudgement.switchState(currJudgement.moveState);
+        if (this.animationStage === 22) {
+            currJudgement.switchState(currJudgement.moveState);
         }
     }
 
     drawImage(currJudgement) {
-        const ctx = Game.getInstance().ctx;
-        get_image('boss/spawn', 'judgement_spawn', this.animationStage, (img) => {
-            ctx.drawImage(
-                img,
-                currJudgement.position.x,
-                currJudgement.position.y,
-                img.width * 2,
-                img.height * 2
-            );
+        const judgementSpawn = getNumberedImage('judgement_spawn', this.animationStage);
+
+        drawImage({
+            img: judgementSpawn,
+            x: currJudgement.position.x,
+            y: currJudgement.position.y,
+            width: judgementSpawn.width * 2,
+            height: judgementSpawn.height * 2,
+            translate: true,
         });
     }
 }

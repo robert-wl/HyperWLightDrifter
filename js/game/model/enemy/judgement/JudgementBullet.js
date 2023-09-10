@@ -56,7 +56,7 @@ export default class JudgementBullet extends Enemy {
     }
 
     kill() {
-        Game.getInstance().enemyList.splice(Game.getInstance().enemyList.indexOf(this), 1);
+        Game.getInstance().bossEntities.splice(Game.getInstance().bossEntities.indexOf(this), 1);
     }
 
     render() {

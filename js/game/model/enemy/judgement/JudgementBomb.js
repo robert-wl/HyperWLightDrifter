@@ -18,7 +18,7 @@ export default class JudgementBomb extends Enemy {
             height: 40,
         });
 
-        Game.getInstance().enemyList.push(newJudgementBomb);
+        Game.getInstance().bossEntities.push(newJudgementBomb);
     }
     constructor({ position, offset, angle, lifetime, width, height }) {
         super({
@@ -95,6 +95,7 @@ export default class JudgementBomb extends Enemy {
 
             return;
         }
+
         if (this.number % 10 === 0 && this.animationStage < 5) {
             this.animationStage++;
         }
@@ -133,11 +134,11 @@ export default class JudgementBomb extends Enemy {
 
         if(!this.exploding) {
             this.position.x += getHorizontalValue({
-                magnitude: 1,
+                magnitude: 2,
                 angle: this.moveAngle,
             });
             this.position.y += getVerticalValue({
-                magnitude: 1,
+                magnitude: 2,
                 angle: this.moveAngle,
             });
         }
@@ -148,8 +149,8 @@ export default class JudgementBomb extends Enemy {
     }
 
     kill() {
-        const { enemyList } = Game.getInstance();
-        enemyList.splice(enemyList.indexOf(this), 1);
+        const { bossEntities } = Game.getInstance();
+        bossEntities.splice(bossEntities.indexOf(this), 1);
     }
 
     drawBomb() {
@@ -192,5 +193,9 @@ export default class JudgementBomb extends Enemy {
             height: judgementExplosion.height * GameSettings.GAME.GAME_SCALE,
             translate: true,
         });
+    }
+
+    isAboutToExplode() {
+        return this.lifeTime <= 160;
     }
 }

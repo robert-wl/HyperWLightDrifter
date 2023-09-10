@@ -1,15 +1,17 @@
 import JudgementBaseState from './JudgementBaseState.js';
 import Game from '../../../Game/Game.js';
-import { get_image } from '../../../../helper/fileReader.js';
-import { drawMirroredY } from '../../../../helper/renderer/drawer.js';
+import {drawImage, drawMirroredY} from '../../../../helper/renderer/drawer.js';
 import judgementDashDrawer from '../../../../helper/boss/judgmenentDashDrawer.js';
+import {getAngle} from "../../../../helper/angleHelper.js";
+import {getMagnitudeValue} from "../../../../helper/distanceHelper.js";
+import {getNumberedImage} from "../../../../helper/imageLoader.js";
 
 export default class JudgementDashState extends JudgementBaseState {
     lastData = [];
     enterState(currJudgement) {
         this.number = 0;
         this.animationStage = 1;
-        this.flyTime = 15;
+        this.flyTime = 10;
         this.destination = currJudgement.attackPosition[Math.floor(Math.random() * currJudgement.attackPosition.length)];
     }
 
@@ -20,38 +22,35 @@ export default class JudgementDashState extends JudgementBaseState {
             this.number = 0;
             this.animationStage++;
         }
-        const player = Game.getInstance().player;
-        currJudgement.angle = Math.atan2(player.position.y - (currJudgement.position.y + currJudgement.height + 40), player.position.x - (currJudgement.position.x + currJudgement.width / 2));
-        this.angle = Math.atan2(this.destination.y - (currJudgement.position.y + currJudgement.height / 2), this.destination.x - (currJudgement.position.x + currJudgement.width / 2));
+        const { player } = Game.getInstance();
 
-        const dist = Math.sqrt(Math.pow(this.destination.x - (currJudgement.position.x + currJudgement.width / 2), 2) + Math.pow(this.destination.y - (currJudgement.position.y + currJudgement.height / 2), 2));
+        currJudgement.angle = getAngle({
+            x: player.position.x - (currJudgement.position.x),
+            y: player.position.y - (currJudgement.position.y + 40),
+        });
+        this.angle = getAngle({
+            x: this.destination.x - (currJudgement.position.x + currJudgement.width / 2),
+            y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2)
+        });
+
+        const dist = getMagnitudeValue({
+            x: this.destination.x - (currJudgement.position.x + currJudgement.width / 2),
+            y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2)
+        });
+
         if (Math.abs(dist) < 20) {
             currJudgement.handleSwitchState({
                 move: false,
                 moveTwo: false,
                 attack: true,
                 laser: true,
+                bomb: true,
             });
         }
 
         currJudgement.position.x += Math.cos(this.angle) * this.flyTime;
         currJudgement.position.y += Math.sin(this.angle) * this.flyTime;
-
-        const angle = currJudgement.angle;
-        const data = {
-            canvas: Game.getInstance().ctx,
-            moveNumber: this.animationStage,
-            angle: angle,
-            lastPosition: { ...currJudgement.position },
-        };
-
-        // judgementDashDrawer(data);
-        if (this.number % 5 === 0) {
-            this.lastData.push(data);
-        }
-        if (this.lastData.length > 3) {
-            this.lastData.shift();
-        }
+        this.shadowHandler(currJudgement);
     }
 
     drawImage(currJudgement) {
@@ -63,21 +62,46 @@ export default class JudgementDashState extends JudgementBaseState {
         }
         ctx.globalAlpha = 1;
 
-        get_image('boss/move', 'judgement_move', (this.animationStage % 3) + 1, (img) => {
-            if (currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
-                drawMirroredY({
-                    canvas: ctx,
-                    img: img,
-                    position: {
-                        x: currJudgement.position.x,
-                        y: currJudgement.position.y,
-                    },
-                    width: img.width * 2,
-                    height: img.height * 2,
-                });
-            } else {
-                ctx.drawImage(img, currJudgement.position.x, currJudgement.position.y, img.width * 2, img.height * 2);
-            }
-        });
+        const judgementMove = getNumberedImage('judgement_move', (this.animationStage % 3) + 1);
+
+        if (currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
+            drawMirroredY({
+                canvas: ctx,
+                img: judgementMove,
+                position: {
+                    x: currJudgement.position.x,
+                    y: currJudgement.position.y,
+                },
+                width: judgementMove.width * 2,
+                height: judgementMove.height * 2,
+                translate: true,
+            });
+        } else {
+            drawImage({
+                img: judgementMove,
+                x: currJudgement.position.x,
+                y: currJudgement.position.y,
+                width: judgementMove.width * 2,
+                height: judgementMove.height * 2,
+                translate: true,
+            });
+        }
+    }
+
+    shadowHandler(currJudgement) {
+        const { angle } = currJudgement;
+        const data = {
+            canvas: Game.getInstance().ctx,
+            moveNumber: this.animationStage,
+            angle: angle,
+            lastPosition: { ...currJudgement.position },
+        };
+
+        if (this.number % 5 === 0) {
+            this.lastData.push(data);
+        }
+        if (this.lastData.length > 3) {
+            this.lastData.shift();
+        }
     }
 }

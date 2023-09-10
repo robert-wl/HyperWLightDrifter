@@ -43,7 +43,7 @@ export default class Enemy {
 
     debugMode() {
         const ctx = Game.getInstance().ctx;
-        ctx.fillStyle = 'rgb(255, 255, 0, 1)';
+        ctx.fillStyle = 'rgb(255, 255, 0, 0.5)';
         ctx.fillRect(
             this.position.x + this.hitbox.x,
             this.position.y + this.hitbox.y,

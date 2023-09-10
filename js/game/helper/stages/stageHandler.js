@@ -65,17 +65,11 @@ export async function secondStage({ game }) {
         { x: 1250, y: 1550, w: 530, h: 800 },
         { x: 630, y: 2150, w: 620, h: 800 },
     ];
-    for (const collider of colliders) {
-        Collideable.generate(collider);
-    }
+    // for (const collider of colliders) {
+    //     Collideable.generate(collider);
+    // }
 
-    const medkits = [
-        { x: 1400, y: 300 },
-        { x: 1400, y: 800 },
-        { x: 400, y: 500 },
-    ];
-
-    for (const medkit of medkits) {
-        Medkit.generate(medkit);
-    }
+    // for (const medkit of medkits) {
+    //     Medkit.generate(medkit);
+    // }
 }
