@@ -1,6 +1,6 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import { get_image } from '../../../../helper/fileReader.js';
-import Game from '../../../Game.js';
+import Game from '../../../Game/Game.js';
 import playerCollision from '../../../../helper/collision/playerCollision.js';
 
 export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
@@ -38,7 +38,7 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
         currSpider.position.y += Math.sin(this.angle) * currSpider.attackSpeed;
     }
     drawImage(currSpider) {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
 
         get_image('enemy/crystal_spider', 'crystal_spider_attack', null, (image) => {
             if ((this.angle > 0 && this.angle < Math.PI / 2) || (this.angle < 0 && this.angle > -Math.PI / 2)) {

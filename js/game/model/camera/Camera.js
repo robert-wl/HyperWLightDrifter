@@ -1,4 +1,4 @@
-import Game from '../Game.js';
+import Game from '../Game/Game.js';
 
 const CAMERA_X_CONSTANT = -45;
 const CAMERA_Y_CONSTANT = -25;
@@ -25,12 +25,12 @@ export default class Camera {
         this.topBackground = null;
         this.offset = {
             x: 0,
-            y: 0
-        }
+            y: 0,
+        };
         this.shakeOffset = {
             x: 0,
-            y: 0
-        }
+            y: 0,
+        };
         this.shake = false;
     }
     setPosition({ position, canvas }) {
@@ -41,8 +41,8 @@ export default class Camera {
     move({ offset }) {
         this.offset = {
             x: offset.x,
-            y: offset.y
-        }
+            y: offset.y,
+        };
     }
     shakeCamera({ offset }) {
         this.shake = true;
@@ -50,9 +50,9 @@ export default class Camera {
         this.shakeOffset.y = offset.y;
     }
     updateCamera() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
 
-        if(this.shake) {
+        if (this.shake) {
             this.shake = false;
             this.offset.x += this.shakeOffset.x;
             this.offset.y += this.shakeOffset.y;
@@ -60,7 +60,7 @@ export default class Camera {
             this.position.x -= this.shakeOffset.x;
             ctx.translate(this.offset.x, this.offset.y);
         }
-        if(this.offset.y > 0.001 || this.offset.x > 0.001 || this.offset.y < -0.001 || this.offset.x < -0.001) {
+        if (this.offset.y > 0.001 || this.offset.x > 0.001 || this.offset.y < -0.001 || this.offset.x < -0.001) {
             const displacementX = this.offset.x * 0.1;
             const displacementY = this.offset.y * 0.1;
             this.offset.x -= displacementX;
@@ -69,7 +69,6 @@ export default class Camera {
             this.position.y += displacementY;
             ctx.translate(-displacementX, -displacementY);
         }
-
 
         if (this.lowerBackground) {
             this.moveCamera();
@@ -86,78 +85,54 @@ export default class Camera {
         // this.offset.x *= 0.9;
         // this.offset.y *= 0.9;
 
-        if (Game.getInstance().debug ) {
+        if (Game.getInstance().debug) {
             this.renderDebugBox();
         }
     }
 
     renderDebugBox() {
-        const canvasCtx = Game.getInstance().canvasCtx;
-        canvasCtx.fillStyle = 'rgb(255, 0, 0, 0.5)';
-        canvasCtx.fillRect(this.cameraBox.position.x, this.cameraBox.position.y, this.cameraBox.width, this.cameraBox.height);
+        Game.getInstance().ctx.fillStyle = 'rgb(255, 0, 0, 0.5)';
+        Game.getInstance().ctx.fillRect(this.cameraBox.position.x, this.cameraBox.position.y, this.cameraBox.width, this.cameraBox.height);
     }
     renderLowerBackground() {
-
-        const canvasCtx = Game.getInstance().canvasCtx;
-        canvasCtx.drawImage(
-            this.lowerBackground,
-            (this.position.x / 2) - this.offset.x,
-            this.position.y / 2 - this.offset.y,
-            this.width + this.offset.x,
-            this.height + this.offset.y,
-            this.position.x - Math.abs(this.offset.x),
-            this.position.y - Math.abs(this.offset.y),
-            (SCREEN_WIDTH / 2) + Math.abs(this.offset.x),
-            this.lowerBackground.height + Math.abs(this.offset.y)
-        );
+        Game.getInstance().ctx.drawImage(this.lowerBackground, this.position.x / 2 - this.offset.x, this.position.y / 2 - this.offset.y, this.width + this.offset.x, this.height + this.offset.y, this.position.x - Math.abs(this.offset.x), this.position.y - Math.abs(this.offset.y), SCREEN_WIDTH / 2 + Math.abs(this.offset.x), this.lowerBackground.height + Math.abs(this.offset.y));
     }
 
     renderTopBackground() {
         if (!this.topBackground) {
             return;
         }
-        const canvasCtx = Game.getInstance().canvasCtx;
-        canvasCtx.drawImage(
-            this.topBackground,
-            (this.position.x / 2) - this.offset.x,
-            this.position.y / 2 - this.offset.y,
-            this.width + this.offset.x,
-            this.height + this.offset.y,
-            this.position.x - Math.abs(this.offset.x),
-            this.position.y - Math.abs(this.offset.y),
-            (SCREEN_WIDTH / 2) + Math.abs(this.offset.x),
-            this.topBackground.height + Math.abs(this.offset.y)
-        );
+        Game.getInstance().ctx.drawImage(this.topBackground, this.position.x / 2 - this.offset.x, this.position.y / 2 - this.offset.y, this.width + this.offset.x, this.height + this.offset.y, this.position.x - Math.abs(this.offset.x), this.position.y - Math.abs(this.offset.y), SCREEN_WIDTH / 2 + Math.abs(this.offset.x), this.topBackground.height + Math.abs(this.offset.y));
     }
 
     moveCamera() {
-        const { canvasCtx, player } = Game.getInstance();
+        const { ctx, player } = Game.getInstance();
 
         const cameraBoxRight = this.cameraBox.position.x + this.cameraBox.width;
         if (cameraBoxRight > this.position.x + this.lowerBackground.width && cameraBoxRight < Game.getInstance().width - 200) {
             const displacement = Math.abs(player.direction.x);
-            canvasCtx.translate(-displacement, 0);
+            ctx.translate(-displacement, 0);
             this.position.x += displacement;
         }
 
         const cameraBoxLeft = this.cameraBox.position.x;
         if (cameraBoxLeft < this.position.x && cameraBoxLeft > 100) {
             const displacement = Math.abs(player.direction.x);
-            canvasCtx.translate(displacement, 0);
+            ctx.translate(displacement, 0);
             this.position.x -= displacement;
         }
 
         const cameraBoxBottom = this.cameraBox.position.y + this.cameraBox.height;
         if (cameraBoxBottom > this.position.y + 550 && cameraBoxBottom < Game.getInstance().height * 2) {
             const displacement = Math.abs(player.direction.y);
-            canvasCtx.translate(0, -displacement);
+            ctx.translate(0, -displacement);
             this.position.y += displacement;
         }
 
         const cameraBoxTop = this.cameraBox.position.y;
         if (cameraBoxTop < this.position.y && cameraBoxTop > 0) {
             const displacement = Math.abs(player.direction.y);
-            canvasCtx.translate(0, displacement);
+            ctx.translate(0, displacement);
             this.position.y -= displacement;
         }
     }

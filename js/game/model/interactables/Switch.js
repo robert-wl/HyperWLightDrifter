@@ -1,5 +1,5 @@
 import Collideable from "../collideable/Collideable.js";
-import Game from "../Game.js";
+import Game from "../Game/Game.js";
 import {get_image} from "../../helper/fileReader.js";
 
 
@@ -30,7 +30,7 @@ export default class Switch extends Collideable {
         }
     }
     render() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         if(this.stage === "off") {
             get_image("switch", "switch_off", 1, (image) => {
                 ctx.drawImage(image, this.x, this.y, this.w, this.h);

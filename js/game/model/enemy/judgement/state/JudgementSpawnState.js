@@ -1,6 +1,6 @@
 import JudgementBaseState from "./JudgementBaseState.js";
 import {get_image} from "../../../../helper/fileReader.js";
-import Game from "../../../Game.js";
+import Game from "../../../Game/Game.js";
 
 
 export default class JudgementSpawnState extends JudgementBaseState {
@@ -22,7 +22,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
     }
 
     drawImage(currJudgement) {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         get_image('boss/spawn', 'judgement_spawn', this.animationStage, (img) => {
             ctx.drawImage(
                 img,

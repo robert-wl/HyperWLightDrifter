@@ -1,5 +1,5 @@
 import Enemy from '../Enemy.js';
-import Game from '../../Game.js';
+import Game from '../../Game/Game.js';
 import CrystalSpiderBaseState from './state/CrystalSpiderBaseState.js';
 import CrystalSpiderMoveState from './state/CrystalSpiderMoveState.js';
 import CrystalSpiderAttackState from './state/CrystalSpiderAttackState.js';
@@ -58,7 +58,7 @@ export default class CrystalSpider extends Enemy {
             });
         }
 
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         if(this.damaged >= 0) {
             ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)';
         }

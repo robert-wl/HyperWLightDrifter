@@ -1,4 +1,4 @@
-import Game from "../../model/Game.js";
+import Game from "../../model/Game/Game.js";
 
 export default function playerCollision({ position, box, angle }) {
     const player = Game.getInstance().player;
@@ -44,4 +44,15 @@ export default function playerCollision({ position, box, angle }) {
         }
     }
     return false;
+}
+
+export function checkCollision({ collideables, x, y, w, h }){
+    return collideables.every((c) => {
+        return c.checkCollision({
+            x: x,
+            y: y,
+            w: w,
+            h: h,
+        });
+    })
 }

@@ -1,12 +1,12 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import Game from '../../../Game.js';
+import Game from '../../../Game/Game.js';
 import JudgementBomb from '../JudgementBomb.js';
 
 export default class JudgementBombState extends JudgementBaseState {
     enterState(currJudgement) {
         this.number = 0;
         this.animationStage = 1;
-        this.maxAttackCount = 8;
+        this.maxAttackCount = 2;
         this.attackCount = 0;
         this.attacking = 5;
         this.attackAngle = currJudgement.angle;
@@ -28,8 +28,10 @@ export default class JudgementBombState extends JudgementBaseState {
         }
 
         if(this.number % 100 === 0 && this.attackCount === this.maxAttackCount) {
-            for(const bomb of currJudgement.bombs) {
-                bomb.spawning = false;
+            for(const bomb of Game.getInstance().enemyList) {
+                if(bomb instanceof JudgementBomb) {
+                    bomb.spawning = false;
+                }
             }
             this.attackCount++;
         }

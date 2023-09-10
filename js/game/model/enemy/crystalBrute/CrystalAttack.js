@@ -15,7 +15,7 @@ export default class CrystalAttack {
     }
 
     update() {
-        // const ctx = Game.getInstance().canvasCtx;
+        // const ctx = Game.getInstance().ctx;
         // ctx.fillStyle = "red";
         // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 

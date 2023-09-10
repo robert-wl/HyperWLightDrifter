@@ -1,4 +1,4 @@
-import Game from '../Game.js';
+import Game from '../Game/Game.js';
 
 export default class Enemy {
     constructor({ x, y, hitbox, w, h, health, maxHealth }) {
@@ -20,6 +20,7 @@ export default class Enemy {
     }
 
     damage({ amount, angle }) {
+        console.log("hai")
         if (this.health <= 0) {
             return;
         }
@@ -41,7 +42,7 @@ export default class Enemy {
     }
 
     debugMode() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         ctx.fillStyle = 'rgb(255, 255, 0, 1)';
         ctx.fillRect(
             this.position.x + this.hitbox.x,

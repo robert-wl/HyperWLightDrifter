@@ -1,5 +1,5 @@
 import CrystalBruteBaseState from "./CrystalBruteBaseState.js";
-import Game from "../../../Game.js";
+import Game from "../../../Game/Game.js";
 import {get_image} from "../../../../helper/fileReader.js";
 
 export default class CrystalBruteMoveState extends CrystalBruteBaseState {
@@ -40,7 +40,7 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         }
     }
     drawImage(currBrute){
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         const angle = currBrute.angle;
 
         if(this.number % 20 === 0){

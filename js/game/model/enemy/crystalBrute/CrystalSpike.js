@@ -1,5 +1,5 @@
 import { get_image } from '../../../helper/fileReader.js';
-import Game from '../../Game.js';
+import Game from '../../Game/Game.js';
 import { drawMirroredY } from '../../../helper/renderer/drawer.js';
 import playerCollision from "../../../helper/collision/playerCollision.js";
 
@@ -53,7 +53,7 @@ export default class CrystalSpike {
 
     render() {
         if(Game.getInstance().debug) {
-            const ctx = Game.getInstance().canvasCtx;
+            const ctx = Game.getInstance().ctx;
             ctx.fillStyle = "red";
             ctx.fillRect(
                 this.position.x + this.hitbox.x,
@@ -63,7 +63,7 @@ export default class CrystalSpike {
             );
         }
 
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         get_image('enemy/crystal_brute', 'crystal_spike', this.animationStage + 1, (image) => {
             if (this.left) {
                 drawMirroredY({

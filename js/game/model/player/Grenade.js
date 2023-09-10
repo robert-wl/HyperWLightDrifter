@@ -1,4 +1,4 @@
-import Game from "../Game.js";
+import Game from "../Game/Game.js";
 import {get_image} from "../../helper/fileReader.js";
 import {drawRotated} from "../../helper/renderer/drawer.js";
 
@@ -57,7 +57,7 @@ export default class Grenade {
 
 
     render() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         get_image('player/grenade', 'grenade', this.animationStage, (img) => {
             drawRotated({
                 canvas: ctx,

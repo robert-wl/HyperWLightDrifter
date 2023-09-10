@@ -1,7 +1,7 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import playerDashDrawer from '../../../helper/renderer/playerDashDrawer.js';
-import Game from '../../Game.js';
+import Game from '../../Game/Game.js';
 
 export default class PlayerDashState extends PlayerBaseState {
     number = 1;

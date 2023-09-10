@@ -1,4 +1,4 @@
-import Game from '../Game.js';
+import Game from '../Game/Game.js';
 import { get_image } from '../../helper/fileReader.js';
 import { drawRotated } from '../../helper/renderer/drawer.js';
 import enemyCollision from '../../helper/collision/enemyCollision.js';
@@ -56,7 +56,7 @@ export default class GunProjectile {
     }
 
     render() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         get_image('player/aim/gun', 'projectile', null, (img) => {
             drawRotated({
                 canvas: ctx,

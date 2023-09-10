@@ -1,5 +1,5 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
-import Game from '../../../Game.js';
+import Game from '../../../Game/Game.js';
 import { get_image } from '../../../../helper/fileReader.js';
 
 export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
@@ -39,7 +39,7 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         }
     }
     drawImage(currSpider) {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         const angle = currSpider.angle;
 
         if (this.number % 4 === 0) {

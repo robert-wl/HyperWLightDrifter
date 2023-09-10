@@ -1,4 +1,4 @@
-import Game from '../../Game.js';
+import Game from '../../Game/Game.js';
 import { get_image } from '../../../helper/fileReader.js';
 import Enemy from '../Enemy.js';
 
@@ -60,7 +60,7 @@ export default class JudgementBullet extends Enemy {
     }
 
     render() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         get_image('boss/attack/bullet', 'judgement_bullet', Math.round((this.lifetime / this.maxLifetime) * 3) + 1, (img) => {
             ctx.drawImage(img, this.position.x, this.position.y, img.width, img.height);
         });

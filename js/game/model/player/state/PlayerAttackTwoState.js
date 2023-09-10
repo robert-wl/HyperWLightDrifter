@@ -1,7 +1,7 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { get_image } from '../../../helper/fileReader.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
-import Game from '../../Game.js';
+import Game from '../../Game/Game.js';
 import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
 
 const scale = 2;
@@ -18,7 +18,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         this.direction = direction;
         currPlayer.lastDirection = direction;
 
-        currPlayer.getHitbox({
+        currPlayer.getAttackBox({
             direction: this.direction,
         });
 
@@ -37,7 +37,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
     updateState(currPlayer) {
         this.number++;
 
-        currPlayer.getHitbox({
+        currPlayer.getAttackBox({
             direction: this.direction,
         });
 

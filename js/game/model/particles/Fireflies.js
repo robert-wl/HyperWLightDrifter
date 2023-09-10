@@ -1,5 +1,5 @@
 import Particles from './Particles.js';
-import Game from '../Game.js';
+import Game from '../Game/Game.js';
 import { get_image } from '../../helper/fileReader.js';
 import { drawRotated } from '../../helper/renderer/drawer.js';
 
@@ -56,7 +56,7 @@ export default class Fireflies extends Particles {
     }
 
     drawImage() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
 
         get_image('particles/firefly', 'fireflies', (this.lifeSpan % 4) + 1, (image) => {
             ctx.globalAlpha = this.lifeSpan / 22;

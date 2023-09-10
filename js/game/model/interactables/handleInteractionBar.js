@@ -1,11 +1,11 @@
-import Game from "../Game.js";
+import Game from "../Game/Game.js";
 import {get_image} from "../../helper/fileReader.js";
 
 let animationStage = 1;
 let number = 0;
 export default function handleInteractionBar({ medkit, opacity }){
     const player = Game.getInstance().player;
-    const ctx = Game.getInstance().canvasCtx;
+    const ctx = Game.getInstance().ctx;
 
 
     if(Game.getInstance().keys.includes("e") && opacity >= 0.5){

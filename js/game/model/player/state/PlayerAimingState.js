@@ -1,22 +1,25 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getMouseDirection, getMoveDirection } from '../../../helper/collision/directionHandler.js';
-import { get_image } from '../../../helper/fileReader.js';
-import { drawMirroredY, drawRotated } from '../../../helper/renderer/drawer.js';
-import Game from '../../Game.js';
+import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
+import { drawImage, drawMirroredY, drawRotated } from '../../../helper/renderer/drawer.js';
+import Game from '../../Game/Game.js';
 import GunProjectile from '../GunProjectile.js';
+import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
+import { getImage } from '../../../helper/imageLoader.js';
+import GameSettings from '../../../constants.js';
 
 const scale = 2;
-const recoil = 3;
 export default class PlayerAimingState extends PlayerBaseState {
     exploding = 0;
     updateState(currPlayer) {
-        const angle = currPlayer.lookAngle;
+        const { lookAngle } = currPlayer;
+        const { clicks } = Game.getInstance();
+        this.angle = lookAngle;
 
-        this.angle = angle;
+        this.direction = getMouseDirection({
+            angle: lookAngle,
+        });
 
-        this.direction = getMouseDirection({ angle });
-
-        if (!Game.getInstance().clicks.includes('right')) {
+        if (!clicks.includes('right')) {
             currPlayer.handleSwitchState({
                 move: true,
                 attackOne: true,
@@ -24,164 +27,212 @@ export default class PlayerAimingState extends PlayerBaseState {
                 throws: true,
             });
         }
-        if (Game.getInstance().clicks.includes('left') && currPlayer.bullets > 0) {
-            currPlayer.bullets--;
-            const projectilePosition = {
-                x: currPlayer.position.x + currPlayer.width / 2 + 45 * Math.cos(angle),
-                y: currPlayer.position.y + currPlayer.height / 2 + 45 * Math.sin(angle),
-            };
-            GunProjectile.generate({
-                position: projectilePosition,
-                angle: this.angle,
+        if (clicks.includes('left') && currPlayer.bullets > 0) {
+            this.shootHandler({
+                currPlayer,
+                clicks,
             });
-            Game.getInstance().clicks.splice(Game.getInstance().clicks.indexOf('left'), 1);
-
-            currPlayer.direction.x = recoil * Math.cos(this.angle + Math.PI);
-            currPlayer.direction.y = recoil * Math.sin(this.angle + Math.PI);
-            this.exploding = 5;
-            // Game.getInstance().camera.shakeCamera({
-            //     offset: {
-            //         x: 0,
-            //         y: 5,
-            //     }
-            // });
         }
+    }
 
-        // const {playerDirection } = getMoveDirection({
-        //     keys: Game.getInstance().keys,
-        //     currPlayer,
-        // });
-        //
-        // currPlayer.direction = {
-        //     x: playerDirection.x * 0.8,
-        //     y: playerDirection.y * 0.8,
-        // }
+    shootHandler({ currPlayer, clicks }) {
+        currPlayer.bullets -= 1;
+
+        const projectilePosition = {
+            x: getHorizontalValue({
+                initial: currPlayer.position.x + currPlayer.width / 2,
+                magnitude: currPlayer.playerDefault.PROJECTILE_OFFSET,
+                angle: this.angle,
+            }),
+            y: getVerticalValue({
+                initial: currPlayer.position.y + currPlayer.height / 2,
+                magnitude: currPlayer.playerDefault.PROJECTILE_OFFSET,
+                angle: this.angle,
+            }),
+        };
+
+        GunProjectile.generate({
+            position: projectilePosition,
+            angle: this.angle,
+        });
+
+        clicks.splice(clicks.indexOf('left'), 1);
+
+        currPlayer.direction.x = getHorizontalValue({
+            magnitude: currPlayer.playerDefault.GUN.RECOIL,
+            angle: this.angle + Math.PI,
+        });
+        currPlayer.direction.y = getVerticalValue({
+            magnitude: currPlayer.playerDefault.GUN.RECOIL,
+            angle: this.angle + Math.PI,
+        });
+
+        this.exploding = 5;
     }
     drawImage(currPlayer) {
         if (this.direction === 'w') {
-            get_image('player/aim/gun', 'railgun', null, (img) => {
-                drawRotated({
-                    canvas: currPlayer.canvas,
-                    img: img,
-                    position: {
-                        x: currPlayer.position.x + 35,
-                        y: currPlayer.position.y + 20,
-                    },
-                    angle: this.angle + (Math.PI - Math.PI / 16),
-                });
+            const aimTop = getImage('aim_top');
+
+            this.drawPlayer({
+                image: aimTop,
+                currPlayer: currPlayer,
+                gunOffset: {
+                    x: currPlayer.playerDefault.GUN.OFFSET.UP.X,
+                    y: currPlayer.playerDefault.GUN.OFFSET.UP.Y,
+                },
+                playerOffset: {
+                    x: -70,
+                    y: -30,
+                },
+                angle: this.angle + (Math.PI - Math.PI / 16),
             });
-            get_image('player/aim', 'aim_top', null, (img) => {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 70, currPlayer.position.y - 30, img.width * scale, img.height * scale);
-            });
-            if (this.exploding > 0) {
-                this.exploding--;
-                this.renderExplosion({
-                    position: {
-                        x: currPlayer.position.x + currPlayer.width / 2 + 35 * Math.cos(this.angle),
-                        y: currPlayer.position.y + currPlayer.height / 2 + 35 * Math.sin(this.angle),
-                    },
-                });
-            }
+
             return;
         }
         if (this.direction === 'a') {
-            get_image('player/aim/gun', 'railgun', null, (img) => {
-                drawRotated({
-                    canvas: currPlayer.canvas,
-                    img: img,
-                    position: {
-                        x: currPlayer.position.x + 25,
-                        y: currPlayer.position.y + 30,
-                    },
-                    angle: this.angle + 3 * Math.PI,
-                    mirrored: true,
-                });
+            const aimSide = getImage('aim_side');
+
+            this.drawPlayer({
+                image: aimSide,
+                currPlayer: currPlayer,
+                gunOffset: {
+                    x: currPlayer.playerDefault.GUN.OFFSET.LEFT.X,
+                    y: currPlayer.playerDefault.GUN.OFFSET.LEFT.Y,
+                },
+                playerOffset: {
+                    x: -70,
+                    y: -30,
+                },
+                angle: this.angle + 3 * Math.PI,
+                mirrored: true,
             });
-            get_image('player/aim', 'aim_side', null, (img) => {
-                drawMirroredY({
-                    canvas: currPlayer.canvas,
-                    img: img,
-                    position: {
-                        x: currPlayer.position.x - 75,
-                        y: currPlayer.position.y - 30,
-                    },
-                    width: img.width * scale,
-                    height: img.height * scale,
-                });
-            });
-            if (this.exploding > 0) {
-                this.exploding--;
-                this.renderExplosion({
-                    position: {
-                        x: currPlayer.position.x + currPlayer.width / 2 + 30 * Math.cos(this.angle),
-                        y: currPlayer.position.y + currPlayer.height / 2 + 30 * Math.sin(this.angle),
-                    },
-                });
-            }
+
             return;
         }
         if (this.direction === 's') {
-            get_image('player/aim', 'aim_bottom', null, (img) => {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 70, currPlayer.position.y - 30, img.width * scale, img.height * scale);
+            const aimBottom = getImage('aim_bottom');
+
+            this.drawPlayer({
+                image: aimBottom,
+                currPlayer: currPlayer,
+                gunOffset: {
+                    x: currPlayer.playerDefault.GUN.OFFSET.BOTTOM.X,
+                    y: currPlayer.playerDefault.GUN.OFFSET.BOTTOM.Y,
+                },
+                playerOffset: {
+                    x: -70,
+                    y: -30,
+                },
+                angle: this.angle + 3 * Math.PI,
+                bottom: true,
             });
-            get_image('player/aim/gun', 'railgun', null, (img) => {
-                drawRotated({
-                    canvas: currPlayer.canvas,
-                    img: img,
-                    position: {
-                        x: currPlayer.position.x + 30,
-                        y: currPlayer.position.y + 32.5,
-                    },
-                    angle: this.angle + 3 * Math.PI,
-                });
-            });
-            if (this.exploding > 0) {
-                this.exploding--;
-                this.renderExplosion({
-                    position: {
-                        x: currPlayer.position.x + currPlayer.width / 2 + 25 * Math.cos(this.angle),
-                        y: currPlayer.position.y + currPlayer.height / 2 + 25 * Math.sin(this.angle),
-                    },
-                });
-            }
+
             return;
         }
         if (this.direction === 'd') {
-            get_image('player/aim/gun', 'railgun', null, (img) => {
-                drawRotated({
-                    canvas: currPlayer.canvas,
-                    img: img,
-                    position: {
-                        x: currPlayer.position.x + 45,
-                        y: currPlayer.position.y + 30,
-                    },
-                    angle: this.angle + 3 * Math.PI,
-                });
+            const aimSide = getImage('aim_side');
+
+            this.drawPlayer({
+                image: aimSide,
+                currPlayer: currPlayer,
+                gunOffset: {
+                    x: currPlayer.playerDefault.GUN.OFFSET.RIGHT.X,
+                    y: currPlayer.playerDefault.GUN.OFFSET.RIGHT.Y,
+                },
+                playerOffset: {
+                    x: -70,
+                    y: -30,
+                },
+                angle: this.angle + 3 * Math.PI,
             });
-            get_image('player/aim', 'aim_side', null, (img) => {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 70, currPlayer.position.y - 30, img.width * scale, img.height * scale);
-            });
-            if (this.exploding > 0) {
-                this.exploding--;
-                this.renderExplosion({
-                    position: {
-                        x: currPlayer.position.x + currPlayer.width / 2 + 35 * Math.cos(this.angle),
-                        y: currPlayer.position.y + currPlayer.height / 2 - 5 + 35 * Math.sin(this.angle),
-                    },
-                });
-            }
         }
     }
 
-    renderExplosion({ position }) {
-        const ctx = Game.getInstance().canvasCtx;
-        get_image('player/aim/gun', 'gun_explosion', null, (img) => {
-            ctx.translate(-img.width, -img.height);
-            ctx.drawImage(img, position.x, position.y, img.width * 3, img.height * 3);
-            ctx.translate(img.width, img.height);
+    drawPlayer({ image, currPlayer, gunOffset, playerOffset, angle, mirrored = false, bottom = false }) {
+        const railgun = getImage('railgun');
+
+        if (!bottom) {
+            drawRotated({
+                img: railgun,
+                position: {
+                    x: currPlayer.position.x + gunOffset.x,
+                    y: currPlayer.position.y + gunOffset.y,
+                },
+                angle: angle,
+                mirrored: mirrored,
+            });
+        }
+
+        //TODO MAKE BETTER ASSETS
+        if (mirrored) {
+            drawMirroredY({
+                img: image,
+                position: {
+                    x: currPlayer.position.x + playerOffset.x,
+                    y: currPlayer.position.y + playerOffset.y,
+                },
+                width: image.width * GameSettings.game.GAME_SCALE,
+                height: image.height * GameSettings.game.GAME_SCALE,
+            });
+        } else {
+            drawImage({
+                img: image,
+                x: currPlayer.position.x + playerOffset.x,
+                y: currPlayer.position.y + playerOffset.y,
+                width: image.width * GameSettings.game.GAME_SCALE,
+                height: image.height * GameSettings.game.GAME_SCALE,
+            });
+        }
+
+        if (bottom) {
+            drawRotated({
+                img: railgun,
+                position: {
+                    x: currPlayer.position.x + gunOffset.x,
+                    y: currPlayer.position.y + gunOffset.y,
+                },
+                angle: angle,
+                mirrored: mirrored,
+            });
+        }
+
+        if (this.exploding <= 0) {
+            return;
+        }
+
+        this.exploding--;
+
+        this.drawExplosion({
+            explosionDistance: currPlayer.EXPLOSION_DISTANCE,
+            currPlayer: currPlayer,
+            angle: angle,
         });
     }
 
-    enterState(currPlayer) {}
-    exitState(currPlayer) {}
+    drawExplosion({ explosionDistance, currPlayer, angle }) {
+        //TODO FIX THIS
+        const { ctx } = Game.getInstance();
+        const x = getHorizontalValue({
+            initial: currPlayer.position.x + currPlayer.width / 2,
+            magnitude: explosionDistance,
+            angle: angle,
+        });
+        const y = getVerticalValue({
+            initial: currPlayer.position.y + currPlayer.height / 2,
+            magnitude: explosionDistance,
+            angle: angle,
+        });
+
+        const explosion = getImage('gun_explosion');
+
+        ctx.translate(-explosion.width, -explosion.height);
+        ctx.drawImage(
+            explosion,
+            x,
+            y,
+            explosion.width * GameSettings.game.GAME_SCALE,
+            explosion.height * GameSettings.game.GAME_SCALE
+        );
+        ctx.translate(explosion.width, explosion.height);
+    }
 }

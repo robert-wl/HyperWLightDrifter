@@ -1,5 +1,5 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import Game from '../../../Game.js';
+import Game from '../../../Game/Game.js';
 import { get_image } from '../../../../helper/fileReader.js';
 import { drawMirroredY } from '../../../../helper/renderer/drawer.js';
 import judgementDashDrawer from '../../../../helper/boss/judgmenentDashDrawer.js';
@@ -39,7 +39,7 @@ export default class JudgementDashState extends JudgementBaseState {
 
         const angle = currJudgement.angle;
         const data = {
-            canvas: Game.getInstance().canvasCtx,
+            canvas: Game.getInstance().ctx,
             moveNumber: this.animationStage,
             angle: angle,
             lastPosition: { ...currJudgement.position },
@@ -55,7 +55,7 @@ export default class JudgementDashState extends JudgementBaseState {
     }
 
     drawImage(currJudgement) {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
 
         for (let i = 0; i < this.lastData.length; i++) {
             ctx.globalAlpha = 1 - (this.lastData.length - i) / this.lastData.length;

@@ -1,4 +1,4 @@
-import Game from "../../Game.js";
+import Game from "../../Game/Game.js";
 
 
 export default class HealthBar {
@@ -11,28 +11,29 @@ export default class HealthBar {
         this.position = position;
         this.offset = offset;
         this.maxHealth = maxHealth;
-        this.ctx = Game.getInstance().canvasCtx;
+        this.ctx = Game.getInstance().ctx;
     }
 
-    update({ health }) {
-        this.draw({ health });
+    update({ health, x, y }) {
+        this.draw({ health, xOff: x, yOff: y });
     }
 
-    draw({ health }) {
-        const x = this.position.x + this.offset.x - this.width / 2;
-        const y = this.position.y + this.offset.y;
+    draw({ health, xOff, yOff }) {
+
+        const x = (xOff || this.position.x) + this.offset.x - this.width / 2;
+        const y = (yOff || this.position.y) + this.offset.y;
         this.ctx.fillStyle = "rgb(255, 75, 75, 0.5)";
         this.ctx.fillRect(
             (x + this.width / 4) - 4,
             (y + this.height) - 4,
-            this.width / 2 + 8,
+            this.width / 2 + 4,
             5 + 8
         );
         this.ctx.fillStyle = "rgb(50, 50, 50, 0.9)";
         this.ctx.fillRect(
             (x + this.width / 4) - 2,
             (y + this.height) - 2,
-            this.width / 2 + 4,
+            this.width / 2,
             5 + 4
         );
         for(let i = 0; i < health; i++){

@@ -1,4 +1,4 @@
-import Game from '../../Game.js';
+import Game from '../../Game/Game.js';
 import { get_image } from '../../../helper/fileReader.js';
 import Enemy from '../Enemy.js';
 
@@ -58,7 +58,7 @@ export default class JudgementLaser extends Enemy {
     }
 
     render() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         get_image('boss/laser', 'judgement_laser_bullet', null, (img) => {
             // drawRotated({
             //     canvas: ctx,

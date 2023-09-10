@@ -4,55 +4,47 @@ import PlayerMoveState from './state/PlayerMoveState.js';
 import PlayerAttackState from './state/PlayerAttackState.js';
 import PlayerAttackTwoState from './state/PlayerAttackTwoState.js';
 import PlayerDashState from './state/PlayerDashState.js';
-import Game from '../Game.js';
+import Game from '../Game/Game.js';
 import renderShadow from '../../helper/renderer/shadow.js';
 import PlayerAimingState from './state/PlayerAimingState.js';
 import PlayerHurtState from './state/PlayerHurtState.js';
-import playerEffectsHandler from "./playerEffectsHandler.js";
-import PlayerThrowingState from "./state/PlayerThrowingState.js";
+import playerEffectsHandler from './playerEffectsHandler.js';
+import PlayerThrowingState from './state/PlayerThrowingState.js';
+import GameSettings from '../../constants.js';
+import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
+import { checkCollision } from '../../helper/collision/playerCollision.js';
 
-export const playerOffset = {
-    x: 30,
-    y: 50,
-};
 
 export default class Player {
     constructor() {
-        this.maxhealth = 6;
-        this.health = 1;
-        this.healthPack = 3;
-        this.stamina = 100;
-        this.bombs = 2;
-        this.bullets = 3;
-        this.friction = 0.8;
-        this.maxSpeed = 4;
-        this.attackMoveSpeed = 4;
-        this.dashMoveSpeed = 16;
+        const { player: playerDefault } = GameSettings;
+        this.maxhealth = playerDefault.MAX_HEALTH;
+        this.health = playerDefault.MAX_HEALTH;
+        this.healthPack = playerDefault.MAX_HEALTHPACKS;
+        this.stamina = playerDefault.MAX_STAMINA;
+        this.bombs = playerDefault.MAX_BOMBS;
+        this.bullets = playerDefault.MAX_BULLETS;
+        this.friction = playerDefault.FRICTION;
+        this.maxSpeed = playerDefault.MAX_SPEED;
+        this.attackMoveSpeed = playerDefault.ATTACK_MOVE_SPEED;
+        this.dashMoveSpeed = playerDefault.DASH_MOVE_SPEED;
         this.direction = {
             x: 0,
-            y: 1,
+            y: 0,
         };
         this.theta = 0;
         this.lookAngle = 0;
-        this.position = {
-            x: 200,
-            y: 200,
-        };
-        this.width = 50;
-        this.height = 60;
-        this.hitbox = {
-            x: 15,
-            y: 0,
-            w: 15,
-            h: 0,
-        };
+        this.position = playerDefault.START_POSITION;
+        this.width = playerDefault.WIDTH;
+        this.height = playerDefault.HEIGHT;
+        this.hitbox = playerDefault.HITBOX;
         this.attackBox = {
             x: 0,
             y: 0,
             w: 0,
             h: 0,
         };
-        this.lastDirection = 's';
+        this.lastDirection = playerDefault.LAST_DIRECTION;
         this.combo = false;
         this.reversed = false;
         this.counter = 0;
@@ -68,81 +60,112 @@ export default class Player {
         this.canvas = null;
         this.healing = 0;
         this.currState = this.idleState;
-        this.immunity = 30;
+        this.immunity = playerDefault.MAX_IMMUNITY;
         this.projectiles = [];
+        this.playerDefault = playerDefault;
     }
 
     updateState() {
-        if(this.bombs < 2) {
-            this.bombs += 0.001;
-        }
+        this.updateBombs();
+
         renderShadow({
             position: {
-                x: this.position.x - 24.5,
-                y: this.position.y - 5,
+                x: this.position.x + this.playerDefault.SHADOW_OFFSET.X,
+                y: this.position.y + this.playerDefault.SHADOW_OFFSET.Y,
             },
             sizeMultiplier: 1.5,
         });
+
         this.updateCounter();
+
         this.currState.updateState(this);
 
         playerEffectsHandler({
-            currPlayer: this
-        });
-        this.currState.drawImage(this);
-        playerEffectsHandler({
             currPlayer: this,
-            clear: true
         });
 
-        for (const projectile of this.projectiles) {
-            projectile.update();
-        }
+        this.currState.drawImage(this);
+
+        playerEffectsHandler({
+            currPlayer: this,
+            clear: true,
+        });
+
+        this.projectiles.forEach((projectile) => projectile.update());
+
         this.moveHandler();
+
         if (Game.getInstance().debug) {
             this.renderDebugBox();
         }
     }
 
-    updateCounter() {
-        this.counter += 1;
-        this.counter %= 7;
+    updateBombs() {
+        if (this.bombs > 2) {
+            return;
+        }
+        this.bombs += 0.001;
     }
+
+    updateCounter() {
+        this.counter = (this.counter + 1) % 7;
+    }
+
+    getHitboxCoordinates() {
+        return {
+            x: this.position.x + this.hitbox.x,
+            y: this.position.y + this.hitbox.y,
+            w: this.width - this.hitbox.w,
+            h: this.height - this.hitbox.h,
+        };
+    }
+
     renderDebugBox() {
-        const canvasCtx = Game.getInstance().canvasCtx;
-        canvasCtx.fillStyle = 'rgb(0, 255, 0, 0.5)';
-        canvasCtx.fillRect(this.position.x + this.hitbox.x, this.position.y + this.hitbox.y, this.width - this.hitbox.w, this.height - this.hitbox.h);
+        Game.getInstance().ctx.fillStyle = this.playerDefault.DEBUG_COLOR;
+
+        const { x, y, w, h } = this.getHitboxCoordinates();
+
+        Game.getInstance().ctx.fillRect(x, y, w, h);
     }
 
     damage({ angle }) {
         this.immunity = 0;
         this.health -= 1;
+
         if (this.currState !== this.hurtState) {
             this.switchState(this.hurtState);
         }
 
-        this.direction.x += 5 * Math.cos(angle + Math.PI);
-        this.direction.y += 5 * Math.sin(angle + Math.PI);
+        this.direction.x += getHorizontalValue({
+            magnitude: 5,
+            angle: angle + Math.PI,
+        });
+        this.direction.y += getVerticalValue({
+            magnitude: 5,
+            angle: angle + Math.PI,
+        });
     }
 
     handleSwitchState({ move, attackOne, attackTwo, dash, aim, throws }) {
-        if (Game.getInstance().clicks.includes('right') && aim) {
+        const { clicks, keys } = Game.getInstance();
+
+        if (clicks.includes('right') && aim) {
             return this.switchState(this.aimState);
         }
-        if(Game.getInstance().keys.includes('c') && throws && this.bombs >= 1){
+        if (keys.includes('c') && throws && this.bombs >= 1) {
             this.bombs--;
             return this.switchState(this.throwState);
         }
-        if (Game.getInstance().clicks.includes('left') && attackOne) {
+        if (clicks.includes('left') && attackOne) {
             return this.switchState(this.attackState);
         }
         if (this.combo && attackTwo) {
             return this.switchState(this.attackTwoState);
         }
-        if (Game.getInstance().keys.includes('space') && dash && this.stamina >= 10) {
+        if (keys.includes('space') && dash && this.stamina >= 10) {
             return this.switchState(this.dashState);
         }
-        if (['w', 'a', 's', 'd'].some((key) => Game.getInstance().keys.includes(key)) && move) {
+        if (['w', 'a', 's', 'd'].some((key) => keys.includes(key)) && move) {
             return this.switchState(this.moveState);
         }
         return this.switchState(this.idleState);
@@ -155,72 +178,80 @@ export default class Player {
     }
     moveHandler() {
         this.theta = Math.atan2(this.direction.y, this.direction.x);
-        const absVector = Math.sqrt(
-            this.direction.x * this.direction.x +
-            this.direction.y * this.direction.y
-        ) * this.friction;
-        this.direction.x = absVector * Math.cos(this.theta);
-        this.direction.y = absVector * Math.sin(this.theta);
 
-        const collideables = Game.getInstance().collideable;
+        const absVector =
+            getMagnitudeValue({
+                x: this.direction.x,
+                y: this.direction.y,
+            }) * this.friction;
+
+        this.direction.x = getHorizontalValue({
+            magnitude: absVector,
+            angle: this.theta,
+        });
+
+        this.direction.y = getVerticalValue({
+            magnitude: absVector,
+            angle: this.theta,
+        });
+
+        const { collideables } = Game.getInstance();
 
         if (
-            collideables.every((c) => {
-                return c.checkCollision({
-                    x: this.position.x + this.direction.x,
-                    y: this.position.y,
-                    w: this.width,
-                    h: this.height,
-                });
+            checkCollision({
+                collideables,
+                x: this.position.x + this.direction.x,
+                y: this.position.y,
+                w: this.width,
+                h: this.height,
             })
         ) {
             this.position.x += this.direction.x;
         }
         if (
-            collideables.every((c) => {
-                return c.checkCollision({
-                    x: this.position.x,
-                    y: this.position.y + this.direction.y,
-                    w: this.width,
-                    h: this.height,
-                });
+            checkCollision({
+                collideables,
+                x: this.position.x + this.direction.x,
+                y: this.position.y,
+                w: this.width,
+                h: this.height,
             })
         ) {
             this.position.y += this.direction.y;
         }
     }
 
-    getHitbox({ direction }) {
+    getAttackBox({ direction }) {
         if (direction === 'w') {
             this.attackBox = {
-                x: this.position.x - 20,
-                y: this.position.y - 30,
-                w: 100,
-                h: 75,
+                x: this.position.x + this.playerDefault.ATTACK_BOX.up.x,
+                y: this.position.y + this.playerDefault.ATTACK_BOX.up.y,
+                w: this.playerDefault.ATTACK_BOX.up.w,
+                h: this.playerDefault.ATTACK_BOX.up.h,
             };
         }
         if (direction === 'a') {
             this.attackBox = {
-                x: this.position.x - 50,
-                y: this.position.y - 10,
-                w: 100,
-                h: 85,
+                x: this.position.x + this.playerDefault.ATTACK_BOX.left.x,
+                y: this.position.y + this.playerDefault.ATTACK_BOX.left.y,
+                w: this.playerDefault.ATTACK_BOX.left.w,
+                h: this.playerDefault.ATTACK_BOX.left.h,
             };
         }
         if (direction === 'd') {
             this.attackBox = {
-                x: this.position.x,
-                y: this.position.y - 10,
-                w: 110,
-                h: 85,
+                x: this.position.x + this.playerDefault.ATTACK_BOX.right.x,
+                y: this.position.y + this.playerDefault.ATTACK_BOX.right.y,
+                w: this.playerDefault.ATTACK_BOX.right.w,
+                h: this.playerDefault.ATTACK_BOX.right.h,
             };
         }
         if (direction === 's') {
             this.attackBox = {
-                x: this.position.x - 25,
-                y: this.position.y + 10,
-                w: 100,
-                h: 100,
+                x: this.position.x + this.playerDefault.ATTACK_BOX.down.x,
+                y: this.position.y + this.playerDefault.ATTACK_BOX.down.y,
+                w: this.playerDefault.ATTACK_BOX.down.w,
+                h: this.playerDefault.ATTACK_BOX.down.h,
             };
         }
     }

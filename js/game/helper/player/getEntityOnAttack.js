@@ -1,4 +1,4 @@
-import Game from "../../model/Game.js";
+import Game from "../../model/Game/Game.js";
 
 
 export default function getEntityOnAttack({ player }) {

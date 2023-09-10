@@ -1,8 +1,8 @@
-import Game from './game/model/Game.js';
+import Game from './game/model/Game/Game.js';
 
-$(document).ready(() => {
+$(document).ready(async () => {
     const game = Game.getInstance();
-    game.init();
+    await game.init();
     game.debug = false;
     game.enemySpawn = false;
 

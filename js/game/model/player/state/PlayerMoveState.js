@@ -1,7 +1,7 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { get_image } from '../../../helper/fileReader.js';
 import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
-import Game from '../../Game.js';
+import Game from '../../Game/Game.js';
 
 const size = 1;
 export default class PlayerMoveState extends PlayerBaseState {

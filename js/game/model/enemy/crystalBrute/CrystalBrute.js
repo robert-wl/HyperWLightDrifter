@@ -1,5 +1,5 @@
 import Enemy from "../Enemy.js";
-import Game from "../../Game.js";
+import Game from "../../Game/Game.js";
 import renderShadow from "../../../helper/renderer/shadow.js";
 import CrystalBruteBaseState from "./state/CrystalBruteBaseState.js";
 import CrystalBruteAttackState from "./state/CrystalBruteAttackState.js";
@@ -55,7 +55,7 @@ export default class CrystalBrute extends Enemy {
 
     update() {
         this.knockback();
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         if (Game.getInstance().debug) {
             this.debugMode();
         }
@@ -73,7 +73,7 @@ export default class CrystalBrute extends Enemy {
 
         if(this.currState !== this.dieState){
             this.healthBar.update({
-                health: this.health
+                health: this.health,
             });
         }
 
@@ -86,7 +86,7 @@ export default class CrystalBrute extends Enemy {
         }
 
         if(this.damaged >= 0) {
-            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)'
+            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)';
         }
 
         this.currState.drawImage(this);

@@ -1,6 +1,6 @@
 import JudgementBaseState from "./JudgementBaseState.js";
 import {get_image} from "../../../../helper/fileReader.js";
-import Game from "../../../Game.js";
+import Game from "../../../Game/Game.js";
 import JudgementLaser from "../JudgementLaser.js";
 import {drawMirroredY} from "../../../../helper/renderer/drawer.js";
 
@@ -57,7 +57,7 @@ export default class JudgementLaserState extends JudgementBaseState {
     }
 
     drawImage(currJudgement) {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         get_image('boss/laser', 'judgement_laser', (this.animationStage % 13) + 1, (img) => {
             if(currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
                 drawMirroredY({

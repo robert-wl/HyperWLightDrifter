@@ -1,5 +1,5 @@
 import Collideable from '../collideable/Collideable.js';
-import Game from '../Game.js';
+import Game from '../Game/Game.js';
 import { get_image } from '../../helper/fileReader.js';
 import handleInteractionBar from './handleInteractionBar.js';
 
@@ -13,7 +13,7 @@ export default class Medkit extends Collideable {
             collideable: true,
         });
 
-        Game.getInstance().collideable.push(newMedkit);
+        Game.getInstance().collideables.push(newMedkit);
     }
     constructor({ x, y, w, h, collideable }) {
         super({ x, y, w, h, collideable });
@@ -35,7 +35,7 @@ export default class Medkit extends Collideable {
     }
 
     render() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         get_image('other/medkit', 'medkit', this.animationStage, (image) => {
             ctx.drawImage(image, this.x, this.y, 25, 25);
         });
@@ -55,7 +55,7 @@ export default class Medkit extends Collideable {
                     opacity: Math.abs(distance - 100) / 100,
                 })
             ) {
-                Game.getInstance().collideable.splice(Game.getInstance().collideable.indexOf(this), 1);
+                Game.getInstance().collideables.splice(Game.getInstance().collideable.indexOf(this), 1);
             }
         } else {
             Game.getInstance().player.interactionStage = 0;

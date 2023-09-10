@@ -1,4 +1,4 @@
-import Game from "../Game.js";
+import Game from "../Game/Game.js";
 
 
 export default class Collideable {
@@ -8,10 +8,10 @@ export default class Collideable {
             y,
             w,
             h,
-            collideable
+            collideable,
         });
 
-        Game.getInstance().collideable.push(newCollideable);
+        Game.getInstance().collideables.push(newCollideable);
     }
     constructor({ x, y, w, h, collideable }) {
         this.x = x;
@@ -22,7 +22,7 @@ export default class Collideable {
     }
 
     renderDebug() {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         ctx.fillStyle = "rgb(0, 255, 0, 0.2)";
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }

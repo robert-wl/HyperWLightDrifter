@@ -1,5 +1,5 @@
 import Player from "../model/player/Player.js";
-import Game from "../model/Game.js";
+import Game from "../model/Game/Game.js";
 
 
 const imageCache = {};

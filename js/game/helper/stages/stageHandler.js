@@ -1,19 +1,21 @@
-import {get_image} from "../fileReader.js";
-import Collideable from "../../model/collideable/Collideable.js";
-import Medkit from "../../model/interactables/Medkit.js";
-import Game from "../../model/Game.js";
-import Judgement from "../../model/enemy/judgement/Judgement.js";
+import { get_image } from '../fileReader.js';
+import Collideable from '../../model/collideable/Collideable.js';
+import Medkit from '../../model/interactables/Medkit.js';
+import Game from '../../model/Game/Game.js';
+import Judgement from '../../model/enemy/judgement/Judgement.js';
+import {imageLoader} from "../imageLoader.js";
+import GameSettings from "../../constants.js";
 
-
-export function firstStage({ game }) {
+export async function firstStage() {
+    await imageLoader(GameSettings.IMAGES.STAGE_ONE);
     get_image('world', 'map_ground', null, function (img) {
         Game.getInstance().camera.lowerBackground = img;
     });
     get_image('world', 'first_map_full', null, function (img) {
         Game.getInstance().camera.topBackground = img;
     });
-    game.player.position.x = 900;
-    game.player.position.y = 400;
+    Game.getInstance().player.position.x = 900;
+    Game.getInstance().player.position.y = 400;
 
     const colliders = [
         { x: 100, y: 0, w: 300, h: 1000 },
@@ -39,7 +41,6 @@ export function firstStage({ game }) {
         Medkit.generate(medkit);
     }
 }
-
 
 export function secondStage({ game }) {
     get_image('world', 'boss_room', null, function (img) {

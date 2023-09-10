@@ -1,5 +1,5 @@
 import Collideable from "./Collideable.js";
-import Game from "../Game.js";
+import Game from "../Game/Game.js";
 import {get_image} from "../../helper/fileReader.js";
 import renderShadow from "../../helper/renderer/shadow.js";
 
@@ -13,7 +13,7 @@ export default class Trader extends Collideable {
             h: 104,
             collideable: true
         });
-        Game.getInstance().collideable.push(newTrader);
+        Game.getInstance().collideables.push(newTrader);
     }
     constructor({x, y, w, h, collideable}) {
         super({x, y, w, h, collideable});
@@ -31,7 +31,7 @@ export default class Trader extends Collideable {
     }
 
     render(){
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         renderShadow({
             position: {
                 x: this.x - 75,

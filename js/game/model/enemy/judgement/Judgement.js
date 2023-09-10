@@ -1,7 +1,7 @@
 import Enemy from '../Enemy.js';
 import JudgementBaseState from './state/JudgementBaseState.js';
 import JudgementSpawnState from './state/JudgementSpawnState.js';
-import Game from '../../Game.js';
+import Game from '../../Game/Game.js';
 import JudgementMoveState from './state/JudgementMoveState.js';
 import JudgementAttackState from './state/JudgementAttackState.js';
 import JudgementLaserState from './state/JudgementLaserState.js';
@@ -84,7 +84,7 @@ export default class Judgement extends Enemy {
             bomb.update();
         }
 
-        // Game.getInstance().canvasCtx.fillStyle = 'rgb(255, 255, 255, 0.1)';
-        // Game.getInstance().canvasCtx.fillRect(this.position.x, this.position.y, this.width * 2, this.height * 2);
+        // Game.getInstance().ctx.fillStyle = 'rgb(255, 255, 255, 0.1)';
+        // Game.getInstance().ctx.fillRect(this.position.x, this.position.y, this.width * 2, this.height * 2);
     }
 }

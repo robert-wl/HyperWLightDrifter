@@ -1,6 +1,6 @@
 import PlayerBaseState from "./PlayerBaseState.js";
 import {get_image} from "../../../helper/fileReader.js";
-import Game from "../../Game.js";
+import Game from "../../Game/Game.js";
 
 const scale = 2;
 export default class PlayerHurtState extends PlayerBaseState {
@@ -28,7 +28,7 @@ export default class PlayerHurtState extends PlayerBaseState {
     }
     drawImage(currPlayer){
         get_image('player/hurt', 'hurt', this.animationStage + 1, (img) => {
-            Game.getInstance().canvasCtx.drawImage(
+            Game.getInstance().ctx.drawImage(
                 img,
                 currPlayer.position.x - 15,
                 currPlayer.position.y - 10,

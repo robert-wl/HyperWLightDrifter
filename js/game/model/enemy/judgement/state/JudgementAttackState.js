@@ -1,5 +1,5 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import Game from '../../../Game.js';
+import Game from '../../../Game/Game.js';
 import { get_image } from '../../../../helper/fileReader.js';
 import { drawMirroredY } from '../../../../helper/renderer/drawer.js';
 import JudgementBullet from '../JudgementBullet.js';
@@ -21,7 +21,7 @@ export default class JudgementAttackState extends JudgementBaseState {
             this.animationStage++;
         }
         // if (Game.getInstance().debug || true) {
-        //     const ctx = Game.getInstance().canvasCtx;
+        //     const ctx = Game.getInstance().ctx;
         //     ctx.beginPath();
         //     ctx.arc(currJudgement.position.x + currJudgement.width / 2, currJudgement.position.y + currJudgement.height / 2, 100, currJudgement.angle - Math.PI / 3, currJudgement.angle + Math.PI / 3, false);
         //     ctx.lineTo(currJudgement.position.x + currJudgement.width / 2, currJudgement.position.y + currJudgement.height / 2);
@@ -69,7 +69,7 @@ export default class JudgementAttackState extends JudgementBaseState {
     }
 
     drawImage(currJudgement) {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
         get_image('boss/attack', 'judgement_attack', this.animationStage, (img) => {
             if (currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
                 drawMirroredY({

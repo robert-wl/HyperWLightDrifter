@@ -1,5 +1,5 @@
 import {get_image} from "../fileReader.js";
-import Game from "../../model/Game.js";
+import Game from "../../model/Game/Game.js";
 
 
 export default function hudHandler({ HUD, player }){

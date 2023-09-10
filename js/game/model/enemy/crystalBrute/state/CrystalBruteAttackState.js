@@ -1,6 +1,6 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
 import { get_image } from '../../../../helper/fileReader.js';
-import Game from '../../../Game.js';
+import Game from '../../../Game/Game.js';
 import CrystalSpike from '../CrystalSpike.js';
 import CrystalAttack from '../CrystalAttack.js';
 
@@ -31,7 +31,7 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
         // currBrute.position.y += Math.sin(this.angle) * currBrute.speed;
     }
     drawImage(currBrute) {
-        const ctx = Game.getInstance().canvasCtx;
+        const ctx = Game.getInstance().ctx;
 
         get_image('enemy/crystal_brute', 'crystal_brute_attack', this.animationStage, (image) => {
             if ((this.angle > 0 && this.angle < Math.PI / 2) || (this.angle < 0 && this.angle > -Math.PI / 2)) {
