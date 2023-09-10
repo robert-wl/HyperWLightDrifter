@@ -55,7 +55,7 @@ export default class Medkit extends Collideable {
                     opacity: Math.abs(distance - 100) / 100,
                 })
             ) {
-                Game.getInstance().collideables.splice(Game.getInstance().collideable.indexOf(this), 1);
+                Game.getInstance().collideables.splice(Game.getInstance().collideables.indexOf(this), 1);
             }
         } else {
             Game.getInstance().player.interactionStage = 0;

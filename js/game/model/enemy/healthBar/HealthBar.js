@@ -14,14 +14,21 @@ export default class HealthBar {
         this.ctx = Game.getInstance().ctx;
     }
 
-    update({ health, x, y }) {
-        this.draw({ health, xOff: x, yOff: y });
+    update({ health, position }) {
+        this.draw({ health, position });
     }
 
-    draw({ health, xOff, yOff }) {
+    draw({ health, position }) {
 
-        const x = (xOff || this.position.x) + this.offset.x - this.width / 2;
-        const y = (yOff || this.position.y) + this.offset.y;
+        //TODO REVISIT
+        if(health === this.maxHealth) {
+            return;
+        }
+        this.ctx.translate(-this.width / 2, -this.height / 2);
+
+        const x = position.x + this.offset.x + this.width / 2;
+        const y = position.y + this.offset.y;
+
         this.ctx.fillStyle = "rgb(255, 75, 75, 0.5)";
         this.ctx.fillRect(
             (x + this.width / 4) - 4,
@@ -43,6 +50,7 @@ export default class HealthBar {
             this.ctx.fillRect(posX, posY, 5, 5);
         }
         this.ctx.fillStyle = "rgb(255, 75, 75, 0.5)";
+        this.ctx.translate(this.width / 2, this.height / 2);
     }
 
 }

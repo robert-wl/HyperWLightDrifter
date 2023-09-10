@@ -35,8 +35,6 @@ $js/game/model/particles/Particles.js,b\4\b4d679c8d728de9f72ca26d52d75fdf7afa83
 +js/game/model/particles/firefliesSpawner.js,a\8\a826f12789363dabddbb25614ad88459d55f726e
 \
 ,js/game/helper/collision/directionHandler.js,a\6\a672fe0d513e96001e254817959671f98704b315
-a
-1js/game/model/player/state/PlayerThrowingState.js,7\5\75d9d8791eb17b619134b010c227c3b116d98f30
 ]
 -js/game/model/player/state/PlayerIdleState.js,a\6\a6d1b79ff9a89595f87587e5569afae97634843b
 i

@@ -44,6 +44,10 @@ export default class Player {
             w: 0,
             h: 0,
         };
+        this.centerPosition = {
+            x: this.position.x + this.width / 2,
+            y: this.position.y + this.height / 2,
+        };
         this.lastDirection = playerDefault.LAST_DIRECTION;
         this.combo = false;
         this.reversed = false;
@@ -66,6 +70,7 @@ export default class Player {
     }
 
     updateState() {
+
         this.updateBombs();
 
         renderShadow({
@@ -207,6 +212,7 @@ export default class Player {
             })
         ) {
             this.position.x += this.direction.x;
+            this.centerPosition.x += this.direction.x;
         }
         if (
             checkCollision({
@@ -218,6 +224,7 @@ export default class Player {
             })
         ) {
             this.position.y += this.direction.y;
+            this.centerPosition.y += this.direction.y;
         }
     }
 
@@ -254,5 +261,12 @@ export default class Player {
                 h: this.playerDefault.ATTACK_BOX.down.h,
             };
         }
+    }
+
+    getCenterPosition(){
+        return {
+            x: this.position.x + this.width / 2,
+            y: this.position.y + this.height / 2,
+        };
     }
 }

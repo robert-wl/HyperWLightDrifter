@@ -1,6 +1,9 @@
 
 
 const GameSettings = {
+    GAME: {
+        GAME_SCALE: 2,
+    },
     game: {
         GAME_SCALE: 2,
         SCREEN_WIDTH: 1920,
@@ -110,6 +113,43 @@ const GameSettings = {
             {
                 ref: 'player/aim/gun/gun_explosion.png',
                 name: 'gun_explosion',
+            },
+            {
+                ref: 'particles/firefly/fireflies.png',
+                name: 'fireflies',
+                amount: 4,
+            }
+        ],
+        STAGE_TWO: [
+            {
+                ref: 'player/aim/gun/railgun.png',
+                name: 'railgun',
+            },
+            {
+                ref: 'player/aim/aim_top.png',
+                name: 'aim_top',
+            },
+            {
+                ref: 'player/aim/aim_bottom.png',
+                name: 'aim_bottom',
+            },
+            {
+                ref: 'player/aim/aim_side.png',
+                name: 'aim_side',
+            },
+            {
+                ref: 'player/aim/gun/gun_explosion.png',
+                name: 'gun_explosion',
+            },
+            {
+                ref: 'boss/bomb/judgement_bomb.png',
+                name: 'judgement_bomb',
+                amount: 11,
+            },
+            {
+                ref: 'boss/bomb/judgement_explosion.png',
+                name: 'judgement_explosion',
+                amount: 8,
             }
         ]
     }

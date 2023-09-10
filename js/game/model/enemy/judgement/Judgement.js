@@ -10,19 +10,18 @@ import JudgementBombState from './state/JudgementBombState.js';
 
 export default class Judgement extends Enemy {
     static generate({ x, y }) {
-        const newJudgement = new Judgement({
+        Game.getInstance().boss = new Judgement({
             x,
             y,
             moveSpeed: 1,
             attackPosition: [
-                { x: 500, y: 250 },
-                { x: 500, y: 750 },
-                { x: 1300, y: 250 },
-                { x: 1300, y: 750 },
-                { x: 900, y: 500 },
+                {x: 500, y: 250},
+                {x: 500, y: 750},
+                {x: 1300, y: 250},
+                {x: 1300, y: 750},
+                {x: 900, y: 500},
             ],
         });
-        Game.getInstance().boss = newJudgement;
     }
     constructor({ x, y, moveSpeed, attackPosition }) {
         super({

@@ -42,13 +42,16 @@ export async function firstStage() {
     }
 }
 
-export function secondStage({ game }) {
+export async function secondStage({ game }) {
+    await imageLoader(GameSettings.IMAGES.STAGE_TWO);
     get_image('world', 'boss_room', null, function (img) {
         Game.getInstance().camera.lowerBackground = img;
     });
     Game.getInstance().camera.topBackground = null;
     game.player.position.x = 900;
     game.player.position.y = 400;
+    game.player.centerPosition.x = 900 + game.player.width / 2;
+    game.player.centerPosition.y = 400 + game.player.height / 2;
 
     Judgement.generate({ x: 900, y: 400, collideable: true });
 

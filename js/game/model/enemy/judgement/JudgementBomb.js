@@ -1,50 +1,62 @@
 import Game from '../../Game/Game.js';
-import { get_image } from '../../../helper/fileReader.js';
 import Enemy from '../Enemy.js';
-import HealthBar from "../healthBar/HealthBar.js";
+import HealthBar from '../healthBar/HealthBar.js';
+import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
+import { getNumberedImage } from '../../../helper/imageLoader.js';
+import { drawImage } from '../../../helper/renderer/drawer.js';
+import GameSettings from '../../../constants.js';
+import { getRandomBoolean } from '../../../helper/randomHelper.js';
 
-const playerOffset = {
-    x: -20,
-    y: -20,
-};
 export default class JudgementBomb extends Enemy {
     static generate({ position, angle }) {
-        console.log(angle);
         const newJudgementBomb = new JudgementBomb({
-            position,
+            position: position,
             angle: angle,
             offset: 120,
-            lifetime: 200 + Math.random() * 200,
+            lifetime: 500,
+            width: 40,
+            height: 40,
         });
+
         Game.getInstance().enemyList.push(newJudgementBomb);
     }
-    constructor({ position, offset, angle, lifetime }) {
+    constructor({ position, offset, angle, lifetime, width, height }) {
         super({
             x: position.x,
             y: position.y,
+            w: width,
+            h: height,
             hitbox: {
-                x: 30 + offset * Math.cos(angle) + playerOffset.x,
-                y: 30 + offset * Math.sin(angle) + playerOffset.y,
-                w: 10,
-                h: 10,
+                x: getHorizontalValue({
+                    initial: -width / 2,
+                    magnitude: offset,
+                    angle: angle,
+                }),
+                y: getVerticalValue({
+                    initial: -height / 2,
+                    magnitude: offset,
+                    angle: angle,
+                }),
+                w: 0,
+                h: 0,
             },
-            w: 50,
-            h: 50,
             health: 3,
             maxHealth: 3,
         });
         this.angle = angle;
         this.offset = offset;
-        this.positionZ = position;
+        this.positionFollow = position;
+        this.position = position;
         this.spawning = true;
+        this.exploding = false;
         this.lifeTime = lifetime;
         this.animationStage = 1;
         this.number = 0;
         this.healthbar = HealthBar.generate({
             position: this.position,
             offset: {
-                x: this.width / 2,
-                y: 0,
+                x: this.hitbox.x,
+                y: this.hitbox.y,
             },
             maxHealth: this.maxHealth,
         });
@@ -52,14 +64,42 @@ export default class JudgementBomb extends Enemy {
     }
 
     update() {
-        this.number++;
-        if (this.spawning && this.number % 10 === 0) {
-            if (this.animationStage < 5) {
-                this.animationStage++;
-            }
+        this.handleTimer();
+
+        this.drawBomb();
+
+        this.healthbar.update({
+            health: this.health,
+            position: {
+                x: this.position.x,
+                y: this.position.y + 40,
+            },
+        });
+
+        if (Game.getInstance().debug) {
+            this.debugMode();
         }
 
-        if (this.animationStage === 5 && this.number % 10 === 1 && Math.random() < 0.15) {
+        if (this.animationStage === 11) {
+            this.kill();
+        }
+    }
+
+    handleTimer() {
+        this.number++;
+
+        if(this.health <= 0) {
+            if(this.number % 10 === 0 && this.animationStage < 11) {
+                this.animationStage++;
+            }
+
+            return;
+        }
+        if (this.number % 10 === 0 && this.animationStage < 5) {
+            this.animationStage++;
+        }
+
+        if (!this.exploding && this.animationStage === 5 && this.number % 10 === 1 && getRandomBoolean(0.15)) {
             this.animationStage--;
 
             if (!this.spawning) {
@@ -67,52 +107,90 @@ export default class JudgementBomb extends Enemy {
             }
         }
 
-        if (this.animationStage < 5 && this.number % 10 === 0 && !this.spawning) {
-            this.animationStage++;
+        if (this.spawning) {
+            this.position = this.positionFollow;
+            // this.position = {
+            //     x: this.positionFollow.x + Game.getInstance().player.width / 2,
+            //     y: this.positionFollow.y + Game.getInstance().player.height / 2,
+            // };
         }
 
         if (this.spawning) {
-            this.position = { ...this.positionZ };
+            return;
         }
 
-        if (!this.spawning) {
-            this.lifeTime--;
-            this.position = { ...this.position };
-            this.position.x += Math.cos(this.moveAngle);
-            this.position.y += Math.sin(this.moveAngle);
+        this.lifeTime--;
+        this.position = { ...this.position };
+
+
+        if(this.exploding) {
+            this.drawExplosion();
+
+            if (this.number % 7 === 0 && this.animationStage < 11) {
+                this.animationStage++;
+            }
         }
 
-        this.render();
-
-        this.healthbar.update({
-            health: this.health,
-            x: this.position.x + this.hitbox.x - 4,
-            y: this.position.y + this.hitbox.y + 40,
-        });
-
-        if(this.health <= 0) {
-            this.kill();
+        if(!this.exploding) {
+            this.position.x += getHorizontalValue({
+                magnitude: 1,
+                angle: this.moveAngle,
+            });
+            this.position.y += getVerticalValue({
+                magnitude: 1,
+                angle: this.moveAngle,
+            });
         }
-        if (Game.getInstance().debug) {
-            //TODO BENERIN INI
-            // this.position.x += this.offset * Math.cos(this.angle) + playerOffset.x;
-            // this.position.y += this.offset * Math.sin(this.angle) + playerOffset.y;
-            this.debugMode();
+
+        if (this.lifeTime === 50) {
+            this.exploding = true;
         }
     }
 
     kill() {
-        Game.getInstance().enemyList.splice(Game.getInstance().enemyList.indexOf(this), 1);
+        const { enemyList } = Game.getInstance();
+        enemyList.splice(enemyList.indexOf(this), 1);
     }
 
-    render() {
-        const ctx = Game.getInstance().ctx;
-        get_image('boss/bomb', 'judgement_bomb', this.animationStage, (img) => {
-            const position = {
-                x: this.position.x + this.offset * Math.cos(this.angle) + playerOffset.x,
-                y: this.position.y + this.offset * Math.sin(this.angle) + playerOffset.y,
-            };
-            ctx.drawImage(img, position.x, position.y, img.width * 2, img.height * 2);
+    drawBomb() {
+        const judgementBomb = getNumberedImage('judgement_bomb', this.animationStage);
+
+        drawImage({
+            img: judgementBomb,
+            x: getHorizontalValue({
+                initial: this.position.x,
+                magnitude: this.offset,
+                angle: this.angle,
+            }),
+            y: getVerticalValue({
+                initial: this.position.y,
+                magnitude: this.offset,
+                angle: this.angle,
+            }),
+            width: judgementBomb.width * GameSettings.GAME.GAME_SCALE,
+            height: judgementBomb.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+        });
+    }
+
+    drawExplosion() {
+        const judgementExplosion = getNumberedImage('judgement_explosion', this.animationStage - 3);
+
+        drawImage({
+            img: judgementExplosion,
+            x: getHorizontalValue({
+                initial: this.position.x,
+                magnitude: this.offset,
+                angle: this.angle,
+            }),
+            y: getVerticalValue({
+                initial: this.position.y,
+                magnitude: this.offset,
+                angle: this.angle,
+            }),
+            width: judgementExplosion.width * GameSettings.GAME.GAME_SCALE,
+            height: judgementExplosion.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
         });
     }
 }

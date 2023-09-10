@@ -175,6 +175,7 @@ export default class PlayerAimingState extends PlayerBaseState {
                 height: image.height * GameSettings.game.GAME_SCALE,
             });
         } else {
+            console.log(image.width)
             drawImage({
                 img: image,
                 x: currPlayer.position.x + playerOffset.x,

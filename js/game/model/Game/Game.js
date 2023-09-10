@@ -11,11 +11,10 @@ import GameSettings from '../../constants.js';
 import { getRandomBoolean, randomizeValue } from '../../helper/randomHelper.js';
 import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
 
-
 export default class Game {
     static instance = null;
     constructor() {
-        this.stage = 1;
+        this.stage = 2;
         this.paused = false;
         this.player = new Player();
         this.width = GameSettings.game.SCREEN_WIDTH;
@@ -42,7 +41,9 @@ export default class Game {
         playerInput();
         this.camera = new Camera();
 
-        await firstStage();
+        await secondStage({
+            game: this,
+        });
 
         this.camera.setPosition({
             position: this.player.position,
@@ -72,25 +73,14 @@ export default class Game {
 
     configCanvas() {
         this.ctx.imageSmoothingEnabled = false;
-        this.ctx.scale(
-            GameSettings.game.GAME_SCALE,
-            GameSettings.game.GAME_SCALE
-        );
+        this.ctx.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
 
         this.HUD.imageSmoothingEnabled = false;
-        this.HUD.scale(
-            GameSettings.game.GAME_SCALE,
-            GameSettings.game.GAME_SCALE
-        );
+        this.HUD.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
     }
 
     updateGame() {
-        this.ctx.clearRect(
-            0,
-            0,
-            this.canvas.width,
-            this.canvas.height
-        );
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.enemySpawnHandler();
 
@@ -155,8 +145,6 @@ export default class Game {
                 initialValue: 0,
                 randomValue: Math.PI * 2,
             });
-
-            console.log(angle)
 
             if (this.difficulty > 5 && getRandomBoolean(0.25)) {
                 CrystalBrute.generate({

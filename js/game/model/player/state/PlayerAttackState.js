@@ -4,6 +4,7 @@ import { getMouseDirection } from '../../../helper/collision/directionHandler.js
 import Game from '../../Game/Game.js';
 import { drawMirroredY } from '../../../helper/renderer/drawer.js';
 import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
+import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
 
 const scale = 2;
 
@@ -13,11 +14,20 @@ export default class PlayerAttackState extends PlayerBaseState {
     attackNumber = 1;
 
     enterState(currPlayer) {
-        const angle = currPlayer.lookAngle;
-        currPlayer.direction.x = Math.cos(angle) * currPlayer.attackMoveSpeed;
-        currPlayer.direction.y = Math.sin(angle) * currPlayer.attackMoveSpeed;
+        const { lookAngle:angle } = currPlayer;
+        const { clicks } = Game.getInstance();
+
+        currPlayer.direction.x = getHorizontalValue({
+            magnitude: currPlayer.attackMoveSpeed,
+            angle: angle,
+        });
+        currPlayer.direction.y = getVerticalValue({
+            magnitude: currPlayer.attackMoveSpeed,
+            angle: angle,
+        });
 
         const direction = getMouseDirection({ angle });
+
         this.direction = direction;
         currPlayer.lastDirection = direction;
 
@@ -29,7 +39,7 @@ export default class PlayerAttackState extends PlayerBaseState {
             player: currPlayer,
         });
 
-        Game.getInstance().clicks.splice(Game.getInstance().clicks.indexOf('left'), 1);
+        clicks.splice(clicks.indexOf('left'), 1);
     }
 
     exitState(currPlayer) {
@@ -59,9 +69,11 @@ export default class PlayerAttackState extends PlayerBaseState {
     }
 
     drawImage(currPlayer) {
-        if (Game.getInstance().debug) {
-            currPlayer.canvas.fillStyle = 'red';
-            currPlayer.canvas.fillRect(currPlayer.attackBox.x, currPlayer.attackBox.y, currPlayer.attackBox.w, currPlayer.attackBox.h);
+        const { debug, ctx } = Game.getInstance();
+
+        if (debug) {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(currPlayer.attackBox.x, currPlayer.attackBox.y, currPlayer.attackBox.w, currPlayer.attackBox.h);
         }
 
         if (this.direction === 'w') {

@@ -6,7 +6,7 @@ export default class JudgementBombState extends JudgementBaseState {
     enterState(currJudgement) {
         this.number = 0;
         this.animationStage = 1;
-        this.maxAttackCount = 2;
+        this.maxAttackCount = 6;
         this.attackCount = 0;
         this.attacking = 5;
         this.attackAngle = currJudgement.angle;
@@ -38,8 +38,8 @@ export default class JudgementBombState extends JudgementBaseState {
 
         if (Game.getInstance().backgroundOpacity < 0.05 && this.number % 50 === 0 && this.attackCount < this.maxAttackCount) {
             JudgementBomb.generate({
-                position: Game.getInstance().player.position,
-                angle: this.startAngle + (this.attackCount * Math.PI) / 4,
+                position: Game.getInstance().player.centerPosition,
+                angle: this.startAngle + (this.attackCount * Math.PI) / 3,
             });
             this.attackCount++;
         }
