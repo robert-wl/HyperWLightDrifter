@@ -1,7 +1,10 @@
-import Game from "../Game/Game.js";
-import {get_image} from "../../helper/fileReader.js";
-import {drawRotated} from "../../helper/renderer/drawer.js";
-
+import Game from '../Game/Game.js';
+import { get_image } from '../../helper/fileReader.js';
+import { drawRotated } from '../../helper/renderer/drawer.js';
+import { getRandomValue } from '../../helper/randomHelper.js';
+import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
+import { getNumberedImage } from '../../helper/imageLoader.js';
+import { getAngle } from '../../helper/angleHelper.js';
 
 export default class Grenade {
     static generate({ x, y, angle }) {
@@ -11,7 +14,7 @@ export default class Grenade {
             w: 16,
             h: 16,
             angle,
-            velocity: 10
+            velocity: 10,
         });
         Game.getInstance().player.projectiles.push(newGrenade);
     }
@@ -19,73 +22,88 @@ export default class Grenade {
         this.position = {
             x: x,
             y: y,
-        }
+        };
         this.width = w;
         this.height = h;
         this.angle = angle;
         this.velocity = velocity;
-        this.rotation = Math.PI * Math.random() * 7;
+        this.rotation = getRandomValue({
+            randomValue: Math.PI * 7,
+        });
+        this.friction = 0.97;
         this.number = 0;
         this.animationStage = 1;
     }
 
     update() {
-        this.number++;
-        this.position.x += Math.cos(this.angle) * this.velocity;
-        this.position.y += Math.sin(this.angle) * this.velocity;
-        this.velocity *= 0.97;
+        this.number += 1;
+        this.position.x += getHorizontalValue({
+            magnitude: this.velocity,
+            angle: this.angle,
+        });
 
-        if(this.animationStage === 1 && this.number === 50) {
-            this.animationStage++;
+        this.position.y += getVerticalValue({
+            magnitude: this.velocity,
+            angle: this.angle,
+        });
+        this.velocity *= this.friction;
+
+        if (this.animationStage === 1 && this.number === 50) {
+            this.animationStage += 1;
             this.number = 0;
         }
-        if(this.animationStage > 1 && this.animationStage < 11 && this.number === 2) {
+        if (this.animationStage > 1 && this.animationStage < 11 && this.number === 2) {
             this.velocity = 0;
-            this.animationStage++;
+            this.animationStage += 1;
             this.number = 0;
         }
-        if(this.animationStage === 11) {
-            Game.getInstance().player.projectiles.splice(Game.getInstance().player.projectiles.indexOf(this), 1);
+        if (this.animationStage === 11) {
+            const { projectiles } = Game.getInstance().player;
+
+            projectiles.splice(projectiles.indexOf(this), 1);
         }
 
-        if(this.animationStage === 2 && this.number === 1) {
+        if (this.animationStage === 2 && this.number === 1) {
             this.handleDamage();
         }
         this.render();
     }
 
-
-
     render() {
-        const ctx = Game.getInstance().ctx;
-        get_image('player/grenade', 'grenade', this.animationStage, (img) => {
-            drawRotated({
-                canvas: ctx,
-                img: img,
-                position: {
-                    x: this.position.x + this.width / 2,
-                    y: this.position.y + this.height / 2,
-                },
-                angle: this.rotation,
-            });
+        const grenade = getNumberedImage('grenade', this.animationStage);
+
+        drawRotated({
+            img: grenade,
+            position: {
+                x: this.position.x + this.width / 2,
+                y: this.position.y + this.height / 2,
+            },
+            angle: this.rotation,
         });
     }
 
-    handleDamage(){
-        const enemies = Game.getInstance().enemyList;
+    handleDamage() {
+        const { enemyList } = Game.getInstance();
 
-        for(const enemy of enemies) {
-            if(enemy.currState === enemy.dieState) continue;
-            const dx = this.position.x - enemy.position.x;
-            const dy = this.position.y - enemy.position.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+        enemyList.forEach((enemy) => {
+            if (enemy.currState !== enemy.dieState) {
+                const distance = getMagnitudeValue({
+                    x: this.position.x - enemy.position.x,
+                    y: this.position.y - enemy.position.y,
+                });
 
-            if(distance < 250) {
-                enemy.damage({
-                    amount: 3,
-                    angle: -Math.atan2(dy, dx),
-                })
+                const angle = getAngle({
+                    x: this.position.x - enemy.position.x,
+                    y: this.position.y - enemy.position.y,
+                });
+
+                if (distance < 250) {
+                    enemy.damage({
+                        amount: 3,
+                        angle: -angle,
+                    });
+                }
             }
-        }
+        });
     }
 }

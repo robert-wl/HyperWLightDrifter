@@ -1,7 +1,7 @@
 import Collideable from '../collideable/Collideable.js';
 import Game from '../Game/Game.js';
 import { get_image } from '../../helper/fileReader.js';
-import handleInteractionBar from './handleInteractionBar.js';
+import interactionBarHandler from '../../helper/player/interactionBarHandler.js';
 
 export default class Medkit extends Collideable {
     static generate({ x, y }) {
@@ -50,7 +50,7 @@ export default class Medkit extends Collideable {
 
         if (distance < 100) {
             if (
-                handleInteractionBar({
+                interactionBarHandler({
                     medkit: this,
                     opacity: Math.abs(distance - 100) / 100,
                 })

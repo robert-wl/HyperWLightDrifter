@@ -1,61 +1,67 @@
 import Game from '../../model/Game/Game.js';
+import {getAngle} from "../angleHelper.js";
+import GameSettings from "../../constants.js";
 
 export default function playerInput() {
     $(document).keydown((e) => {
+        const { keys } = Game.getInstance();
         if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's' || e.key === 'e' || e.key === 'c'  || e.key === 'c') {
-            if (Game.getInstance().keys.includes(e.key)) {
+            if (keys.includes(e.key)) {
                 return;
             }
-            Game.getInstance().keys.push(e.key);
+            keys.push(e.key);
         }
         if (e.key === ' ') {
-            if (Game.getInstance().keys.includes('space')) {
+            if (keys.includes('space')) {
                 return;
             }
-            Game.getInstance().keys.push('space');
+            keys.push('space');
         }
     });
 
 
     $(document).keyup((e) => {
+        const { keys } = Game.getInstance();
         if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 'e' || e.key === 'c') {
-            const index = Game.getInstance().keys.indexOf(e.key);
+            const index = keys.indexOf(e.key);
             if (index > -1) {
-                Game.getInstance().keys.splice(index, 1);
+                keys.splice(index, 1);
             }
             Game.getInstance().lastDirection = e.key;
         }
         if (e.key === ' ') {
-            const index = Game.getInstance().keys.indexOf('space');
+            const index = keys.indexOf('space');
             if (index > -1) {
-                Game.getInstance().keys.splice(index, 1);
+                keys.splice(index, 1);
             }
         }
     });
 
     $(document).mousedown((e) => {
+        const { clicks } = Game.getInstance();
         if (e.which === 1) {
-            if (Game.getInstance().clicks.includes('left')) {
+            if (clicks.includes('left')) {
                 return;
             }
-            Game.getInstance().clicks.push('left');
+            clicks.push('left');
         }
         if (e.which === 3) {
-            if (Game.getInstance().clicks.includes('right')) {
+            if (clicks.includes('right')) {
                 return;
             }
-            Game.getInstance().clicks.push('right');
+            clicks.push('right');
         }
     });
 
 
     $(document).mouseup((e) => {
-       if (e.which === 3) {
-           const index = Game.getInstance().clicks.indexOf('right');
-           if (index > -1) {
-               Game.getInstance().clicks.splice(index, 1);
-           }
-       }
+        const { clicks } = Game.getInstance();
+        if (e.which === 3) {
+            const index = clicks.indexOf('right');
+            if (index > -1) {
+                clicks.splice(index, 1);
+            }
+        }
     });
 
     $(document).on('contextmenu', (e) => {
@@ -63,13 +69,17 @@ export default function playerInput() {
     });
 
     $(document).mousemove((e) => {
-        const rect = Game.getInstance().canvas.getBoundingClientRect();
+        const { player, camera, canvas } = Game.getInstance();
+
+        const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        const { player, camera } = Game.getInstance();
-        const playerX = (player.position.x - camera.position.x) * 2;
-        const playerY = (player.position.y - camera.position.y) * 2;
-        player.lookAngle = Math.atan2(y - playerY, x - playerX);
+        const playerX = (player.position.x - camera.position.x) * GameSettings.GAME.GAME_SCALE;
+        const playerY = (player.position.y - camera.position.y) * GameSettings.GAME.GAME_SCALE;
+        player.lookAngle = getAngle({
+            x: x - playerX,
+            y: y - playerY,
+        });
     });
 }

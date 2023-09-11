@@ -4,7 +4,7 @@ import Game from '../../../Game/Game.js';
 
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
     enterState(_currSpider) {
-        Game.getInstance().enemyCount -= 5;
+        Game.getInstance().enemyAliveCount -= 5;
     }
 
     drawImage(currSpider) {

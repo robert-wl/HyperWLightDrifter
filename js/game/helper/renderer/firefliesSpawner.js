@@ -1,4 +1,4 @@
-import Fireflies from "./Fireflies.js";
+import Fireflies from "../../model/particles/Fireflies.js";
 
 
 let number = 0;

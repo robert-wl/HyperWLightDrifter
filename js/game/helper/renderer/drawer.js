@@ -35,7 +35,7 @@ export function drawMirroredY({ canvas, img, position, width, height, translate 
 }
 
 export function drawImage({ img, x, y, width, height, translate = false }) {
-    const ctx = Game.getInstance().ctx;
+    const { ctx } = Game.getInstance();
     if(translate) {
         ctx.translate(-width / 2, -height / 2);
     }
@@ -43,4 +43,11 @@ export function drawImage({ img, x, y, width, height, translate = false }) {
     if(translate) {
         ctx.translate(width / 2, height / 2);
     }
+}
+
+export function drawImageCropped({ img, x, y, width, height }) {
+    const { ctx } = Game.getInstance();
+    ctx.translate(-width / 2, -height / 2);
+    ctx.drawImage(img, x, y, width, height);
+    ctx.translate(width / 2, height / 2);
 }

@@ -5,6 +5,7 @@ import Game from '../../model/Game/Game.js';
 import Judgement from '../../model/enemy/judgement/Judgement.js';
 import {imageLoader} from "../imageLoader.js";
 import GameSettings from "../../constants.js";
+import CrystalBrute from "../../model/enemy/crystalBrute/CrystalBrute.js";
 
 export async function firstStage() {
     await imageLoader(GameSettings.IMAGES.STAGE_ONE);
@@ -15,8 +16,12 @@ export async function firstStage() {
         Game.getInstance().camera.topBackground = img;
     });
     Game.getInstance().player.position.x = 900;
-    Game.getInstance().player.position.y = 400;
+    Game.getInstance().player.position.y = 500;
 
+    CrystalBrute.generate({
+        x: 900,
+        y: 500,
+    });
     const colliders = [
         { x: 100, y: 0, w: 300, h: 1000 },
         { x: 400, y: 0, w: 1025, h: 300 },
@@ -27,6 +32,7 @@ export async function firstStage() {
         { x: 1250, y: 1550, w: 530, h: 800 },
         { x: 630, y: 2150, w: 620, h: 800 },
     ];
+
     for (const collider of colliders) {
         Collideable.generate(collider);
     }
@@ -69,7 +75,13 @@ export async function secondStage({ game }) {
     //     Collideable.generate(collider);
     // }
 
-    // for (const medkit of medkits) {
-    //     Medkit.generate(medkit);
-    // }
+    const medkits = [
+        { x: 1400, y: 300 },
+        { x: 1400, y: 800 },
+        { x: 400, y: 500 },
+    ];
+
+    for (const medkit of medkits) {
+        Medkit.generate(medkit);
+    }
 }

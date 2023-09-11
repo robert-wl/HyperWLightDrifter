@@ -2,11 +2,11 @@ import Player from '../player/Player.js';
 import playerInput from '../../helper/player/playerInput.js';
 import { get_image } from '../../helper/fileReader.js';
 import Camera from '../camera/Camera.js';
-import firefliesSpawner from '../particles/firefliesSpawner.js';
+import firefliesSpawner from '../../helper/renderer/firefliesSpawner.js';
 import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
 import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 import hudHandler from '../../helper/renderer/hudHandler.js';
-import { secondStage } from '../../helper/stages/stageHandler.js';
+import {firstStage, secondStage} from '../../helper/stages/stageHandler.js';
 import GameSettings from '../../constants.js';
 import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
 import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
@@ -14,7 +14,7 @@ import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelpe
 export default class Game {
     static instance = null;
     constructor() {
-        this.stage = 2;
+        this.stage = 1;
         this.paused = false;
         this.player = new Player();
         this.width = GameSettings.game.SCREEN_WIDTH;
@@ -34,16 +34,19 @@ export default class Game {
         this.enemyAliveCount = 0;
         this.difficulty = 1;
         this.backgroundOpacity = 1;
+        this.elevator = null;
     }
 
     async init() {
         this.prepareCanvas();
         playerInput();
         this.camera = new Camera();
+        //
+        // await secondStage({
+        //     game: this,
+        // });
 
-        await secondStage({
-            game: this,
-        });
+        await firstStage();
 
         this.camera.setPosition({
             position: this.player.position,
@@ -104,6 +107,8 @@ export default class Game {
         this.boss?.update();
         this.bossEntities?.forEach((entity) => entity.update());
 
+        this.elevator?.update();
+
         this.drawHUD();
     }
 
@@ -117,13 +122,14 @@ export default class Game {
             return;
         }
 
-        this.HUD.globalAlpha = Math.sin(Math.abs(this.player.immunity - 30) / 30);
+        this.setTransparency(Math.sin(Math.abs(this.player.immunity - 30) / 30));
 
         get_image('UI', 'damaged', null, (img) => {
-            Game.getInstance().HUD.drawImage(img, 0, 0, img.width * 2, img.height * 2);
+            Game.getInstance().HUD.drawImage(img, 0, 0, img.width * GameSettings.GAME.GAME_SCALE, img.height * GameSettings.GAME.GAME_SCALE);
         });
 
-        this.HUD.globalAlpha = 1;
+        this.setTransparency(1);
+
     }
 
     enemySpawnHandler() {
@@ -180,7 +186,7 @@ export default class Game {
             this.enemyAliveCount += 1;
         }
 
-        this.difficulty += 1;
+        this.difficulty += 3;
 
     }
 
@@ -200,6 +206,10 @@ export default class Game {
 
     setTransparency(transparency) {
         this.ctx.globalAlpha = transparency;
+    }
+
+    setFilter(filter) {
+        this.ctx.filter = filter;
     }
 
 }

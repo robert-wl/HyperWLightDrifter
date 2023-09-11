@@ -2,6 +2,8 @@ import Game from '../Game/Game.js';
 import { get_image } from '../../helper/fileReader.js';
 import { drawRotated } from '../../helper/renderer/drawer.js';
 import enemyCollision from '../../helper/collision/enemyCollision.js';
+import {getHorizontalValue, getVerticalValue} from "../../helper/distanceHelper.js";
+import {getImage} from "../../helper/imageLoader.js";
 
 export default class GunProjectile {
     static generate({ position, angle }) {
@@ -26,15 +28,23 @@ export default class GunProjectile {
     }
 
     update() {
-        this.lifetime--;
+        this.lifetime -= 1;
 
         if (this.lifetime === 0) {
-            const index = Game.getInstance().player.projectiles.indexOf(this);
-            Game.getInstance().player.projectiles.splice(index, 1);
+            const { projectiles } = Game.getInstance().player;
+            projectiles.splice(projectiles.indexOf(this), 1);
+
             return;
         }
-        this.position.x += Math.cos(this.angle) * this.speed;
-        this.position.y += Math.sin(this.angle) * this.speed;
+
+        this.position.x += getHorizontalValue({
+            magnitude: this.speed,
+            angle: this.angle
+        });
+        this.position.y += getVerticalValue({
+            magnitude: this.speed,
+            angle: this.angle
+        });
 
         let enemy = null;
         if (
@@ -49,6 +59,7 @@ export default class GunProjectile {
                 amount: 1,
                 angle: this.player.lookAngle,
             });
+
             this.lifetime = 1;
             return;
         }
@@ -56,14 +67,12 @@ export default class GunProjectile {
     }
 
     render() {
-        const ctx = Game.getInstance().ctx;
-        get_image('player/aim/gun', 'projectile', null, (img) => {
-            drawRotated({
-                canvas: ctx,
-                img: img,
-                position: this.position,
-                angle: this.angle + 3 * Math.PI,
-            });
+        const projectile = getImage('projectile');
+
+        drawRotated({
+            img: projectile,
+            position: this.position,
+            angle: this.angle + 3 * Math.PI
         });
     }
 }

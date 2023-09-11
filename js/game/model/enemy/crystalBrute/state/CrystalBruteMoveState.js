@@ -1,63 +1,91 @@
 import CrystalBruteBaseState from "./CrystalBruteBaseState.js";
 import Game from "../../../Game/Game.js";
-import {get_image} from "../../../../helper/fileReader.js";
+import {getRandomBoolean, getRandomValue} from "../../../../helper/randomHelper.js";
+import {getHorizontalValue, getMagnitudeValue, getVerticalValue} from "../../../../helper/distanceHelper.js";
+import {getAngle} from "../../../../helper/angleHelper.js";
+import {getNumberedImage} from "../../../../helper/imageLoader.js";
+import {drawImage, drawMirroredY} from "../../../../helper/renderer/drawer.js";
+import {getFaceDirection} from "../../../../helper/collision/directionHandler.js";
 
 export default class CrystalBruteMoveState extends CrystalBruteBaseState {
     clockwise = true;
     enterState(currBrute){
         this.number = 0;
         this.animationStage = 0;
-        this.clockwise = Math.random() < 0.5;
+        this.clockwise = getRandomBoolean(0.5);
         currBrute.speed = 0.5;
+        this.attackDelay = getRandomValue({
+            initialValue: 200,
+            randomValue: 1000,
+        })
     }
     updateState(currBrute){
         this.number += 1;
 
-        const distance = Math.sqrt(
-            Math.pow(Game.getInstance().player.position.x - currBrute.position.x, 2) +
-            Math.pow(Game.getInstance().player.position.y - currBrute.position.y, 2)
-        );
+        if(this.number % 20 === 0){
+            this.animationStage = (this.animationStage + 1) % 6;
+        }
 
-        const x = Game.getInstance().player.position.x - currBrute.position.x;
-        const y = Game.getInstance().player.position.y - currBrute.position.y;
+        const { position } = Game.getInstance().player;
+        const distance = getMagnitudeValue({
+            x: position.x - currBrute.position.x,
+            y: position.y - currBrute.position.y,
+        });
 
         if(currBrute.health <= 0){
             currBrute.switchState(currBrute.dieState);
             return;
         }
 
-        if(this.number > 200 + (Math.random() * 1000)){
+        if(this.number > this.attackDelay){
             currBrute.switchState(currBrute.attackState);
-        } else if(distance < 100) {
-            currBrute.angle = Math.atan2(y, x);
-            const angle2 = currBrute.angle + Math.PI/2 * (this.clockwise ? 1 : -1);
-            currBrute.position.x += Math.cos(angle2) * currBrute.speed;
-            currBrute.position.y += Math.sin(angle2) * currBrute.speed;
-        } else { //TODO
-            currBrute.angle = Math.atan2(y, x);
-            currBrute.position.x += Math.cos(currBrute.angle) * currBrute.speed;
-            currBrute.position.y += Math.sin(currBrute.angle) * currBrute.speed;
+            return;
         }
+
+        // if(distance < 100) {
+        //     currBrute.angle = getAngle({
+        //         x: position.x - currBrute.position.x,
+        //         y: position.y - currBrute.position.y,
+        //     });
+        //     const angle2 = currBrute.angle + Math.PI/2 * (this.clockwise ? 1 : -1);
+        //     currBrute.position.x += Math.cos(angle2) * currBrute.speed;
+        //     currBrute.position.y += Math.sin(angle2) * currBrute.speed;
+        // } else { //TODO
+        currBrute.angle = getAngle({
+            x: position.x - currBrute.position.x,
+            y: position.y - currBrute.position.y,
+        });
+        currBrute.position.x += getHorizontalValue({
+            magnitude: currBrute.speed,
+            angle: currBrute.angle,
+        });
+        currBrute.position.y += getVerticalValue({
+            magnitude: currBrute.speed,
+            angle: currBrute.angle,
+        });
+        // }
     }
     drawImage(currBrute){
-        const ctx = Game.getInstance().ctx;
-        const angle = currBrute.angle;
+        const bruteWalk = getNumberedImage('crystal_brute_walk', this.animationStage + 1);
 
-        if(this.number % 20 === 0){
-            this.animationStage = (this.animationStage + 1) % 6;
+        if(getFaceDirection(currBrute.angle) === 'left') {
+            drawMirroredY({
+                img: bruteWalk,
+                position: currBrute.position,
+                width: currBrute.width,
+                height: currBrute.height,
+                translate: true,
+            });
         }
-        get_image("enemy/crystal_brute", "crystal_brute_walk", this.animationStage + 1, (image) => {
-            if(angle > 0 && angle < Math.PI / 2 || angle < 0 && angle > -Math.PI / 2){
-                ctx.drawImage(image, currBrute.position.x, currBrute.position.y, currBrute.width, currBrute.height);
-            }
-            else {
-                ctx.scale(-1, 1);
-                ctx.drawImage(image, -currBrute.position.x - currBrute.width, currBrute.position.y, currBrute.width, currBrute.height);
-                ctx.scale(-1, 1);
-            }
-        });
+        else {
+            drawImage({
+                img: bruteWalk,
+                x: currBrute.position.x,
+                y: currBrute.position.y,
+                width: currBrute.width,
+                height: currBrute.height,
+                translate: true
+            });
+        }
     }
-    exitState(currBrute){}
-
-
 }

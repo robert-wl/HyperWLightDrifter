@@ -8,6 +8,7 @@ import JudgementLaserState from './state/JudgementLaserState.js';
 import JudgementDashState from './state/JudgementDashState.js';
 import JudgementBombState from './state/JudgementBombState.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
+import HealthBar from "../healthBar/HealthBar.js";
 
 export default class Judgement extends Enemy {
     static generate({ x, y }) {
@@ -46,10 +47,10 @@ export default class Judgement extends Enemy {
         this.angle = 0;
         this.moveSpeed = moveSpeed;
         this.bombs = [];
-        this.position = {
-            x: this.position.x + this.width / 2,
-            y: this.position.y + this.height / 2,
-        };
+        // this.position = {
+        //     x: this.position.x + this.width / 2,
+        //     y: this.position.y + this.height / 2,
+        // };
         this.currState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
@@ -57,6 +58,13 @@ export default class Judgement extends Enemy {
         this.attackState = new JudgementAttackState();
         this.laserState = new JudgementLaserState();
         this.bombState = new JudgementBombState();
+
+        this.healthBar = HealthBar.generate({
+            position: this.position,
+            offset: { x: 0, y: 200 },
+            maxHealth: this.maxHealth,
+            HUD: Game.getInstance().HUD,
+        })
 
         this.switchState(this.spawnState);
     }
@@ -98,8 +106,17 @@ export default class Judgement extends Enemy {
         if (Game.getInstance().debug) {
             this.debugMode();
         }
-        // Game.getInstance().ctx.fillStyle = 'rgb(255, 255, 255, 0.1)';
-        // Game.getInstance().ctx.fillRect(this.position.x, this.position.y, this.width * 2, this.height * 2);
+
+        this.drawHealthbar();
+    }
+
+    drawHealthbar() {
+        const { HUD } = Game.getInstance();
+
+        this.healthBar.update({
+            health: this.health,
+            position: this.position,
+        })
     }
 
     // debugMode() {

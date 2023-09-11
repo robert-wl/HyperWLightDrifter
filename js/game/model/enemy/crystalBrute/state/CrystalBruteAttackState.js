@@ -15,20 +15,14 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
         this.animationStage = 1;
     }
     updateState(currBrute) {
-        this.number++;
+        this.number += 1;
 
         if (currBrute.health <= 0) {
             currBrute.switchState(currBrute.dieState);
             return;
         }
-        // if(this.number === 20) {
-        //     currBrute.switchState(currBrute.moveState)
-        // }
+
         this.attackTiming(currBrute);
-        // currBrute.speed *= 0.75;
-        // console.log(Math.cos(this.angle) * currBrute.speed)
-        // currBrute.position.x += Math.cos(this.angle) * currBrute.speed;
-        // currBrute.position.y += Math.sin(this.angle) * currBrute.speed;
     }
     drawImage(currBrute) {
         const ctx = Game.getInstance().ctx;

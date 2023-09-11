@@ -2,15 +2,17 @@ import Game from '../Game/Game.js';
 
 export default class Enemy {
     constructor({ x, y, hitbox, w, h, health, maxHealth }) {
-        this.position = {
-            x: x,
-            y: y,
-        };
         this.hitbox = hitbox;
         this.health = health;
         this.maxHealth = maxHealth;
         this.width = w;
         this.height = h;
+        console.log(x)
+        this.position = {
+            x: x + w / 2,
+            y: y + h / 2,
+        };
+        console.log(this.position.x)
         this.image = null;
         this.damaged = -1;
         this.velocity = {
@@ -20,7 +22,6 @@ export default class Enemy {
     }
 
     damage({ amount, angle }) {
-        console.log("hai")
         if (this.health <= 0) {
             return;
         }

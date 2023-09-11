@@ -3,7 +3,7 @@ import Game from './game/model/Game/Game.js';
 $(document).ready(async () => {
     const game = Game.getInstance();
     await game.init();
-    game.debug = false;
+    game.debug = true;
     game.enemySpawn = false;
 
     const animationLoop = () => {

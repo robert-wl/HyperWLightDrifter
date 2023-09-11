@@ -8,7 +8,7 @@ import Game from '../Game/Game.js';
 import renderShadow from '../../helper/renderer/shadow.js';
 import PlayerAimingState from './state/PlayerAimingState.js';
 import PlayerHurtState from './state/PlayerHurtState.js';
-import playerEffectsHandler from './playerEffectsHandler.js';
+import playerEffectsHandler from '../../helper/player/playerEffectsHelper.js';
 import PlayerThrowingState from './state/PlayerThrowingState.js';
 import GameSettings from '../../constants.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
@@ -158,7 +158,7 @@ export default class Player {
             return this.switchState(this.aimState);
         }
         if (keys.includes('c') && throws && this.bombs >= 1) {
-            this.bombs--;
+            this.bombs -= 1;
             return this.switchState(this.throwState);
         }
         if (clicks.includes('left') && attackOne) {
@@ -217,8 +217,8 @@ export default class Player {
         if (
             checkCollision({
                 collideables,
-                x: this.position.x + this.direction.x,
-                y: this.position.y,
+                x: this.position.x,
+                y: this.position.y + this.direction.y,
                 w: this.width,
                 h: this.height,
             })
@@ -263,10 +263,4 @@ export default class Player {
         }
     }
 
-    getCenterPosition(){
-        return {
-            x: this.position.x + this.width / 2,
-            y: this.position.y + this.height / 2,
-        };
-    }
 }

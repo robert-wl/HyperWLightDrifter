@@ -4,7 +4,7 @@ import Game from '../../../Game/Game.js';
 
 export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
     enterState(_currSpider) {
-        Game.getInstance().enemyCount--;
+        Game.getInstance().enemyAliveCount--;
     }
 
     drawImage(currSpider) {

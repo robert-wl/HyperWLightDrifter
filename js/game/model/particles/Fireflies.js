@@ -101,11 +101,9 @@ export default class Fireflies extends Particles {
     }
 
     drawImage() {
-        const { ctx } = Game.getInstance();
-
         const firefly = getNumberedImage('fireflies', (this.lifeSpan % 4) + 1);
 
-        ctx.globalAlpha = this.lifeSpan / 22;
+        Game.getInstance().setTransparency(this.lifeSpan / 22);
 
         drawRotated({
             img: firefly,
@@ -113,6 +111,6 @@ export default class Fireflies extends Particles {
             position: this.position,
         });
 
-        ctx.globalAlpha = 1;
+        Game.getInstance().setTransparency(1);
     }
 }

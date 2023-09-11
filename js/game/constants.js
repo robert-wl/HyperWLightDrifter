@@ -1,6 +1,12 @@
 const GameSettings = {
     GAME: {
         GAME_SCALE: 2,
+        ELEVATOR: {
+            POSITION: {
+                X: 950,
+                Y: 2000,
+            }
+        }
     },
     game: {
         GAME_SCALE: 2,
@@ -117,6 +123,34 @@ const GameSettings = {
                 name: 'fireflies',
                 amount: 4,
             },
+            {
+                ref: 'player/grenade/grenade.png',
+                name: 'grenade',
+                amount: 11,
+            },
+            {
+                ref: 'player/aim/gun/projectile.png',
+                name: 'projectile'
+            },
+            {
+                ref: 'ui/interaction_bar/interaction_bar.png',
+                name: 'interaction_bar',
+                amount: 4,
+            },
+            {
+                ref: 'world/elevator.png',
+                name: 'elevator',
+            },
+            {
+                ref: 'enemy/crystal_brute/walk/crystal_brute_walk.png',
+                name: 'crystal_brute_walk',
+                amount: 6,
+            },
+            {
+                ref: 'enemy/crystal_brute/attack/crystal_brute_attack.png',
+                name: 'crystal_brute_attack',
+                amount: 11,
+            }
         ],
         STAGE_TWO: [
             {
@@ -178,6 +212,20 @@ const GameSettings = {
                 ref: 'boss/laser/judgement_laser_bullet.png',
                 name: 'judgement_laser_bullet',
             },
+            {
+                ref: 'player/grenade/grenade.png',
+                name: 'grenade',
+                amount: 11,
+            },
+            {
+                ref: 'player/aim/gun/projectile.png',
+                name: 'projectile'
+            },
+            {
+                ref: 'ui/interaction_bar/interaction_bar.png',
+                name: 'interaction_bar',
+                amount: 4.
+            }
         ],
     },
 };

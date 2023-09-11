@@ -17,13 +17,19 @@ export default class CrystalBrute extends Enemy {
     }
     constructor({ x, y }) {
         super({
-            x,
-            y,
+            x: x,
+            y: y,
+            // hitbox: {
+            //     x: 30,
+            //     y: 30,
+            //     w: 60,
+            //     h: 30,
+            // },
             hitbox: {
-                x: 30,
-                y: 30,
-                w: 60,
-                h: 30,
+                x: 0,
+                y: 0,
+                w: 0,
+                h: 0,
             },
             w: 136,
             h: 140,
@@ -71,9 +77,14 @@ export default class CrystalBrute extends Enemy {
             });
         }
 
+
         if(this.currState !== this.dieState){
             this.healthBar.update({
                 health: this.health,
+                position: {
+                    x: this.position.x,
+                    y: this.position.y,
+                }
             });
         }
 
