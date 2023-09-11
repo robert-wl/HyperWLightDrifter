@@ -7,7 +7,7 @@ import JudgementAttackState from './state/JudgementAttackState.js';
 import JudgementLaserState from './state/JudgementLaserState.js';
 import JudgementDashState from './state/JudgementDashState.js';
 import JudgementBombState from './state/JudgementBombState.js';
-import {randomizeValue} from "../../../helper/randomHelper.js";
+import { getRandomValue } from '../../../helper/randomHelper.js';
 
 export default class Judgement extends Enemy {
     static generate({ x, y }) {
@@ -16,11 +16,11 @@ export default class Judgement extends Enemy {
             y,
             moveSpeed: 1,
             attackPosition: [
-                {x: 700, y: 550},
-                {x: 700, y: 1050},
-                {x: 1500, y: 550},
-                {x: 1500, y: 1050},
-                {x: 1100, y: 800},
+                { x: 700, y: 550 },
+                { x: 700, y: 1050 },
+                { x: 1500, y: 550 },
+                { x: 1500, y: 1050 },
+                { x: 1100, y: 800 },
             ],
             width: 130 * 2,
             height: 179 * 2,
@@ -46,11 +46,10 @@ export default class Judgement extends Enemy {
         this.angle = 0;
         this.moveSpeed = moveSpeed;
         this.bombs = [];
-        this.centerPosition = {
+        this.position = {
             x: this.position.x + this.width / 2,
             y: this.position.y + this.height / 2,
-        }
-        this.position = this.centerPosition;
+        };
         this.currState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
@@ -68,21 +67,26 @@ export default class Judgement extends Enemy {
         this.currState.enterState(this);
     }
 
-    handleSwitchState({ move, dash, attack, laser, bomb }) {
+    handleSwitchState({ dash, attack, laser, bomb }) {
         if (Math.random() < 0.6 && dash) {
             this.switchState(this.dashState);
+            return;
         } else {
-            const random = randomizeValue({
-                randomValue: 3
+            const random = getRandomValue({
+                randomValue: 10,
             });
-            if (random < 1 && attack) {
+            if (random < 5 && attack) {
                 this.switchState(this.attackState);
-            } else if (random < 2 && laser) {
+                return;
+            } else if (random < 7 && laser) {
                 this.switchState(this.laserState);
+                return;
             } else if (bomb) {
                 this.switchState(this.bombState);
+                return;
             }
         }
+        this.switchState(this.moveState);
     }
 
     update() {
@@ -91,7 +95,7 @@ export default class Judgement extends Enemy {
 
         this.bombs.forEach((bomb) => bomb.update());
 
-        if(Game.getInstance().debug) {
+        if (Game.getInstance().debug) {
             this.debugMode();
         }
         // Game.getInstance().ctx.fillStyle = 'rgb(255, 255, 255, 0.1)';

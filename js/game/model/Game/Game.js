@@ -6,9 +6,9 @@ import firefliesSpawner from '../particles/firefliesSpawner.js';
 import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
 import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 import hudHandler from '../../helper/renderer/hudHandler.js';
-import { firstStage, secondStage } from '../../helper/stages/stageHandler.js';
+import { secondStage } from '../../helper/stages/stageHandler.js';
 import GameSettings from '../../constants.js';
-import { getRandomBoolean, randomizeValue } from '../../helper/randomHelper.js';
+import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
 import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
 
 export default class Game {
@@ -88,10 +88,9 @@ export default class Game {
             firefliesSpawner();
         }
 
-        //TODO CLEANUP THIS
-        this.ctx.globalAlpha = this.backgroundOpacity;
+        this.setTransparency(this.backgroundOpacity);
         this.camera.updateCamera();
-        this.ctx.globalAlpha = 1;
+        this.setTransparency(1);
 
         this.enemyList.forEach((enemy) => enemy.update());
         this.collideables.forEach((collideable) => collideable.update());
@@ -137,12 +136,12 @@ export default class Game {
         }
 
         for (let i = 0; i <= this.difficulty; i++) {
-            const radius = randomizeValue({
+            const radius = getRandomValue({
                 initialValue: GameSettings.enemy.SPAWN_RADIUS,
                 randomizeValue: GameSettings.enemy.SPAWN_RANDOM_RADIUS,
             });
 
-            const angle = randomizeValue({
+            const angle = getRandomValue({
                 initialValue: 0,
                 randomValue: Math.PI * 2,
             });
@@ -197,6 +196,10 @@ export default class Game {
         if(this.backgroundOpacity > 1) {
             this.backgroundOpacity = 1;
         }
+    }
+
+    setTransparency(transparency) {
+        this.ctx.globalAlpha = transparency;
     }
 
 }

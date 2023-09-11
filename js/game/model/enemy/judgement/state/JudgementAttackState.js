@@ -1,32 +1,40 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import Game from '../../../Game/Game.js';
-import { get_image } from '../../../../helper/fileReader.js';
-import {drawImage, drawMirroredY} from '../../../../helper/renderer/drawer.js';
+import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js';
 import JudgementBullet from '../JudgementBullet.js';
-import {getNumberedImage} from "../../../../helper/imageLoader.js";
+import { getNumberedImage } from '../../../../helper/imageLoader.js';
+import { getRandomValue } from '../../../../helper/randomHelper.js';
+import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import GameSettings from "../../../../constants.js";
 
 export default class JudgementAttackState extends JudgementBaseState {
-    enterState(currJudgement) {
+    enterState() {
         this.number = 0;
         this.animationStage = 1;
-        this.maxAttackCount = null || Math.round(Math.random() * 3) + 3;
+        this.maxAttackCount =
+            getRandomValue({
+                randomValue: 3,
+                rounded: true,
+            }) + 3;
         this.attackCount = 0;
         this.attacking = false;
-        this.attackAngle = Math.PI * Math.random();
+        this.attackAngle = getRandomValue({
+            randomValue: Math.PI * 2,
+        });
     }
 
     updateState(currJudgement) {
-        this.number++;
+        this.number += 1;
+
         if (this.number === 15) {
             this.number = 0;
-            this.animationStage++;
+            this.animationStage += 1;
         }
 
         this.attack(currJudgement);
 
         if (this.animationStage === 7) {
             this.animationStage -= 3;
-            this.attackCount++;
+            this.attackCount += 1;
         }
 
         if (this.animationStage === 4) {
@@ -34,28 +42,37 @@ export default class JudgementAttackState extends JudgementBaseState {
         }
 
         if (this.attackCount === this.maxAttackCount) {
-            currJudgement.switchState(currJudgement.moveState);
+            currJudgement.handleSwitchState({
+                move: true,
+                dash: true,
+                attack: true,
+                laser: true,
+                bomb: true,
+            });
         }
     }
 
     attack(currJudgement) {
         if (this.attacking && this.number % 2 === 0) {
-            this.attackAngle += (2 / 30) * Math.PI + Math.random() * (1 / 45) * Math.PI;
+            this.attackAngle += getRandomValue({
+                initialValue: (2 / 30) * Math.PI,
+                randomValue: (1 / 45) * Math.PI,
+            });
 
-            let offset = 0;
-            if (currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
-                offset = -25;
+            let offset = 15;
+            if (getFaceDirection(currJudgement.angle) === 'left') {
+                offset = -15;
             }
 
             JudgementBullet.generate({
                 x: currJudgement.position.x + offset,
-                y: currJudgement.position.y - 45,
+                y: currJudgement.position.y - 30,
                 angle: this.attackAngle,
             });
 
             JudgementBullet.generate({
                 x: currJudgement.position.x + offset,
-                y: currJudgement.position.y - 45,
+                y: currJudgement.position.y - 30,
                 angle: this.attackAngle + Math.PI,
             });
         }
@@ -64,28 +81,28 @@ export default class JudgementAttackState extends JudgementBaseState {
     drawImage(currJudgement) {
         const judgementAttack = getNumberedImage('judgement_attack', this.animationStage);
 
-        if (currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
+        if (getFaceDirection(currJudgement.angle) === 'left') {
             drawMirroredY({
                 img: judgementAttack,
                 position: {
                     x: currJudgement.position.x,
                     y: currJudgement.position.y,
                 },
-                width: judgementAttack.width * 2,
-                height: judgementAttack.height * 2,
+                width: judgementAttack.width * GameSettings.GAME.GAME_SCALE,
+                height: judgementAttack.height * GameSettings.GAME.GAME_SCALE,
                 translate: true,
             });
-        }
-        else {
-            drawImage({
-                img: judgementAttack,
-                x: currJudgement.position.x,
-                y: currJudgement.position.y,
-                width: judgementAttack.width * 2,
-                height: judgementAttack.height * 2,
-                translate: true,
-            })
+
+            return;
         }
 
+        drawImage({
+            img: judgementAttack,
+            x: currJudgement.position.x,
+            y: currJudgement.position.y,
+            width: judgementAttack.width * GameSettings.GAME.GAME_SCALE,
+            height: judgementAttack.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+        });
     }
 }

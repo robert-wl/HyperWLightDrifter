@@ -1,6 +1,9 @@
 import Game from '../../Game/Game.js';
-import { get_image } from '../../../helper/fileReader.js';
 import Enemy from '../Enemy.js';
+import {getRandomValue} from "../../../helper/randomHelper.js";
+import {getNumberedImage} from "../../../helper/imageLoader.js";
+import {drawImage} from "../../../helper/renderer/drawer.js";
+import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
 
 export default class JudgementBullet extends Enemy {
     static generate({ x, y, angle }) {
@@ -8,10 +11,16 @@ export default class JudgementBullet extends Enemy {
             x,
             y,
             velocity: {
-                value: 5 + Math.random() * 1,
+                value: getRandomValue({
+                    initialValue: 5,
+                    randomValue: 1,
+                }),
                 angle: angle,
             },
-            lifetime: 200 + Math.random() * 200,
+            lifetime: getRandomValue({
+                initialValue: 100,
+                randomValue: 200,
+            }),
         });
         Game.getInstance().bossEntities.push(newJudgementBullet);
     }
@@ -45,24 +54,42 @@ export default class JudgementBullet extends Enemy {
     }
 
     update() {
-        this.lifetime--;
-        this.position.x += Math.cos(this.velocity.angle) * this.velocity.value;
-        this.position.y += Math.sin(this.velocity.angle) * this.velocity.value;
+        this.lifetime -= 1;
+        this.position.x += getHorizontalValue({
+            angle: this.velocity.angle,
+            magnitude: this.velocity.value,
+        });
+        this.position.y += getVerticalValue({
+            angle: this.velocity.angle,
+            magnitude: this.velocity.value,
+        });
+
         this.render();
 
-        if (this.lifetime <= 0) {
+        if (this.lifetime <= 1) {
             this.kill();
         }
     }
 
     kill() {
-        Game.getInstance().bossEntities.splice(Game.getInstance().bossEntities.indexOf(this), 1);
+        const { bossEntities } = Game.getInstance();
+        bossEntities.splice(bossEntities.indexOf(this), 1);
     }
 
     render() {
-        const ctx = Game.getInstance().ctx;
-        get_image('boss/attack/bullet', 'judgement_bullet', Math.round((this.lifetime / this.maxLifetime) * 3) + 1, (img) => {
-            ctx.drawImage(img, this.position.x, this.position.y, img.width, img.height);
+        const judgementBullet = getNumberedImage('judgement_bullet', this.getAnimationNumber());
+
+        drawImage({
+            img: judgementBullet,
+            x: this.position.x,
+            y: this.position.y,
+            width: judgementBullet.width,
+            height: judgementBullet.height,
+            translate: true,
         });
+    }
+
+    getAnimationNumber() {
+        return Math.floor((this.lifetime / this.maxLifetime) * 4) + 1;
     }
 }

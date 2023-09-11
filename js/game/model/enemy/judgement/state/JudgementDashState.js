@@ -1,10 +1,13 @@
 import JudgementBaseState from './JudgementBaseState.js';
 import Game from '../../../Game/Game.js';
-import {drawImage, drawMirroredY} from '../../../../helper/renderer/drawer.js';
-import judgementDashDrawer from '../../../../helper/boss/judgmenentDashDrawer.js';
-import {getAngle} from "../../../../helper/angleHelper.js";
-import {getMagnitudeValue} from "../../../../helper/distanceHelper.js";
-import {getNumberedImage} from "../../../../helper/imageLoader.js";
+import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js';
+import judgementDashDrawer from '../../../../helper/boss/judgementDashDrawer.js';
+import { getAngle } from '../../../../helper/angleHelper.js';
+import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
+import { getNumberedImage } from '../../../../helper/imageLoader.js';
+import { getRandomValue } from '../../../../helper/randomHelper.js';
+import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import GameSettings from "../../../../constants.js";
 
 export default class JudgementDashState extends JudgementBaseState {
     lastData = [];
@@ -12,30 +15,37 @@ export default class JudgementDashState extends JudgementBaseState {
         this.number = 0;
         this.animationStage = 1;
         this.flyTime = 10;
-        this.destination = currJudgement.attackPosition[Math.floor(Math.random() * currJudgement.attackPosition.length)];
+        this.destination =
+            currJudgement.attackPosition[
+                getRandomValue({
+                    randomValue: currJudgement.attackPosition.length - 1,
+                    rounded: true,
+                })
+            ];
     }
 
     updateState(currJudgement) {
-        this.number++;
+        this.number += 1;
 
         if (this.number === 15) {
             this.number = 0;
-            this.animationStage++;
+            this.animationStage += 1;
         }
+
         const { player } = Game.getInstance();
 
         currJudgement.angle = getAngle({
-            x: player.position.x - (currJudgement.position.x),
+            x: player.position.x - currJudgement.position.x,
             y: player.position.y - (currJudgement.position.y + 40),
         });
         this.angle = getAngle({
             x: this.destination.x - (currJudgement.position.x + currJudgement.width / 2),
-            y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2)
+            y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2),
         });
 
         const dist = getMagnitudeValue({
             x: this.destination.x - (currJudgement.position.x + currJudgement.width / 2),
-            y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2)
+            y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2),
         });
 
         if (Math.abs(dist) < 20) {
@@ -48,52 +58,58 @@ export default class JudgementDashState extends JudgementBaseState {
             });
         }
 
-        currJudgement.position.x += Math.cos(this.angle) * this.flyTime;
-        currJudgement.position.y += Math.sin(this.angle) * this.flyTime;
+        currJudgement.position.x += getHorizontalValue({
+            magnitude: this.flyTime,
+            angle: this.angle,
+        });
+        currJudgement.position.y += getVerticalValue({
+            magnitude: this.flyTime,
+            angle: this.angle,
+        });
+
         this.shadowHandler(currJudgement);
     }
 
     drawImage(currJudgement) {
-        const ctx = Game.getInstance().ctx;
+        this.lastData.forEach((data, index) => {
+            Game.getInstance().setTransparency(1 - (this.lastData.length - index) / this.lastData.length);
 
-        for (let i = 0; i < this.lastData.length; i++) {
-            ctx.globalAlpha = 1 - (this.lastData.length - i) / this.lastData.length;
-            judgementDashDrawer(this.lastData[i]);
-        }
-        ctx.globalAlpha = 1;
+            judgementDashDrawer(data);
+        });
+
+        Game.getInstance().setTransparency(1);
 
         const judgementMove = getNumberedImage('judgement_move', (this.animationStage % 3) + 1);
 
-        if (currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
+        if (getFaceDirection(currJudgement.angle) === 'left') {
             drawMirroredY({
-                canvas: ctx,
                 img: judgementMove,
                 position: {
                     x: currJudgement.position.x,
                     y: currJudgement.position.y,
                 },
-                width: judgementMove.width * 2,
-                height: judgementMove.height * 2,
+                width: judgementMove.width * GameSettings.GAME.GAME_SCALE,
+                height: judgementMove.height * GameSettings.GAME.GAME_SCALE,
                 translate: true,
             });
-        } else {
-            drawImage({
-                img: judgementMove,
-                x: currJudgement.position.x,
-                y: currJudgement.position.y,
-                width: judgementMove.width * 2,
-                height: judgementMove.height * 2,
-                translate: true,
-            });
+
+            return;
         }
+
+        drawImage({
+            img: judgementMove,
+            x: currJudgement.position.x,
+            y: currJudgement.position.y,
+            width: judgementMove.width * GameSettings.GAME.GAME_SCALE,
+            height: judgementMove.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+        });
     }
 
     shadowHandler(currJudgement) {
-        const { angle } = currJudgement;
         const data = {
-            canvas: Game.getInstance().ctx,
             moveNumber: this.animationStage,
-            angle: angle,
+            angle: currJudgement.angle,
             lastPosition: { ...currJudgement.position },
         };
 

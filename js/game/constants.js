@@ -1,5 +1,3 @@
-
-
 const GameSettings = {
     GAME: {
         GAME_SCALE: 2,
@@ -62,7 +60,7 @@ const GameSettings = {
                 y: 10,
                 w: 100,
                 h: 100,
-            }
+            },
         },
         PROJECTILE_OFFSET: 45,
         GUN: {
@@ -83,14 +81,14 @@ const GameSettings = {
                 BOTTOM: {
                     X: 35,
                     Y: 32.5,
-                }
-            }
+                },
+            },
         },
         EXPLOSION_DISTANCE: 35,
         SHADOW_OFFSET: {
             X: -24.5,
             Y: -5,
-        }
+        },
     },
     IMAGES: {
         STAGE_ONE: [
@@ -118,7 +116,7 @@ const GameSettings = {
                 ref: 'particles/firefly/fireflies.png',
                 name: 'fireflies',
                 amount: 4,
-            }
+            },
         ],
         STAGE_TWO: [
             {
@@ -170,9 +168,18 @@ const GameSettings = {
                 ref: 'boss/laser/judgement_laser.png',
                 name: 'judgement_laser',
                 amount: 13,
-            }
-        ]
-    }
-}
+            },
+            {
+                ref: 'boss/attack/bullet/judgement_bullet.png',
+                name: 'judgement_bullet',
+                amount: 4,
+            },
+            {
+                ref: 'boss/laser/judgement_laser_bullet.png',
+                name: 'judgement_laser_bullet',
+            },
+        ],
+    },
+};
 
 export default GameSettings;

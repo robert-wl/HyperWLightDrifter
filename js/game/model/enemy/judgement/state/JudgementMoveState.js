@@ -4,22 +4,27 @@ import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js'
 import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
 import { getNumberedImage } from '../../../../helper/imageLoader.js';
+import GameSettings from "../../../../constants.js";
+import {getRandomValue} from "../../../../helper/randomHelper.js";
+import {getFaceDirection} from "../../../../helper/collision/directionHandler.js";
 
 export default class JudgementMoveState extends JudgementBaseState {
     enterState() {
         this.number = 0;
         this.animationStage = 1;
-        this.walkTime = Math.random() * 10;
+        this.walkTime = getRandomValue({
+            randomValue: 10,
+        });
     }
 
     updateState(currJudgement) {
-        this.number++;
+        this.number += 1;
 
-        const { position } = Game.getInstance().player;
+        const { centerPosition } = Game.getInstance().player;
 
         currJudgement.angle = getAngle({
-            x: position.x - (currJudgement.position.x + currJudgement.width / 2),
-            y: position.y - (currJudgement.position.y + currJudgement.height / 2),
+            x: centerPosition.x - (currJudgement.position.x + currJudgement.width / 2),
+            y: centerPosition.y - (currJudgement.position.y + currJudgement.height / 2),
         });
 
 
@@ -34,7 +39,7 @@ export default class JudgementMoveState extends JudgementBaseState {
 
         if (this.number === 15) {
             this.number = 0;
-            this.animationStage++;
+            this.animationStage += 1;
         }
 
         if (this.walkTime <= this.animationStage) {
@@ -51,15 +56,15 @@ export default class JudgementMoveState extends JudgementBaseState {
     drawImage(currJudgement) {
         const judgementMove = getNumberedImage('judgement_move', (this.animationStage % 3) + 1);
 
-        if (currJudgement.angle > Math.PI / 2 || currJudgement.angle < -Math.PI / 2) {
+        if (getFaceDirection(currJudgement.angle) === 'left') {
             drawMirroredY({
                 img: judgementMove,
                 position: {
                     x: currJudgement.position.x,
                     y: currJudgement.position.y,
                 },
-                width: judgementMove.width * 2,
-                height: judgementMove.height * 2,
+                width: judgementMove.width * GameSettings.GAME.GAME_SCALE,
+                height: judgementMove.height * GameSettings.GAME.GAME_SCALE,
                 translate: true,
             });
 
@@ -70,8 +75,8 @@ export default class JudgementMoveState extends JudgementBaseState {
             img: judgementMove,
             x: currJudgement.position.x,
             y: currJudgement.position.y,
-            width: judgementMove.width * 2,
-            height: judgementMove.height * 2,
+            width: judgementMove.width * GameSettings.GAME.GAME_SCALE,
+            height: judgementMove.height * GameSettings.GAME.GAME_SCALE,
             translate: true,
         });
     }

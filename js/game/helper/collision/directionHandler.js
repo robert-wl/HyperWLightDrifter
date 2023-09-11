@@ -44,3 +44,10 @@ export function getMoveDirection({ keys, currPlayer }) {
 
     return { direction, playerDirection: currPlayer.direction };
 }
+
+export function getFaceDirection(angle) {
+    if(angle > Math.PI / 2 || angle < -Math.PI / 2){
+        return "left";
+    }
+    return "right";
+}

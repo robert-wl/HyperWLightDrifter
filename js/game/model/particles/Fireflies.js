@@ -1,8 +1,7 @@
 import Particles from './Particles.js';
 import Game from '../Game/Game.js';
-import { get_image } from '../../helper/fileReader.js';
 import { drawRotated } from '../../helper/renderer/drawer.js';
-import {randomizeValue} from "../../helper/randomHelper.js";
+import {getRandomValue} from "../../helper/randomHelper.js";
 import {getHorizontalValue, getVerticalValue} from "../../helper/distanceHelper.js";
 import {getNumberedImage} from "../../helper/imageLoader.js";
 
@@ -10,34 +9,35 @@ export default class Fireflies extends Particles {
     static generate() {
         const { position } = Game.getInstance().player;
 
-        const x = position.x + randomizeValue({
+        const x = position.x + getRandomValue({
             initialValue: -1,
             randomValue: 2,
         }) * 1500;
-        const y = position.y + randomizeValue({
+        const y = position.y + getRandomValue({
             initialValue: -1,
             randomValue: 2,
         }) * 1500;
 
-        const width = randomizeValue({
+        const width = getRandomValue({
             initialValue: 5,
             randomValue: 10,
         });
-        const height = randomizeValue({
+        const height = getRandomValue({
             initialValue: 5,
             randomValue: 10,
         });
-        const lifeSpan = Math.round(randomizeValue({
+        const lifeSpan = getRandomValue({
             initialValue: 2,
             randomValue: 20,
-        }));
+            rounded: true,
+        });
 
-        const speed = randomizeValue({
+        const speed = getRandomValue({
             initialValue: -1,
             randomValue: 2,
         }) * 0.25;
 
-        const angle = randomizeValue({
+        const angle = getRandomValue({
             initialValue: 0,
             randomValue: Math.PI * 2,
         });
@@ -72,7 +72,7 @@ export default class Fireflies extends Particles {
         if (this.number % 20 === 0) {
             this.lifeSpan -= 1;
             this.number = 0;
-            this.rotation = Math.round(randomizeValue({
+            this.rotation = Math.round(getRandomValue({
                 randomValue: 4,
             })) / 2;
         }

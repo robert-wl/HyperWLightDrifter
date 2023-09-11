@@ -13,7 +13,7 @@ export default class JudgementBomb extends Enemy {
             position: position,
             angle: angle,
             offset: 120,
-            lifetime: 500,
+            lifetime: 300,
             width: 40,
             height: 40,
         });
@@ -110,10 +110,6 @@ export default class JudgementBomb extends Enemy {
 
         if (this.spawning) {
             this.position = this.positionFollow;
-            // this.position = {
-            //     x: this.positionFollow.x + Game.getInstance().player.width / 2,
-            //     y: this.positionFollow.y + Game.getInstance().player.height / 2,
-            // };
         }
 
         if (this.spawning) {

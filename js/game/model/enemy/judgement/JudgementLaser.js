@@ -1,6 +1,8 @@
 import Game from '../../Game/Game.js';
-import { get_image } from '../../../helper/fileReader.js';
 import Enemy from '../Enemy.js';
+import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
+import {getImage} from "../../../helper/imageLoader.js";
+import {drawImage} from "../../../helper/renderer/drawer.js";
 
 export default class JudgementLaser extends Enemy {
     static generate({ x, y, angle }) {
@@ -36,16 +38,27 @@ export default class JudgementLaser extends Enemy {
         this.lifetime = lifetime;
     }
 
-    damage({ amount, angle }) {}
+    damage(_) {
+        // override
+    }
 
     knockback() {
         this.velocity.value *= 3;
     }
 
     update() {
-        this.lifetime--;
-        this.position.x += Math.cos(this.velocity.angle) * this.velocity.value;
-        this.position.y += Math.sin(this.velocity.angle) * this.velocity.value;
+        this.lifetime -= 1;
+
+        this.position.x += getHorizontalValue({
+            angle: this.velocity.angle,
+            magnitude: this.velocity.value,
+        });
+
+        this.position.y += getVerticalValue({
+            angle: this.velocity.angle,
+            magnitude: this.velocity.value,
+        });
+
         this.render();
 
         if (this.lifetime <= 0) {
@@ -54,23 +67,20 @@ export default class JudgementLaser extends Enemy {
     }
 
     kill() {
-        Game.getInstance().bossEntities.splice(Game.getInstance().bossEntities.indexOf(this), 1);
+        const { bossEntities } = Game.getInstance();
+        bossEntities.splice(bossEntities.indexOf(this), 1);
     }
 
     render() {
-        const ctx = Game.getInstance().ctx;
-        get_image('boss/laser', 'judgement_laser_bullet', null, (img) => {
-            // drawRotated({
-            //     canvas: ctx,
-            //     img: img,
-            //     position: {
-            //         x: this.position.x,
-            //         y: this.position.y,
-            //     },
-            //     angle: this.imageAngle,
-            //     size: 1.5
-            // })
-            ctx.drawImage(img, this.position.x, this.position.y, img.width, img.height);
+        const laserBullet = getImage('judgement_laser_bullet');
+
+        drawImage({
+            img: laserBullet,
+            x: this.position.x,
+            y: this.position.y,
+            width: laserBullet.width,
+            height: laserBullet.height,
+            translate: true,
         });
     }
 }
