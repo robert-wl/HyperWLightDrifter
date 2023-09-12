@@ -17,6 +17,8 @@ export async function firstStage() {
     });
     Game.getInstance().player.position.x = 900;
     Game.getInstance().player.position.y = 500;
+    Game.getInstance().player.centerPosition.x = 900;
+    Game.getInstance().player.centerPosition.y = 500;
 
     CrystalBrute.generate({
         x: 900,

@@ -10,6 +10,7 @@ import {firstStage, secondStage} from '../../helper/stages/stageHandler.js';
 import GameSettings from '../../constants.js';
 import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
 import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
+import EnemyManager from "../enemy/EnemyManager.js";
 
 export default class Game {
     static instance = null;
@@ -24,7 +25,6 @@ export default class Game {
         this.collideables = [];
         this.particles = [];
         this.renderList = [];
-        this.enemyList = [];
         this.boss = null;
         this.bossEntities = [];
         this.canvas = null;
@@ -95,7 +95,8 @@ export default class Game {
         this.camera.updateCamera();
         this.setTransparency(1);
 
-        this.enemyList.forEach((enemy) => enemy.update());
+        EnemyManager.getInstance().update();
+
         this.collideables.forEach((collideable) => collideable.update());
 
         this.player.updateState();

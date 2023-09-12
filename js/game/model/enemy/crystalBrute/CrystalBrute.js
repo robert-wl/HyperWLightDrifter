@@ -6,6 +6,7 @@ import CrystalBruteAttackState from "./state/CrystalBruteAttackState.js";
 import CrystalBruteDieState from "./state/CrystalBruteDieState.js";
 import CrystalBruteMoveState from "./state/CrystalBruteMoveState.js";
 import HealthBar from "../healthBar/HealthBar.js";
+import EnemyManager from "../EnemyManager.js";
 
 export default class CrystalBrute extends Enemy {
     static generate({ x, y }) {
@@ -13,7 +14,8 @@ export default class CrystalBrute extends Enemy {
             x,
             y,
         });
-        Game.getInstance().enemyList.push(newCrystalBrute);
+
+        EnemyManager.getInstance().enemyList.push(newCrystalBrute);
     }
     constructor({ x, y }) {
         super({
@@ -61,7 +63,7 @@ export default class CrystalBrute extends Enemy {
 
     update() {
         this.knockback();
-        const ctx = Game.getInstance().ctx;
+
         if (Game.getInstance().debug) {
             this.debugMode();
         }
@@ -70,8 +72,8 @@ export default class CrystalBrute extends Enemy {
         if(this.currState !== this.dieState) {
             renderShadow({
                 position: {
-                    x: this.position.x - 45,
-                    y: this.position.y ,
+                    x: this.position.x,
+                    y: this.position.y + 27.5,
                 },
                 sizeMultiplier: 3,
             });
@@ -89,22 +91,23 @@ export default class CrystalBrute extends Enemy {
         }
 
 
-        for (const attack of this.attack) {
-            const remove = attack.update();
-            if (remove) {
+        this.attack.forEach((attack) => {
+
+            if (attack.update()) {
                 this.attack.splice(this.attack.indexOf(attack), 1);
             }
-        }
+        });
+
 
         if(this.damaged >= 0) {
-            ctx.filter = 'sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)';
+            Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');
         }
 
         this.currState.drawImage(this);
 
         if(this.damaged >= 0) {
-            ctx.filter = 'none';
-            this.damaged--;
+            Game.getInstance().setFilter('none');
+            this.damaged -= 1;
         }
     }
 }

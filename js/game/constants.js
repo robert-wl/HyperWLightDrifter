@@ -150,6 +150,19 @@ const GameSettings = {
                 ref: 'enemy/crystal_brute/attack/crystal_brute_attack.png',
                 name: 'crystal_brute_attack',
                 amount: 11,
+            },
+            {
+                ref: 'enemy/crystal_brute/die/crystal_brute_die.png',
+                name: 'crystal_brute_die',
+            },
+            {
+                ref: 'enemy/crystal_brute/spike/crystal_spike.png',
+                name: 'crystal_spike',
+                amount: 7,
+            },
+            {
+                ref: 'other/shadow.png',
+                name: 'shadow',
             }
         ],
         STAGE_TWO: [

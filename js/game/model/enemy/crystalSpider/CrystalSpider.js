@@ -5,6 +5,7 @@ import CrystalSpiderMoveState from './state/CrystalSpiderMoveState.js';
 import CrystalSpiderAttackState from './state/CrystalSpiderAttackState.js';
 import CrystalSpiderDieState from './state/CrystalSpiderDieState.js';
 import renderShadow from '../../../helper/renderer/shadow.js';
+import EnemyManager from "../EnemyManager.js";
 
 export default class CrystalSpider extends Enemy {
     static generate({ x, y }) {
@@ -12,7 +13,7 @@ export default class CrystalSpider extends Enemy {
             x,
             y,
         });
-        Game.getInstance().enemyList.push(newCrystalSpider);
+        EnemyManager.getInstance().enemyList.push(newCrystalSpider);
     }
     constructor({ x, y }) {
         super({

@@ -1,10 +1,15 @@
-import {get_image} from "../fileReader.js";
-import Game from "../../model/Game/Game.js";
+import { getImage } from '../imageLoader.js';
+import { drawImage } from './drawer.js';
 
+export default function renderShadow({ position, sizeMultiplier }) {
+    const shadow = getImage('shadow');
 
-export default function renderShadow({ position, sizeMultiplier }){
-    const ctx = Game.getInstance().ctx;
-    get_image('other', 'shadow', null, (img) => {
-        ctx.drawImage(img, position.x, position.y, img.width * sizeMultiplier, img.height * sizeMultiplier);
+    drawImage({
+        img: shadow,
+        x: position.x,
+        y: position.y,
+        width: shadow.width * sizeMultiplier,
+        height: shadow.height * sizeMultiplier,
+        translate: true,
     });
 }

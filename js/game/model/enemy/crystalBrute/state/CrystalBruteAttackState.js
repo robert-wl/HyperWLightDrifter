@@ -1,8 +1,12 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
-import { get_image } from '../../../../helper/fileReader.js';
 import Game from '../../../Game/Game.js';
-import CrystalSpike from '../CrystalSpike.js';
 import CrystalAttack from '../CrystalAttack.js';
+import { getNumberedImage } from '../../../../helper/imageLoader.js';
+import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import { drawImage } from '../../../../helper/renderer/drawer.js';
+import GameSettings from '../../../../constants.js';
+import { getAngle } from '../../../../helper/angleHelper.js';
+import { getRandomValue } from '../../../../helper/randomHelper.js';
 
 export default class CrystalBruteAttackState extends CrystalBruteBaseState {
     angle = 0;
@@ -25,43 +29,61 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
         this.attackTiming(currBrute);
     }
     drawImage(currBrute) {
-        const ctx = Game.getInstance().ctx;
+        const bruteAttack = getNumberedImage('crystal_brute_attack', this.animationStage);
 
-        get_image('enemy/crystal_brute', 'crystal_brute_attack', this.animationStage, (image) => {
-            if ((this.angle > 0 && this.angle < Math.PI / 2) || (this.angle < 0 && this.angle > -Math.PI / 2)) {
-                ctx.drawImage(image, currBrute.position.x, currBrute.position.y, currBrute.width, currBrute.height);
-            } else {
-                ctx.scale(-1, 1);
-                ctx.drawImage(image, -currBrute.position.x - currBrute.width, currBrute.position.y, currBrute.width, currBrute.height);
-                ctx.scale(-1, 1);
-            }
+        drawImage({
+            img: bruteAttack,
+            x: currBrute.position.x,
+            y: currBrute.position.y,
+            width: bruteAttack.width * GameSettings.GAME.GAME_SCALE,
+            height: bruteAttack.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+            mirrored: getFaceDirection(currBrute.angle) === 'left',
         });
     }
 
     attackTiming(currBrute) {
         if (this.number === 10 && this.animationStage < 5) {
-            this.animationStage++;
+            this.animationStage += 1;
             this.number = 0;
-        } else if (this.number === 5 && this.animationStage >= 5 && this.animationStage < 10) {
-            this.animationStage++;
+            return;
+        }
+
+        if (this.number === 5 && this.animationStage >= 5 && this.animationStage < 10) {
+            this.animationStage += 1;
             this.number = 0;
+
             if (this.animationStage === 9) {
                 this.handleAttack(currBrute);
             }
-        } else if (this.number === 50 && this.animationStage === 10) {
-            this.animationStage++;
+
+            return;
+        }
+
+        if (this.number === 50 && this.animationStage === 10) {
+            this.animationStage += 1;
             this.number = 0;
-        } else if (this.number === 5 && this.animationStage === 11) {
+
+            return;
+        }
+
+        if (this.number === 5 && this.animationStage === 11) {
             currBrute.switchState(currBrute.moveState);
         }
     }
 
     handleAttack(currBrute) {
-        const x = currBrute.position.x + currBrute.width / 2;
-        const y = currBrute.position.y + currBrute.height / 2;
-        const angle = Math.atan2(Game.getInstance().player.position.y - y, Game.getInstance().player.position.x - x);
+        const { centerPosition } = Game.getInstance().player;
 
-        const type = Math.floor(Math.random() * 3);
+        const angle = getAngle({
+            x: centerPosition.x - currBrute.position.x,
+            y: centerPosition.y - currBrute.position.y,
+        });
+
+        const type = getRandomValue({
+            randomValue: 3,
+            rounded: true,
+        });
 
         // Game.getInstance().camera.shakeCamera({
         //     offset: {
@@ -72,15 +94,16 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
 
         const constant = {
             0: [0],
-            1: [0, -1/6, 1/6],
-            2: [1/10, -1/10, 2/10, -2/10],
-        }
-        for(const num of constant[type]) {
+            1: [0, -1 / 6, 1 / 6],
+            2: [1 / 10, -1 / 10, 2 / 10, -2 / 10],
+        };
+
+        for (const num of constant[type]) {
             currBrute.attack.push(
                 CrystalAttack.generate({
                     position: {
-                        x: x,
-                        y: y,
+                        x: currBrute.position.x,
+                        y: currBrute.position.y,
                     },
                     angle: angle + Math.PI * num,
                 }),

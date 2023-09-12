@@ -1,25 +1,38 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
-import { get_image } from '../../../../helper/fileReader.js';
 import Game from '../../../Game/Game.js';
+import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
+import { getImage } from '../../../../helper/imageLoader.js';
+import { drawImage } from '../../../../helper/renderer/drawer.js';
+import GameSettings from '../../../../constants.js';
 
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
-    enterState(_currSpider) {
+    enterState(currBrute) {
         Game.getInstance().enemyAliveCount -= 5;
     }
 
-    drawImage(currSpider) {
-        currSpider.position.x += Math.cos(currSpider.angle) * currSpider.speed;
-        currSpider.position.y += Math.sin(currSpider.angle) * currSpider.speed;
-        currSpider.speed *= 0.9;
-        const ctx = Game.getInstance().ctx;
-        get_image('enemy/crystal_brute', 'crystal_brute_die', null, (image) => {
-            if ((currSpider.angle > 0 && currSpider.angle < Math.PI / 2) || (currSpider.angle < 0 && currSpider.angle > -Math.PI / 2)) {
-                ctx.drawImage(image, currSpider.position.x, currSpider.position.y, currSpider.width, currSpider.height);
-            } else {
-                ctx.scale(-1, 1);
-                ctx.drawImage(image, -currSpider.position.x - currSpider.width, currSpider.position.y, currSpider.width, currSpider.height);
-                ctx.scale(-1, 1);
-            }
+    updateState(currBrute) {
+        currBrute.position.x += getHorizontalValue({
+            magnitude: currBrute.speed,
+            angle: currBrute.angle,
+        });
+        currBrute.position.y += getVerticalValue({
+            magnitude: currBrute.speed,
+            angle: currBrute.angle,
+        });
+
+        currBrute.speed *= 0.9;
+    }
+
+    drawImage(currBrute) {
+        const bruteDie = getImage('crystal_brute_die');
+
+        drawImage({
+            img: bruteDie,
+            x: currBrute.position.x,
+            y: currBrute.position.y,
+            width: bruteDie.width * GameSettings.GAME.GAME_SCALE,
+            height: bruteDie.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
         });
     }
 }

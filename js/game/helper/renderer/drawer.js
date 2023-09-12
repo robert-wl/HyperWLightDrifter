@@ -34,16 +34,37 @@ export function drawMirroredY({ canvas, img, position, width, height, translate 
     ctx.restore();
 }
 
-export function drawImage({ img, x, y, width, height, translate = false }) {
+export function drawImage({ img, x, y, width, height, translate = false, mirrored = false }) {
     const { ctx } = Game.getInstance();
     if(translate) {
         ctx.translate(-width / 2, -height / 2);
     }
-    ctx.drawImage(img, x, y, width, height);
+    if(mirrored) {
+        drawLeft(img, x, y, width, height);
+    }
+    else {
+        drawRight(img, x, y, width, height);
+    }
     if(translate) {
         ctx.translate(width / 2, height / 2);
     }
 }
+
+function drawRight(img, x, y, width, height) {
+    const { ctx } = Game.getInstance();
+    ctx.drawImage(img, x, y, width, height);
+}
+
+function drawLeft(img, x, y, width, height) {
+    const { ctx } = Game.getInstance();
+    ctx.translate(width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(img, -x, y, width, height);
+    ctx.scale(-1, 1);
+    ctx.translate(-width, 0);
+}
+
+
 
 export function drawImageCropped({ img, x, y, width, height }) {
     const { ctx } = Game.getInstance();
