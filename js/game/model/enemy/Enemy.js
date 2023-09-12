@@ -7,12 +7,10 @@ export default class Enemy {
         this.maxHealth = maxHealth;
         this.width = w;
         this.height = h;
-        console.log(x)
         this.position = {
             x: x + w / 2,
             y: y + h / 2,
         };
-        console.log(this.position.x)
         this.image = null;
         this.damaged = -1;
         this.velocity = {

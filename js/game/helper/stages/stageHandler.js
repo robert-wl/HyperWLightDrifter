@@ -20,10 +20,10 @@ export async function firstStage() {
     Game.getInstance().player.centerPosition.x = 900;
     Game.getInstance().player.centerPosition.y = 500;
 
-    CrystalBrute.generate({
-        x: 900,
-        y: 500,
-    });
+    // CrystalBrute.generate({
+    //     x: 900,
+    //     y: 500,
+    // });
     const colliders = [
         { x: 100, y: 0, w: 300, h: 1000 },
         { x: 400, y: 0, w: 1025, h: 300 },

@@ -73,13 +73,13 @@ export default class Player {
 
         this.updateBombs();
 
-        renderShadow({
-            position: {
-                x: this.position.x + this.playerDefault.SHADOW_OFFSET.X,
-                y: this.position.y + this.playerDefault.SHADOW_OFFSET.Y,
-            },
-            sizeMultiplier: 1.5,
-        });
+        // renderShadow({
+        //     position: {
+        //         x: this.position.x + this.playerDefault.SHADOW_OFFSET.X,
+        //         y: this.position.y + this.playerDefault.SHADOW_OFFSET.Y,
+        //     },
+        //     sizeMultiplier: 1.5,
+        // });
 
         this.updateCounter();
 

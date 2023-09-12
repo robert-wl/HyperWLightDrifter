@@ -6,6 +6,7 @@ import CrystalSpiderAttackState from './state/CrystalSpiderAttackState.js';
 import CrystalSpiderDieState from './state/CrystalSpiderDieState.js';
 import renderShadow from '../../../helper/renderer/shadow.js';
 import EnemyManager from "../EnemyManager.js";
+import {getRandomValue} from "../../../helper/randomHelper.js";
 
 export default class CrystalSpider extends Enemy {
     static generate({ x, y }) {
@@ -33,7 +34,10 @@ export default class CrystalSpider extends Enemy {
         this.attackState = new CrystalSpiderAttackState();
         this.moveState = new CrystalSpiderMoveState();
         this.dieState = new CrystalSpiderDieState();
-        this.speed = 1 + Math.random() * 3;
+        this.speed = getRandomValue({
+            initialValue: 1,
+            randomValue: 3,
+        });
         this.switchState(this.moveState);
     }
     switchState(newState) {
@@ -47,17 +51,21 @@ export default class CrystalSpider extends Enemy {
             this.debugMode();
         }
 
+        if(this.health <= 0 && this.currState !== this.dieState) {
+            this.switchState(this.dieState);
+        }
+
         this.currState.updateState(this);
 
-        if(this.currState !== this.dieState) {
-            renderShadow({
-                position: {
-                    x: this.position.x - this.width / 2 + 10,
-                    y: this.position.y - this.height / 2,
-                },
-                sizeMultiplier: 1.5,
-            });
-        }
+        // if(this.currState !== this.dieState) {
+        //     renderShadow({
+        //         position: {
+        //             x: this.position.x - this.width / 2 + 10,
+        //             y: this.position.y - this.height / 2,
+        //         },
+        //         sizeMultiplier: 1.5,
+        //     });
+        // }
 
         if(this.damaged >= 0) {
             Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');

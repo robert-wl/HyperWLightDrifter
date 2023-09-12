@@ -11,30 +11,26 @@ import EnemyManager from "../EnemyManager.js";
 export default class CrystalBrute extends Enemy {
     static generate({ x, y }) {
         const newCrystalBrute = new CrystalBrute({
-            x,
-            y,
+            x: x,
+            y: y,
+            width: 136,
+            height: 140,
         });
 
         EnemyManager.getInstance().enemyList.push(newCrystalBrute);
     }
-    constructor({ x, y }) {
+    constructor({ x, y, width, height }) {
         super({
             x: x,
             y: y,
-            // hitbox: {
-            //     x: 30,
-            //     y: 30,
-            //     w: 60,
-            //     h: 30,
-            // },
+            w: width,
+            h: height,
             hitbox: {
-                x: 0,
-                y: 0,
-                w: 0,
-                h: 0,
+                x: -width / 2 + 30,
+                y: -height / 2 + 30,
+                w: 60,
+                h: 30,
             },
-            w: 136,
-            h: 140,
             health: 10,
             maxHealth: 10,
         });
@@ -47,8 +43,8 @@ export default class CrystalBrute extends Enemy {
         this.healthBar = HealthBar.generate({
             position: this.position,
             offset: {
-                x: this.width / 2,
-                y: 130,
+                x: 0,
+                y: 75,
             },
             maxHealth: this.maxHealth,
         });

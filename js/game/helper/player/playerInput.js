@@ -9,12 +9,14 @@ export default function playerInput() {
             if (keys.includes(e.key)) {
                 return;
             }
+
             keys.push(e.key);
         }
         if (e.key === ' ') {
             if (keys.includes('space')) {
                 return;
             }
+
             keys.push('space');
         }
     });

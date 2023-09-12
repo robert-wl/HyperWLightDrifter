@@ -1,10 +1,11 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import { get_image } from '../../../../helper/fileReader.js';
 import Game from '../../../Game/Game.js';
+import EnemyManager from "../../EnemyManager.js";
 
 export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
-    enterState(_currSpider) {
-        Game.getInstance().enemyAliveCount--;
+    enterState() {
+        EnemyManager.getInstance().enemyAliveCount -= 1;
     }
 
     drawImage(currSpider) {

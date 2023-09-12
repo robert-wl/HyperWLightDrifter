@@ -4,20 +4,14 @@ import Game from '../../../Game/Game.js';
 import playerCollision from '../../../../helper/collision/playerCollision.js';
 
 export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
-    angle = 0;
-    number = 0;
     enterState(currSpider) {
         currSpider.attackSpeed = 0;
         this.number = 0;
         this.angle = currSpider.angle;
     }
     updateState(currSpider) {
-        this.number++;
+        this.number += 1;
 
-        if (currSpider.health <= 0) {
-            currSpider.switchState(currSpider.dieState);
-            return;
-        }
         if (this.number <= 10) {
             currSpider.attackSpeed = 20;
         }

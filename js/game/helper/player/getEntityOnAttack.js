@@ -1,23 +1,23 @@
-import Game from "../../model/Game/Game.js";
-
+import Game from '../../model/Game/Game.js';
+import EnemyManager from '../../model/enemy/EnemyManager.js';
 
 export default function getEntityOnAttack({ player }) {
+    const { bossEntities } = Game.getInstance();
+    const { enemyList } = EnemyManager.getInstance();
 
-    const {enemyList, bossEntities} = Game.getInstance();
-
-    for(const enemy of enemyList) {
-        if(enemy.health <= 0) {
+    for (const enemy of enemyList) {
+        if (enemy.health <= 0) {
             continue;
         }
         checkCollision(enemy);
     }
 
-    for(const enemy of bossEntities) {
+    for (const enemy of bossEntities) {
         checkCollision(enemy);
     }
 }
 
-function checkCollision(enemy){
+function checkCollision(enemy) {
     const { player } = Game.getInstance();
     const enemyX1 = enemy.position.x + enemy.hitbox.x;
     const enemyX2 = enemy.position.x + enemy.hitbox.x + enemy.width - enemy.hitbox.w;
@@ -29,18 +29,13 @@ function checkCollision(enemy){
     const playerY1 = player.attackBox.y;
     const playerY2 = player.attackBox.y + player.attackBox.h;
 
-    if(
-        enemyX1 < playerX2 &&
-        enemyX2 > playerX1 &&
-        enemyY1 < playerY2 &&
-        enemyY2 > playerY1
-    ) {
+    if (enemyX1 < playerX2 && enemyX2 > playerX1 && enemyY1 < playerY2 && enemyY2 > playerY1) {
         enemy.damage({
             amount: 1,
             angle: player.lookAngle,
         });
 
-        if(player.bullets < 3) {
+        if (player.bullets < 3) {
             player.bullets++;
         }
     }

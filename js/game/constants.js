@@ -6,7 +6,9 @@ const GameSettings = {
                 X: 950,
                 Y: 2000,
             }
-        }
+        },
+        SCREEN_WIDTH: 1920,
+        SCREEN_HEIGHT: 1080,
     },
     game: {
         GAME_SCALE: 2,
@@ -14,8 +16,8 @@ const GameSettings = {
         SCREEN_HEIGHT: 1080,
     },
     enemy: {
-        SPAWN_RADIUS: 1000,
-        SPAWN_RANDOM_RADIUS: 1000,
+        SPAWN_RADIUS: 1500,
+        SPAWN_RANDOM_RADIUS: 500,
     },
     player: {
         MAX_IMMUNITY: 30,

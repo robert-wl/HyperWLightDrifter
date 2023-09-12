@@ -4,10 +4,11 @@ import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanc
 import { getImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
+import EnemyManager from "../../EnemyManager.js";
 
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
     enterState(currBrute) {
-        Game.getInstance().enemyAliveCount -= 5;
+        EnemyManager.getInstance().enemyAliveCount -= 5;
     }
 
     updateState(currBrute) {

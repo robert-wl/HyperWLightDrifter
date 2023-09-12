@@ -30,9 +30,6 @@ export default class Game {
         this.canvas = null;
         this.ctx = null;
         this.debug = false;
-        this.enemySpawn = true;
-        this.enemyAliveCount = 0;
-        this.difficulty = 1;
         this.backgroundOpacity = 1;
         this.elevator = null;
     }
@@ -134,60 +131,6 @@ export default class Game {
     }
 
     enemySpawnHandler() {
-        if (!this.enemySpawn) {
-            return;
-        }
-
-        if (this.enemyAliveCount > 0) {
-            return;
-        }
-
-        for (let i = 0; i <= this.difficulty; i++) {
-            const radius = getRandomValue({
-                initialValue: GameSettings.enemy.SPAWN_RADIUS,
-                randomizeValue: GameSettings.enemy.SPAWN_RANDOM_RADIUS,
-            });
-
-            const angle = getRandomValue({
-                initialValue: 0,
-                randomValue: Math.PI * 2,
-            });
-
-            if (this.difficulty > 5 && getRandomBoolean(0.25)) {
-                CrystalBrute.generate({
-                    x: getHorizontalValue({
-                        initial: GameSettings.game.GAME_SCALE / 2,
-                        magnitude: radius / 1.7,
-                        angle: angle,
-                    }),
-                    y: getVerticalValue({
-                        initial: GameSettings.game.GAME_SCALE / 2,
-                        magnitude: radius / 1.7,
-                        angle: angle,
-                    }),
-                });
-                i += 5;
-                this.enemyAliveCount += 5;
-                continue;
-            }
-
-            CrystalSpider.generate({
-                x: getHorizontalValue({
-                    initial: GameSettings.game.GAME_SCALE / 2,
-                    magnitude: radius,
-                    angle: angle,
-                }),
-                y: getVerticalValue({
-                    initial: GameSettings.game.GAME_SCALE / 2,
-                    magnitude: radius,
-                    angle: angle,
-                }),
-            });
-
-            this.enemyAliveCount += 1;
-        }
-
-        this.difficulty += 3;
 
     }
 

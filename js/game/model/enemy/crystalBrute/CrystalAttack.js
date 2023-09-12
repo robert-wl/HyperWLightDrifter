@@ -38,7 +38,7 @@ export default class CrystalAttack {
             this.spikes.push(spike);
         }
 
-        if (this.number >= 500) {
+        if (this.number >= 1000) {
             return true;
         }
 
