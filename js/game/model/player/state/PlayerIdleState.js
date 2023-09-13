@@ -1,5 +1,8 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { get_image } from '../../../helper/fileReader.js';
+import Game from '../../Game/Game.js';
+import { getImage } from '../../../helper/imageLoader.js';
+import { drawImage } from '../../../helper/renderer/drawer.js';
+import GameSettings from '../../../constants.js';
 
 const size = 1;
 export default class PlayerIdleState extends PlayerBaseState {
@@ -11,32 +14,62 @@ export default class PlayerIdleState extends PlayerBaseState {
             return;
         }
 
-        currPlayer.handleSwitchState({
-            move: true,
-            attackOne: true,
-            dash: true,
-            aim: true,
-            throws: true,
-        });
+        const { keys } = Game.getInstance();
+
+        if (keys.length !== 0) {
+            currPlayer.handleSwitchState({
+                move: true,
+                attackOne: true,
+                dash: true,
+                aim: true,
+                throws: true,
+            });
+        }
     }
     drawImage(currPlayer) {
         if (currPlayer.lastDirection === 'd') {
-            get_image('player/idle', 'idle_right', null, function (img) {
-                if (currPlayer.direction) {
-                    currPlayer.canvas.drawImage(img, currPlayer.position.x - 10, currPlayer.position.y, img.width * size, img.height * size);
-                }
+            const idleRight = getImage('idle_right');
+
+            drawImage({
+                img: idleRight,
+                x: currPlayer.position.x,
+                y: currPlayer.position.y,
+                width: idleRight.width * GameSettings.GAME.GAME_SCALE,
+                height: idleRight.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
             });
         } else if (currPlayer.lastDirection === 'a') {
-            get_image('player/idle', 'idle_left', null, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x + 10, currPlayer.position.y, img.width * size, img.height * size);
+            const idleLeft = getImage('idle_left');
+
+            drawImage({
+                img: idleLeft,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: idleLeft.width * GameSettings.GAME.GAME_SCALE,
+                height: idleLeft.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
             });
         } else if (currPlayer.lastDirection === 's') {
-            get_image('player/idle', 'idle_down', null, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
+            const idleDown = getImage('idle_down');
+
+            drawImage({
+                img: idleDown,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: idleDown.width * GameSettings.GAME.GAME_SCALE,
+                height: idleDown.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
             });
         } else if (currPlayer.lastDirection === 'w') {
-            get_image('player/idle', 'idle_up', null, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x, currPlayer.position.y, img.width * size, img.height * size);
+            const idleUp = getImage('idle_up');
+
+            drawImage({
+                img: idleUp,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: idleUp.width * GameSettings.GAME.GAME_SCALE,
+                height: idleUp.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
             });
         }
     }

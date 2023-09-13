@@ -165,7 +165,44 @@ const GameSettings = {
             {
                 ref: 'other/shadow.png',
                 name: 'shadow',
-            }
+            },
+            {
+                ref: 'player/move/move_up.png',
+                name: 'move_up',
+                amount: 12,
+            },
+            {
+                ref: 'player/move/move_down.png',
+                name: 'move_down',
+                amount: 12,
+            },
+            {
+                ref: 'player/move/move_left.png',
+                name: 'move_left',
+                amount: 12,
+            },
+            {
+                ref: 'player/move/move_right.png',
+                name: 'move_right',
+                amount: 12,
+            },
+            {
+                ref: 'player/idle/idle_up.png',
+                name: 'idle_up'
+            },
+            {
+                ref: 'player/idle/idle_left.png',
+                name: 'idle_left'
+            },
+            {
+                ref: 'player/idle/idle_right.png',
+                name: 'idle_right'
+            },
+            {
+                ref: 'player/idle/idle_down.png',
+                name: 'idle_down'
+            },
+
         ],
         STAGE_TWO: [
             {

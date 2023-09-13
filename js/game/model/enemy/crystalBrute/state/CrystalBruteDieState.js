@@ -5,6 +5,7 @@ import { getImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import EnemyManager from "../../EnemyManager.js";
+import {getFaceDirection} from "../../../../helper/collision/directionHandler.js";
 
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
     enterState(currBrute) {
@@ -34,6 +35,7 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
             width: bruteDie.width * GameSettings.GAME.GAME_SCALE,
             height: bruteDie.height * GameSettings.GAME.GAME_SCALE,
             translate: true,
+            mirrored: getFaceDirection(currBrute.angle) === 'left',
         });
     }
 }

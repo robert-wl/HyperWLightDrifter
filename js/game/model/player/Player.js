@@ -113,6 +113,7 @@ export default class Player {
     }
 
     updateCounter() {
+        console.log(Game.getInstance().keys)
         this.counter = (this.counter + 1) % 7;
     }
 

@@ -1,7 +1,7 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
 import Game from '../../../Game/Game.js';
 import { getRandomBoolean, getRandomValue } from '../../../../helper/randomHelper.js';
-import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
+import {getHorizontalValue, getMagnitudeValue, getVerticalValue} from '../../../../helper/distanceHelper.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
 import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js';
@@ -42,6 +42,27 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
     handleMovement(currBrute) {
         const { centerPosition } = Game.getInstance().player;
 
+        const distance = getMagnitudeValue({
+            x: centerPosition.x - currBrute.position.x,
+            y: centerPosition.y - currBrute.position.y,
+        });
+
+        if(distance < 200) {
+            const rotate_angle = this.getRotateAngle(currBrute.angle);
+
+            currBrute.position.x += getHorizontalValue({
+                magnitude: currBrute.speed,
+                angle: rotate_angle,
+            });
+
+            currBrute.position.y += getVerticalValue({
+                magnitude: currBrute.speed,
+                angle: rotate_angle,
+            });
+
+            return;
+        }
+
         currBrute.angle = getAngle({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
@@ -56,6 +77,10 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         });
     }
 
+    getRotateAngle(angle) {
+        return angle + (Math.PI / 2) * (this.clockwise ? 1 : -1);
+
+    }
     drawImage(currBrute) {
         const bruteWalk = getNumberedImage('crystal_brute_walk', this.animationStage + 1);
 

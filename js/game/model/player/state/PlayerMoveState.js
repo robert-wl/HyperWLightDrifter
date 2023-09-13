@@ -1,32 +1,38 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { get_image } from '../../../helper/fileReader.js';
 import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../Game/Game.js';
+import { getNumberedImage } from '../../../helper/imageLoader.js';
+import { drawImage } from '../../../helper/renderer/drawer.js';
+import GameSettings from '../../../constants.js';
 
-const size = 1;
 export default class PlayerMoveState extends PlayerBaseState {
+    animationStage = 0;
     number = 0;
 
     updateState(currPlayer) {
-        if(currPlayer.stamina < 100){
+        this.number += 1;
+
+        if (this.number % 4 === 0) {
+            this.animationStage += 1;
+        }
+
+        if (currPlayer.stamina < 100) {
             currPlayer.stamina += 0.5;
         }
-        const {direction, playerDirection } = getMoveDirection({
-            keys: Game.getInstance().keys,
-            currPlayer,
+
+        const { direction, playerDirection } = getMoveDirection({
+            currPlayer: currPlayer,
         });
 
         this.direction = direction;
+
         currPlayer.direction = playerDirection;
-        if(direction) {
+
+        if (direction) {
             currPlayer.lastDirection = direction;
         }
 
-        // console.log(currPlayer.counter)
-        if (currPlayer.counter % 6 !== 0) {
-            return;
-        }
-        this.number += 1;
+        const { keys } = Game.getInstance();
 
         currPlayer.handleSwitchState({
             move: true,
@@ -38,50 +44,56 @@ export default class PlayerMoveState extends PlayerBaseState {
     }
     drawImage(currPlayer) {
         if (this.direction === 'w') {
-            get_image('player/move', 'run_up', (this.number % 12) + 1, function (img) {
-                currPlayer.canvas.drawImage(
-                    img,
-                    currPlayer.position.x,
-                    currPlayer.position.y,
-                    img.width * size,
-                    img.height * size
-                );
+            const moveUp = getNumberedImage('move_up', (this.animationStage % 12) + 1);
+            drawImage({
+                img: moveUp,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: moveUp.width * GameSettings.GAME.GAME_SCALE,
+                height: moveUp.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
             });
-            return;
-        }
-        if (this.direction === 's') {
-            get_image('player/move', 'run_down', (this.number % 12) + 1, function (img) {
-                currPlayer.canvas.drawImage(
-                    img,
-                    currPlayer.position.x,
-                    currPlayer.position.y,
-                    img.width * size,
-                    img.height * size
-                );
-            });
-            return;
-        }
-        if (this.direction === 'd') {
-            get_image('player/move', 'run_right', (this.number % 12) + 1, function (img) {
-                currPlayer.canvas.drawImage(
-                    img,
-                    currPlayer.position.x - 10,
-                    currPlayer.position.y,
-                    img.width * size,
-                    img.height * size
-                );
-            });
+
             return;
         }
         if (this.direction === 'a') {
-            get_image('player/move', 'run_left', (this.number % 12) + 1, function (img) {
-                currPlayer.canvas.drawImage(
-                    img,
-                    currPlayer.position.x + 10,
-                    currPlayer.position.y,
-                    img.width * size,
-                    img.height * size
-                );
+            const moveSide = getNumberedImage('move_left', (this.animationStage % 12) + 1);
+
+            drawImage({
+                img: moveSide,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: moveSide.width * GameSettings.GAME.GAME_SCALE,
+                height: moveSide.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
+            });
+
+            return;
+        }
+        if (this.direction === 's') {
+            const moveDown = getNumberedImage('move_down', (this.animationStage % 12) + 1);
+
+            drawImage({
+                img: moveDown,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: moveDown.width * GameSettings.GAME.GAME_SCALE,
+                height: moveDown.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
+            });
+
+            return;
+        }
+        if (this.direction === 'd') {
+            const moveSide = getNumberedImage('move_right', (this.animationStage % 12) + 1);
+
+            drawImage({
+                img: moveSide,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: moveSide.width * GameSettings.GAME.GAME_SCALE,
+                height: moveSide.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
             });
         }
     }

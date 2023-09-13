@@ -1,3 +1,4 @@
+import Game from "../../model/Game/Game.js";
 
 export function getMouseDirection({ angle }) {
     if (angle <= (Math.PI * 5) / 6 && angle > (Math.PI) / 6) {
@@ -15,7 +16,8 @@ export function getMouseDirection({ angle }) {
     return '';
 }
 
-export function getMoveDirection({ keys, currPlayer }) {
+export function getMoveDirection({ currPlayer }) {
+    const { keys } = Game.getInstance();
     let direction = '';
     if (keys.includes('a')) {
         if (currPlayer.direction.x > -currPlayer.maxSpeed) {
