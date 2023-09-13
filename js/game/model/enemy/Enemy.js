@@ -29,7 +29,7 @@ export default class Enemy {
             this.health = 0;
         }
         this.velocity = {
-            value: 2,
+            value: 1,
             angle: angle,
         };
     }
@@ -43,11 +43,6 @@ export default class Enemy {
     debugMode() {
         const ctx = Game.getInstance().ctx;
         ctx.fillStyle = 'rgb(255, 255, 0, 0.5)';
-        ctx.fillRect(
-            this.position.x + this.hitbox.x,
-            this.position.y + this.hitbox.y,
-            this.width - this.hitbox.w,
-            this.height - this.hitbox.h
-        );
+        ctx.fillRect(this.position.x + this.hitbox.x, this.position.y + this.hitbox.y, this.width - this.hitbox.w, this.height - this.hitbox.h);
     }
 }

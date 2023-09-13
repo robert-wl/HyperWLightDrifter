@@ -10,7 +10,7 @@ export default class EnemyManager {
         this.enemyList = [];
         this.enemySpawn = true;
         this.enemyAliveCount = 0;
-        this.difficulty = 5;
+        this.difficulty = 1;
     }
 
     static getInstance() {
@@ -48,7 +48,6 @@ export default class EnemyManager {
                 randomValue: Math.PI * 2,
             });
 
-            console.log(angle);
 
             if (this.difficulty > 5 && getRandomBoolean(0.25) || true) {
                 CrystalBrute.generate({

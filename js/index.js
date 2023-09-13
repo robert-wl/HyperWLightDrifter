@@ -5,7 +5,7 @@ $(document).ready(async () => {
     const game = Game.getInstance();
     await game.init();
     game.debug = false;
-    EnemyManager.getInstance().enemySpawn = true;
+    EnemyManager.getInstance().enemySpawn = false
 
     const animationLoop = () => {
         game.updateGame();

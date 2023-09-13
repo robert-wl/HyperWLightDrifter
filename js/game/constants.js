@@ -28,7 +28,7 @@ const GameSettings = {
         MAX_BULLETS: 3,
         FRICTION: 0.8,
         MAX_SPEED: 4,
-        ATTACK_MOVE_SPEED: 4,
+        ATTACK_MOVE_SPEED: 2,
         DASH_MOVE_SPEED: 16,
         START_POSITION: {
             x: 200,
@@ -37,7 +37,7 @@ const GameSettings = {
         WIDTH: 50,
         HEIGHT: 60,
         HITBOX: {
-            x: 15,
+            x: -15,
             y: 0,
             w: 15,
             h: 0,
@@ -107,14 +107,17 @@ const GameSettings = {
             {
                 ref: 'player/aim/aim_top.png',
                 name: 'aim_top',
+                outfit: true,
             },
             {
                 ref: 'player/aim/aim_bottom.png',
                 name: 'aim_bottom',
+                outfit: true,
             },
             {
                 ref: 'player/aim/aim_side.png',
                 name: 'aim_side',
+                // outfit: true,
             },
             {
                 ref: 'player/aim/gun/gun_explosion.png',
@@ -170,39 +173,118 @@ const GameSettings = {
                 ref: 'player/move/move_up.png',
                 name: 'move_up',
                 amount: 12,
+                outfit: true,
             },
             {
                 ref: 'player/move/move_down.png',
                 name: 'move_down',
                 amount: 12,
+                outfit: true,
             },
             {
                 ref: 'player/move/move_left.png',
                 name: 'move_left',
                 amount: 12,
+                outfit: true,
             },
             {
                 ref: 'player/move/move_right.png',
                 name: 'move_right',
                 amount: 12,
+                outfit: true,
             },
             {
                 ref: 'player/idle/idle_up.png',
-                name: 'idle_up'
+                name: 'idle_up',
+                outfit: true,
             },
             {
                 ref: 'player/idle/idle_left.png',
-                name: 'idle_left'
+                name: 'idle_left',
+                outfit: true,
             },
             {
                 ref: 'player/idle/idle_right.png',
-                name: 'idle_right'
+                name: 'idle_right',
+                outfit: true,
             },
             {
                 ref: 'player/idle/idle_down.png',
-                name: 'idle_down'
+                name: 'idle_down',
+                outfit: true,
             },
-
+            {
+                ref: 'player/hurt/player_hurt.png',
+                name: 'player_hurt',
+                amount: 3,
+                outfit: true,
+            },
+            {
+                ref: 'player/dash/animation/dash_animation.png',
+                name: 'dash_animation',
+                amount: 4,
+                outfit: true,
+            },
+            {
+                ref: 'player/dash/dash_down.png',
+                name: 'dash_down',
+                amount: 6,
+                outfit: true,
+            },
+            {
+                ref: 'player/dash/dash_side.png',
+                name: 'dash_side',
+                amount: 5,
+                outfit: true,
+            },
+            {
+                ref: 'player/dash/dash_up.png',
+                name: 'dash_up',
+                amount: 7,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack/attack_up.png',
+                name: 'attack_up',
+                amount: 6,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack/attack_side.png',
+                name: 'attack_side',
+                amount: 7,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack/attack_down.png',
+                name: 'attack_down',
+                amount: 6,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack/attack2_up.png',
+                name: 'attack2_up',
+                amount: 6,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack/attack2_side.png',
+                name: 'attack2_side',
+                amount: 7,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack/attack2_down.png',
+                name: 'attack2_down',
+                amount: 6,
+                outfit: true,
+            },
+            {
+                ref: 'player/spawn/spawn.png',
+                name: 'player_spawn',
+                amount: 9,
+                outfit: true,
+            }
         ],
         STAGE_TWO: [
             {

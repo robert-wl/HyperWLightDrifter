@@ -2,6 +2,7 @@ import PlayerBaseState from './PlayerBaseState.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import playerDashDrawer from '../../../helper/renderer/playerDashDrawer.js';
 import Game from '../../Game/Game.js';
+import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
 
 export default class PlayerDashState extends PlayerBaseState {
     number = 1;
@@ -12,6 +13,7 @@ export default class PlayerDashState extends PlayerBaseState {
         this.angle = currPlayer.lookAngle;
 
         const direction = getMouseDirection({ angle: this.angle });
+        console.log(direction)
         this.direction = direction;
         currPlayer.lastDirection = direction;
 
@@ -19,45 +21,32 @@ export default class PlayerDashState extends PlayerBaseState {
         this.lastPosition = { ...currPlayer.position };
     }
     updateState(currPlayer) {
-        this.number++;
+        this.number += 1;
 
-        if (this.dashNumber < 4) {
-            currPlayer.direction.x = Math.cos(this.angle) * currPlayer.dashMoveSpeed;
-            currPlayer.direction.y = Math.sin(this.angle) * currPlayer.dashMoveSpeed;
-        }
-
-        if (this.direction === 'w') {
-            this.dashUpTiming(currPlayer);
+        this.handleTiming(currPlayer);
+        if (this.dashNumber >= 4) {
             return;
         }
-        if (this.direction === 'a' || this.direction === 'd') {
-            this.dashSideTiming(currPlayer);
-            return;
-        }
-        if (this.direction === 's') {
-            this.dashDownTiming(currPlayer);
-        }
+
+        currPlayer.direction.x = getHorizontalValue({
+            magnitude: currPlayer.dashMoveSpeed,
+            angle: this.angle,
+        });
+        currPlayer.direction.y = getVerticalValue({
+            magnitude: currPlayer.dashMoveSpeed,
+            angle: this.angle,
+        });
     }
     drawImage(currPlayer) {
-        if (this.lastData.length > 0) {
-            for (const loopData of this.lastData) {
-                loopData.filter = 'brightness(50%) hue-rotate(200deg)';
-                playerDashDrawer(loopData);
-                currPlayer.canvas.filter = 'none';
-            }
-        }
-        const data = {
-            canvas: currPlayer.canvas,
-            currPosition: {
-                x: currPlayer.position.x,
-                y: currPlayer.position.y,
-            },
-            dashNumber: this.dashNumber,
-            angle: this.angle,
-            lastPosition: this.lastPosition,
-            direction: this.direction,
-        };
+        this.lastData.forEach((data) => {
+            Game.getInstance().setFilter('brightness(50%) hue-rotate(200deg)');
+            playerDashDrawer(data);
+            Game.getInstance().setFilter('none');
+        })
+
+        const data = this.generateDashData(currPlayer);
         playerDashDrawer(data);
+
         if (this.lastData.length > 2) {
             this.lastData.shift();
         }
@@ -71,6 +60,31 @@ export default class PlayerDashState extends PlayerBaseState {
         this.lastData = [];
     }
 
+    generateDashData(currPlayer) {
+        return {
+            currPosition: {
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+            },
+            dashNumber: this.dashNumber,
+            angle: this.angle,
+            lastPosition: this.lastPosition,
+            direction: this.direction,
+        };
+    }
+    handleTiming(currPlayer) {
+        if (this.direction === 'w') {
+            this.dashUpTiming(currPlayer);
+            return;
+        }
+        if (this.direction === 'a' || this.direction === 'd') {
+            this.dashSideTiming(currPlayer);
+            return;
+        }
+        if (this.direction === 's') {
+            this.dashDownTiming(currPlayer);
+        }
+    }
     dashUpTiming(currPlayer) {
         if (this.number === 5 && this.dashNumber <= 3) {
             this.number = 0;

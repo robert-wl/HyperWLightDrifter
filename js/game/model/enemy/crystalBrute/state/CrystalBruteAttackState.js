@@ -26,6 +26,12 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
             return;
         }
 
+        const { centerPosition } = Game.getInstance().player;
+        currBrute.angle = getAngle({
+            x: centerPosition.x - currBrute.position.x,
+            y: centerPosition.y - currBrute.position.y,
+        });
+
         this.attackTiming(currBrute);
     }
     drawImage(currBrute) {
@@ -98,7 +104,7 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
             2: [1 / 10, -1 / 10, 2 / 10, -2 / 10],
         };
 
-        for (const num of constant[type]) {
+        constant[type].forEach((num) => {
             currBrute.attack.push(
                 CrystalAttack.generate({
                     position: {
@@ -108,6 +114,6 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
                     angle: angle + Math.PI * num,
                 }),
             );
-        }
+        });
     }
 }

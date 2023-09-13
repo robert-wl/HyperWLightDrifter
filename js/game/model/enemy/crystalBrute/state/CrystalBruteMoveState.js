@@ -47,6 +47,11 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
             y: centerPosition.y - currBrute.position.y,
         });
 
+        currBrute.angle = getAngle({
+            x: centerPosition.x - currBrute.position.x,
+            y: centerPosition.y - currBrute.position.y,
+        });
+
         if(distance < 200) {
             const rotate_angle = this.getRotateAngle(currBrute.angle);
 
@@ -63,10 +68,6 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
             return;
         }
 
-        currBrute.angle = getAngle({
-            x: centerPosition.x - currBrute.position.x,
-            y: centerPosition.y - currBrute.position.y,
-        });
         currBrute.position.x += getHorizontalValue({
             magnitude: currBrute.speed,
             angle: currBrute.angle,

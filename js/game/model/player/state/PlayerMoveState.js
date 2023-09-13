@@ -32,8 +32,6 @@ export default class PlayerMoveState extends PlayerBaseState {
             currPlayer.lastDirection = direction;
         }
 
-        const { keys } = Game.getInstance();
-
         currPlayer.handleSwitchState({
             move: true,
             attackOne: true,

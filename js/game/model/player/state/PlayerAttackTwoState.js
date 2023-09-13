@@ -1,8 +1,11 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { get_image } from '../../../helper/fileReader.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../Game/Game.js';
+import { drawImage } from '../../../helper/renderer/drawer.js';
 import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
+import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
+import { getNumberedImage} from "../../../helper/imageLoader.js";
+import GameSettings from "../../../constants.js";
 
 const scale = 2;
 export default class PlayerAttackTwoState extends PlayerBaseState {
@@ -11,10 +14,17 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
 
     enterState(currPlayer) {
         const angle = currPlayer.lookAngle;
-        currPlayer.direction.x = Math.cos(angle) * currPlayer.attackMoveSpeed;
-        currPlayer.direction.y = Math.sin(angle) * currPlayer.attackMoveSpeed;
+        currPlayer.direction.x = getHorizontalValue({
+            magnitude: currPlayer.attackMoveSpeed,
+            angle: angle,
+        });
+        currPlayer.direction.y = getVerticalValue({
+            magnitude: currPlayer.attackMoveSpeed,
+            angle: angle,
+        });
 
         const direction = getMouseDirection({ angle });
+
         this.direction = direction;
         currPlayer.lastDirection = direction;
 
@@ -26,7 +36,9 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
             player: currPlayer,
             entity: Game.getInstance().enemyList,
         });
-        Game.getInstance().clicks.splice(Game.getInstance().clicks.indexOf('left'), 1);
+
+        const { clicks } = Game.getInstance();
+        clicks.splice(clicks.indexOf('left'), 1);
     }
 
     exitState(currPlayer) {
@@ -35,7 +47,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
     }
 
     updateState(currPlayer) {
-        this.number++;
+        this.number += 1;
 
         currPlayer.getAttackBox({
             direction: this.direction,
@@ -52,57 +64,62 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
 
     drawImage(currPlayer) {
         if (Game.getInstance().debug) {
-            currPlayer.canvas.fillStyle = 'red';
-            currPlayer.canvas.fillRect(currPlayer.attackBox.x, currPlayer.attackBox.y, currPlayer.attackBox.w, currPlayer.attackBox.h);
+            this.drawDebug(currPlayer);
         }
 
         if (this.direction === 'w') {
-            if (!currPlayer.reversed) {
-                get_image('player/attack', 'attack2_up', this.attackNumber, function (img) {
-                    currPlayer.canvas.save();
-                    currPlayer.canvas?.translate(img.width * scale, 0);
-                    currPlayer.canvas.scale(-1, 1);
-                    currPlayer.canvas.drawImage(img, -(currPlayer.position.x - 45), currPlayer.position.y - 40, img.width * scale, img.height * scale);
-                    currPlayer.canvas.restore();
-                });
-                return;
-            }
-            get_image('player/attack', 'attack2_up', this.attackNumber, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 50, currPlayer.position.y - 40, img.width * scale, img.height * scale);
+            const attack2Up = getNumberedImage('attack2_up', this.attackNumber);
+
+            drawImage({
+                img: attack2Up,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: attack2Up.width * GameSettings.GAME.GAME_SCALE,
+                height: attack2Up.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
+                mirrored: !currPlayer.reversed,
             });
+
             return;
         }
-        if (this.direction === 'a') {
-            get_image('player/attack', 'attack2_side', this.attackNumber, function (img) {
-                currPlayer.canvas.save();
-                currPlayer.canvas?.translate(img.width * scale, 0);
-                currPlayer.canvas.scale(-1, 1);
-                currPlayer.canvas.drawImage(img, -(currPlayer.position.x - 50), currPlayer.position.y - 30, img.width * scale, img.height * scale);
-                currPlayer.canvas.restore();
+        if (this.direction === 'a' || this.direction === 'd') {
+            const attack2Side = getNumberedImage('attack2_side', this.attackNumber);
+
+            drawImage({
+                img: attack2Side,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: attack2Side.width * GameSettings.GAME.GAME_SCALE,
+                height: attack2Side.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
+                mirrored: this.direction === 'a',
             });
-            return;
-        }
-        if (this.direction === 'd') {
-            get_image('player/attack', 'attack2_side', this.attackNumber, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 40, currPlayer.position.y - 30, img.width * scale, img.height * scale);
-            });
+
             return;
         }
         if (this.direction === 's') {
-            if (!currPlayer.reversed) {
-                get_image('player/attack', 'attack2_bottom', this.attackNumber, function (img) {
-                    currPlayer.canvas.save();
-                    currPlayer.canvas?.translate(img.width * scale, 0);
-                    currPlayer.canvas.scale(-1, 1);
-                    currPlayer.canvas.drawImage(img, -(currPlayer.position.x - 50), currPlayer.position.y - 30, img.width * scale, img.height * scale);
-                    currPlayer.canvas.restore();
-                });
-                return;
-            }
-            get_image('player/attack', 'attack2_bottom', this.attackNumber, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 50, currPlayer.position.y - 30, img.width * scale, img.height * scale);
+            const attack2Down = getNumberedImage('attack2_down', this.attackNumber);
+
+            drawImage({
+                img: attack2Down,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: attack2Down.width * GameSettings.GAME.GAME_SCALE,
+                height: attack2Down.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
+                mirrored: !currPlayer.reversed,
             });
         }
+    }
+
+    drawDebug(currPlayer) {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(
+            currPlayer.attackBox.x,
+            currPlayer.attackBox.y,
+            currPlayer.attackBox.w,
+            currPlayer.attackBox.h
+        );
     }
 
     attackSideTiming(currPlayer) {

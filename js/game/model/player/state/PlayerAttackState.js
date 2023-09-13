@@ -1,10 +1,11 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { get_image } from '../../../helper/fileReader.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../Game/Game.js';
-import { drawMirroredY } from '../../../helper/renderer/drawer.js';
+import { drawImage } from '../../../helper/renderer/drawer.js';
 import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
-import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
+import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
+import { getNumberedImage } from '../../../helper/imageLoader.js';
+import GameSettings from '../../../constants.js';
 
 const scale = 2;
 
@@ -14,19 +15,20 @@ export default class PlayerAttackState extends PlayerBaseState {
     attackNumber = 1;
 
     enterState(currPlayer) {
-        const { lookAngle:angle } = currPlayer;
-        const { clicks } = Game.getInstance();
+        const { lookAngle } = currPlayer;
 
         currPlayer.direction.x = getHorizontalValue({
             magnitude: currPlayer.attackMoveSpeed,
-            angle: angle,
+            angle: lookAngle,
         });
         currPlayer.direction.y = getVerticalValue({
             magnitude: currPlayer.attackMoveSpeed,
-            angle: angle,
+            angle: lookAngle,
         });
 
-        const direction = getMouseDirection({ angle });
+        const direction = getMouseDirection({
+            angle: lookAngle,
+        });
 
         this.direction = direction;
         currPlayer.lastDirection = direction;
@@ -39,6 +41,7 @@ export default class PlayerAttackState extends PlayerBaseState {
             player: currPlayer,
         });
 
+        const { clicks } = Game.getInstance();
         clicks.splice(clicks.indexOf('left'), 1);
     }
 
@@ -50,15 +53,17 @@ export default class PlayerAttackState extends PlayerBaseState {
     }
 
     updateState(currPlayer) {
-        this.number++;
+        this.number += 1;
 
         currPlayer.getAttackBox({
             direction: this.direction,
         });
 
-        if (Game.getInstance().clicks.includes('left')) {
+        const { clicks } = Game.getInstance();
+        if (clicks.includes('left')) {
             currPlayer.combo = true;
         }
+
         if (this.direction === 'a' || this.direction === 'd') {
             this.attackSideTiming(currPlayer);
             return;
@@ -69,63 +74,65 @@ export default class PlayerAttackState extends PlayerBaseState {
     }
 
     drawImage(currPlayer) {
-        const { debug, ctx } = Game.getInstance();
+        const { debug } = Game.getInstance();
 
         if (debug) {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(currPlayer.attackBox.x, currPlayer.attackBox.y, currPlayer.attackBox.w, currPlayer.attackBox.h);
+            this.drawDebug(currPlayer);
         }
 
         if (this.direction === 'w') {
-            if (currPlayer.reversed) {
-                get_image('player/attack', 'attack_up', this.attackNumber, function (img) {
-                    drawMirroredY({
-                        canvas: currPlayer.canvas,
-                        img: img,
-                        position: {
-                            x: currPlayer.position.x - 45,
-                            y: currPlayer.position.y - 40,
-                        },
-                    });
-                });
-                return;
-            }
-            get_image('player/attack', 'attack_up', this.attackNumber, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 50, currPlayer.position.y - 40, img.width * scale, img.height * scale);
+            const attackUp = getNumberedImage('attack_up', this.attackNumber);
+
+            drawImage({
+                img: attackUp,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: attackUp.width * GameSettings.GAME.GAME_SCALE,
+                height: attackUp.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
+                mirrored: currPlayer.reversed,
             });
+
             return;
         }
-        if (this.direction === 'a') {
-            get_image('player/attack', 'attack_side', this.attackNumber, function (img) {
-                currPlayer.canvas.save();
-                currPlayer.canvas?.translate(img.width * scale, 0);
-                currPlayer.canvas.scale(-1, 1);
-                currPlayer.canvas.drawImage(img, -(currPlayer.position.x - 50), currPlayer.position.y - 30, img.width * scale, img.height * scale);
-                currPlayer.canvas.restore();
+        if (this.direction === 'a' || this.direction === 'd') {
+            const attackSide = getNumberedImage('attack_side', this.attackNumber);
+
+            drawImage({
+                img: attackSide,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: attackSide.width * GameSettings.GAME.GAME_SCALE,
+                height: attackSide.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
+                mirrored: this.direction === 'a',
             });
-            return;
-        }
-        if (this.direction === 'd') {
-            get_image('player/attack', 'attack_side', this.attackNumber, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 40, currPlayer.position.y - 30, img.width * scale, img.height * scale);
-            });
+
             return;
         }
         if (this.direction === 's') {
-            if (currPlayer.reversed) {
-                get_image('player/attack', 'attack_bottom', this.attackNumber, function (img) {
-                    currPlayer.canvas.save();
-                    currPlayer.canvas?.translate(img.width * scale, 0);
-                    currPlayer.canvas.scale(-1, 1);
-                    currPlayer.canvas.drawImage(img, -(currPlayer.position.x - 50), currPlayer.position.y - 30, img.width * scale, img.height * scale);
-                    currPlayer.canvas.restore();
-                });
-                return;
-            }
-            get_image('player/attack', 'attack_bottom', this.attackNumber, function (img) {
-                currPlayer.canvas.drawImage(img, currPlayer.position.x - 50, currPlayer.position.y - 30, img.width * scale, img.height * scale);
+            const attackDown = getNumberedImage('attack_down', this.attackNumber);
+
+            drawImage({
+                img: attackDown,
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                width: attackDown.width * GameSettings.GAME.GAME_SCALE,
+                height: attackDown.height * GameSettings.GAME.GAME_SCALE,
+                translate: true,
+                mirrored: currPlayer.reversed,
             });
         }
+    }
+
+    drawDebug(currPlayer) {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(
+            currPlayer.attackBox.x,
+            currPlayer.attackBox.y,
+            currPlayer.attackBox.w,
+            currPlayer.attackBox.h
+        );
     }
 
     attackSideTiming(currPlayer) {

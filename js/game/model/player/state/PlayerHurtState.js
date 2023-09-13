@@ -1,21 +1,21 @@
-import PlayerBaseState from "./PlayerBaseState.js";
-import {get_image} from "../../../helper/fileReader.js";
-import Game from "../../Game/Game.js";
+import PlayerBaseState from './PlayerBaseState.js';
+import { getImage, getNumberedImage } from '../../../helper/imageLoader.js';
+import { drawImage } from '../../../helper/renderer/drawer.js';
+import GameSettings from '../../../constants.js';
 
 const scale = 2;
 export default class PlayerHurtState extends PlayerBaseState {
-
-    enterState(currPlayer){
+    enterState(currPlayer) {
         this.number = 0;
         this.animationStage = 0;
     }
-    updateState(currPlayer){
+    updateState(currPlayer) {
         this.number++;
 
-        if(this.number % 10 === 0) {
+        if (this.number % 10 === 0) {
             this.animationStage++;
         }
-        if(this.animationStage === 3){
+        if (this.animationStage === 3) {
             currPlayer.handleSwitchState({
                 move: true,
                 idle: true,
@@ -23,20 +23,19 @@ export default class PlayerHurtState extends PlayerBaseState {
                 dash: true,
                 aim: true,
                 throws: true,
-            })
+            });
         }
     }
-    drawImage(currPlayer){
-        get_image('player/hurt', 'hurt', this.animationStage + 1, (img) => {
-            Game.getInstance().ctx.drawImage(
-                img,
-                currPlayer.position.x - 15,
-                currPlayer.position.y - 10,
-                currPlayer.width * scale,
-                currPlayer.height * scale
-            );
-        })
-    }
-    exitState(currPlayer){}
+    drawImage(currPlayer) {
+        const playerHurt = getNumberedImage('player_hurt', this.animationStage + 1);
 
+        drawImage({
+            img: playerHurt,
+            x: currPlayer.centerPosition.x,
+            y: currPlayer.centerPosition.y,
+            width: playerHurt.width * GameSettings.GAME.GAME_SCALE,
+            height: playerHurt.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+        });
+    }
 }

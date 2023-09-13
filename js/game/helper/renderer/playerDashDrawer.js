@@ -1,39 +1,67 @@
-import {get_image} from "../fileReader.js";
-import {drawMirroredY, drawRotated} from "./drawer.js";
+import { get_image } from '../fileReader.js';
+import { drawImage, drawMirroredY, drawRotated } from './drawer.js';
+import { getImage, getNumberedImage } from '../imageLoader.js';
+import Game from '../../model/Game/Game.js';
+import GameSettings from '../../constants.js';
 
+export default function playerDashDrawer(data) {
+    const { dashNumber, angle, lastPosition, filter } = data;
+    if (filter) {
+        Game.getInstance().setFilter(filter);
+    }
 
-export default function playerDashDrawer({canvas, currPosition, dashNumber, angle, lastPosition, direction, filter}) {
-    if(filter) canvas.filter = filter;
     if (dashNumber < 4 && !filter) {
-        get_image("player/dash/animation", "dash_animation", dashNumber, (img) => {
-            drawRotated({ canvas: canvas, img: img, angle: angle + Math.PI, position: {
-                    x: lastPosition.x + 35,
-                    y: lastPosition.y + 45
-                } });
+        const dashAnimation = getNumberedImage('dash_animation', dashNumber);
 
+        drawRotated({
+            img: dashAnimation,
+            angle: angle + Math.PI,
+            position: {
+                x: lastPosition.x,
+                y: lastPosition.y,
+            },
         });
     }
-    if (direction === "w") {
-        return get_image("player/dash", "dash_up", dashNumber, function (img) {
-            canvas.drawImage(img, currPosition.x - 25, currPosition.y - 10, img.width * 2, img.height * 2);
+
+    drawDirectionalDash(data);
+}
+
+function drawDirectionalDash({ canvas, currPosition, dashNumber, direction }) {
+    if (direction === 'w') {
+        const dashUp = getNumberedImage('dash_up', dashNumber);
+
+        drawImage({
+            img: dashUp,
+            x: currPosition.x,
+            y: currPosition.y,
+            width: dashUp.width * GameSettings.GAME.GAME_SCALE,
+            height: dashUp.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
         });
     }
-    if (direction === "d") {
-        return get_image("player/dash", "dash_side", dashNumber, function (img) {
-            canvas.drawImage(img, currPosition.x - 25, currPosition.y - 10, img.width * 2, img.height * 2);
+    if (direction === 'd' || direction === 'a') {
+        const dashSide = getNumberedImage('dash_side', dashNumber);
+
+        drawImage({
+            img: dashSide,
+            x: currPosition.x,
+            y: currPosition.y,
+            width: dashSide.width * GameSettings.GAME.GAME_SCALE,
+            height: dashSide.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+            mirrored: direction === 'a',
         });
     }
-    if (direction === "a") {
-        return get_image("player/dash", "dash_side", dashNumber, function (img) {
-            drawMirroredY({ canvas: canvas, img: img, position: {
-                    x: currPosition.x - 25,
-                    y: currPosition.y - 10
-                }});
-        });
-    }
-    if (direction === "s") {
-        return get_image("player/dash", "dash_down", dashNumber, function (img) {
-            canvas.drawImage(img, currPosition.x - 25, currPosition.y - 10, img.width * 2, img.height * 2);
+    if (direction === 's') {
+        const dashDown = getNumberedImage('dash_down', dashNumber);
+
+        drawImage({
+            img: dashDown,
+            x: currPosition.x,
+            y: currPosition.y,
+            width: dashDown.width * GameSettings.GAME.GAME_SCALE,
+            height: dashDown.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
         });
     }
 }

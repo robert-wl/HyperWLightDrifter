@@ -13,6 +13,7 @@ import PlayerThrowingState from './state/PlayerThrowingState.js';
 import GameSettings from '../../constants.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import { checkCollision } from '../../helper/collision/playerCollision.js';
+import PlayerSpawnState from "./state/PlayerSpawnState.js";
 
 
 export default class Player {
@@ -37,7 +38,12 @@ export default class Player {
         this.position = playerDefault.START_POSITION;
         this.width = playerDefault.WIDTH;
         this.height = playerDefault.HEIGHT;
-        this.hitbox = playerDefault.HITBOX;
+        this.hitbox = {
+            x: -this.width / 2,
+            y: -this.height / 2,
+            w: 0,
+            h: 0,
+        };
         this.attackBox = {
             x: 0,
             y: 0,
@@ -53,6 +59,7 @@ export default class Player {
         this.reversed = false;
         this.counter = 0;
         this.currState = new PlayerBaseState();
+        this.spawnState = new PlayerSpawnState();
         this.idleState = new PlayerIdleState();
         this.moveState = new PlayerMoveState();
         this.attackState = new PlayerAttackState();
@@ -63,7 +70,8 @@ export default class Player {
         this.throwState = new PlayerThrowingState();
         this.canvas = null;
         this.healing = 0;
-        this.currState = this.idleState;
+        this.currState = this.spawnState;
+        this.currState.enterState(this);
         this.immunity = playerDefault.MAX_IMMUNITY;
         this.projectiles = [];
         this.playerDefault = playerDefault;
@@ -73,13 +81,13 @@ export default class Player {
 
         this.updateBombs();
 
-        // renderShadow({
-        //     position: {
-        //         x: this.position.x + this.playerDefault.SHADOW_OFFSET.X,
-        //         y: this.position.y + this.playerDefault.SHADOW_OFFSET.Y,
-        //     },
-        //     sizeMultiplier: 1.5,
-        // });
+        renderShadow({
+            position: {
+                x: this.centerPosition.x,
+                y: this.centerPosition.y + 12.5,
+            },
+            sizeMultiplier: 1.5,
+        });
 
         this.updateCounter();
 
@@ -113,14 +121,14 @@ export default class Player {
     }
 
     updateCounter() {
-        console.log(Game.getInstance().keys)
+        // console.log(Game.getInstance().keys)
         this.counter = (this.counter + 1) % 7;
     }
 
     getHitboxCoordinates() {
         return {
-            x: this.position.x + this.hitbox.x,
-            y: this.position.y + this.hitbox.y,
+            x: this.centerPosition.x + this.hitbox.x,
+            y: this.centerPosition.y + this.hitbox.y,
             w: this.width - this.hitbox.w,
             h: this.height - this.hitbox.h,
         };

@@ -16,15 +16,13 @@ export default class PlayerIdleState extends PlayerBaseState {
 
         const { keys } = Game.getInstance();
 
-        if (keys.length !== 0) {
-            currPlayer.handleSwitchState({
-                move: true,
-                attackOne: true,
-                dash: true,
-                aim: true,
-                throws: true,
-            });
-        }
+        currPlayer.handleSwitchState({
+            move: true,
+            attackOne: true,
+            dash: true,
+            aim: true,
+            throws: true,
+        });
     }
     drawImage(currPlayer) {
         if (currPlayer.lastDirection === 'd') {
