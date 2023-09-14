@@ -63,6 +63,7 @@ export default class CrystalBrute extends Enemy {
         if (Game.getInstance().debug) {
             this.debugMode();
         }
+
         this.currState.updateState(this);
 
         if(this.currState !== this.dieState) {
@@ -88,7 +89,6 @@ export default class CrystalBrute extends Enemy {
 
 
         this.attack.forEach((attack) => {
-
             if (attack.update()) {
                 this.attack.splice(this.attack.indexOf(attack), 1);
             }

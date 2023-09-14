@@ -6,6 +6,7 @@ import GameSettings from '../../../constants.js';
 
 const size = 1;
 export default class PlayerIdleState extends PlayerBaseState {
+    shakeSineInput = Math.PI * 0.5;
     updateState(currPlayer) {
         if (currPlayer.stamina < 100) {
             currPlayer.stamina += 0.5;

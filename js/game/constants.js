@@ -284,6 +284,14 @@ const GameSettings = {
                 name: 'player_spawn',
                 amount: 9,
                 outfit: true,
+            },
+            {
+                ref: 'world/map_ground.png',
+                name: 'map_ground',
+            },
+            {
+                ref: 'world/first_map_full.png',
+                name: 'map_top',
             }
         ],
         STAGE_TWO: [
@@ -362,6 +370,11 @@ const GameSettings = {
             }
         ],
     },
+    DEBUG: {
+        COLOR: {
+            CAMERA_BOX: 'rgb(255, 0, 0, 0.5)'
+        }
+    }
 };
 
 export default GameSettings;

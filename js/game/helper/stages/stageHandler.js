@@ -3,18 +3,19 @@ import Collideable from '../../model/collideable/Collideable.js';
 import Medkit from '../../model/interactables/Medkit.js';
 import Game from '../../model/Game/Game.js';
 import Judgement from '../../model/enemy/judgement/Judgement.js';
-import {imageLoader} from "../imageLoader.js";
+import {getImage, imageLoader} from "../imageLoader.js";
 import GameSettings from "../../constants.js";
 import CrystalBrute from "../../model/enemy/crystalBrute/CrystalBrute.js";
 
 export async function firstStage() {
     await imageLoader(GameSettings.IMAGES.STAGE_ONE);
-    get_image('world', 'map_ground', null, function (img) {
-        Game.getInstance().camera.lowerBackground = img;
-    });
-    get_image('world', 'first_map_full', null, function (img) {
-        Game.getInstance().camera.topBackground = img;
-    });
+
+    const mapGround = getImage('map_ground');
+    const mapTop = getImage('map_top');
+    Game.getInstance().camera.init({
+        lowerBackground: mapGround,
+        topBackground: mapTop,
+    })
     Game.getInstance().player.position.x = 900;
     Game.getInstance().player.position.y = 500;
     Game.getInstance().player.centerPosition.x = 900;

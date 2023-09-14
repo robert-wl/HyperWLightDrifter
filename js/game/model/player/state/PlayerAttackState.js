@@ -126,6 +126,7 @@ export default class PlayerAttackState extends PlayerBaseState {
     }
 
     drawDebug(currPlayer) {
+        const { ctx } = Game.getInstance();
         ctx.fillStyle = 'red';
         ctx.fillRect(
             currPlayer.attackBox.x,

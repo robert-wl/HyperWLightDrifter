@@ -6,7 +6,6 @@ export default function playerInput() {
     $(document).keydown((e) => {
         const { keys } = Game.getInstance();
         if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's' || e.key === 'e' || e.key === 'c'  || e.key === 'c') {
-            console.log("hai")
             if (keys.includes(e.key)) {
                 return;
             }

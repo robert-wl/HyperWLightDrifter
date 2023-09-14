@@ -3,13 +3,9 @@ import playerInput from '../../helper/player/playerInput.js';
 import { get_image } from '../../helper/fileReader.js';
 import Camera from '../camera/Camera.js';
 import firefliesSpawner from '../../helper/renderer/firefliesSpawner.js';
-import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
-import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 import hudHandler from '../../helper/renderer/hudHandler.js';
 import {firstStage, secondStage} from '../../helper/stages/stageHandler.js';
 import GameSettings from '../../constants.js';
-import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
-import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import EnemyManager from "../enemy/EnemyManager.js";
 
 export default class Game {
@@ -46,10 +42,10 @@ export default class Game {
 
         await firstStage();
 
-        this.camera.setPosition({
-            position: this.player.position,
-            canvas: this.ctx,
+        this.camera.setCameraPosition({
+            position: this.player.centerPosition,
         });
+
     }
 
     static getInstance() {
@@ -82,7 +78,8 @@ export default class Game {
 
     updateGame() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+        this.camera.shakeCamera();
+        this.camera.renderLowerBackground();
         this.enemySpawnHandler();
 
         if (this.stage === 1) {
@@ -90,12 +87,12 @@ export default class Game {
         }
 
         this.setTransparency(this.backgroundOpacity);
-        this.camera.updateCamera();
         this.setTransparency(1);
 
         EnemyManager.getInstance().update();
 
         this.collideables.forEach((collideable) => collideable.update());
+
 
         this.player.updateState();
 
@@ -109,6 +106,10 @@ export default class Game {
         this.elevator?.update();
 
         this.drawHUD();
+
+        this.camera.resetShakeCamera();
+        this.camera.updateCamera();
+
     }
 
     drawHUD() {
@@ -128,7 +129,6 @@ export default class Game {
         });
 
         this.setTransparency(1);
-
     }
 
     enemySpawnHandler() {

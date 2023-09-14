@@ -19,6 +19,7 @@ export default class PlayerAimingState extends PlayerBaseState {
             angle: lookAngle,
         });
 
+
         if (!clicks.includes('right')) {
             currPlayer.handleSwitchState({
                 move: true,

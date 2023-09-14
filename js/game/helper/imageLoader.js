@@ -51,11 +51,11 @@ async function loadImage({ ref, name, outfit }) {
         img.onload = () => {
 
 
-            if (outfit && Game.getInstance().outfit !== 'default') {
-                if (img instanceof HTMLImageElement) {
-                    img = replaceOutfitColor(img);
-                }
-            }
+            // if (outfit && Game.getInstance().outfit !== 'default') {
+            //     if (img instanceof HTMLImageElement) {
+            //         img = replaceOutfitColor(img);
+            //     }
+            // }
             resolve(img);
         };
         img.onerror = () => {

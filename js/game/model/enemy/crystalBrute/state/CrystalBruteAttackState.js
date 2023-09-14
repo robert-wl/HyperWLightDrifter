@@ -91,12 +91,10 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
             rounded: true,
         });
 
-        // Game.getInstance().camera.shakeCamera({
-        //     offset: {
-        //         x: 0,
-        //         y: 5,
-        //     }
-        // });
+        Game.getInstance().camera.setShakeCamera({
+            durationY: 100
+        });
+
 
         const constant = {
             0: [0],
