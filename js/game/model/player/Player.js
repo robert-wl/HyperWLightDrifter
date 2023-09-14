@@ -75,6 +75,7 @@ export default class Player {
         this.immunity = playerDefault.MAX_IMMUNITY;
         this.projectiles = [];
         this.playerDefault = playerDefault;
+        this.outfit = "yellow";
     }
 
     updateState() {
@@ -240,34 +241,34 @@ export default class Player {
     getAttackBox({ direction }) {
         if (direction === 'w') {
             this.attackBox = {
-                x: this.position.x + this.playerDefault.ATTACK_BOX.up.x,
-                y: this.position.y + this.playerDefault.ATTACK_BOX.up.y,
-                w: this.playerDefault.ATTACK_BOX.up.w,
-                h: this.playerDefault.ATTACK_BOX.up.h,
+                x: this.centerPosition.x + this.playerDefault.ATTACK_BOX.UP.X,
+                y: this.centerPosition.y + this.playerDefault.ATTACK_BOX.UP.Y,
+                w: this.playerDefault.ATTACK_BOX.UP.W,
+                h: this.playerDefault.ATTACK_BOX.UP.H,
             };
         }
         if (direction === 'a') {
             this.attackBox = {
-                x: this.position.x + this.playerDefault.ATTACK_BOX.left.x,
-                y: this.position.y + this.playerDefault.ATTACK_BOX.left.y,
-                w: this.playerDefault.ATTACK_BOX.left.w,
-                h: this.playerDefault.ATTACK_BOX.left.h,
+                x: this.centerPosition.x + this.playerDefault.ATTACK_BOX.LEFT.X,
+                y: this.centerPosition.y + this.playerDefault.ATTACK_BOX.LEFT.Y,
+                w: this.playerDefault.ATTACK_BOX.LEFT.W,
+                h: this.playerDefault.ATTACK_BOX.LEFT.H,
             };
         }
         if (direction === 'd') {
             this.attackBox = {
-                x: this.position.x + this.playerDefault.ATTACK_BOX.right.x,
-                y: this.position.y + this.playerDefault.ATTACK_BOX.right.y,
-                w: this.playerDefault.ATTACK_BOX.right.w,
-                h: this.playerDefault.ATTACK_BOX.right.h,
+                x: this.centerPosition.x + this.playerDefault.ATTACK_BOX.RIGHT.X,
+                y: this.centerPosition.y + this.playerDefault.ATTACK_BOX.RIGHT.Y,
+                w: this.playerDefault.ATTACK_BOX.RIGHT.W,
+                h: this.playerDefault.ATTACK_BOX.RIGHT.H,
             };
         }
         if (direction === 's') {
             this.attackBox = {
-                x: this.position.x + this.playerDefault.ATTACK_BOX.down.x,
-                y: this.position.y + this.playerDefault.ATTACK_BOX.down.y,
-                w: this.playerDefault.ATTACK_BOX.down.w,
-                h: this.playerDefault.ATTACK_BOX.down.h,
+                x: this.centerPosition.x + this.playerDefault.ATTACK_BOX.DOWN.X,
+                y: this.centerPosition.y + this.playerDefault.ATTACK_BOX.DOWN.Y,
+                w: this.playerDefault.ATTACK_BOX.DOWN.W,
+                h: this.playerDefault.ATTACK_BOX.DOWN.H,
             };
         }
     }

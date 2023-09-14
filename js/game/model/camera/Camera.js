@@ -1,7 +1,7 @@
 import Game from '../Game/Game.js';
 import GameSettings from '../../constants.js';
-import {getHorizontalValue, getMagnitudeValue, getVerticalValue} from "../../helper/distanceHelper.js";
-import {getAngle} from "../../helper/angleHelper.js";
+import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
+import { getAngle } from '../../helper/angleHelper.js';
 
 const CAMERA_X_CONSTANT = -45;
 const CAMERA_Y_CONSTANT = -25;
@@ -29,12 +29,12 @@ export default class Camera {
         this.shakeDuration = {
             x: 0,
             y: 0,
-        }
+        };
         this.shakeStartTime = -1;
         this.translateOffset = {
             x: 0,
             y: 0,
-        }
+        };
     }
 
     init({ lowerBackground, topBackground }) {
@@ -63,12 +63,6 @@ export default class Camera {
         this.position.x += translateX;
         this.position.y += translateY;
     }
-    move({ offset }) {
-        this.offset = {
-            x: offset.x,
-            y: offset.y,
-        };
-    }
 
     setShakeCamera({ durationX = 0, durationY = 0 }) {
         this.shakeDuration = {
@@ -78,13 +72,13 @@ export default class Camera {
         this.shakeStartTime = Date.now();
     }
 
-    shakeCamera(){
-        if(this.shakeStartTime === -1) {
+    shakeCamera() {
+        if (this.shakeStartTime === -1) {
             return;
         }
 
         const tDiff = Date.now() - this.shakeStartTime;
-        if(tDiff > this.shakeDuration.x && tDiff > this.shakeDuration.y) {
+        if (tDiff > this.shakeDuration.x && tDiff > this.shakeDuration.y) {
             this.shakeStartTime = -1;
             return;
         }
@@ -96,23 +90,28 @@ export default class Camera {
         const angle = getAngle({
             x: this.shakeDuration.x,
             y: this.shakeDuration.y,
-        })
+        });
 
-        const easing = Math.pow((tDiff / magnitude) - 1,3) + 1;
+        const easing = Math.pow(tDiff / magnitude - 1, 3) + 1;
 
         const { ctx } = Game.getInstance();
         ctx.save();
 
-        this.translateOffset.x = (Math.cos(tDiff*0.1 ) + Math.cos( tDiff *0.3115))*15 * getHorizontalValue({
-            magnitude: easing,
-            angle: angle,
-        });
-        this.translateOffset.y = (Math.sin(tDiff*0.05) + Math.sin(tDiff*0.057113))*15 * getVerticalValue({
-            magnitude: easing,
-            angle: angle,
-        });
+        this.translateOffset.x =
+            (Math.cos(tDiff * 0.1) + Math.cos(tDiff * 0.3115)) *
+            15 *
+            getHorizontalValue({
+                magnitude: easing,
+                angle: angle,
+            });
+        this.translateOffset.y =
+            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) *
+            15 *
+            getVerticalValue({
+                magnitude: easing,
+                angle: angle,
+            });
         ctx.translate(this.translateOffset.x, this.translateOffset.y);
-
     }
 
     resetShakeCamera() {
@@ -122,7 +121,6 @@ export default class Camera {
 
     updateCamera() {
         this.moveCamera();
-
 
         const { player } = Game.getInstance();
         this.cameraBox.position.x = this.getTranslatePosition({
@@ -143,7 +141,12 @@ export default class Camera {
         const { ctx } = Game.getInstance();
 
         ctx.fillStyle = GameSettings.DEBUG.COLOR.CAMERA_BOX;
-        ctx.fillRect(this.cameraBox.position.x, this.cameraBox.position.y, this.cameraBox.width, this.cameraBox.height);
+        ctx.fillRect(
+            this.cameraBox.position.x,
+            this.cameraBox.position.y,
+            this.cameraBox.width,
+            this.cameraBox.height
+        );
     }
     renderLowerBackground() {
         this.drawCamera({
@@ -221,7 +224,7 @@ export default class Camera {
     getCameraBoxOverlap() {
         const directionArray = [];
         const cameraBoxRight = this.cameraBox.position.x + this.cameraBox.width;
-        if (cameraBoxRight > this.position.x + this.lowerBackground.width && cameraBoxRight < Game.getInstance().width - 200) {
+        if (cameraBoxRight > this.position.x + this.lowerBackground.width + 25 && cameraBoxRight < Game.getInstance().width) {
             directionArray.push('d');
         }
 

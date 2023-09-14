@@ -45,29 +45,29 @@ const GameSettings = {
         LAST_DIRECTION: 's',
         DEBUG_COLOR: 'rgb(0, 255, 0, 0.5)',
         ATTACK_BOX: {
-            up: {
-                x: -20,
-                y: -30,
-                w: 100,
-                h: 75,
+            UP: {
+                X: -50,
+                Y: -80,
+                W: 100,
+                H: 75,
             },
-            left: {
-                x: -50,
-                y: -10,
-                w: 100,
-                h: 85,
+            LEFT: {
+                X: -60,
+                Y: -40,
+                W: 90,
+                H: 85,
             },
-            right: {
-                x: 0,
-                y: -10,
-                w: 110,
-                h: 85,
+            RIGHT: {
+                X: -30,
+                Y: -40,
+                W: 90,
+                H: 85,
             },
-            down: {
-                x: -25,
-                y: 10,
-                w: 100,
-                h: 100,
+            DOWN: {
+                X: -45,
+                Y: -25,
+                W: 100,
+                H: 100,
             },
         },
         PROJECTILE_OFFSET: 45,

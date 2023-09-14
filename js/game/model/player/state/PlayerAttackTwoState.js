@@ -7,7 +7,6 @@ import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelp
 import { getNumberedImage} from "../../../helper/imageLoader.js";
 import GameSettings from "../../../constants.js";
 
-const scale = 2;
 export default class PlayerAttackTwoState extends PlayerBaseState {
     number = 1;
     attackNumber = 1;
@@ -113,6 +112,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
     }
 
     drawDebug(currPlayer) {
+        const { ctx } = Game.getInstance();
         ctx.fillStyle = 'red';
         ctx.fillRect(
             currPlayer.attackBox.x,

@@ -13,7 +13,6 @@ export default class PlayerDashState extends PlayerBaseState {
         this.angle = currPlayer.lookAngle;
 
         const direction = getMouseDirection({ angle: this.angle });
-        console.log(direction)
         this.direction = direction;
         currPlayer.lastDirection = direction;
 

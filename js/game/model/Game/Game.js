@@ -28,7 +28,6 @@ export default class Game {
         this.debug = false;
         this.backgroundOpacity = 1;
         this.elevator = null;
-        this.outfit = "dark";
     }
 
     async init() {
