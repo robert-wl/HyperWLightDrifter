@@ -119,6 +119,10 @@ export default class Camera {
         ctx.restore();
     }
 
+    clear(ctx) {
+        const { canvas } = Game.getInstance();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
     updateCamera() {
         this.moveCamera();
 

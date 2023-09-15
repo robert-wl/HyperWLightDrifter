@@ -36,8 +36,9 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
             entity: Game.getInstance().enemyList,
         });
 
-        const { clicks } = Game.getInstance();
+        const { clicks, audio } = Game.getInstance();
         clicks.splice(clicks.indexOf('left'), 1);
+        audio.playAudio('player/attack.wav', 2);
     }
 
     exitState(currPlayer) {

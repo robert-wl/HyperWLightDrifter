@@ -8,14 +8,15 @@ import {firstStage} from "../../../helper/stages/stageHandler.js";
 export default class GameStageOneState extends GameBaseState {
     async enterState(game) {
         $("#menu-modal").css("display", "none");
-        $("#opening-screen").css("display", "none");
         await firstStage();
 
-        const { camera } = game
+        const { camera, audio } = game
 
         camera.setCameraPosition({
             position: game.player.centerPosition,
         });
+
+        audio.playAudio('forest_stage/background.ogg', null, true);
     }
 
     updateState(game) {

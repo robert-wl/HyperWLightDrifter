@@ -4,6 +4,7 @@ import Game from '../../Game/Game.js';
 import { getNumberedImage } from '../../../helper/imageLoader.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
+import { getRandomValue } from '../../../helper/randomHelper.js';
 
 export default class PlayerMoveState extends PlayerBaseState {
     animationStage = 0;
@@ -14,6 +15,17 @@ export default class PlayerMoveState extends PlayerBaseState {
 
         if (this.number % 4 === 0) {
             this.animationStage += 1;
+        }
+
+        if (this.number % 24 === 0) {
+            const randomValue = getRandomValue({
+                initialValue: 1,
+                randomValue: 2,
+                rounded: true,
+            });
+
+            const { audio } = Game.getInstance();
+            audio.playAudio('player/footstep_forest.wav', randomValue);
         }
 
         if (currPlayer.stamina < 100) {

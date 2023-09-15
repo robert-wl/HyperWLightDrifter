@@ -4,14 +4,18 @@ import Fireflies from "../../particles/Fireflies.js";
 import {imageLoader} from "../../../helper/imageLoader.js";
 import GameSettings from "../../../constants.js";
 import menuHandler from "../../../ui/menuHandler.js";
+import AudioPlayer from "../../../../audio/AudioPlayer.js";
 
 
 export default class GameStartState extends GameBaseState {
     async enterState(game) {
         await imageLoader(GameSettings.IMAGES.SPAWN);
         this.number = 0;
-
+        this.spawnParticles = true;
         menuHandler();
+
+        const { audio } = game;
+        audio.playAudio('menu/background.ogg', null, true);
     }
 
     updateState(game) {
@@ -19,18 +23,24 @@ export default class GameStartState extends GameBaseState {
         const { HUD } = game;
 
         HUD.clearRect(0, 0, game.canvas.width, game.canvas.height);
-        Fireflies.generate({
-            canvas: HUD,
-            distance: 1000,
-            position: {
-                x: game.canvas.width / 4,
-                y: game.canvas.height / 4,
-            },
-            speed: 0.25,
-            lifespan: 3,
-        });
+        if(this.spawnParticles) {
+            Fireflies.generate({
+                canvas: HUD,
+                distance: 1000,
+                position: {
+                    x: game.canvas.width / 4,
+                    y: game.canvas.height / 4,
+                },
+                speed: 0.25,
+                lifespan: 3,
+            });
+        }
 
         ParticlesManager.getInstance().update();
+    }
+
+    exitState(game) {
+        AudioPlayer.getInstance().stopAll();
     }
 
 }

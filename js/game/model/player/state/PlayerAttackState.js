@@ -41,8 +41,9 @@ export default class PlayerAttackState extends PlayerBaseState {
             player: currPlayer,
         });
 
-        const { clicks } = Game.getInstance();
+        const { clicks, audio } = Game.getInstance();
         clicks.splice(clicks.indexOf('left'), 1);
+        audio.playAudio('player/attack.wav', 1);
     }
 
     exitState(currPlayer) {

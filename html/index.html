@@ -11,27 +11,47 @@
     <canvas id="game" width="1920" height="1080"></canvas>
     <div class="ui">
         <div id="menu-modal">
-            <div class="new-game">
+            <div class="new-game hoverable">
                 New Game
             </div>
-            <div class="settings">
+            <div class="settings hoverable">
                 Settings
             </div>
-            <div class="exit">
+            <div class="exit hoverable">
                 Exit
             </div>
         </div>
         <div id="selection-modal">
             <div class="title">Select Outfit</div>
             <main class="image-container">
-                <div id="arrow-left"><</div>
+                <div id="arrow-left" class="clickable"><</div>
                 <img id="player-preview" src="../assets/ui/player_select/player-red.png" alt="">
-                <div id="arrow-right">></div>
+                <div id="arrow-right" class="clickable">></div>
             </main>
-            <button id="play-button">Play</button>
-            <button id="cancel-button">Cancel</button>
+            <button id="play-button" class="hoverable">Play</button>
+            <button id="cancel-button" class="hoverable">Cancel</button>
         </div>
-        <img id="opening-screen" src="../assets/ui/start.png" alt="" width="1920" height="1080">
+        <div id="settings-modal">
+            <div class="title">Settings</div>
+            <main class="settings-container">
+                <div class="settings-content">
+                    <div>Volume</div>
+                    <div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="settings-content">
+                    <div>Fullscreen</div>
+                    <div>On</div>
+                </div>
+                <div class="settings-content">
+                    <div>FPS Counter</div>
+                    <div>On</div>
+                </div>
+            </main>
+            <div></div>
+        </div>
+<!--        <img id="opening-screen" src="../assets/ui/start.png" alt="" width="1920" height="1080">-->
         <canvas id="HUD" width="1920" height="1080"></canvas>
     </div>
 </div>

@@ -12,12 +12,14 @@ import GameStageOneState from "./state/GameStageOneState.js";
 import GameStageTwoState from "./state/GameStageTwoState.js";
 import GamePausedState from "./state/GamePausedState.js";
 import GameBaseState from "./state/GameBaseState.js";
+import AudioPlayer from "../../../audio/AudioPlayer.js";
 
 export default class Game {
     static instance = null;
     constructor() {
         this.stage = 1;
         this.paused = false;
+        this.loading = false;
         this.player = new Player();
         this.width = GameSettings.game.SCREEN_WIDTH;
         this.height = GameSettings.game.SCREEN_HEIGHT;
@@ -32,6 +34,7 @@ export default class Game {
         this.debug = false;
         this.backgroundOpacity = 1;
         this.elevator = null;
+        this.audio = AudioPlayer.getInstance();
         this.currState = new GameBaseState();
         this.startState = new GameStartState();
         this.stageOneState = new GameStageOneState();
@@ -48,7 +51,7 @@ export default class Game {
         //     game: this,
         // });
 
-        await this.switchState(this.startState);
+        await this.switchState(this.stageOneState);
     }
 
     static getInstance() {
@@ -56,6 +59,20 @@ export default class Game {
             Game.instance = new Game();
         }
         return Game.instance;
+    }
+
+    async playGame(outfitNumber) {
+
+        if(outfitNumber === 1) {
+            this.player.outfit = 'dark';
+        }
+        if(outfitNumber === 2) {
+            this.player.outfit = 'yellow';
+        }
+
+        this.loading = true;
+        await this.switchState(this.stageOneState);
+        this.loading = false;
     }
 
     prepareCanvas() {
@@ -86,6 +103,9 @@ export default class Game {
     }
 
     updateGame() {
+        if(this.loading) {
+            return;
+        }
         this.currState.updateState(this);
     }
 

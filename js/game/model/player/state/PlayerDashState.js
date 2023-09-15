@@ -3,6 +3,7 @@ import { getMouseDirection } from '../../../helper/collision/directionHandler.js
 import playerDashDrawer from '../../../helper/renderer/playerDashDrawer.js';
 import Game from '../../Game/Game.js';
 import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
+import AudioPlayer from "../../../../audio/AudioPlayer.js";
 
 export default class PlayerDashState extends PlayerBaseState {
     number = 1;
@@ -18,6 +19,9 @@ export default class PlayerDashState extends PlayerBaseState {
 
         currPlayer.stamina -= 10;
         this.lastPosition = { ...currPlayer.position };
+
+        const { audio } = Game.getInstance();
+        audio.playAudio('player/dash.wav');
     }
     updateState(currPlayer) {
         this.number += 1;

@@ -54,7 +54,7 @@
     opacity: 0;
 }
 
-#menu-modal, #selection-modal {
+#menu-modal, #selection-modal, #settings-modal {
     position: absolute;
     background-color: transparent;
     width: 61rem;
@@ -101,6 +101,51 @@
     margin-bottom: 2rem;
 }
 
+#settings-modal {
+    align-items: center;
+    justify-content: space-between;
+}
+#settings-modal .title {
+    color: white;
+    background-color: transparent;
+    text-align: center;
+    margin: 4rem 2.75rem 0;
+    padding: 1rem 0;
+    font-size: 2rem;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: transparent;
+}
+
+.settings-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1rem 0;
+    align-items: center;
+    width: 90%;
+    background-color: transparent;
+}
+
+.settings-content:hover {
+    background-color: rgb(254, 31, 136);
+    cursor: pointer;
+}
+
+.settings-container div {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    background-color: transparent;
+}
+
+
 .image-container {
     display: flex;
     flex-direction: row;
@@ -111,6 +156,7 @@
     color: white;
     font-family: 'Press Start 2P', cursive;
     text-align: center;
+    background-color: transparent;
 }
 
 .image-container img {
@@ -124,6 +170,7 @@
     width: 20rem;
     animation: arrowMoveLeft 0.5s steps(2) infinite;
     cursor: pointer;
+    background-color: transparent;
 }
 
 #arrow-right {
@@ -132,6 +179,7 @@
     width: 20rem;
     animation: arrowMoveRight 0.5s steps(2) infinite;
     cursor: pointer;
+    background-color: transparent;
 }
 
 
@@ -159,6 +207,15 @@
     }
     100% {
         opacity: 100%;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0;
     }
 }
 
