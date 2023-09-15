@@ -1,7 +1,7 @@
 import Game from "../../model/Game/Game.js";
 
 export function drawRotated({ canvas, img, angle, position, mirrored, size }) {
-    const ctx = Game.getInstance().ctx || canvas;
+    const ctx = canvas || Game.getInstance().ctx;
     const scale = size || 2;
     ctx.save();
     if(mirrored) {

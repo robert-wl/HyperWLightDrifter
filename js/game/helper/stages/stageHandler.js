@@ -53,10 +53,16 @@ export async function firstStage() {
 
 export async function secondStage({ game }) {
     await imageLoader(GameSettings.IMAGES.STAGE_TWO);
-    get_image('world', 'boss_room', null, function (img) {
-        Game.getInstance().camera.lowerBackground = img;
-    });
-    Game.getInstance().camera.topBackground = null;
+
+    const mapGround = getImage('map_ground');
+
+    Game.getInstance().camera.init({
+        lowerBackground: mapGround,
+        topBackground: null,
+    })
+    console.log(mapGround)
+    // Game.getInstance().camera.lowerBackground = mapGround;
+    // Game.getInstance().camera.topBackground = null;
     game.player.position.x = 900;
     game.player.position.y = 400;
     game.player.centerPosition.x = 900 + game.player.width / 2;

@@ -75,7 +75,7 @@ export default class Player {
         this.immunity = playerDefault.MAX_IMMUNITY;
         this.projectiles = [];
         this.playerDefault = playerDefault;
-        this.outfit = "yellow";
+        this.outfit = "dark";
     }
 
     updateState() {

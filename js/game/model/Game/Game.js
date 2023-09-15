@@ -7,6 +7,11 @@ import hudHandler from '../../helper/renderer/hudHandler.js';
 import {firstStage, secondStage} from '../../helper/stages/stageHandler.js';
 import GameSettings from '../../constants.js';
 import EnemyManager from "../enemy/EnemyManager.js";
+import GameStartState from "./state/GameStartState.js";
+import GameStageOneState from "./state/GameStageOneState.js";
+import GameStageTwoState from "./state/GameStageTwoState.js";
+import GamePausedState from "./state/GamePausedState.js";
+import GameBaseState from "./state/GameBaseState.js";
 
 export default class Game {
     static instance = null;
@@ -19,7 +24,6 @@ export default class Game {
         this.keys = [];
         this.clicks = [];
         this.collideables = [];
-        this.particles = [];
         this.renderList = [];
         this.boss = null;
         this.bossEntities = [];
@@ -28,23 +32,23 @@ export default class Game {
         this.debug = false;
         this.backgroundOpacity = 1;
         this.elevator = null;
+        this.currState = new GameBaseState();
+        this.startState = new GameStartState();
+        this.stageOneState = new GameStageOneState();
+        this.stageTwoState = new GameStageTwoState();
+        this.pausedState = new GamePausedState();
     }
 
     async init() {
         this.prepareCanvas();
         playerInput();
         this.camera = new Camera();
-        //
+
         // await secondStage({
         //     game: this,
         // });
 
-        await firstStage();
-
-        this.camera.setCameraPosition({
-            position: this.player.centerPosition,
-        });
-
+        await this.switchState(this.startState);
     }
 
     static getInstance() {
@@ -75,40 +79,14 @@ export default class Game {
         this.HUD.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
     }
 
+    async switchState(nextState) {
+        await this.currState.exitState(this);
+        this.currState = nextState;
+        await this.currState.enterState(this);
+    }
+
     updateGame() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.camera.shakeCamera();
-        this.camera.renderLowerBackground();
-        this.enemySpawnHandler();
-
-        if (this.stage === 1) {
-            firefliesSpawner();
-        }
-
-        this.setTransparency(this.backgroundOpacity);
-        this.setTransparency(1);
-
-        EnemyManager.getInstance().update();
-
-        this.collideables.forEach((collideable) => collideable.update());
-
-
-        this.player.updateState();
-
-        this.camera.renderTopBackground();
-
-        this.particles.forEach((particle) => particle.update());
-
-        this.boss?.update();
-        this.bossEntities?.forEach((entity) => entity.update());
-
-        this.elevator?.update();
-
-        this.drawHUD();
-
-        this.camera.resetShakeCamera();
-        this.camera.updateCamera();
-
+        this.currState.updateState(this);
     }
 
     drawHUD() {

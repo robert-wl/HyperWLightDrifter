@@ -38,6 +38,31 @@
     max-height: 100vh;
     background-color: transparent;
 }
+
+
+.ui-container {
+    position: absolute;
+    background-color: transparent;
+    max-width: 1920px;
+    max-height: 1080px;
+    width: 100vw;
+    height: fit-content;
+    z-index: 100;
+    opacity: 0;
+}
+
+#opening-screen {
+    position: absolute;
+    image-rendering: high-quality;
+    background-color: transparent;
+    max-width: 1920px;
+    max-height: 1080px;
+    /*object-fit: cover;*/
+    width: 100vw;
+    height: fit-content;
+    opacity: 90%;
+}
+
 #HUD {
     position: absolute;
     top: 0;

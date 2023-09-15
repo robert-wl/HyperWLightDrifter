@@ -4,19 +4,21 @@ import { drawRotated } from '../../helper/renderer/drawer.js';
 import {getRandomValue} from "../../helper/randomHelper.js";
 import {getHorizontalValue, getVerticalValue} from "../../helper/distanceHelper.js";
 import {getNumberedImage} from "../../helper/imageLoader.js";
+import ParticlesManager from "./ParticlesManager.js";
 
 export default class Fireflies extends Particles {
-    static generate() {
-        const { position } = Game.getInstance().player;
+    static generate({ canvas, distance, position, speed, lifespan }) {
+        const spawnPosition = position || Game.getInstance().player;
 
-        const x = position.x + getRandomValue({
+        const distanceConst = distance || 1500;
+        const x = spawnPosition.x + getRandomValue({
             initialValue: -1,
             randomValue: 2,
-        }) * 1500;
-        const y = position.y + getRandomValue({
+        }) * distanceConst;
+        const y = spawnPosition.y + getRandomValue({
             initialValue: -1,
             randomValue: 2,
-        }) * 1500;
+        }) * distanceConst;
 
         const width = getRandomValue({
             initialValue: 5,
@@ -26,13 +28,13 @@ export default class Fireflies extends Particles {
             initialValue: 5,
             randomValue: 10,
         });
-        const lifeSpan = getRandomValue({
+        const lifeSpanLength = lifespan || getRandomValue({
             initialValue: 2,
             randomValue: 20,
             rounded: true,
         });
 
-        const speed = getRandomValue({
+        const updateSpeed = speed || getRandomValue({
             initialValue: -1,
             randomValue: 2,
         }) * 0.25;
@@ -44,22 +46,24 @@ export default class Fireflies extends Particles {
 
         const newFireflies = new Fireflies({
             position: { x, y },
-            speed: speed,
+            speed: updateSpeed,
             angle: angle,
-            lifeSpan: lifeSpan,
+            lifeSpan: lifeSpanLength,
             width: width,
             height: height,
+            canvas: canvas,
         });
 
-        Game.getInstance().particles.push(newFireflies);
+        ParticlesManager.getInstance().particleList.push(newFireflies);
     }
-    constructor({ position, speed, angle, lifeSpan, width, height }) {
+    constructor({ position, speed, angle, lifeSpan, width, height, canvas }) {
         super({
             position,
             speed,
             lifeSpan,
             width,
             height,
+            canvas,
         });
         this.angle = angle;
         this.number = 0;
@@ -95,22 +99,25 @@ export default class Fireflies extends Particles {
     }
 
     destroy() {
-        const { particles } = Game.getInstance();
+        const { particleList } = ParticlesManager.getInstance();
 
-        particles.splice(particles.indexOf(this), 1);
+        particleList.splice(particleList.indexOf(this), 1);
     }
 
     drawImage() {
         const firefly = getNumberedImage('fireflies', (this.lifeSpan % 4) + 1);
 
-        Game.getInstance().setTransparency(this.lifeSpan / 22);
+
+        const canvas = this.canvas || Game.getInstance().ctx;
+        canvas.globalAlpha = this.lifeSpan / 5;
 
         drawRotated({
+            canvas: canvas,
             img: firefly,
             angle: this.rotation * Math.PI,
             position: this.position,
-        });
+         });
 
-        Game.getInstance().setTransparency(1);
+        canvas.globalAlpha = 1;
     }
 }

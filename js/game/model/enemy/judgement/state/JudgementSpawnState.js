@@ -2,6 +2,7 @@ import JudgementBaseState from './JudgementBaseState.js';
 import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from "../../../../constants.js";
+import Game from "../../../Game/Game.js";
 
 export default class JudgementSpawnState extends JudgementBaseState {
     enterState() {
@@ -15,6 +16,12 @@ export default class JudgementSpawnState extends JudgementBaseState {
         if (this.number === 7) {
             this.number = 0;
             this.animationStage += 1;
+        }
+
+        if(this.number === 0 && this.animationStage === 16) {
+            Game.getInstance().camera.setShakeCamera({
+                durationY: 100
+            });
         }
 
         if (this.animationStage === 22) {
