@@ -10,7 +10,28 @@
 <div class="container">
     <canvas id="game" width="1920" height="1080"></canvas>
     <div class="ui">
-        <img id="opening-screen" src="../assets/ui/start_menu (2).png" alt="" width="1936" height="1096">
+        <div id="menu-modal">
+            <div class="new-game">
+                New Game
+            </div>
+            <div class="settings">
+                Settings
+            </div>
+            <div class="exit">
+                Exit
+            </div>
+        </div>
+        <div id="selection-modal">
+            <div class="title">Select Outfit</div>
+            <main class="image-container">
+                <div id="arrow-left"><</div>
+                <img id="player-preview" src="../assets/ui/player_select/player-red.png" alt="">
+                <div id="arrow-right">></div>
+            </main>
+            <button id="play-button">Play</button>
+            <button id="cancel-button">Cancel</button>
+        </div>
+        <img id="opening-screen" src="../assets/ui/start.png" alt="" width="1920" height="1080">
         <canvas id="HUD" width="1920" height="1080"></canvas>
     </div>
 </div>

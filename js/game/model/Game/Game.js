@@ -3,7 +3,7 @@ import playerInput from '../../helper/player/playerInput.js';
 import { get_image } from '../../helper/fileReader.js';
 import Camera from '../camera/Camera.js';
 import firefliesSpawner from '../../helper/renderer/firefliesSpawner.js';
-import hudHandler from '../../helper/renderer/hudHandler.js';
+import hudHandler from '../../ui/hudHandler.js';
 import {firstStage, secondStage} from '../../helper/stages/stageHandler.js';
 import GameSettings from '../../constants.js';
 import EnemyManager from "../enemy/EnemyManager.js";
