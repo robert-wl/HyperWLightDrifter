@@ -70,12 +70,15 @@ export default class Player {
         this.throwState = new PlayerThrowingState();
         this.canvas = null;
         this.healing = 0;
-        this.currState = this.spawnState;
-        this.currState.enterState(this);
         this.immunity = playerDefault.MAX_IMMUNITY;
         this.projectiles = [];
         this.playerDefault = playerDefault;
         this.outfit = "default";
+    }
+
+    init() {
+        this.currState = this.spawnState;
+        this.currState.enterState(this);
     }
 
     updateState() {
@@ -211,26 +214,28 @@ export default class Player {
         });
 
         const { collideables } = Game.getInstance();
+        let { x, y, w, h } = this.getHitboxCoordinates();
 
         if (
             checkCollision({
                 collideables,
-                x: this.position.x + this.direction.x,
-                y: this.position.y,
-                w: this.width,
-                h: this.height,
+                x: x + this.direction.x,
+                y: y,
+                w: w,
+                h: h,
             })
         ) {
             this.position.x += this.direction.x;
             this.centerPosition.x += this.direction.x;
         }
+
         if (
             checkCollision({
                 collideables,
-                x: this.position.x,
-                y: this.position.y + this.direction.y,
-                w: this.width,
-                h: this.height,
+                x: x,
+                y: y + this.direction.y,
+                w: w,
+                h: h,
             })
         ) {
             this.position.y += this.direction.y;

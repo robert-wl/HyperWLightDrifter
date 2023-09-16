@@ -102,7 +102,7 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
             2: [1 / 10, -1 / 10, 2 / 10, -2 / 10],
         };
 
-        constant[type].forEach((num) => {
+        constant[type].forEach((num, index) => {
             currBrute.attack.push(
                 CrystalAttack.generate({
                     position: {
@@ -110,6 +110,7 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
                         y: currBrute.position.y,
                     },
                     angle: angle + Math.PI * num,
+                    playAudio: index === 0,
                 }),
             );
         });

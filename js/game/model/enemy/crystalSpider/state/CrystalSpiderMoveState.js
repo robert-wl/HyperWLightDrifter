@@ -4,6 +4,9 @@ import { get_image } from '../../../../helper/fileReader.js';
 import { getRandomBoolean, getRandomValue } from '../../../../helper/randomHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
+import {getNumberedImage} from "../../../../helper/imageLoader.js";
+import {drawImage} from "../../../../helper/renderer/drawer.js";
+import {getFaceDirection} from "../../../../helper/collision/directionHandler.js";
 
 export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
     enterState(_currSpider) {
@@ -18,6 +21,10 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
     updateState(currSpider) {
         this.number += 1;
 
+        if(this.number % 20 === 0) {
+            const { audio } = Game.getInstance();
+            audio.playAudio('enemy/crystal_spider/walk.wav');
+        }
         const { position } = Game.getInstance().player;
         const distance = getMagnitudeValue({
             x: position.x - currSpider.position.x,
@@ -61,21 +68,24 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         }
     }
     drawImage(currSpider) {
-        const ctx = Game.getInstance().ctx;
-        const angle = currSpider.angle;
+        const { angle } = currSpider;
+        const { ctx } = Game.getInstance();
 
         if (this.number % 4 === 0) {
             this.animationStage = (this.animationStage + 1) % 4;
         }
-        get_image('enemy/crystal_spider', 'crystal_spider_walk', this.animationStage + 1, (image) => {
-            if ((angle > 0 && angle < Math.PI / 2) || (angle < 0 && angle > -Math.PI / 2)) {
-                ctx.drawImage(image, currSpider.position.x, currSpider.position.y, currSpider.width, currSpider.height);
-            } else {
-                ctx.scale(-1, 1);
-                ctx.drawImage(image, -currSpider.position.x - currSpider.width, currSpider.position.y, currSpider.width, currSpider.height);
-                ctx.scale(-1, 1);
-            }
-        });
+
+        const spiderWalk = getNumberedImage('crystal_spider_walk', this.animationStage + 1);
+
+        drawImage({
+            img: spiderWalk,
+            x: currSpider.position.x,
+            y: currSpider.position.y,
+            width: currSpider.width,
+            height: currSpider.height,
+            translate: true,
+            mirrored: getFaceDirection(angle) === 'left',
+        })
     }
 
     getRotateAngle(angle) {

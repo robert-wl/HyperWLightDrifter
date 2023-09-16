@@ -55,6 +55,8 @@ export default class GunProjectile {
                 },
             }))
         ) {
+            const { audio } = Game.getInstance();
+            audio.playAudio('player/bullet_hit.wav');
             enemy.damage({
                 amount: 1,
                 angle: this.player.lookAngle,

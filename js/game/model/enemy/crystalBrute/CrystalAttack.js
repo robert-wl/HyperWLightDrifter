@@ -1,11 +1,12 @@
 import CrystalSpike from './CrystalSpike.js';
 import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
+import Game from "../../Game/Game.js";
 
 export default class CrystalAttack {
-    static generate({ position, angle }) {
-        return new CrystalAttack({ position, angle });
+    static generate({ position, angle, playAudio }) {
+        return new CrystalAttack({ position, angle, playAudio });
     }
-    constructor({ position, angle }) {
+    constructor({ position, angle, playAudio }) {
         this.position = position;
         this.angle = angle;
         this.width = 27;
@@ -13,6 +14,7 @@ export default class CrystalAttack {
         this.spikes = [];
         this.speed = 7;
         this.number = 0;
+        this.playAudio = playAudio;
     }
 
     update() {
@@ -36,9 +38,16 @@ export default class CrystalAttack {
                     },
                 });
             this.spikes.push(spike);
+
+            if(this.playAudio) {
+                const { audio } = Game.getInstance();
+
+                audio.playAudio('enemy/crystal_brute/spike_spawn.wav');
+            }
         }
 
-        if (this.number >= 1000) {
+
+        if (this.number >= 400) {
             return true;
         }
 

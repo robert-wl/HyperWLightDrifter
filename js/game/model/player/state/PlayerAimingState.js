@@ -9,30 +9,43 @@ import GameSettings from '../../../constants.js';
 
 const scale = 2;
 export default class PlayerAimingState extends PlayerBaseState {
+    canAim = true;
     exploding = 0;
     updateState(currPlayer) {
         const { lookAngle } = currPlayer;
         const { clicks } = Game.getInstance();
+
         this.angle = lookAngle;
 
         this.direction = getMouseDirection({
             angle: lookAngle,
         });
 
-
         if (!clicks.includes('right')) {
+            this.canAim = true;
             currPlayer.handleSwitchState({
                 move: true,
                 attackOne: true,
                 dash: true,
                 throws: true,
             });
+
+            return;
         }
+
         if (clicks.includes('left') && currPlayer.bullets > 0) {
             this.shootHandler({
                 currPlayer,
                 clicks,
             });
+
+            return;
+        }
+
+        if(this.canAim) {
+            const { audio } = Game.getInstance();
+            audio.playAudio('player/gun_aim.wav');
+            this.canAim = false;
         }
     }
 
@@ -41,12 +54,12 @@ export default class PlayerAimingState extends PlayerBaseState {
 
         const projectilePosition = {
             x: getHorizontalValue({
-                initial: currPlayer.position.x + currPlayer.width / 2,
+                initial: currPlayer.centerPosition.x,
                 magnitude: currPlayer.playerDefault.PROJECTILE_OFFSET,
                 angle: this.angle,
             }),
             y: getVerticalValue({
-                initial: currPlayer.position.y + currPlayer.height / 2,
+                initial: currPlayer.centerPosition.y,
                 magnitude: currPlayer.playerDefault.PROJECTILE_OFFSET,
                 angle: this.angle,
             }),
@@ -68,9 +81,15 @@ export default class PlayerAimingState extends PlayerBaseState {
             angle: this.angle + Math.PI,
         });
 
+        const { audio } = Game.getInstance();
+        audio.playAudio('player/bullet_travel.wav');
+
+        this.canAim = false;
+
         this.exploding = 5;
     }
     drawImage(currPlayer) {
+        // this.drawShootLine(currPlayer)
         if (this.direction === 'w') {
             const aimTop = getImage('aim_top');
 
@@ -149,6 +168,31 @@ export default class PlayerAimingState extends PlayerBaseState {
         }
     }
 
+    drawShootLine(currPlayer) {
+        const { ctx } = Game.getInstance();
+        const { lookAngle } = currPlayer;
+
+        const x = getHorizontalValue({
+            initial: currPlayer.centerPosition.x,
+            magnitude: 1000,
+            angle: lookAngle,
+        });
+        const y = getVerticalValue({
+            initial: currPlayer.centerPosition.y,
+            magnitude: 1000,
+            angle: lookAngle,
+        });
+
+        const lineWidth = 2;
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgb(255, 0, 0, 0.5)';
+        ctx.lineWidth = lineWidth;
+        ctx.translate(-lineWidth / 2, -lineWidth / 2);
+        ctx.moveTo(currPlayer.centerPosition.x, currPlayer.centerPosition.y);
+        ctx.lineTo(x, y);
+        ctx.translate(lineWidth / 2, lineWidth / 2);
+        ctx.stroke();
+    }
     drawPlayer({ image, currPlayer, gunOffset, playerOffset, angle, mirrored = false, bottom = false }) {
         const railgun = getImage('railgun');
 
@@ -156,42 +200,30 @@ export default class PlayerAimingState extends PlayerBaseState {
             drawRotated({
                 img: railgun,
                 position: {
-                    x: currPlayer.position.x + gunOffset.x,
-                    y: currPlayer.position.y + gunOffset.y,
+                    x: currPlayer.centerPosition.x,
+                    y: currPlayer.centerPosition.y,
                 },
                 angle: angle,
                 mirrored: mirrored,
             });
         }
 
-        //TODO MAKE BETTER ASSETS
-
-        if (mirrored) {
-            drawMirroredY({
-                img: image,
-                position: {
-                    x: currPlayer.position.x + playerOffset.x,
-                    y: currPlayer.position.y + playerOffset.y,
-                },
-                width: image.width * GameSettings.game.GAME_SCALE,
-                height: image.height * GameSettings.game.GAME_SCALE,
-            });
-        } else {
-            drawImage({
-                img: image,
-                x: currPlayer.position.x + playerOffset.x,
-                y: currPlayer.position.y + playerOffset.y,
-                width: image.width * GameSettings.game.GAME_SCALE,
-                height: image.height * GameSettings.game.GAME_SCALE,
-            });
-        }
+        drawImage({
+            img: image,
+            x: currPlayer.centerPosition.x,
+            y: currPlayer.centerPosition.y,
+            width: image.width * GameSettings.game.GAME_SCALE,
+            height: image.height * GameSettings.game.GAME_SCALE,
+            translate: true,
+            mirrored: mirrored,
+        });
 
         if (bottom) {
             drawRotated({
                 img: railgun,
                 position: {
-                    x: currPlayer.position.x + gunOffset.x,
-                    y: currPlayer.position.y + gunOffset.y,
+                    x: currPlayer.centerPosition.x,
+                    y: currPlayer.centerPosition.y,
                 },
                 angle: angle,
                 mirrored: mirrored,
@@ -204,8 +236,9 @@ export default class PlayerAimingState extends PlayerBaseState {
 
         this.exploding--;
 
+        console.log(currPlayer.playerDefault.EXPLOSION_DISTANCE)
         this.drawExplosion({
-            explosionDistance: currPlayer.EXPLOSION_DISTANCE,
+            explosionDistance: -currPlayer.playerDefault.EXPLOSION_DISTANCE,
             currPlayer: currPlayer,
             angle: angle,
         });
@@ -215,12 +248,12 @@ export default class PlayerAimingState extends PlayerBaseState {
         //TODO FIX THIS
         const { ctx } = Game.getInstance();
         const x = getHorizontalValue({
-            initial: currPlayer.position.x + currPlayer.width / 2,
+            initial: currPlayer.centerPosition.x,
             magnitude: explosionDistance,
             angle: angle,
         });
         const y = getVerticalValue({
-            initial: currPlayer.position.y + currPlayer.height / 2,
+            initial: currPlayer.centerPosition.y,
             magnitude: explosionDistance,
             angle: angle,
         });

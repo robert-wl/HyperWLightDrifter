@@ -1,13 +1,19 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
-import { get_image } from '../../../../helper/fileReader.js';
 import Game from '../../../Game/Game.js';
 import playerCollision from '../../../../helper/collision/playerCollision.js';
+import {getImage} from "../../../../helper/imageLoader.js";
+import {drawImage} from "../../../../helper/renderer/drawer.js";
+import {getFaceDirection} from "../../../../helper/collision/directionHandler.js";
+import {getHorizontalValue, getVerticalValue} from "../../../../helper/distanceHelper.js";
 
 export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
     enterState(currSpider) {
         currSpider.attackSpeed = 0;
         this.number = 0;
         this.angle = currSpider.angle;
+
+        const { audio } = Game.getInstance();
+        audio.playAudio('enemy/crystal_spider/attack.wav');
     }
     updateState(currSpider) {
         this.number += 1;
@@ -22,26 +28,34 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
 
         playerCollision({
             position: {
-                x: currSpider.position.x + currSpider.width / 2,
-                y: currSpider.position.y + currSpider.height / 2,
+                x: currSpider.position.x,
+                y: currSpider.position.y,
             },
             angle: this.angle,
         });
 
-        currSpider.position.x += Math.cos(this.angle) * currSpider.attackSpeed;
-        currSpider.position.y += Math.sin(this.angle) * currSpider.attackSpeed;
+        currSpider.position.x += getHorizontalValue({
+            magnitude: currSpider.attackSpeed,
+            angle: this.angle,
+        });
+
+        currSpider.position.y += getVerticalValue({
+            magnitude: currSpider.attackSpeed,
+            angle: this.angle,
+        });
     }
     drawImage(currSpider) {
-        const ctx = Game.getInstance().ctx;
+        const spiderAttack = getImage('crystal_spider_attack');
 
-        get_image('enemy/crystal_spider', 'crystal_spider_attack', null, (image) => {
-            if ((this.angle > 0 && this.angle < Math.PI / 2) || (this.angle < 0 && this.angle > -Math.PI / 2)) {
-                ctx.drawImage(image, currSpider.position.x, currSpider.position.y, currSpider.width, currSpider.height);
-            } else {
-                ctx.scale(-1, 1);
-                ctx.drawImage(image, -currSpider.position.x - currSpider.width, currSpider.position.y, currSpider.width, currSpider.height);
-                ctx.scale(-1, 1);
-            }
-        });
+        drawImage({
+            img: spiderAttack,
+            x: currSpider.position.x,
+            y: currSpider.position.y,
+            width: currSpider.width,
+            height: currSpider.height,
+            translate: true,
+            mirrored: getFaceDirection(this.angle) === 'left'
+        })
+
     }
 }

@@ -10,6 +10,9 @@ import {getFaceDirection} from "../../../../helper/collision/directionHandler.js
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
     enterState(currBrute) {
         EnemyManager.getInstance().enemyAliveCount -= 5;
+
+        const { audio } = Game.getInstance();
+        audio.playAudio('enemy/crystal_brute/death.wav');
     }
 
     updateState(currBrute) {

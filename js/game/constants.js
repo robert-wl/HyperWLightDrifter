@@ -24,8 +24,8 @@ const GameSettings = {
         MAX_HEALTH: 6,
         MAX_HEALTHPACKS: 3,
         MAX_STAMINA: 100,
-        MAX_BOMBS: 3,
-        MAX_BULLETS: 3,
+        MAX_BOMBS: 3000,
+        MAX_BULLETS: 3000,
         FRICTION: 0.8,
         MAX_SPEED: 4,
         ATTACK_MOVE_SPEED: 2,
@@ -47,7 +47,7 @@ const GameSettings = {
         ATTACK_BOX: {
             UP: {
                 X: -50,
-                Y: -80,
+                Y: -60,
                 W: 100,
                 H: 75,
             },
@@ -67,7 +67,7 @@ const GameSettings = {
                 X: -45,
                 Y: -25,
                 W: 100,
-                H: 100,
+                H: 90,
             },
         },
         PROJECTILE_OFFSET: 45,
@@ -92,7 +92,7 @@ const GameSettings = {
                 },
             },
         },
-        EXPLOSION_DISTANCE: 35,
+        EXPLOSION_DISTANCE: 25,
         SHADOW_OFFSET: {
             X: -24.5,
             Y: -5,
@@ -287,6 +287,19 @@ const GameSettings = {
                 ref: 'enemy/crystal_brute/spike/crystal_spike.png',
                 name: 'crystal_spike',
                 amount: 7,
+            },
+            {
+                ref: 'enemy/crystal_spider/walk/walk.png',
+                name: 'crystal_spider_walk',
+                amount: 4,
+            },
+            {
+                ref: 'enemy/crystal_spider/attack/attack.png',
+                name: 'crystal_spider_attack',
+            },
+            {
+                ref: 'enemy/crystal_spider/die/die.png',
+                name: 'crystal_spider_die',
             },
             {
                 ref: 'other/shadow.png',
@@ -501,7 +514,7 @@ const GameSettings = {
     },
     DEBUG: {
         COLOR: {
-            CAMERA_BOX: 'rgb(255, 0, 0, 0.5)'
+            CAMERA_BOX: 'rgb(255, 255, 255, 0.25)'
         }
     }
 };

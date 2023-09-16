@@ -16,7 +16,7 @@ export default class GameStageOneState extends GameBaseState {
             position: game.player.centerPosition,
         });
 
-        audio.playAudio('forest_stage/background.ogg', null, true);
+        // audio.playAudio('forest_stage/background.ogg', null, true);
     }
 
     updateState(game) {

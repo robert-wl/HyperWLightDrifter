@@ -22,7 +22,7 @@ export default class Camera {
                 y: 0,
             },
             width: 900,
-            height: 500,
+            height: 400,
         };
         this.lowerBackground = null;
         this.topBackground = null;

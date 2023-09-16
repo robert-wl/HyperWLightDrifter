@@ -18,13 +18,13 @@ export default class CrystalSpider extends Enemy {
     }
     constructor({ x, y }) {
         super({
-            x,
-            y,
+            x: x,
+            y: y,
             hitbox: {
-                x: 10,
-                y: 10,
-                w: 20,
-                h: 10,
+                x: -66 / 2,
+                y: -50 / 2,
+                w: 0,
+                h: 0,
             },
             w: 66,
             h: 50,
@@ -39,6 +39,11 @@ export default class CrystalSpider extends Enemy {
             randomValue: 3,
         });
         this.switchState(this.moveState);
+    }
+    debugMode() {
+        const {ctx} = Game.getInstance();
+        ctx.fillStyle = 'rgb(255, 255, 0, 0.5)';
+        ctx.fillRect(this.position.x + this.hitbox.x, this.position.y + this.hitbox.y, this.width - this.hitbox.w, this.height - this.hitbox.h);
     }
     switchState(newState) {
         this.currState.exitState(this);
@@ -57,15 +62,15 @@ export default class CrystalSpider extends Enemy {
 
         this.currState.updateState(this);
 
-        // if(this.currState !== this.dieState) {
-        //     renderShadow({
-        //         position: {
-        //             x: this.position.x - this.width / 2 + 10,
-        //             y: this.position.y - this.height / 2,
-        //         },
-        //         sizeMultiplier: 1.5,
-        //     });
-        // }
+        if(this.currState !== this.dieState) {
+            renderShadow({
+                position: {
+                    x: this.position.x,
+                    y: this.position.y,
+                },
+                sizeMultiplier: 1.5,
+            });
+        }
 
         if(this.damaged >= 0) {
             Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');

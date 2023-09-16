@@ -43,6 +43,7 @@ export default class Game {
     }
 
     async init() {
+        this.player.init()
         this.prepareCanvas();
         playerInput();
         this.camera = new Camera();

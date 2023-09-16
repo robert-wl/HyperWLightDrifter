@@ -5,6 +5,7 @@ import GameSettings from "../../constants.js";
 export default function playerInput() {
     $(document).keydown((e) => {
         const { keys } = Game.getInstance();
+        console.log("h")
         if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's' || e.key === 'e' || e.key === 'c'  || e.key === 'c') {
             if (keys.includes(e.key)) {
                 return;

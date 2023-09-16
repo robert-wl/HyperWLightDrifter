@@ -9,8 +9,8 @@ export default class PlayerThrowingState extends PlayerBaseState {
         const angle = currPlayer.lookAngle;
 
         Grenade.generate({
-            x: currPlayer.position.x + currPlayer.width / 2,
-            y: currPlayer.position.y + currPlayer.height / 2,
+            x: currPlayer.centerPosition.x,
+            y: currPlayer.centerPosition.y,
             angle: angle,
         })
     }

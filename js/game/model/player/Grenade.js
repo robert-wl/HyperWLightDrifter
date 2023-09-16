@@ -1,10 +1,12 @@
 import Game from '../Game/Game.js';
-import { get_image } from '../../helper/fileReader.js';
 import { drawRotated } from '../../helper/renderer/drawer.js';
 import { getRandomValue } from '../../helper/randomHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import { getNumberedImage } from '../../helper/imageLoader.js';
 import { getAngle } from '../../helper/angleHelper.js';
+import CrystalBrute from "../enemy/crystalBrute/CrystalBrute.js";
+import CrystalSpider from "../enemy/crystalSpider/CrystalSpider.js";
+import EnemyManager from "../enemy/EnemyManager.js";
 
 export default class Grenade {
     static generate({ x, y, angle }) {
@@ -83,7 +85,8 @@ export default class Grenade {
     }
 
     handleDamage() {
-        const { enemyList } = Game.getInstance();
+        const { audio } = Game.getInstance();
+        const { enemyList } = EnemyManager.getInstance();
 
         enemyList.forEach((enemy) => {
             if (enemy.currState !== enemy.dieState) {
@@ -98,6 +101,14 @@ export default class Grenade {
                 });
 
                 if (distance < 250) {
+                    console.log("hai")
+                    if(enemy instanceof CrystalSpider) {
+                        audio.playAudio('enemy/crystal_spider/hit.wav');
+                    }
+
+                    if(enemy instanceof CrystalBrute) {
+                        audio.playAudio('enemy/crystal_brute/hit.wav');
+                    }
                     enemy.damage({
                         amount: 3,
                         angle: -angle,
