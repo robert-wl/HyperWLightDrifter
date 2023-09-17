@@ -26,17 +26,24 @@ export default class Door extends Collideable {
     }
 
     update() {
-        const { enemyManager } = Game.getInstance();
+        const { enemyManager, audio } = Game.getInstance();
+
         if (enemyManager.difficulty >= 8) {
             this.isLocked = false;
         }
+
         if (this.openingStage > 0) {
             this.number += 1;
 
             if (this.number % 5 === 0) {
                 this.openingStage += 1;
             }
+
+            if(this.openingStage === 1 && this.number % 4 === 0){
+                audio.playAudio('forest_stage/door_activate.ogg');
+            }
         }
+
         if (this.openingStage === 4) {
             const { collideables } = Game.getInstance();
             collideables.splice(collideables.indexOf(this), 1);
@@ -63,12 +70,11 @@ export default class Door extends Collideable {
             y: this.y,
             width: door.width * GameSettings.GAME.GAME_SCALE,
             height: door.height * GameSettings.GAME.GAME_SCALE,
-            // translate: true,
         });
     }
 
     detectInteraction() {
-        if (this.isLocked) {
+        if (this.isLocked || this.openingStage > 0) {
             return;
         }
         detectPlayerInteraction(this);

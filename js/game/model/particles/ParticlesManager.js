@@ -22,6 +22,7 @@ export default class ParticlesManager {
     }
 
     clear() {
-        Game.getInstance().currState.spawnParticles = false;
+        const { currState } = Game.getInstance();
+        currState.spawnParticles = false;
     }
 }

@@ -4,9 +4,8 @@ import { getRandomValue } from '../../helper/randomHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import { getNumberedImage } from '../../helper/imageLoader.js';
 import { getAngle } from '../../helper/angleHelper.js';
-import CrystalBrute from "../enemy/crystalBrute/CrystalBrute.js";
-import CrystalSpider from "../enemy/crystalSpider/CrystalSpider.js";
-import EnemyManager from "../enemy/EnemyManager.js";
+import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
+import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 
 export default class Grenade {
     static generate({ x, y, angle }) {
@@ -59,13 +58,18 @@ export default class Grenade {
             this.animationStage += 1;
             this.number = 0;
         }
+
+        const { player, audio } = Game.getInstance();
+        const { projectiles } = player;
+
         if (this.animationStage === 11) {
-            const { projectiles } = Game.getInstance().player;
+
 
             projectiles.splice(projectiles.indexOf(this), 1);
         }
 
         if (this.animationStage === 2 && this.number === 1) {
+            audio.playAudio('player/grenade/explode.wav')
             this.handleDamage();
         }
         this.render();
@@ -89,32 +93,35 @@ export default class Grenade {
         const { enemyList } = enemyManager;
 
         enemyList.forEach((enemy) => {
-            if (enemy.currState !== enemy.dieState) {
-                const distance = getMagnitudeValue({
-                    x: this.position.x - enemy.position.x,
-                    y: this.position.y - enemy.position.y,
-                });
-
-                const angle = getAngle({
-                    x: this.position.x - enemy.position.x,
-                    y: this.position.y - enemy.position.y,
-                });
-
-                if (distance < 250) {
-                    console.log("hai")
-                    if(enemy instanceof CrystalSpider) {
-                        audio.playAudio('enemy/crystal_spider/hit.wav');
-                    }
-
-                    if(enemy instanceof CrystalBrute) {
-                        audio.playAudio('enemy/crystal_brute/hit.wav');
-                    }
-                    enemy.damage({
-                        amount: 3,
-                        angle: -angle,
-                    });
-                }
+            if(enemy.currState === enemy.dieState) {
+                return;
             }
+
+            const distance = getMagnitudeValue({
+                x: this.position.x - enemy.position.x,
+                y: this.position.y - enemy.position.y,
+            });
+
+            const angle = getAngle({
+                x: this.position.x - enemy.position.x,
+                y: this.position.y - enemy.position.y,
+            });
+
+            if(distance > 250) {
+                return;
+            }
+
+            if (enemy instanceof CrystalSpider) {
+                audio.playAudio('enemy/crystal_spider/hit.wav');
+            }
+
+            if (enemy instanceof CrystalBrute) {
+                audio.playAudio('enemy/crystal_brute/hit.wav');
+            }
+            enemy.damage({
+                amount: 3,
+                angle: -angle,
+            });
         });
     }
 }

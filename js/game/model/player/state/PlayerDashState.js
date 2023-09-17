@@ -2,8 +2,7 @@ import PlayerBaseState from './PlayerBaseState.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import playerDashDrawer from '../../../helper/renderer/playerDashDrawer.js';
 import Game from '../../Game/Game.js';
-import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
-import AudioPlayer from "../../../../audio/AudioPlayer.js";
+import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
 
 export default class PlayerDashState extends PlayerBaseState {
     number = 1;
@@ -45,7 +44,7 @@ export default class PlayerDashState extends PlayerBaseState {
             Game.getInstance().setFilter('brightness(50%) hue-rotate(200deg)');
             playerDashDrawer(data);
             Game.getInstance().setFilter('none');
-        })
+        });
 
         const data = this.generateDashData(currPlayer);
         playerDashDrawer(data);

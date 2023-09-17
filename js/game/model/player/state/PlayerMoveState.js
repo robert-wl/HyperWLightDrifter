@@ -28,9 +28,7 @@ export default class PlayerMoveState extends PlayerBaseState {
             audio.playAudio('player/footstep_forest.wav', randomValue);
         }
 
-        if (currPlayer.stamina < 100) {
-            currPlayer.stamina += 0.5;
-        }
+        currPlayer.regenerateStamina();
 
         const { direction, playerDirection } = getMoveDirection({
             currPlayer: currPlayer,
@@ -53,58 +51,31 @@ export default class PlayerMoveState extends PlayerBaseState {
         });
     }
     drawImage(currPlayer) {
+        let moveImage = null;
         if (this.direction === 'w') {
-            const moveUp = getNumberedImage('move_up', (this.animationStage % 12) + 1);
-            drawImage({
-                img: moveUp,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: moveUp.width * GameSettings.GAME.GAME_SCALE,
-                height: moveUp.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-            });
-
-            return;
+            moveImage = getNumberedImage('move_up', (this.animationStage % 12) + 1);
         }
         if (this.direction === 'a') {
-            const moveSide = getNumberedImage('move_left', (this.animationStage % 12) + 1);
-
-            drawImage({
-                img: moveSide,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: moveSide.width * GameSettings.GAME.GAME_SCALE,
-                height: moveSide.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-            });
-
-            return;
+            moveImage = getNumberedImage('move_left', (this.animationStage % 12) + 1);
         }
         if (this.direction === 's') {
-            const moveDown = getNumberedImage('move_down', (this.animationStage % 12) + 1);
-
-            drawImage({
-                img: moveDown,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: moveDown.width * GameSettings.GAME.GAME_SCALE,
-                height: moveDown.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-            });
-
-            return;
+            moveImage = getNumberedImage('move_down', (this.animationStage % 12) + 1);
         }
         if (this.direction === 'd') {
-            const moveSide = getNumberedImage('move_right', (this.animationStage % 12) + 1);
-
-            drawImage({
-                img: moveSide,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: moveSide.width * GameSettings.GAME.GAME_SCALE,
-                height: moveSide.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-            });
+            moveImage = getNumberedImage('move_right', (this.animationStage % 12) + 1);
         }
+
+        if(moveImage === null) {
+            return;
+        }
+
+        drawImage({
+            img: moveImage,
+            x: currPlayer.centerPosition.x,
+            y: currPlayer.centerPosition.y,
+            width: moveImage.width * GameSettings.GAME.GAME_SCALE,
+            height: moveImage.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+        });
     }
 }

@@ -4,12 +4,11 @@ import { drawImage, drawRotated } from '../../../helper/renderer/drawer.js';
 import Game from '../../Game/Game.js';
 import { getImage } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
-import {drawEffect, drawExplosion, drawShootLine, shootHandler} from "../../../helper/player/gunHelper.js";
-import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
+import { drawExplosion, drawShootLine, shootHandler } from '../../../helper/player/gunHelper.js';
+import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
 
 const scale = 2;
 export default class PlayerAimingState extends PlayerBaseState {
-
     enterState(currPlayer) {
         this.exploding = 0;
         this.shooting = 0;
@@ -22,9 +21,8 @@ export default class PlayerAimingState extends PlayerBaseState {
         const { clicks } = Game.getInstance();
         this.angle = currPlayer.lookAngle;
 
-        if(this.shooting > 0) {
-
-            this.shooting--;
+        if (this.shooting > 0) {
+            this.shooting -= 1;
         }
 
         this.handleRecoil(currPlayer);
@@ -47,9 +45,8 @@ export default class PlayerAimingState extends PlayerBaseState {
             this.shooting = 20;
         }
 
-
-        if(this.shooting > 10) {
-           shootHandler({
+        if (this.shooting > 10) {
+            shootHandler({
                 currPlayer,
                 clicks,
                 angle: this.angle,
@@ -57,26 +54,25 @@ export default class PlayerAimingState extends PlayerBaseState {
                 first: this.shooting === 20,
             });
 
-           drawExplosion({
+            drawExplosion({
                 distance: this.length,
                 currPlayer: currPlayer,
                 angle: this.angle,
                 number: this.shooting >= 16 ? 1 : 2,
-           })
+            });
 
             this.canAim = false;
             this.exploding = 5;
         }
 
-        if(this.shooting === 20) {
+        if (this.shooting === 20) {
             this.enemy?.damage({
                 amount: 2,
                 angle: this.angle,
             });
         }
 
-
-        if(this.canAim) {
+        if (this.canAim) {
             const { audio } = Game.getInstance();
             audio.playAudio('player/gun_aim.wav');
             this.canAim = false;
@@ -84,7 +80,7 @@ export default class PlayerAimingState extends PlayerBaseState {
     }
 
     handleRecoil(currPlayer) {
-        if(this.shooting !== 11) {
+        if (this.shooting !== 11) {
             return;
         }
         currPlayer.direction.x = getHorizontalValue({
@@ -96,15 +92,15 @@ export default class PlayerAimingState extends PlayerBaseState {
             angle: this.angle + Math.PI,
         });
 
-        const { camera } = Game.getInstance()
+        const { camera } = Game.getInstance();
 
         camera.setShakeCamera({
             duration: currPlayer.playerDefault.GUN.RECOIL * 20,
             angle: this.angle + Math.PI,
-        })
+        });
     }
     drawImage(currPlayer) {
-        if(this.shooting === 0) {
+        if (this.shooting === 0) {
             const { length, enemy } = drawShootLine(currPlayer);
             this.length = length;
             this.enemy = enemy;
@@ -236,6 +232,4 @@ export default class PlayerAimingState extends PlayerBaseState {
         //     angle: angle,
         // });
     }
-
-
 }

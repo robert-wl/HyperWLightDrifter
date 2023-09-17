@@ -13,9 +13,8 @@ import PlayerThrowingState from './state/PlayerThrowingState.js';
 import GameSettings from '../../constants.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import { checkCollision } from '../../helper/collision/playerCollision.js';
-import PlayerSpawnState from "./state/PlayerSpawnState.js";
-import PlayerDeathState from "./state/PlayerDeathState.js";
-
+import PlayerSpawnState from './state/PlayerSpawnState.js';
+import PlayerDeathState from './state/PlayerDeathState.js';
 
 export default class Player {
     constructor() {
@@ -75,8 +74,7 @@ export default class Player {
         this.immunity = playerDefault.MAX_IMMUNITY;
         this.projectiles = [];
         this.playerDefault = playerDefault;
-        this.outfit = "default";
-        this.interactionStage = 0;
+        this.outfit = 'default';
     }
 
     init() {
@@ -85,8 +83,7 @@ export default class Player {
     }
 
     updateState() {
-
-        if(this.health <= 0 && this.currState !== this.deathState){
+        if (this.health <= 0 && this.currState !== this.deathState) {
             this.switchState(this.deathState);
         }
 
@@ -104,7 +101,7 @@ export default class Player {
 
         this.currState.updateState(this);
 
-        if(this.currState !== this.deathState) {
+        if (this.currState !== this.deathState) {
             playerEffectsHandler({
                 currPlayer: this,
             });
@@ -156,7 +153,7 @@ export default class Player {
     }
 
     damage({ angle }) {
-        if(this.currState === this.deathState){
+        if (this.currState === this.deathState) {
             return;
         }
         this.immunity = 0;
@@ -174,6 +171,12 @@ export default class Player {
             magnitude: 5,
             angle: angle + Math.PI,
         });
+    }
+
+    regenerateStamina() {
+        if (this.stamina < 100) {
+            this.stamina += 0.5;
+        }
     }
 
     handleSwitchState({ move, attackOne, attackTwo, dash, aim, throws }) {
@@ -289,5 +292,4 @@ export default class Player {
             };
         }
     }
-
 }

@@ -7,8 +7,6 @@ import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHe
 import { getNumberedImage } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 
-const scale = 2;
-
 export default class PlayerAttackState extends PlayerBaseState {
     reversed = false;
     number = 1;
@@ -81,49 +79,30 @@ export default class PlayerAttackState extends PlayerBaseState {
             this.drawDebug(currPlayer);
         }
 
+        let attackImage = null;
         if (this.direction === 'w') {
-            const attackUp = getNumberedImage('attack_up', this.attackNumber);
-
-            drawImage({
-                img: attackUp,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: attackUp.width * GameSettings.GAME.GAME_SCALE,
-                height: attackUp.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-                mirrored: currPlayer.reversed,
-            });
-
-            return;
+            attackImage = getNumberedImage('attack_up', this.attackNumber);
         }
         if (this.direction === 'a' || this.direction === 'd') {
-            const attackSide = getNumberedImage('attack_side', this.attackNumber);
-
-            drawImage({
-                img: attackSide,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: attackSide.width * GameSettings.GAME.GAME_SCALE,
-                height: attackSide.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-                mirrored: this.direction === 'a',
-            });
-
-            return;
+            attackImage = getNumberedImage('attack_side', this.attackNumber);
         }
         if (this.direction === 's') {
-            const attackDown = getNumberedImage('attack_down', this.attackNumber);
-
-            drawImage({
-                img: attackDown,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: attackDown.width * GameSettings.GAME.GAME_SCALE,
-                height: attackDown.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-                mirrored: currPlayer.reversed,
-            });
+            attackImage = getNumberedImage('attack_down', this.attackNumber);
         }
+
+        if(attackImage === null) {
+            return;
+        }
+        const mirrored = this.direction === 'a' || this.direction === 'd' ? currPlayer.reversed : false;
+        drawImage({
+            img: attackImage,
+            x: currPlayer.centerPosition.x,
+            y: currPlayer.centerPosition.y,
+            width: attackImage.width * GameSettings.GAME.GAME_SCALE,
+            height: attackImage.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+            mirrored: mirrored,
+        });
     }
 
     drawDebug(currPlayer) {

@@ -1,9 +1,8 @@
 import Game from '../Game/Game.js';
-import { get_image } from '../../helper/fileReader.js';
 import { drawRotated } from '../../helper/renderer/drawer.js';
 import enemyCollision from '../../helper/collision/enemyCollision.js';
-import {getHorizontalValue, getVerticalValue} from "../../helper/distanceHelper.js";
-import {getImage} from "../../helper/imageLoader.js";
+import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
+import { getImage } from '../../helper/imageLoader.js';
 
 export default class GunProjectile {
     static generate({ position, angle }) {
@@ -39,11 +38,11 @@ export default class GunProjectile {
 
         this.position.x += getHorizontalValue({
             magnitude: this.speed,
-            angle: this.angle
+            angle: this.angle,
         });
         this.position.y += getVerticalValue({
             magnitude: this.speed,
-            angle: this.angle
+            angle: this.angle,
         });
 
         let enemy = null;
@@ -74,7 +73,7 @@ export default class GunProjectile {
         drawRotated({
             img: projectile,
             position: this.position,
-            angle: this.angle + 3 * Math.PI
+            angle: this.angle + 3 * Math.PI,
         });
     }
 }

@@ -8,7 +8,6 @@ export default class PlayerSpawnState extends PlayerBaseState {
     enterState(currPlayer) {
         this.animationStage = 0;
         this.number = 0;
-
     }
 
     updateState(currPlayer) {

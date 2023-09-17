@@ -44,7 +44,6 @@ export default class Medkit extends Collideable {
             y: this.y,
             width: medKit.width * GameSettings.GAME.GAME_SCALE,
             height: medKit.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
         });
     }
 
@@ -53,7 +52,8 @@ export default class Medkit extends Collideable {
     }
 
     destroy() {
-        const { collideables } = Game.getInstance();
+        const { collideables, audio } = Game.getInstance();
+        audio.playAudio('player/medkit/use.wav');
         collideables.splice(collideables.indexOf(this), 1);
     }
 

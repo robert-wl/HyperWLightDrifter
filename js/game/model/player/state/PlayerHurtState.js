@@ -4,7 +4,7 @@ import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
-import Game from "../../Game/Game.js";
+import Game from '../../Game/Game.js';
 
 const scale = 2;
 export default class PlayerHurtState extends PlayerBaseState {
@@ -45,7 +45,6 @@ export default class PlayerHurtState extends PlayerBaseState {
             translate: true,
             mirrored: this.mirrored,
         });
-
     }
 
     mirroredHandler(currPlayer) {

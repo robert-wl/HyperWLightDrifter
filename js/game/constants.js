@@ -340,6 +340,10 @@ const GameSettings = {
                 ref: 'world/door/door.png',
                 name: 'door',
                 amount: 13
+            },
+            {
+                ref: 'UI/HUD.png',
+                name: 'HUD',
             }
         ],
         STAGE_TWO: [
