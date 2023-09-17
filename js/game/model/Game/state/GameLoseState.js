@@ -13,7 +13,7 @@ export default class GameLoseState extends GameBaseState {
 
     updateState(game) {
         this.number += 1;
-        const { ctx, camera, player, boss, bossEntities } = game;
+        const { ctx, camera, player, enemyManager } = game;
 
 
         if(this.number > 250) {
@@ -25,7 +25,6 @@ export default class GameLoseState extends GameBaseState {
             return;
         }
 
-        console.log(this.number, this.transparency)
         game.setFilter('hue-rotate(90deg)');
         game.setTransparency(this.transparency)
         game.setTransparency(this.transparency, game.HUD);
@@ -35,7 +34,7 @@ export default class GameLoseState extends GameBaseState {
         camera.renderLowerBackground();
 
 
-        EnemyManager.getInstance().update();
+        enemyManager.update();
 
         player.updateState();
 

@@ -8,9 +8,9 @@ import { getFaceDirection } from '../../../../helper/collision/directionHandler.
 
 export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
     enterState() {
-        EnemyManager.getInstance().enemyAliveCount -= 1;
+        const { audio, enemyManager } = Game.getInstance();
 
-        const { audio } = Game.getInstance();
+        enemyManager.enemyAliveCount -= 1;
         audio.playAudio('enemy/crystal_spider/death.wav');
     }
 

@@ -6,8 +6,6 @@ import CrystalBruteAttackState from "./state/CrystalBruteAttackState.js";
 import CrystalBruteDieState from "./state/CrystalBruteDieState.js";
 import CrystalBruteMoveState from "./state/CrystalBruteMoveState.js";
 import HealthBar from "../healthBar/HealthBar.js";
-import EnemyManager from "../EnemyManager.js";
-
 export default class CrystalBrute extends Enemy {
     static generate({ x, y }) {
         const newCrystalBrute = new CrystalBrute({
@@ -17,7 +15,8 @@ export default class CrystalBrute extends Enemy {
             height: 140,
         });
 
-        EnemyManager.getInstance().enemyList.push(newCrystalBrute);
+        const { enemyManager } = Game.getInstance();
+        enemyManager.enemyList.push(newCrystalBrute);
     }
     constructor({ x, y, width, height }) {
         super({

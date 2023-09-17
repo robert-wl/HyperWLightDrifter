@@ -5,10 +5,13 @@ import {imageLoader} from "../../../helper/imageLoader.js";
 import GameSettings from "../../../constants.js";
 import menuHandler from "../../../ui/menuHandler.js";
 import AudioPlayer from "../../../../audio/AudioPlayer.js";
+import Game from "../Game.js";
 
 
 export default class GameStartState extends GameBaseState {
     async enterState(game) {
+        game.instance = null;
+        Game.getInstance();
         await game.init();
         await imageLoader(GameSettings.IMAGES.SPAWN);
         this.number = 0;

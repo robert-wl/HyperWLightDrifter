@@ -18,7 +18,7 @@ export default class GameStageTwoState extends GameBaseState {
     }
 
     updateState(game) {
-        const { ctx, camera, player, boss, bossEntities } = game;
+        const { ctx, camera, player, boss, bossEntities, enemyManager } = game;
         ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
         camera.shakeCamera();
 
@@ -30,7 +30,7 @@ export default class GameStageTwoState extends GameBaseState {
 
         firefliesSpawner();
 
-        EnemyManager.getInstance().update();
+        enemyManager.update();
 
         game.collideables.forEach((collideable) => collideable.update());
 

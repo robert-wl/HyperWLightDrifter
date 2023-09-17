@@ -4,8 +4,8 @@ import CrystalBrute from "../../model/enemy/crystalBrute/CrystalBrute.js";
 import CrystalSpider from "../../model/enemy/crystalSpider/CrystalSpider.js";
 
 export default function getEntityOnAttack({ player }) {
-    const { bossEntities } = Game.getInstance();
-    const { enemyList } = EnemyManager.getInstance();
+    const { bossEntities, enemyManager } = Game.getInstance();
+    const { enemyList } = enemyManager;
 
     for (const enemy of enemyList) {
         if (enemy.health <= 0) {

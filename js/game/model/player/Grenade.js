@@ -85,8 +85,8 @@ export default class Grenade {
     }
 
     handleDamage() {
-        const { audio } = Game.getInstance();
-        const { enemyList } = EnemyManager.getInstance();
+        const { audio, enemyManager } = Game.getInstance();
+        const { enemyList } = enemyManager;
 
         enemyList.forEach((enemy) => {
             if (enemy.currState !== enemy.dieState) {

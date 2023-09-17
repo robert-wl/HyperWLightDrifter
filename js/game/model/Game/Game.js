@@ -2,9 +2,7 @@ import Player from '../player/Player.js';
 import playerInput from '../../helper/player/playerInput.js';
 import { get_image } from '../../helper/fileReader.js';
 import Camera from '../camera/Camera.js';
-import firefliesSpawner from '../../helper/renderer/firefliesSpawner.js';
 import hudHandler from '../../ui/hudHandler.js';
-import {firstStage, secondStage} from '../../helper/stages/stageHandler.js';
 import GameSettings from '../../constants.js';
 import EnemyManager from "../enemy/EnemyManager.js";
 import GameStartState from "./state/GameStartState.js";
@@ -21,14 +19,14 @@ export default class Game {
         this.stage = 1;
         this.paused = false;
         this.loading = false;
-        this.player = new Player();
+        this.player = null;
         this.width = GameSettings.game.SCREEN_WIDTH;
         this.height = GameSettings.game.SCREEN_HEIGHT;
         this.keys = [];
         this.clicks = [];
         this.collideables = [];
         this.renderList = [];
-        this.boss = null;
+        this.enemyManager = null;
         this.bossEntities = [];
         this.canvas = null;
         this.ctx = null;
@@ -45,9 +43,13 @@ export default class Game {
     }
 
     async init() {
-        this.player.init()
         playerInput();
         this.camera = new Camera();
+        this.enemyManager = new EnemyManager()
+        this.player = new Player()
+
+        this.player.init()
+        this.prepareCanvas();
 
         // await secondStage({
         //     game: this,
@@ -82,11 +84,11 @@ export default class Game {
         const canvas = document.getElementById('game');
         this.canvas = canvas;
 
-        const ctx = canvas.getContext('2d');
-        this.ctx = ctx;
-        this.player.canvas = ctx;
+        this.ctx = canvas.getContext('2d');
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 
         this.HUD = document.getElementById('HUD').getContext('2d');
+        this.HUD.setTransform(1, 0, 0, 1, 0, 0);
         this.configCanvas();
         // Trader.generate({ x: 800, y: 1500, collideable: true }); TODO
     }

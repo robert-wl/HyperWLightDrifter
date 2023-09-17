@@ -1,8 +1,8 @@
-import EnemyManager from "../../model/enemy/EnemyManager.js";
+import Game from "../../model/Game/Game.js";
 
 
 export default function enemyCollision({ position }) {
-    const { enemyList } = EnemyManager.getInstance();
+    const { enemyList } = Game.getInstance().enemyManager;
 
     for (const enemy of enemyList) {
         if (enemy.currState === enemy.dieState) {

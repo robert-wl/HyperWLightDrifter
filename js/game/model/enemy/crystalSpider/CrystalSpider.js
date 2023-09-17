@@ -14,7 +14,9 @@ export default class CrystalSpider extends Enemy {
             x,
             y,
         });
-        EnemyManager.getInstance().enemyList.push(newCrystalSpider);
+
+        const { enemyManager } = Game.getInstance();
+        enemyManager.enemyList.push(newCrystalSpider);
     }
     constructor({ x, y }) {
         super({
