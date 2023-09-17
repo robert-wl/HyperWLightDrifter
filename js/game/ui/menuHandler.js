@@ -137,4 +137,5 @@ function removeMenuHandler() {
     $('#play-button').off('mousedown');
     $('#arrow-left').off('mousedown');
     $('#arrow-right').off('mousedown');
+    $('#opening-screen').off('animationend');
 }

@@ -14,13 +14,14 @@ import GameSettings from '../../constants.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import { checkCollision } from '../../helper/collision/playerCollision.js';
 import PlayerSpawnState from "./state/PlayerSpawnState.js";
+import PlayerDeathState from "./state/PlayerDeathState.js";
 
 
 export default class Player {
     constructor() {
         const { player: playerDefault } = GameSettings;
         this.maxhealth = playerDefault.MAX_HEALTH;
-        this.health = playerDefault.MAX_HEALTH;
+        this.health = 1 || playerDefault.MAX_HEALTH;
         this.healthPack = playerDefault.MAX_HEALTHPACKS;
         this.stamina = playerDefault.MAX_STAMINA;
         this.bombs = playerDefault.MAX_BOMBS;
@@ -68,6 +69,7 @@ export default class Player {
         this.aimState = new PlayerAimingState();
         this.hurtState = new PlayerHurtState();
         this.throwState = new PlayerThrowingState();
+        this.deathState = new PlayerDeathState();
         this.canvas = null;
         this.healing = 0;
         this.immunity = playerDefault.MAX_IMMUNITY;
@@ -83,6 +85,10 @@ export default class Player {
 
     updateState() {
 
+        if(this.health <= 0 && this.currState !== this.deathState){
+            this.switchState(this.deathState);
+        }
+
         this.updateBombs();
 
         renderShadow({
@@ -97,9 +103,11 @@ export default class Player {
 
         this.currState.updateState(this);
 
-        playerEffectsHandler({
-            currPlayer: this,
-        });
+        if(this.currState !== this.deathState) {
+            playerEffectsHandler({
+                currPlayer: this,
+            });
+        }
 
         this.currState.drawImage(this);
 
@@ -147,6 +155,9 @@ export default class Player {
     }
 
     damage({ angle }) {
+        if(this.currState === this.deathState){
+            return;
+        }
         this.immunity = 0;
         this.health -= 1;
 

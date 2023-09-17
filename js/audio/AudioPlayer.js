@@ -4,13 +4,14 @@ export default class AudioPlayer {
     constructor() {
         this.playerList = [];
         this.volume = 0.1;
+        this.allowSound = true;
     }
 
     static getInstance() {
-        if (AudioPlayer.instance == null) {
-            AudioPlayer.instance = new AudioPlayer();
+        if (this.instance == null) {
+            this.instance = new AudioPlayer();
         }
-        return AudioPlayer.instance;
+        return this.instance;
     }
 
     async playSound({ sound, loop }) {
@@ -40,7 +41,17 @@ export default class AudioPlayer {
         });
     }
 
-    async playAudio(audio, number = null, loop = false) {
+    disableSound() {
+        this.allowSound = false;
+        this.stopAll();
+    }
+
+    async playAudio(audio, number = null, loop = false, bypass = false) {
+        if(!this.allowSound && !bypass) {
+            return;
+        }
+
+        console.log("hello")
         let audioName = audio;
         if(number) {
             audioName = `${audio.split('.')[0]}_${number}.${audio.split('.')[1]}`;

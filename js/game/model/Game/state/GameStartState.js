@@ -9,13 +9,19 @@ import AudioPlayer from "../../../../audio/AudioPlayer.js";
 
 export default class GameStartState extends GameBaseState {
     async enterState(game) {
+        await game.init();
         await imageLoader(GameSettings.IMAGES.SPAWN);
         this.number = 0;
         this.spawnParticles = true;
         menuHandler();
 
         const { audio } = game;
+        audio.allowSound = true;
         audio.playAudio('menu/background.ogg', null, true);
+
+        $('#opening-screen')
+            .css('opacity', '100%')
+            .css('display', 'block');
     }
 
     updateState(game) {
@@ -40,7 +46,8 @@ export default class GameStartState extends GameBaseState {
     }
 
     exitState(game) {
-        AudioPlayer.getInstance().stopAll();
+        const { audio } = game;
+        audio.stopAll();
     }
 
 }

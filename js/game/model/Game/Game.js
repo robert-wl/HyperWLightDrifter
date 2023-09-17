@@ -13,6 +13,7 @@ import GameStageTwoState from "./state/GameStageTwoState.js";
 import GamePausedState from "./state/GamePausedState.js";
 import GameBaseState from "./state/GameBaseState.js";
 import AudioPlayer from "../../../audio/AudioPlayer.js";
+import GameLoseState from "./state/GameLoseState.js";
 
 export default class Game {
     static instance = null;
@@ -40,11 +41,11 @@ export default class Game {
         this.stageOneState = new GameStageOneState();
         this.stageTwoState = new GameStageTwoState();
         this.pausedState = new GamePausedState();
+        this.loseState = new GameLoseState();
     }
 
     async init() {
         this.player.init()
-        this.prepareCanvas();
         playerInput();
         this.camera = new Camera();
 
@@ -52,7 +53,7 @@ export default class Game {
         //     game: this,
         // });
 
-        await this.switchState(this.stageOneState);
+        //
     }
 
     static getInstance() {
@@ -64,6 +65,7 @@ export default class Game {
 
     async playGame(outfitNumber) {
 
+        console.log("hello")
         if(outfitNumber === 1) {
             this.player.outfit = 'dark';
         }
@@ -147,8 +149,11 @@ export default class Game {
         }
     }
 
-    setTransparency(transparency) {
-        this.ctx.globalAlpha = transparency;
+    setTransparency(transparency, canvas = this.ctx) {
+        if(transparency < 0) {
+            transparency = 0;
+        }
+        canvas.globalAlpha = transparency;
     }
 
     setFilter(filter) {

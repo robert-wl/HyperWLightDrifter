@@ -23,7 +23,7 @@ const colors = {
         [247, 199, 10],
         [21, 21, 21],
         [68, 23, 9],
-        [233, 236, 23]
+        [70, 85, 255]
     ]
 }
 export async function imageLoader(imageData) {

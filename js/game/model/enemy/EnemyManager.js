@@ -49,7 +49,7 @@ export default class EnemyManager {
             });
 
 
-            if (this.difficulty > 5 && getRandomBoolean(0.25) || true) {
+            if (this.difficulty > 5 && getRandomBoolean(0.25)) {
                 CrystalBrute.generate({
                     x: getHorizontalValue({
                         initial: GameSettings.GAME.SCREEN_WIDTH / 2,

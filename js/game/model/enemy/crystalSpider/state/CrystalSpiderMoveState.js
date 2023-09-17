@@ -13,10 +13,7 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         this.number = 0;
         this.animationStage = 0;
         this.clockwise = getRandomBoolean(0.5);
-        this.attackCooldown = getRandomValue({
-            initialValue: 0,
-            randomValue: 100,
-        });
+        this.attackCooldown = 100;
     }
     updateState(currSpider) {
         this.number += 1;

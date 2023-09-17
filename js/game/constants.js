@@ -266,6 +266,11 @@ const GameSettings = {
                 amount: 4,
             },
             {
+                ref: 'player/death/death.png',
+                name: 'player_death',
+                amount: 6,
+            },
+            {
                 ref: 'world/elevator.png',
                 name: 'elevator',
             },

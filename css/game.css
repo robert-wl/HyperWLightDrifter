@@ -249,7 +249,7 @@
     /*object-fit: cover;*/
     width: 100vw;
     height: fit-content;
-    opacity: 90%;
+    opacity: 0;
 }
 
 #HUD {

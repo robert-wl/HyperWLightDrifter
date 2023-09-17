@@ -30,7 +30,7 @@ export default class CrystalAttack {
             angle: this.angle,
         });
 
-        if (this.number % 7 === 0) {
+        if (this.number % 10 === 0) {
             const spike = CrystalSpike.generate({
                     position: {
                         x: this.position.x,
@@ -47,7 +47,7 @@ export default class CrystalAttack {
         }
 
 
-        if (this.number >= 400) {
+        if (this.number >= 200) {
             return true;
         }
 

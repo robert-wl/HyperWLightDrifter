@@ -1,0 +1,56 @@
+import GameBaseState from "./GameBaseState.js";
+import EnemyManager from "../../enemy/EnemyManager.js";
+import ParticlesManager from "../../particles/ParticlesManager.js";
+import AudioPlayer from "../../../../audio/AudioPlayer.js";
+
+
+export default class GameLoseState extends GameBaseState {
+    enterState(game) {
+        this.number = 0;
+        this.transparency = 1;
+        AudioPlayer.getInstance().disableSound();
+    }
+
+    updateState(game) {
+        this.number += 1;
+        const { ctx, camera, player, boss, bossEntities } = game;
+
+
+        if(this.number > 250) {
+            this.transparency -= 0.01;
+        }
+
+        if(this.transparency < -1) {
+            game.switchState(game.startState);
+            return;
+        }
+
+        console.log(this.number, this.transparency)
+        game.setFilter('hue-rotate(90deg)');
+        game.setTransparency(this.transparency)
+        game.setTransparency(this.transparency, game.HUD);
+        ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+
+
+        camera.renderLowerBackground();
+
+
+        EnemyManager.getInstance().update();
+
+        player.updateState();
+
+        camera.renderTopBackground();
+        ParticlesManager.getInstance().update();
+
+        // game.elevator?.update();
+
+        game.drawHUD();
+
+        camera.updateCamera();
+    }
+
+    exitState(game) {
+        $('#opening-screen').css('animation', 'fadeIn 0.25s ease-in-out')
+
+    }
+}

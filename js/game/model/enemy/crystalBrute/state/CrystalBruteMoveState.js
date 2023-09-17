@@ -26,6 +26,11 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
             this.animationStage = (this.animationStage + 1) % 6;
         }
 
+        if(this.number % 20 === 0 && (this.animationStage === 0 || this.animationStage === 3)) {
+            const { audio } = Game.getInstance();
+            audio.playAudio('enemy/crystal_brute/walk.wav');
+        }
+
         if (currBrute.health <= 0) {
             currBrute.switchState(currBrute.dieState);
             return;

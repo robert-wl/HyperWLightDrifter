@@ -16,12 +16,15 @@ export default class GameStageOneState extends GameBaseState {
             position: game.player.centerPosition,
         });
 
-        // audio.playAudio('forest_stage/background.ogg', null, true);
+        audio.playAudio('forest_stage/background.ogg', null, true);
+
     }
 
     updateState(game) {
         const { ctx, camera, player, boss, bossEntities } = game;
+
         ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+
         camera.shakeCamera();
 
         game.setTransparency(game.backgroundOpacity);
@@ -41,8 +44,6 @@ export default class GameStageOneState extends GameBaseState {
 
         camera.renderTopBackground();
         ParticlesManager.getInstance().update();
-        boss?.update();
-        bossEntities?.forEach((entity) => entity.update());
 
         // game.elevator?.update();
 
