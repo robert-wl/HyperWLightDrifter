@@ -1,8 +1,7 @@
-import Game from "../Game/Game.js";
-
+import Game from '../Game/Game.js';
 
 export default class Collideable {
-    static generate({x, y, w, h, collideable }) {
+    static generate({ x, y, w, h, collideable }) {
         const newCollideable = new Collideable({
             x,
             y,
@@ -23,25 +22,19 @@ export default class Collideable {
 
     renderDebug() {
         const ctx = Game.getInstance().ctx;
-        ctx.fillStyle = "rgb(0, 255, 0, 0.2)";
+        ctx.fillStyle = 'rgb(0, 255, 0, 0.2)';
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
-    checkCollision({ x, y, w, h }){
-        if(!this.collideable) {
+    checkCollision({ x, y, w, h }) {
+        if (!this.collideable) {
             return false;
         }
-        return !(
-            this.x + this.width >= x &&
-            this.x <= x + w &&
-            this.y + this.height >= y &&
-            this.y <= y + h
-        );
+        return !(this.x + this.width >= x && this.x <= x + w && this.y + this.height >= y && this.y <= y + h);
     }
 
     update() {
-        if(Game.getInstance().debug) {
+        if (Game.getInstance().debug) {
             this.renderDebug();
         }
     }
-
 }

@@ -11,7 +11,7 @@ export default function playerEffectsHandler({ currPlayer, clear }){
 }
 
 function damagedHandler(currPlayer){
-    if (currPlayer.immunity < 30) {
+    if (currPlayer.immunity < 50) {
         currPlayer.immunity++;
     }
     if (currPlayer.immunity <= 5) {
@@ -30,7 +30,7 @@ function healingHandler(currPlayer){
         ctx.strokeStyle = 'rgb(0, 255, 0)';
         ctx.lineWidth = (currPlayer.healing / 3) * 3;
         ctx.save();
-        ctx.translate(currPlayer.position.x + 15, currPlayer.position.y + 30);
+        ctx.translate(currPlayer.centerPosition.x - 15, currPlayer.centerPosition.y - 30);
         ctx.rotate(Math.PI / 4);
         // ctx.translate((this.width - this.hitbox.x) / 2, (this.width - this.hitbox.x) / 2);
         ctx.strokeRect(

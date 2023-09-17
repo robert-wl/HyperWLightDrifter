@@ -3,7 +3,7 @@ import Game from "../../model/Game/Game.js";
 export default function playerCollision({ position, box, angle }) {
     const player = Game.getInstance().player;
 
-    if(player.immunity < 30 || player.currState === player.dashState) {
+    if(player.immunity < 50 || player.currState === player.dashState) {
         return false;
     }
     if(position) {

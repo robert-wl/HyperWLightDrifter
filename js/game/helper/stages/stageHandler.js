@@ -1,11 +1,10 @@
-import { get_image } from '../fileReader.js';
 import Collideable from '../../model/collideable/Collideable.js';
 import Medkit from '../../model/interactables/Medkit.js';
 import Game from '../../model/Game/Game.js';
 import Judgement from '../../model/enemy/judgement/Judgement.js';
 import {getImage, imageLoader} from "../imageLoader.js";
 import GameSettings from "../../constants.js";
-import CrystalBrute from "../../model/enemy/crystalBrute/CrystalBrute.js";
+import Door from "../../model/interactables/Door.JS";
 
 export async function firstStage() {
     await imageLoader(GameSettings.IMAGES.STAGE_ONE);
@@ -21,6 +20,14 @@ export async function firstStage() {
     Game.getInstance().player.centerPosition.x = 900;
     Game.getInstance().player.centerPosition.y = 500;
 
+    Door.generate({
+        x: 904,
+        y: 1040,
+        collideable: true,
+    })
+
+    // x: 958,
+    //     y: 1100,
     // CrystalBrute.generate({
     //     x: 900,
     //     y: 500,

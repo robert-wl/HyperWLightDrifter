@@ -49,7 +49,7 @@ export default class GameLoseState extends GameBaseState {
     }
 
     exitState(game) {
-        $('#opening-screen').css('animation', 'fadeIn 0.25s ease-in-out')
+        $('#opening-screen').css('animation', 'fadeIn 0.5s ease-in-out')
 
     }
 }

@@ -8,9 +8,9 @@ export default class EnemyManager {
     static instance = null;
     constructor() {
         this.enemyList = [];
-        this.enemySpawn = true;
+        this.enemySpawn = false;
         this.enemyAliveCount = 0;
-        this.difficulty = 1;
+        this.difficulty = 8;
     }
 
     static getInstance() {
@@ -48,7 +48,6 @@ export default class EnemyManager {
                 randomValue: Math.PI * 2,
             });
 
-
             if (this.difficulty > 5 && getRandomBoolean(0.25)) {
                 CrystalBrute.generate({
                     x: getHorizontalValue({
@@ -83,7 +82,7 @@ export default class EnemyManager {
             this.enemyAliveCount += 1;
         }
 
-        this.difficulty += 3;
+        this.difficulty += 1;
     }
 
     kill(enemy) {

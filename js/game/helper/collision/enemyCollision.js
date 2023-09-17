@@ -11,9 +11,9 @@ export default function enemyCollision({ position }) {
 
         if (
             enemy.position.x + enemy.hitbox.x < position.x &&
-            enemy.position.x + enemy.width - enemy.hitbox.w > position.x &&
+            enemy.position.x + enemy.width / 2 - enemy.hitbox.w > position.x &&
             enemy.position.y + enemy.hitbox.y < position.y &&
-            enemy.position.y + enemy.height - enemy.hitbox.h > position.y
+            enemy.position.y + enemy.height / 2 - enemy.hitbox.h > position.y
         ) {
             return enemy;
         }

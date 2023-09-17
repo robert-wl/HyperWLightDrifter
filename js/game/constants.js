@@ -25,7 +25,7 @@ const GameSettings = {
         MAX_HEALTHPACKS: 3,
         MAX_STAMINA: 100,
         MAX_BOMBS: 3000,
-        MAX_BULLETS: 3000,
+        MAX_BULLETS: 3,
         FRICTION: 0.8,
         MAX_SPEED: 4,
         ATTACK_MOVE_SPEED: 2,
@@ -92,7 +92,7 @@ const GameSettings = {
                 },
             },
         },
-        EXPLOSION_DISTANCE: 25,
+        EFFECT_DISTANCE: 40,
         SHADOW_OFFSET: {
             X: -24.5,
             Y: -5,
@@ -107,7 +107,7 @@ const GameSettings = {
             },
         ],
         STAGE_ONE: [
-            {
+            { //PLAYER ======================================
                 ref: 'player/aim/gun/railgun.png',
                 name: 'railgun',
             },
@@ -240,21 +240,30 @@ const GameSettings = {
             {
                 ref: 'player/aim/aim_side.png',
                 name: 'aim_side',
-                // outfit: true,
+                outfit: true,
             },
             {
-                ref: 'player/aim/gun/gun_explosion.png',
-                name: 'gun_explosion',
+                ref: 'player/aim/gun/gun_effect.png',
+                name: 'gun_effect',
             },
             {
-                ref: 'particles/firefly/fireflies.png',
-                name: 'fireflies',
-                amount: 4,
+                ref: 'player/aim/gun/ray.png',
+                name: 'gun_ray',
+            },
+            {
+                ref: 'player/aim/gun/impact.png',
+                name: 'gun_impact',
+                amount: 2
             },
             {
                 ref: 'player/grenade/grenade.png',
                 name: 'grenade',
                 amount: 11,
+            }, //PLAYER ======================================
+            {
+                ref: 'particles/firefly/fireflies.png',
+                name: 'fireflies',
+                amount: 4,
             },
             {
                 ref: 'player/aim/gun/projectile.png',
@@ -317,6 +326,20 @@ const GameSettings = {
             {
                 ref: 'world/first_map_full.png',
                 name: 'map_top',
+            },
+            {
+                ref: 'world/first_map_full.png',
+                name: 'map_top',
+            },
+            {
+                ref: 'other/medkit/medkit.png',
+                name: 'medkit',
+                amount: 2
+            },
+            {
+                ref: 'world/door/door.png',
+                name: 'door',
+                amount: 13
             }
         ],
         STAGE_TWO: [

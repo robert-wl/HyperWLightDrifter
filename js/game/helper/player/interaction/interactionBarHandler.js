@@ -1,22 +1,25 @@
-import Game from "../../model/Game/Game.js";
-import {get_image} from "../fileReader.js";
-import {getNumberedImage} from "../imageLoader.js";
-import {drawImage} from "../renderer/drawer.js";
-import GameSettings from "../../constants.js";
+import Game from "../../../model/Game/Game.js";
+import {getNumberedImage} from "../../imageLoader.js";
+import {drawImage} from "../../renderer/drawer.js";
+import GameSettings from "../../../constants.js";
+import Medkit from "../../../model/interactables/Medkit.js";
 
 let animationStage = 1;
 let number = 0;
-export default function interactionBarHandler({ medkit, opacity }){
+export default function interactionBarHandler({ object, opacity }){
     const { player, ctx, keys } = Game.getInstance();
 
 
     if(keys.includes("e") && opacity >= 0.5){
         number += 1;
 
-        medkit.interactionStage++;
+        object.interactionStage++;
 
-        if(medkit.interactionStage === 20){
-            player.healing = 6;
+        if(object.interactionStage === 20){
+
+            if(object instanceof Medkit) {
+                player.healing = 6;
+            }
             return true;
         }
 
@@ -28,15 +31,15 @@ export default function interactionBarHandler({ medkit, opacity }){
 
         drawImage({
             img: interactionBar,
-            x: player.position.x + 50,
-            y: player.position.y - 10,
+            x: player.centerPosition.x + 50,
+            y: player.centerPosition.y - 10,
             width: interactionBar.width * GameSettings.GAME.GAME_SCALE,
             height: interactionBar.height * GameSettings.GAME.GAME_SCALE,
         });
     }
     else {
-        if(medkit.interactionStage > 0) {
-            medkit.interactionStage -= 1;
+        if(object.interactionStage > 0) {
+            object.interactionStage -= 1;
         }
 
         Game.getInstance().setTransparency(opacity);
@@ -45,8 +48,8 @@ export default function interactionBarHandler({ medkit, opacity }){
 
         drawImage({
             img: interactionBar,
-            x: player.position.x + 50,
-            y: player.position.y - 10,
+            x: player.centerPosition.x + 50,
+            y: player.centerPosition.y - 10,
             width: interactionBar.width * GameSettings.GAME.GAME_SCALE,
             height: interactionBar.height * GameSettings.GAME.GAME_SCALE,
         });
@@ -55,9 +58,9 @@ export default function interactionBarHandler({ medkit, opacity }){
     ctx.fillStyle = "rgb(255, 255, 255, 0.9)";
 
     ctx.fillRect(
-        player.position.x + 54,
-        player.position.y - 2,
-        medkit.interactionStage,
+        player.centerPosition.x + 54,
+        player.centerPosition.y - 2,
+        object.interactionStage,
         16,
     );
 

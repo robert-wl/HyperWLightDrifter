@@ -1,7 +1,9 @@
 import Collideable from '../collideable/Collideable.js';
 import Game from '../Game/Game.js';
-import { get_image } from '../../helper/fileReader.js';
-import interactionBarHandler from '../../helper/player/interactionBarHandler.js';
+import { getNumberedImage } from '../../helper/imageLoader.js';
+import { drawImage } from '../../helper/renderer/drawer.js';
+import GameSettings from '../../constants.js';
+import detectPlayerInteraction from "../../helper/player/interaction/detectPlayerInteraction.js";
 
 export default class Medkit extends Collideable {
     static generate({ x, y }) {
@@ -23,42 +25,36 @@ export default class Medkit extends Collideable {
     }
 
     update() {
-        super.update();
-        this.number++;
+        this.number += 1;
 
         if (this.number === 100) {
             this.number = 0;
             this.animationStage = (this.animationStage % 2) + 1;
         }
+
         this.render();
-        this.detectPlayerInteraction();
     }
 
     render() {
-        const ctx = Game.getInstance().ctx;
-        get_image('other/medkit', 'medkit', this.animationStage, (image) => {
-            ctx.drawImage(image, this.x, this.y, 25, 25);
+        const medKit = getNumberedImage('medkit', this.animationStage);
+
+        drawImage({
+            img: medKit,
+            x: this.x,
+            y: this.y,
+            width: medKit.width * GameSettings.GAME.GAME_SCALE,
+            height: medKit.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
         });
     }
 
-    detectPlayerInteraction() {
-        const player = Game.getInstance().player;
-        const distance = Math.sqrt(
-            Math.pow(player.position.x + player.width / 2 - (this.x + this.width / 2), 2) +
-            Math.pow(player.position.y + player.height / 2 - (this.y + this.height / 2), 2)
-        );
-
-        if (distance < 100) {
-            if (
-                interactionBarHandler({
-                    medkit: this,
-                    opacity: Math.abs(distance - 100) / 100,
-                })
-            ) {
-                Game.getInstance().collideables.splice(Game.getInstance().collideables.indexOf(this), 1);
-            }
-        } else {
-            Game.getInstance().player.interactionStage = 0;
-        }
+    detectInteraction(){
+        detectPlayerInteraction(this);
     }
+
+    destroy() {
+        const { collideables } = Game.getInstance();
+        collideables.splice(collideables.indexOf(this), 1);
+    }
+
 }

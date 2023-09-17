@@ -21,7 +21,7 @@ export default class Player {
     constructor() {
         const { player: playerDefault } = GameSettings;
         this.maxhealth = playerDefault.MAX_HEALTH;
-        this.health = 1 || playerDefault.MAX_HEALTH;
+        this.health = playerDefault.MAX_HEALTH;
         this.healthPack = playerDefault.MAX_HEALTHPACKS;
         this.stamina = playerDefault.MAX_STAMINA;
         this.bombs = playerDefault.MAX_BOMBS;
@@ -76,6 +76,7 @@ export default class Player {
         this.projectiles = [];
         this.playerDefault = playerDefault;
         this.outfit = "default";
+        this.interactionStage = 0;
     }
 
     init() {

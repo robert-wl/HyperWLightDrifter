@@ -1,6 +1,5 @@
 import GameBaseState from "./GameBaseState.js";
 import firefliesSpawner from "../../../helper/renderer/firefliesSpawner.js";
-import EnemyManager from "../../enemy/EnemyManager.js";
 import ParticlesManager from "../../particles/ParticlesManager.js";
 import {firstStage} from "../../../helper/stages/stageHandler.js";
 
@@ -27,9 +26,11 @@ export default class GameStageOneState extends GameBaseState {
 
         camera.shakeCamera();
 
+
         game.setTransparency(game.backgroundOpacity);
         camera.renderLowerBackground();
         game.setTransparency(1);
+
 
         game.enemySpawnHandler();
 
@@ -43,13 +44,21 @@ export default class GameStageOneState extends GameBaseState {
         player.updateState();
 
         camera.renderTopBackground();
+
+        camera.updateCamera();
+        camera.resetShakeCamera();
+
         ParticlesManager.getInstance().update();
+
+        game.collideables.forEach((collideable) => {
+            if(collideable.detectInteraction) {
+                collideable.detectInteraction()
+            }
+        });
 
         // game.elevator?.update();
 
         game.drawHUD();
 
-        camera.resetShakeCamera();
-        camera.updateCamera();
     }
 }

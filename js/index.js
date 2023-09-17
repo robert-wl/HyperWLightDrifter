@@ -12,5 +12,6 @@ $(document).ready(async () => {
     };
 
     animationLoop();
+    // game.init();
     game.switchState(game.startState);
 });

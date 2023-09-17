@@ -30,7 +30,7 @@ export default class Game {
         this.bossEntities = [];
         this.canvas = null;
         this.ctx = null;
-        this.debug = false;
+        this.debug = true;
         this.backgroundOpacity = 1;
         this.elevator = null;
         this.audio = AudioPlayer.getInstance();

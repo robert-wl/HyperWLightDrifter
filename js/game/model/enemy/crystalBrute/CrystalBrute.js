@@ -27,7 +27,7 @@ export default class CrystalBrute extends Enemy {
             hitbox: {
                 x: -width / 2 + 30,
                 y: -height / 2 + 30,
-                w: 60,
+                w: 50,
                 h: 30,
             },
             health: 10,

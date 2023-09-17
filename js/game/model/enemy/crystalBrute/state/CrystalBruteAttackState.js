@@ -79,7 +79,8 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
     }
 
     handleAttack(currBrute) {
-        const { centerPosition } = Game.getInstance().player;
+        const { player, camera } = Game.getInstance();
+        const { centerPosition } = player;
 
         const angle = getAngle({
             x: centerPosition.x - currBrute.position.x,
@@ -91,8 +92,9 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
             rounded: true,
         });
 
-        Game.getInstance().camera.setShakeCamera({
-            durationY: 100
+        camera.setShakeCamera({
+            duration: 200,
+            strength: 10
         });
 
 

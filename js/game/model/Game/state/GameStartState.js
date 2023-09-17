@@ -45,6 +45,7 @@ export default class GameStartState extends GameBaseState {
             });
         }
 
+        // game.switchState(game.stageOneState);
         ParticlesManager.getInstance().update();
     }
 

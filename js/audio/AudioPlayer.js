@@ -51,7 +51,6 @@ export default class AudioPlayer {
             return;
         }
 
-        console.log("hello")
         let audioName = audio;
         if(number) {
             audioName = `${audio.split('.')[0]}_${number}.${audio.split('.')[1]}`;

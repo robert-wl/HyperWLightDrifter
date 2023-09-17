@@ -35,6 +35,7 @@ export default class Camera {
             x: 0,
             y: 0,
         };
+        this.hasTranslated = false;
     }
 
     init({ lowerBackground, topBackground }) {
@@ -64,59 +65,60 @@ export default class Camera {
         this.position.y += translateY;
     }
 
-    setShakeCamera({ durationX = 0, durationY = 0 }) {
-        this.shakeDuration = {
-            x: durationX,
-            y: durationY,
-        };
+    setShakeCamera({ duration, angle = Math.PI / 2, strength = 3 }) {
+        this.shakeStrength = strength;
+        this.shakeDuration = duration
+        this.shakeAngle = angle;
         this.shakeStartTime = Date.now();
     }
 
     shakeCamera() {
         if (this.shakeStartTime === -1) {
+            this.translateOffset = {
+                x: 0,
+                y: 0,
+            }
+
             return;
         }
+
 
         const tDiff = Date.now() - this.shakeStartTime;
-        if (tDiff > this.shakeDuration.x && tDiff > this.shakeDuration.y) {
+        if (tDiff > this.shakeDuration) {
             this.shakeStartTime = -1;
+
             return;
         }
 
-        const magnitude = getMagnitudeValue({
-            x: this.shakeDuration.x,
-            y: this.shakeDuration.y,
-        });
-        const angle = getAngle({
-            x: this.shakeDuration.x,
-            y: this.shakeDuration.y,
-        });
 
-        const easing = Math.pow(tDiff / magnitude - 1, 3) + 1;
-
-        const { ctx } = Game.getInstance();
-        ctx.save();
+        const easing = Math.pow((tDiff / this.shakeDuration) - 1, 3) + 1;
 
         this.translateOffset.x =
-            (Math.cos(tDiff * 0.1) + Math.cos(tDiff * 0.3115)) *
-            15 *
+            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) * this.shakeStrength *
             getHorizontalValue({
                 magnitude: easing,
-                angle: angle,
+                angle: this.shakeAngle,
             });
         this.translateOffset.y =
-            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) *
-            15 *
+            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) * this.shakeStrength *
             getVerticalValue({
                 magnitude: easing,
-                angle: angle,
+                angle: this.shakeAngle,
             });
+
+        const { ctx } = Game.getInstance();
         ctx.translate(this.translateOffset.x, this.translateOffset.y);
+        this.hasTranslated = true;
     }
 
     resetShakeCamera() {
+        if(this.shakeStartTime === -1 || !this.hasTranslated) {
+            return;
+        }
+
         const { ctx } = Game.getInstance();
-        ctx.restore();
+        ctx.translate(-this.translateOffset.x, -this.translateOffset.y);
+        this.hasTranslated = false;
     }
 
     clear(ctx) {
@@ -160,12 +162,12 @@ export default class Camera {
                 y: this.position.y / 2 - this.translateOffset.y,
             },
             imageSelectSize: {
-                x: this.width + this.translateOffset.x,
-                y: this.height + this.translateOffset.y,
+                x: this.width + Math.abs(this.translateOffset.x),
+                y: this.height + Math.abs(this.translateOffset.y),
             },
             imagePosition: {
-                x: this.position.x - Math.abs(this.translateOffset.x),
-                y: this.position.y - Math.abs(this.translateOffset.y),
+                x: this.position.x - (this.translateOffset.x),
+                y: this.position.y - (this.translateOffset.y),
             },
             imageCanvasSize: {
                 x: SCREEN_WIDTH / 2 + Math.abs(this.translateOffset.x),
