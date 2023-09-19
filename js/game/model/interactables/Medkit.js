@@ -3,7 +3,7 @@ import Game from '../Game/Game.js';
 import { getNumberedImage } from '../../helper/imageLoader.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
-import detectPlayerInteraction from "../../helper/player/interaction/detectPlayerInteraction.js";
+import InteractionBar from "./InteractionBar.js";
 
 export default class Medkit extends Collideable {
     static generate({ x, y }) {
@@ -48,10 +48,10 @@ export default class Medkit extends Collideable {
     }
 
     detectInteraction(){
-        detectPlayerInteraction(this);
+        InteractionBar.detectPlayerInteraction(this);
     }
 
-    destroy() {
+    activate() {
         const { collideables, audio } = Game.getInstance();
         audio.playAudio('player/medkit/use.wav');
         collideables.splice(collideables.indexOf(this), 1);

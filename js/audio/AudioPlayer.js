@@ -46,7 +46,7 @@ export default class AudioPlayer {
         this.stopAll();
     }
 
-    async playAudio(audio, number = null, loop = false, bypass = false) {
+    async playAudio(audio, number = null, loop = false, bypass = false, volume = this.volume) {
         if(!this.allowSound && !bypass) {
             return;
         }
@@ -57,7 +57,7 @@ export default class AudioPlayer {
         }
 
         const player = new Audio();
-        player.volume = this.volume;
+        player.volume = volume;
         player.src = `../assets/audio/${audioName}`;
         await player.play();
 

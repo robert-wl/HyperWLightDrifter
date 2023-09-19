@@ -536,7 +536,7 @@ const GameSettings = {
             },
             {
                 ref: 'world/boss_room.png',
-                name: 'map_ground',
+                name: 'map_ground_second',
             },
             {
                 ref: 'other/shadow.png',

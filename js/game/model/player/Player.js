@@ -15,6 +15,7 @@ import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../h
 import { checkCollision } from '../../helper/collision/playerCollision.js';
 import PlayerSpawnState from './state/PlayerSpawnState.js';
 import PlayerDeathState from './state/PlayerDeathState.js';
+import PlayerInElevatorState from "./state/PlayerInElevatorState.js";
 
 export default class Player {
     constructor() {
@@ -69,6 +70,7 @@ export default class Player {
         this.hurtState = new PlayerHurtState();
         this.throwState = new PlayerThrowingState();
         this.deathState = new PlayerDeathState();
+        this.inElevatorState = new PlayerInElevatorState();
         this.canvas = null;
         this.healing = 0;
         this.immunity = playerDefault.MAX_IMMUNITY;
@@ -83,6 +85,7 @@ export default class Player {
     }
 
     updateState() {
+        console.log(this.centerPosition)
         if (this.health <= 0 && this.currState !== this.deathState) {
             this.switchState(this.deathState);
         }

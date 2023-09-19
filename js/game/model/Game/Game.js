@@ -25,7 +25,7 @@ export default class Game {
         this.keys = [];
         this.clicks = [];
         this.collideables = [];
-        this.renderList = [];
+        this.elevator = null;
         this.enemyManager = null;
         this.bossEntities = [];
         this.canvas = null;
@@ -42,6 +42,10 @@ export default class Game {
         this.loseState = new GameLoseState();
     }
 
+    changeState() {
+        this.bossEntities = null;
+        this.collideables = [];
+    }
     async init() {
         playerInput();
         this.camera = new Camera();
@@ -49,7 +53,6 @@ export default class Game {
         this.player = new Player()
 
         this.player.init()
-        this.prepareCanvas();
 
         // await secondStage({
         //     game: this,
@@ -137,9 +140,9 @@ export default class Game {
 
     }
 
-    darkenBackground() {
-        this.backgroundOpacity -= 0.05;
-        if (this.backgroundOpacity < 0.05) {
+    darkenBackground(darken = 0.05) {
+        this.backgroundOpacity -= darken;
+        if (this.backgroundOpacity < darken) {
             this.backgroundOpacity = 0;
         }
     }

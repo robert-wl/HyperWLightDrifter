@@ -13,6 +13,7 @@ export default class GameStartState extends GameBaseState {
         game.instance = null;
         Game.getInstance();
         await game.init();
+        game.prepareCanvas();
         await imageLoader(GameSettings.IMAGES.SPAWN);
         this.number = 0;
         this.spawnParticles = true;

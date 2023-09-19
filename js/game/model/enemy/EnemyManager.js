@@ -3,12 +3,13 @@ import GameSettings from '../../constants.js';
 import CrystalBrute from './crystalBrute/CrystalBrute.js';
 import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import CrystalSpider from './crystalSpider/CrystalSpider.js';
+import Game from "../Game/Game.js";
 
 export default class EnemyManager {
     static instance = null;
     constructor() {
         this.enemyList = [];
-        this.enemySpawn = false;
+        this.enemySpawn = true;
         this.enemyAliveCount = 0;
         this.difficulty = 8;
     }
@@ -29,6 +30,10 @@ export default class EnemyManager {
     }
 
     enemySpawnHandler() {
+        if(this.difficulty === 8) {
+            return;
+        }
+
         if (!this.enemySpawn) {
             return;
         }
@@ -82,6 +87,9 @@ export default class EnemyManager {
             this.enemyAliveCount += 1;
         }
 
+        const { audio } = Game.getInstance();
+
+        audio.playAudio('forest_stage/door_progress.wav', null, false, false, 0.75)
         this.difficulty += 1;
     }
 

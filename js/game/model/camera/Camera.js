@@ -55,12 +55,14 @@ export default class Camera {
             position: position.x,
             length: this.cameraBox.width / 2,
         });
+
         const translateY = this.getTranslatePosition({
             position: position.y,
             length: this.cameraBox.height / 2,
         });
 
         ctx.translate(-translateX, -translateY);
+
         this.position.x += translateX;
         this.position.y += translateY;
     }
@@ -126,6 +128,7 @@ export default class Camera {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     updateCamera() {
+        console.log(this)
         this.moveCamera();
 
         const { player } = Game.getInstance();

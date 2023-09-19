@@ -4,7 +4,8 @@ import Game from '../../model/Game/Game.js';
 import Judgement from '../../model/enemy/judgement/Judgement.js';
 import {getImage, imageLoader} from "../imageLoader.js";
 import GameSettings from "../../constants.js";
-import Door from "../../model/interactables/Door.JS";
+import Door from "../../model/interactables/Door.js";
+import Elevator from "../../model/interactables/Elevator.js";
 
 export async function firstStage() {
     await imageLoader(GameSettings.IMAGES.STAGE_ONE);
@@ -20,6 +21,10 @@ export async function firstStage() {
     Game.getInstance().player.centerPosition.x = 900;
     Game.getInstance().player.centerPosition.y = 500;
 
+    Elevator.generate({
+        x: 951,
+        y: 2010,
+    })
     Door.generate({
         x: 904,
         y: 1040,
@@ -61,8 +66,9 @@ export async function firstStage() {
 export async function secondStage({ game }) {
     await imageLoader(GameSettings.IMAGES.STAGE_TWO);
 
-    const mapGround = getImage('map_ground');
+    const mapGround = getImage('map_ground_second');
 
+    console.log(mapGround)
     Game.getInstance().camera.init({
         lowerBackground: mapGround,
         topBackground: null,
@@ -74,8 +80,9 @@ export async function secondStage({ game }) {
     game.player.position.y = 400;
     game.player.centerPosition.x = 900 + game.player.width / 2;
     game.player.centerPosition.y = 400 + game.player.height / 2;
+    game.player.direction.x = 0.01;
 
-    Judgement.generate({ x: 900, y: 400, collideable: true });
+    // Judgement.generate({ x: 900, y: 400, collideable: true });
 
     const colliders = [
         { x: 100, y: 0, w: 300, h: 1000 },

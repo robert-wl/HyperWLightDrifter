@@ -1,9 +1,9 @@
 import Collideable from '../collideable/Collideable.js';
 import Game from '../Game/Game.js';
 import GameSettings from '../../constants.js';
-import detectPlayerInteraction from '../../helper/player/interaction/detectPlayerInteraction.js';
 import { getNumberedImage } from '../../helper/imageLoader.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
+import InteractionBar from "./InteractionBar.js";
 
 export default class Door extends Collideable {
     static generate({ x, y, collideable }) {
@@ -77,10 +77,10 @@ export default class Door extends Collideable {
         if (this.isLocked || this.openingStage > 0) {
             return;
         }
-        detectPlayerInteraction(this);
+        InteractionBar.detectPlayerInteraction(this);
     }
 
-    destroy() {
+    activate() {
         this.openingStage = 1;
     }
 }
