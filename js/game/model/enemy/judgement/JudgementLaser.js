@@ -3,6 +3,7 @@ import Enemy from '../Enemy.js';
 import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
 import {getImage} from "../../../helper/imageLoader.js";
 import {drawImage} from "../../../helper/renderer/drawer.js";
+import EnemyManager from "../EnemyManager.js";
 
 export default class JudgementLaser extends Enemy {
     static generate({ x, y, angle }) {
@@ -15,7 +16,9 @@ export default class JudgementLaser extends Enemy {
             },
             lifetime: 200 + Math.random() * 200,
         });
-        Game.getInstance().bossEntities.push(newJudgementLaser);
+
+        const { bossEntities } = Game.getInstance().enemyManager;
+        bossEntities.push(newJudgementLaser);
     }
     constructor({ x, y, velocity, lifetime }) {
         super({
@@ -67,7 +70,7 @@ export default class JudgementLaser extends Enemy {
     }
 
     kill() {
-        const { bossEntities } = Game.getInstance();
+        const { bossEntities } = EnemyManager.getInstance();
         bossEntities.splice(bossEntities.indexOf(this), 1);
     }
 

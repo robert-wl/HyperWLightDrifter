@@ -3,14 +3,19 @@ import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from "../../../../constants.js";
 import Game from "../../../Game/Game.js";
+import AudioPlayer from "../../../../../audio/AudioPlayer.js";
 
 export default class JudgementSpawnState extends JudgementBaseState {
+    firstSpawn = true;
     enterState() {
         this.number = 0;
         this.animationStage = 1;
+
+        AudioPlayer.getInstance().playAudio('boss/spawn.wav');
     }
 
     updateState(currJudgement) {
+        const { camera } = Game.getInstance();
         this.number += 1;
 
         if (this.number === 7) {
@@ -18,10 +23,24 @@ export default class JudgementSpawnState extends JudgementBaseState {
             this.animationStage += 1;
         }
 
-        if(this.number === 0 && this.animationStage === 16) {
-            Game.getInstance().camera.setShakeCamera({
-                durationY: 100
+        if(this.firstSpawn) {
+            camera.moveCameraPosition({
+                direction: {
+                    y: -(camera.position.y - 100) * 0.05,
+                }
             });
+        }
+
+
+        if(this.number === 0 && this.animationStage === 16) {
+            camera.setShakeCamera({
+                duration: 200,
+                angle: Math.PI / 2
+            });
+        }
+
+        if(this.animationStage === 14) {
+            AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
         }
 
         if (this.animationStage === 22) {
@@ -45,5 +64,12 @@ export default class JudgementSpawnState extends JudgementBaseState {
             height: judgementSpawn.height * GameSettings.GAME.GAME_SCALE,
             translate: true,
         });
+    }
+    exitState() {
+        if(this.firstSpawn) {
+            const { camera } = Game.getInstance();
+            camera.setSnapBackToPlayer();
+        }
+        this.firstSpawn = false;
     }
 }

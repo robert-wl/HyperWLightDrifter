@@ -9,6 +9,7 @@ export default class EnemyManager {
     static instance = null;
     constructor() {
         this.enemyList = [];
+        this.bossEntities = [];
         this.enemySpawn = true;
         this.enemyAliveCount = 0;
         this.difficulty = 8;
@@ -21,14 +22,20 @@ export default class EnemyManager {
         return this.instance;
     }
 
-    update() {
+    update() { //TODO RENAME TO UPDATEENEMY
         this.enemyList.forEach((enemy) => {
             enemy.update();
         });
 
+
         this.enemySpawnHandler();
     }
 
+    updateBossEntities() {
+        this.bossEntities.forEach((entity) => {
+            entity.update();
+        });
+    }
     enemySpawnHandler() {
         if(this.difficulty === 8) {
             return;

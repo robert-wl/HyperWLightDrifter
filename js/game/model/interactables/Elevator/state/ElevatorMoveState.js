@@ -3,6 +3,7 @@ import Game from "../../../Game/Game.js";
 import {getImage} from "../../../../helper/imageLoader.js";
 import GameSettings from "../../../../constants.js";
 import {drawImage, drawImageCropped} from "../../../../helper/renderer/drawer.js";
+import AudioPlayer from "../../../../../audio/AudioPlayer.js";
 
 
 export default class ElevatorMoveState extends ElevatorBaseState {
@@ -11,13 +12,19 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         player.switchState(player.inElevatorState);
         this.acceleration = 0;
         this.aboutToMount = false;
+        this.number = 49;
     }
 
     updateState(elevator) {
+        this.number += 1;
 
+        if(this.number % 100 === 0) {
+            AudioPlayer.getInstance().playAudio('elevator/move.wav');
+        }
         const { player, camera } = Game.getInstance();
 
         this.handleAcceleration(elevator);
+
         elevator.y += this.acceleration;
         player.centerPosition.y += this.acceleration;
         player.position.y += this.acceleration;
@@ -27,14 +34,12 @@ export default class ElevatorMoveState extends ElevatorBaseState {
             elevator.bottomCrop += this.acceleration * 0.415;
         }
 
-        console.log(GameSettings.GAME.SCREEN_HEIGHT / 2, elevator.travelDistance)
         if(elevator.stageLocation === 2) {
             camera.moveCameraPosition( {
                 direction: {
                     y: this.acceleration,
                 }
             })
-            console.log(player.centerPosition)
         }
 
         if(this.acceleration === 0) {

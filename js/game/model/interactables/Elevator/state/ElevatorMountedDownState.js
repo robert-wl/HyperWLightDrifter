@@ -3,12 +3,15 @@ import {getImage} from "../../../../helper/imageLoader.js";
 import GameSettings from "../../../../constants.js";
 import Game from "../../../Game/Game.js";
 import {drawImage, drawImageCropped} from "../../../../helper/renderer/drawer.js";
+import AudioPlayer from "../../../../../audio/AudioPlayer.js";
 
 
 export default class ElevatorMountedDownState extends ElevatorBaseState {
     enterState(elevator) {
         const { player } = Game.getInstance();
         player.switchState(player.idleState);
+
+        AudioPlayer.getInstance().playAudio('elevator/mount.wav');
     }
 
     drawImage(elevator) {

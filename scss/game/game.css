@@ -1,0 +1,269 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: black;
+  user-select: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+.container #game {
+  width: fit-content;
+  height: fit-content;
+  touch-action: none;
+  overflow: hidden;
+  background-color: black;
+}
+.container .ui {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 1080px;
+  max-width: 1920px;
+  max-height: 100vh;
+  aspect-ratio: 16/9;
+  position: absolute;
+  background-color: transparent;
+}
+.container .ui .modal {
+  width: 61rem;
+  height: 51rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: none;
+  background-repeat: no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+  background-color: transparent;
+  background-image: url("/assets/ui/menu_modal.png");
+  opacity: 100%;
+  position: absolute;
+  display: none;
+  z-index: 100;
+}
+.container .ui #menu-modal div {
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2rem;
+  margin: 0 2.75rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  background-color: transparent;
+  text-align: center;
+}
+.container .ui #menu-modal div:hover {
+  background-color: rgb(254, 31, 136);
+}
+.container .ui #selection-modal {
+  align-items: center;
+}
+.container .ui #selection-modal .title {
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2.5rem;
+  background-color: transparent;
+  text-align: center;
+}
+.container .ui #selection-modal .image-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2rem;
+  margin: 0 2.75rem;
+  padding: 1rem 0;
+  background-color: transparent;
+  width: 35rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+.container .ui #selection-modal .image-container #arrow-left {
+  animation: arrowMoveLeft 0.5s steps(2) infinite;
+  background-color: transparent;
+  width: 20rem;
+  cursor: pointer;
+}
+.container .ui #selection-modal .image-container img {
+  width: 50rem;
+  height: fit-content;
+  aspect-ratio: 92/140;
+}
+.container .ui #selection-modal .image-container #arrow-right {
+  animation: arrowMoveRight 0.5s steps(2) infinite;
+  background-color: transparent;
+  width: 20rem;
+  cursor: pointer;
+}
+.container .ui #selection-modal .button {
+  cursor: pointer;
+  background-color: transparent;
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2rem;
+  margin: 0 2.75rem;
+  padding: 1rem 0;
+  width: 91%;
+  text-align: center;
+}
+.container .ui #selection-modal .button:hover {
+  background-color: rgb(254, 31, 136);
+}
+.container .ui .modal-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 1920px;
+  max-height: 1080px;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+.container .ui .modal-background .modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+.container .ui .modal-background .modal .title {
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2.5rem;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  text-align: center;
+}
+.container .ui .modal-background .modal .button {
+  cursor: pointer;
+  background-color: transparent;
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2rem;
+  margin: 0 2.75rem;
+  padding: 1rem 0;
+  width: 91%;
+  text-align: center;
+}
+.container .ui .modal-background .modal .button:hover {
+  background-color: rgb(254, 31, 136);
+}
+.container #opening-screen {
+  position: absolute;
+  image-rendering: high-quality;
+  background-color: transparent;
+  max-width: 1920px;
+  max-height: 1080px;
+  /*object-fit: cover;*/
+  width: 100vw;
+  height: fit-content;
+  opacity: 0;
+}
+.container #HUD {
+  position: absolute;
+  top: 0;
+  background-color: transparent;
+  max-width: 1920px;
+  max-height: 1080px;
+  width: 100vw;
+  height: fit-content;
+}
+
+#settings-modal {
+  align-items: center;
+  justify-content: space-between;
+}
+
+#settings-modal .title {
+  color: white;
+  background-color: transparent;
+  text-align: center;
+  margin: 4rem 2.75rem 0;
+  padding: 1rem 0;
+  font-size: 2rem;
+  font-family: "Press Start 2P", cursive;
+}
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: transparent;
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 1rem 0;
+  align-items: center;
+  width: 90%;
+  background-color: transparent;
+}
+
+.settings-content:hover {
+  background-color: rgb(254, 31, 136);
+  cursor: pointer;
+}
+
+.settings-container div {
+  font-family: "Press Start 2P", cursive;
+  color: white;
+}
+
+@keyframes arrowMoveLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10%);
+  }
+}
+@keyframes arrowMoveRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10%);
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/*# sourceMappingURL=game.css.map */

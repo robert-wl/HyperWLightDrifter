@@ -31,9 +31,9 @@ export default class GameStageOneState extends GameBaseState {
 
         const { ctx, camera, player, enemyManager, elevator } = game;
 
-        ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+        ctx.clearRect(0, 0, game.canvas.width * 2, game.canvas.height * 2);
         ctx.fillStyle = '#000000';
-        ctx.fillRect(0, 0, game.canvas.width, game.canvas.height * 2);
+        ctx.fillRect(0, 0, game.canvas.width * 2, game.canvas.height * 3);
 
         camera.shakeCamera();
 

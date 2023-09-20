@@ -4,6 +4,7 @@ import {getRandomValue} from "../../../helper/randomHelper.js";
 import {getNumberedImage} from "../../../helper/imageLoader.js";
 import {drawImage} from "../../../helper/renderer/drawer.js";
 import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
+import EnemyManager from "../EnemyManager.js";
 
 export default class JudgementBullet extends Enemy {
     static generate({ x, y, angle }) {
@@ -22,7 +23,9 @@ export default class JudgementBullet extends Enemy {
                 randomValue: 200,
             }),
         });
-        Game.getInstance().bossEntities.push(newJudgementBullet);
+
+        const { bossEntities } = Game.getInstance().enemyManager;
+        bossEntities.push(newJudgementBullet);
     }
     constructor({ x, y, velocity, lifetime }) {
         super({
@@ -72,7 +75,7 @@ export default class JudgementBullet extends Enemy {
     }
 
     kill() {
-        const { bossEntities } = Game.getInstance();
+        const { bossEntities } = Game.getInstance().enemyManager;
         bossEntities.splice(bossEntities.indexOf(this), 1);
     }
 

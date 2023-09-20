@@ -6,6 +6,7 @@ import { getNumberedImage } from '../../../helper/imageLoader.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
+import EnemyManager from "../EnemyManager.js";
 
 export default class JudgementBomb extends Enemy {
     static generate({ position, angle }) {
@@ -18,7 +19,8 @@ export default class JudgementBomb extends Enemy {
             height: 40,
         });
 
-        Game.getInstance().bossEntities.push(newJudgementBomb);
+        const { bossEntities } = Game.getInstance().enemyManager;
+        bossEntities.push(newJudgementBomb);
     }
     constructor({ position, offset, angle, lifetime, width, height }) {
         super({
@@ -130,11 +132,11 @@ export default class JudgementBomb extends Enemy {
 
         if(!this.exploding) {
             this.position.x += getHorizontalValue({
-                magnitude: 2,
+                magnitude: 3,
                 angle: this.moveAngle,
             });
             this.position.y += getVerticalValue({
-                magnitude: 2,
+                magnitude: 3,
                 angle: this.moveAngle,
             });
         }
@@ -145,7 +147,7 @@ export default class JudgementBomb extends Enemy {
     }
 
     kill() {
-        const { bossEntities } = Game.getInstance();
+        const { bossEntities } = Game.getInstance().enemyManager;
         bossEntities.splice(bossEntities.indexOf(this), 1);
     }
 

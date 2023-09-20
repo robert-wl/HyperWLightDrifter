@@ -5,6 +5,9 @@ import GameSettings from "../../../constants.js";
 import Judgement from "../../enemy/judgement/Judgement.js";
 
 export default class GameStageTwoState extends GameBaseState {
+
+    hasBossSpawned = false;
+
     async enterState(game) {
 
         game.stage = 2;
@@ -16,7 +19,7 @@ export default class GameStageTwoState extends GameBaseState {
 
         game.pauseHandler();
 
-        const { ctx, camera, player, boss, bossEntities, enemyManager, backgroundOpacity, elevator } = game;
+        const { ctx, camera, player, boss, enemyManager, backgroundOpacity, elevator } = game;
 
         if(player.currState === player.inElevatorState && player.currState.isBelowGround) {
             game.brightenBackground();
@@ -26,13 +29,19 @@ export default class GameStageTwoState extends GameBaseState {
             }
         }
 
+        if(elevator.currState === elevator.mountedDownState && !this.hasBossSpawned) {
+            Judgement.generate({ x: 850, y: 100, collideable: true });
+            this.hasBossSpawned = true;
+        }
 
 
         ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
         camera.shakeCamera();
 
         if(elevator.currState === elevator.mountedDownState) {
+            game.setTransparency(game.backgroundOpacity);
             elevator?.update();
+            game.setTransparency(1);
 
         }
         game.setTransparency(game.backgroundOpacity);
@@ -56,7 +65,8 @@ export default class GameStageTwoState extends GameBaseState {
         // camera.renderTopBackground();
 
         boss?.update();
-        bossEntities?.forEach((entity) => entity.update());
+
+        enemyManager.updateBossEntities()
 
 
         game.drawHUD();
@@ -67,7 +77,7 @@ export default class GameStageTwoState extends GameBaseState {
 
     async stageInitializer(game) {
         game.prepareCanvas();
-
+        game.changeState();
         await imageLoader(GameSettings.IMAGES.STAGE_TWO);
 
         const { camera, player, elevator } = game;
@@ -82,7 +92,6 @@ export default class GameStageTwoState extends GameBaseState {
         camera.lowerBackground = mapGround;
         camera.topBackground = null;
 
-        // Judgement.generate({ x: 900, y: 400, collideable: true });
 
         const colliders = [
             { x: 100, y: 0, w: 300, h: 1000 },
@@ -102,8 +111,8 @@ export default class GameStageTwoState extends GameBaseState {
         elevator.changeStage();
         const oldYPosition = player.centerPosition.y;
 
-        elevator.x += 23;
-        player.centerPosition.x += 23;
+        elevator.x += 22;
+        player.centerPosition.x += 22;
 
 
         camera.setCameraPosition({
@@ -120,7 +129,6 @@ export default class GameStageTwoState extends GameBaseState {
         player.centerPosition.y = yDiff;
 
 
-        game.changeState();
 
         // for (const collider of colliders) {
         //     Collideable.generate(collider);

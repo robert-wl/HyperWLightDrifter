@@ -36,6 +36,7 @@ export default class Camera {
             y: 0,
         };
         this.hasTranslated = false;
+        this.snapBackToPlayer = false;
     }
 
     init({ lowerBackground, topBackground }) {
@@ -74,6 +75,10 @@ export default class Camera {
             direction: directionArr,
             moveDirection: direction,
         })
+    }
+
+    setSnapBackToPlayer() {
+        this.snapBackToPlayer = true;
     }
 
     setShakeCamera({ duration, angle = Math.PI / 2, strength = 3 }) {
@@ -151,6 +156,25 @@ export default class Camera {
 
         if (Game.getInstance().debug) {
             this.renderDebugBox();
+        }
+
+        if(this.snapBackToPlayer) {
+            this.moveCameraPosition({
+                direction: {
+                    x: (player.centerPosition.x - this.position.x) * 0.05,
+                    y: (player.centerPosition.y - this.position.y) * 0.05,
+                }
+            })
+
+            const distance = getMagnitudeValue({
+                x: player.centerPosition.x - this.position.x,
+                y: player.centerPosition.y - this.position.y,
+            })
+
+
+            if(distance < 600) {
+                this.snapBackToPlayer = false;
+            }
         }
     }
 

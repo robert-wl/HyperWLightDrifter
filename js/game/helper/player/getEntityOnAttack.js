@@ -5,7 +5,7 @@ import CrystalSpider from "../../model/enemy/crystalSpider/CrystalSpider.js";
 
 export default function getEntityOnAttack({ player }) {
     const { enemyManager } = Game.getInstance();
-    const { enemyList } = enemyManager;
+    const { enemyList, bossEntities } = enemyManager;
 
     for (const enemy of enemyList) {
         if (enemy.health <= 0) {
@@ -14,9 +14,9 @@ export default function getEntityOnAttack({ player }) {
         checkCollision(enemy);
     }
 
-    // for (const enemy of bossEntities) {
-    //     checkCollision(enemy);
-    // }
+    for (const enemy of bossEntities) {
+        checkCollision(enemy);
+    }
 }
 
 function checkCollision(enemy) {

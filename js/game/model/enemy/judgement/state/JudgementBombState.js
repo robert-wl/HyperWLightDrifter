@@ -6,6 +6,7 @@ import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import GameSettings from '../../../../constants.js';
 import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import AudioPlayer from "../../../../../audio/AudioPlayer.js";
 
 export default class JudgementBombState extends JudgementBaseState {
     enterState(currJudgement) {
@@ -31,7 +32,7 @@ export default class JudgementBombState extends JudgementBaseState {
         }
 
         if (this.number % 100 === 0 && this.attackCount === this.maxAttackCount) {
-            const { bossEntities } = Game.getInstance();
+            const { bossEntities } = Game.getInstance().enemyManager;
 
             bossEntities.forEach((enemy) => {
                 if (enemy instanceof JudgementBomb) {
@@ -54,6 +55,8 @@ export default class JudgementBombState extends JudgementBaseState {
                 angle: this.startAngle + (this.attackCount * Math.PI) / 3,
             });
 
+            AudioPlayer.getInstance().playAudio('boss/bomb_summon.wav');
+
             this.attackCount += 1;
         }
 
@@ -65,7 +68,14 @@ export default class JudgementBombState extends JudgementBaseState {
         }
 
         if (backgroundOpacity === 1 && this.finished && this.number % 7 === 0) {
+            if(this.animationStage === 1) {
+                AudioPlayer.getInstance().playAudio('boss/spawn.wav');
+            }
             this.animationStage += 1;
+        }
+
+        if(this.animationStage === 14) {
+            AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
         }
 
         if (this.animationStage === 21 && this.finished) {
@@ -131,7 +141,7 @@ export default class JudgementBombState extends JudgementBaseState {
     }
 
     isEnemyAboutToExplode() {
-        const { bossEntities } = Game.getInstance();
+        const { bossEntities } = Game.getInstance().enemyManager;
 
         return bossEntities.some((enemy) => {
             if (enemy instanceof JudgementBomb) {

@@ -5,6 +5,7 @@ import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import GameSettings from "../../../../constants.js";
+import AudioPlayer from "../../../../../audio/AudioPlayer.js";
 
 export default class JudgementAttackState extends JudgementBaseState {
     enterState() {
@@ -53,6 +54,8 @@ export default class JudgementAttackState extends JudgementBaseState {
     }
 
     attack(currJudgement) {
+
+
         if (this.attacking && this.number % 2 === 0) {
             this.attackAngle += getRandomValue({
                 initialValue: (2 / 30) * Math.PI,
@@ -66,15 +69,19 @@ export default class JudgementAttackState extends JudgementBaseState {
 
             JudgementBullet.generate({
                 x: currJudgement.position.x + offset,
-                y: currJudgement.position.y - 30,
+                y: currJudgement.position.y - 40,
                 angle: this.attackAngle,
             });
 
             JudgementBullet.generate({
                 x: currJudgement.position.x + offset,
-                y: currJudgement.position.y - 30,
+                y: currJudgement.position.y - 40,
                 angle: this.attackAngle + Math.PI,
             });
+        }
+
+        if(this.attacking && this.number % 8 === 0) {
+            AudioPlayer.getInstance().playAudio('boss/bullet.wav');
         }
     }
 
