@@ -22,7 +22,7 @@ export default class Camera {
                 y: 0,
             },
             width: 900,
-            height: 400,
+            height: 600,
         };
         this.lowerBackground = null;
         this.topBackground = null;
@@ -65,6 +65,15 @@ export default class Camera {
 
         this.position.x += translateX;
         this.position.y += translateY;
+    }
+
+    moveCameraPosition({ direction }) {
+
+        const directionArr = this.getCameraBoxOverlap();
+        this.translateCamera({
+            direction: directionArr,
+            moveDirection: direction,
+        })
     }
 
     setShakeCamera({ duration, angle = Math.PI / 2, strength = 3 }) {
@@ -204,26 +213,26 @@ export default class Camera {
         });
     }
 
-    translateCamera({ direction }) {
+    translateCamera({ direction, moveDirection }) {
         const { player, ctx } = Game.getInstance();
 
         if (direction.includes('d')) {
-            const displacement = Math.abs(player.direction.x);
+            const displacement = moveDirection?.x || Math.abs(player.direction.x);
             ctx.translate(-displacement, 0);
             this.position.x += displacement;
         }
         if (direction.includes('a')) {
-            const displacement = Math.abs(player.direction.x);
+            const displacement = moveDirection?.x || Math.abs(player.direction.x);
             ctx.translate(displacement, 0);
             this.position.x -= displacement;
         }
         if (direction.includes('w')) {
-            const displacement = Math.abs(player.direction.y);
+            const displacement = moveDirection?.xy || Math.abs(player.direction.y);
             ctx.translate(0, displacement);
             this.position.y -= displacement;
         }
         if (direction.includes('s')) {
-            const displacement = Math.abs(player.direction.y);
+            const displacement = moveDirection?.y || Math.abs(player.direction.y);
             ctx.translate(0, -displacement);
             this.position.y += displacement;
         }
@@ -242,13 +251,36 @@ export default class Camera {
         }
 
         const cameraBoxBottom = this.cameraBox.position.y + this.cameraBox.height;
-        if (cameraBoxBottom > this.position.y + 550 && cameraBoxBottom < Game.getInstance().height * 2) {
+        if (cameraBoxBottom > this.position.y + 550 && cameraBoxBottom < Game.getInstance().height * 2.5) {
             directionArray.push('s');
         }
 
         const cameraBoxTop = this.cameraBox.position.y;
         if (cameraBoxTop < this.position.y && cameraBoxTop > 0) {
             directionArray.push('w');
+        }
+
+        return directionArray;
+    }
+
+    filterCameraMovement(directionArray) {
+        const cameraBoxRight = this.cameraBox.position.x + this.cameraBox.width;
+        if(cameraBoxRight < Game.getInstance().width) {
+            directionArray.splice(directionArray.indexOf('d'), 1);
+        }
+
+        const cameraBoxLeft = this.cameraBox.position.x;
+        if(cameraBoxLeft < 100) {
+            directionArray.splice(directionArray.indexOf('a'), 1);
+        }
+
+        const cameraBoxBottom = this.cameraBox.position.y + this.cameraBox.height;
+        if(cameraBoxBottom > Game.getInstance().height * 2) {
+            directionArray.splice(directionArray.indexOf('s'), 1);
+        }
+        const cameraBoxTop = this.cameraBox.position.y;
+        if (cameraBoxTop < 0) {
+            directionArray.splice(directionArray.indexOf('w'), 1);
         }
 
         return directionArray;

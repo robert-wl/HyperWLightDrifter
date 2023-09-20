@@ -117,6 +117,25 @@ export default class Game {
         this.currState.updateState(this);
     }
 
+    pauseHandler() {
+        if(this.keys.includes("escape")) {
+            this.switchState(this.pausedState);
+        }
+    }
+
+    unpauseGame() {
+        this.keys = [];
+        this.clicks = [];
+        if(this.stage === 1) {
+            this.currState.exitState(this)
+            this.currState = this.stageOneState;
+        }
+        else if(this.stage === 2) {
+            this.currState.exitState(this)
+            this.currState = this.stageTwoState;
+        }
+    }
+
     drawHUD() {
         hudHandler({
             HUD: this.HUD,

@@ -5,7 +5,7 @@ import GameSettings from "../../constants.js";
 export default function playerInput() {
     $(document).keydown((e) => {
         const { keys } = Game.getInstance();
-        console.log("haaaaaaAaA")
+
         if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's' || e.key === 'e' || e.key === 'c'  || e.key === 'c') {
             if (keys.includes(e.key)) {
                 return;
@@ -19,6 +19,13 @@ export default function playerInput() {
             }
 
             keys.push('space');
+        }
+        if (e.key === 'escape') {
+            if (keys.includes('escape')) {
+                return;
+            }
+
+            keys.push('escape');
         }
     });
 
@@ -37,6 +44,13 @@ export default function playerInput() {
             if (index > -1) {
                 keys.splice(index, 1);
             }
+        }
+        if (e.key === 'Escape') {
+            if (keys.includes('escape')) {
+                return;
+            }
+
+            keys.push('escape');
         }
     });
 
@@ -78,11 +92,12 @@ export default function playerInput() {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        const playerX = (player.position.x - camera.position.x) * GameSettings.GAME.GAME_SCALE;
-        const playerY = (player.position.y - camera.position.y) * GameSettings.GAME.GAME_SCALE;
+        const playerX = (player.centerPosition.x - camera.position.x) * GameSettings.GAME.GAME_SCALE;
+        const playerY = (player.centerPosition.y - camera.position.y) * GameSettings.GAME.GAME_SCALE;
         player.lookAngle = getAngle({
             x: x - playerX,
             y: y - playerY,
         });
+
     });
 }

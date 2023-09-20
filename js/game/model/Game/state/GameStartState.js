@@ -4,8 +4,9 @@ import Fireflies from "../../particles/Fireflies.js";
 import {imageLoader} from "../../../helper/imageLoader.js";
 import GameSettings from "../../../constants.js";
 import menuHandler from "../../../ui/menuHandler.js";
-import AudioPlayer from "../../../../audio/AudioPlayer.js";
 import Game from "../Game.js";
+import MenuModal from "../../modal/MenuModal.js";
+import SelectionModal from "../../modal/SelectionModal.js";
 
 
 export default class GameStartState extends GameBaseState {
@@ -17,6 +18,9 @@ export default class GameStartState extends GameBaseState {
         await imageLoader(GameSettings.IMAGES.SPAWN);
         this.number = 0;
         this.spawnParticles = true;
+
+        MenuModal.handleInteraction();
+        SelectionModal.handleInteraction();
         menuHandler();
 
         const { audio } = game;

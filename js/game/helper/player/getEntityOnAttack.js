@@ -4,7 +4,7 @@ import CrystalBrute from "../../model/enemy/crystalBrute/CrystalBrute.js";
 import CrystalSpider from "../../model/enemy/crystalSpider/CrystalSpider.js";
 
 export default function getEntityOnAttack({ player }) {
-    const { bossEntities, enemyManager } = Game.getInstance();
+    const { enemyManager } = Game.getInstance();
     const { enemyList } = enemyManager;
 
     for (const enemy of enemyList) {
@@ -14,9 +14,9 @@ export default function getEntityOnAttack({ player }) {
         checkCollision(enemy);
     }
 
-    for (const enemy of bossEntities) {
-        checkCollision(enemy);
-    }
+    // for (const enemy of bossEntities) {
+    //     checkCollision(enemy);
+    // }
 }
 
 function checkCollision(enemy) {

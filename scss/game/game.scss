@@ -1,0 +1,288 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+$pink-color: rgb(254, 31, 136);
+
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+    user-select: none;
+}
+
+@mixin flex-rules($direction, $justify, $align) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin max-size($width, $height) {
+    max-width: $width;
+    max-height: $height;
+}
+
+@mixin size($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+@mixin background-image-settings {
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: pixelated;
+}
+
+@mixin text-config($place) {
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    @if ($place == title) {
+        font-size: 2.5rem;
+    }
+    @if ($place == button) {
+        font-size: 2rem;
+        margin: 0 2.75rem;
+        padding: 1rem 0;
+    }
+}
+
+@mixin animationArrow($direction) {
+    @if ($direction == left) {
+        animation: arrowMoveLeft 0.5s steps(2) infinite;
+    }
+    @if ($direction == right) {
+        animation: arrowMoveRight 0.5s steps(2) infinite;
+    }
+}
+
+@mixin hoverable {
+    cursor: pointer;
+    background-color: transparent;
+
+    &:hover {
+        background-color: $pink-color;
+    }
+}
+
+@mixin absolute($top, $left) {
+    position: absolute;
+    top: $top;
+    left: $left;
+    transform: translate(-50%, -50%);
+}
+
+.container {
+    @include flex-rules(row, center, center);
+    @include size(100vw, 100vh);
+    overflow: hidden;
+    position: relative;
+
+    #game {
+        @include size(fit-content, fit-content);
+        touch-action: none;
+        overflow: hidden;
+        background-color: black;
+    }
+
+    .ui {
+        @include flex-rules(row, center, center);
+        @include size(100vw, 1080px);
+        @include max-size(1920px, 100vh);
+        aspect-ratio: 16/9;
+        position: absolute;
+        background-color: transparent;
+
+        .modal {
+            @include size(61rem, 51rem);
+            @include flex-rules(column, center, none);
+            @include background-image-settings;
+            background-color: transparent;
+            background-image: url('/assets/ui/menu_modal.png');
+            opacity: 100%;
+            position: absolute;
+            display: none;
+            z-index: 100;
+        }
+
+        #menu-modal div {
+            @include text-config(button);
+            @include hoverable;
+            text-align: center;
+        }
+
+        #selection-modal {
+            align-items: center;
+
+            .title {
+                @include text-config(title);
+                background-color: transparent;
+                text-align: center;
+            }
+
+            .image-container {
+                @include flex-rules(row, center, center);
+                @include text-config(button);
+                background-color: transparent;
+                width: 35rem;
+                margin-top: 2rem;
+                text-align: center;
+
+                #arrow-left {
+                    @include animationArrow(left);
+                    background-color: transparent;
+                    width: 20rem;
+                    cursor: pointer;
+                }
+
+                img {
+                    @include size(50rem, fit-content);
+                    aspect-ratio: 92/140;
+                }
+
+                #arrow-right {
+                    @include animationArrow(right);
+                    background-color: transparent;
+                    width: 20rem;
+                    cursor: pointer;
+                }
+            }
+
+            .button {
+                @include hoverable;
+                @include text-config(button);
+                width: 91%;
+                text-align: center;
+
+            }
+        }
+
+        .modal-background {
+            @include absolute(50%, 50%);
+            @include max-size(1920px, 1080px);
+            @include size(100vw, 100vh);
+            display: none;
+            background-color: rgb(0, 0, 0, 0.5);
+            z-index: 100;
+
+            .modal {
+                @include absolute(50%, 50%);
+                display: flex;
+
+                .title {
+                    @include text-config(title);
+                    @include absolute(10%, 50%);
+                    background-color: transparent;
+                    text-align: center;
+                }
+
+                .button {
+                    @include hoverable;
+                    @include text-config(button);
+                    width: 91%;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    #opening-screen {
+        position: absolute;
+        image-rendering: high-quality;
+        background-color: transparent;
+        max-width: 1920px;
+        max-height: 1080px;
+        /*object-fit: cover;*/
+        width: 100vw;
+        height: fit-content;
+        opacity: 0;
+    }
+
+    #HUD {
+        position: absolute;
+        top: 0;
+        background-color: transparent;
+        max-width: 1920px;
+        max-height: 1080px;
+        width: 100vw;
+        height: fit-content;
+    }
+}
+
+#settings-modal {
+    align-items: center;
+    justify-content: space-between;
+}
+#settings-modal .title {
+    color: white;
+    background-color: transparent;
+    text-align: center;
+    margin: 4rem 2.75rem 0;
+    padding: 1rem 0;
+    font-size: 2rem;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: transparent;
+}
+
+.settings-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1rem 0;
+    align-items: center;
+    width: 90%;
+    background-color: transparent;
+}
+
+.settings-content:hover {
+    background-color: rgb(254, 31, 136);
+    cursor: pointer;
+}
+
+.settings-container div {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+}
+
+@keyframes arrowMoveLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-10%);
+    }
+}
+
+@keyframes arrowMoveRight {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(10%);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0;
+    }
+}

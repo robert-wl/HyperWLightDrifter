@@ -7,38 +7,6 @@ const playerSelectImages = ['../assets/ui/player_select/player-red.png', '../ass
 let selected = 0;
 export default function menuHandler() {
 
-
-    $('#HUD').mousedown(() => {
-        if ($('#selection-modal').css('display') === 'flex') {
-            return;
-        }
-
-        if ($('#menu-modal').css('display') === 'none') {
-            $('#menu-modal')
-                .css('display', 'flex')
-                .css('animation', 'fadeIn 0.25s ease-in-out')
-                .css('opacity', '100%');
-
-            AudioPlayer.getInstance().playSound({
-                sound: 'menu/action.wav'
-            });
-            return;
-        }
-        $('#menu-modal').css('display', 'none');
-    });
-
-
-    $('.new-game').mousedown(() => {
-        AudioPlayer.getInstance().playSound({
-            sound: 'menu/action.wav'
-        });
-        $('#menu-modal').css('display', 'none');
-        $('#selection-modal')
-            .css('display', 'flex')
-            .css('animation', 'fadeIn 0.25s ease-in-out')
-            .css('opacity', '100%');
-    });
-
     $('.settings').mousedown(() => {
         AudioPlayer.getInstance().playSound({
             sound: 'menu/action.wav'
@@ -51,16 +19,6 @@ export default function menuHandler() {
             .css('opacity', '100%');
     });
 
-    $('#cancel-button').mousedown(() => {
-        AudioPlayer.getInstance().playSound({
-            sound: 'menu/action.wav'
-        });
-        $('#selection-modal').css('display', 'none');
-        $('#menu-modal')
-            .css('display', 'flex')
-            .css('animation', 'fadeIn 0.25s ease-in-out')
-            .css('opacity', '100%');
-    });
 
     audioHandler();
     selectScreenHandler();

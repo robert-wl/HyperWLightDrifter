@@ -15,7 +15,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
 
     updateState(elevator) {
 
-        const { player } = Game.getInstance();
+        const { player, camera } = Game.getInstance();
 
         this.handleAcceleration(elevator);
         elevator.y += this.acceleration;
@@ -27,7 +27,16 @@ export default class ElevatorMoveState extends ElevatorBaseState {
             elevator.bottomCrop += this.acceleration * 0.415;
         }
 
-        console.log(this.acceleration)
+        console.log(GameSettings.GAME.SCREEN_HEIGHT / 2, elevator.travelDistance)
+        if(elevator.stageLocation === 2) {
+            camera.moveCameraPosition( {
+                direction: {
+                    y: this.acceleration,
+                }
+            })
+            console.log(player.centerPosition)
+        }
+
         if(this.acceleration === 0) {
             elevator.switchState(elevator.mountedDownState);
         }

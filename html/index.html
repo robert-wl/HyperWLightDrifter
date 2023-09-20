@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/game.css">\
+    <link rel="stylesheet" href="../scss/game/game.css">
 </head>
 <body>
 <div class="container">
     <canvas id="game" width="1920" height="1080"></canvas>
     <div class="ui">
-        <div id="menu-modal">
+        <div id="menu-modal" class="modal">
             <div class="new-game hoverable">
                 New Game
             </div>
@@ -21,36 +21,50 @@
                 Exit
             </div>
         </div>
-        <div id="selection-modal">
+        <div id="selection-modal" class="modal">
             <div class="title">Select Outfit</div>
             <main class="image-container">
                 <div id="arrow-left" class="clickable"><</div>
                 <img id="player-preview" src="../assets/ui/player_select/player-red.png" alt="">
                 <div id="arrow-right" class="clickable">></div>
             </main>
-            <button id="play-button" class="hoverable">Play</button>
-            <button id="cancel-button" class="hoverable">Cancel</button>
+            <div class="button hoverable" id="play-button">Play</div>
+            <div class="button hoverable" id="cancel-button">Cancel</div>
         </div>
-        <div id="settings-modal">
-            <div class="title">Settings</div>
-            <main class="settings-container">
-                <div class="settings-content">
-                    <div>Volume</div>
-                    <div>
-                        <div></div>
-                    </div>
+        <div class="modal-background" id="pause-modal">
+            <div class="modal">
+                <div class="title">Paused</div>
+                <div id="continue-button" class="button hoverable">
+                    Continue
                 </div>
-                <div class="settings-content">
-                    <div>Fullscreen</div>
-                    <div>On</div>
+                <div id="settings-button" class="button hoverable">
+                    Settings
                 </div>
-                <div class="settings-content">
-                    <div>FPS Counter</div>
-                    <div>On</div>
+                <div id="exit-button" class="button hoverable">
+                    Exit
                 </div>
-            </main>
-            <div></div>
+            </div>
         </div>
+<!--        <div id="settings-modal" class="modal">-->
+<!--            <div class="title">Settings</div>-->
+<!--            <main class="settings-container">-->
+<!--                <div class="settings-content">-->
+<!--                    <div>Volume</div>-->
+<!--                    <div>-->
+<!--                        <div></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="settings-content">-->
+<!--                    <div>Fullscreen</div>-->
+<!--                    <div>On</div>-->
+<!--                </div>-->
+<!--                <div class="settings-content">-->
+<!--                    <div>FPS Counter</div>-->
+<!--                    <div>On</div>-->
+<!--                </div>-->
+<!--            </main>-->
+<!--            <div></div>-->
+<!--        </div>-->
        <img id="opening-screen" src="../assets/ui/start.png" alt="" width="1920" height="1080">
         <canvas id="HUD" width="1920" height="1080"></canvas>
     </div>
