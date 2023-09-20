@@ -128,7 +128,6 @@ export default class Camera {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     updateCamera() {
-        console.log(this)
         this.moveCamera();
 
         const { player } = Game.getInstance();

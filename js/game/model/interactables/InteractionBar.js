@@ -4,7 +4,7 @@ import GameSettings from "../../constants.js";
 import Game from "../Game/Game.js";
 import {getMagnitudeValue} from "../../helper/distanceHelper.js";
 import Medkit from "./Medkit.js";
-import Elevator from "./Elevator.js";
+import Elevator from "./Elevator/Elevator.js";
 
 
 export default class InteractionBar {

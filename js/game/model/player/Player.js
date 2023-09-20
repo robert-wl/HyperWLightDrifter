@@ -85,7 +85,6 @@ export default class Player {
     }
 
     updateState() {
-        console.log(this.centerPosition)
         if (this.health <= 0 && this.currState !== this.deathState) {
             this.switchState(this.deathState);
         }
@@ -215,6 +214,7 @@ export default class Player {
     moveHandler() {
         this.theta = Math.atan2(this.direction.y, this.direction.x);
 
+        // console.log(this.direction.y)
         const absVector =
             getMagnitudeValue({
                 x: this.direction.x,
@@ -233,7 +233,7 @@ export default class Player {
 
         const { collideables } = Game.getInstance();
         let { x, y, w, h } = this.getHitboxCoordinates();
-
+        
         if (
             checkCollision({
                 collideables,

@@ -1,8 +1,6 @@
 import GameBaseState from './GameBaseState.js';
 import { secondStage } from '../../../helper/stages/stageHandler.js';
 import firefliesSpawner from '../../../helper/renderer/firefliesSpawner.js';
-import EnemyManager from '../../enemy/EnemyManager.js';
-import ParticlesManager from '../../particles/ParticlesManager.js';
 
 export default class GameStageTwoState extends GameBaseState {
     async enterState(game) {
@@ -16,17 +14,24 @@ export default class GameStageTwoState extends GameBaseState {
         camera.position.x = 0;
         camera.position.y = 0;
 
-        player.centerPosition.x += 65;
-        // elevator.position.x += 200;
+
+        elevator.changeStage();
+        const oldYPosition = player.centerPosition.y;
+
+        elevator.x += 23;
+        player.centerPosition.x += 23;
 
 
         camera.setCameraPosition({
-            position: { ...player.centerPosition }
+            position: {
+                x: 930 + player.width / 2,
+                y: 550 + player.height / 2,
+            }
         });
 
-        const yPosition = elevator.position.y + 500
-        elevator.position.y = -yPosition;
-        player.centerPosition.y -= yPosition;
+        const yDiff = oldYPosition - elevator.y;
+        elevator.y = 0;
+        player.centerPosition.y = yDiff;
         //
 
         game.changeState();
@@ -48,11 +53,17 @@ export default class GameStageTwoState extends GameBaseState {
         ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
         camera.shakeCamera();
 
+        if(elevator.currState === elevator.mountedDownState) {
+            elevator?.update();
+
+        }
         game.setTransparency(game.backgroundOpacity);
         camera.renderLowerBackground();
         game.setTransparency(1);
 
-        elevator?.update();
+        if(elevator.currState === elevator.moveState) {
+            elevator?.update();
+        }
 
         game.enemySpawnHandler();
 
@@ -69,7 +80,6 @@ export default class GameStageTwoState extends GameBaseState {
         boss?.update();
         bossEntities?.forEach((entity) => entity.update());
 
-        // game.elevator?.update();
 
         game.drawHUD();
 

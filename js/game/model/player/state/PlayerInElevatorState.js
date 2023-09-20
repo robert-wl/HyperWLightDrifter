@@ -10,7 +10,6 @@ export default class PlayerInElevatorState extends PlayerBaseState {
 
     enterState(currPlayer) {
         currPlayer.direction.x = 0;
-        currPlayer.direction.y = 0;
         this.initialPosition = { ...currPlayer.centerPosition };
     }
 

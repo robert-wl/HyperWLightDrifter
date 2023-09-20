@@ -3,7 +3,7 @@ import EnemyManager from './game/model/enemy/EnemyManager.js';
 
 $(document).ready(async () => {
     const game = Game.getInstance();
-    game.debug = true;
+    game.debug = false;
     // game.enemyManager.enemySpawn = true;
 
     const animationLoop = () => {

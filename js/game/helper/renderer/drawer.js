@@ -66,9 +66,8 @@ function drawLeft(img, x, y, width, height) {
 
 
 
-export function drawImageCropped({ img, x, y, width, height }) {
+export function drawImageCropped({ img, imgX, imgY, imgWidth, imgHeight, x, y, width, height}) {
     const { ctx } = Game.getInstance();
-    ctx.translate(-width / 2, -height / 2);
-    ctx.drawImage(img, x, y, width, height);
-    ctx.translate(width / 2, height / 2);
+
+    ctx.drawImage(img, imgX, imgY, imgWidth, imgHeight, x, y, width, height);
 }
