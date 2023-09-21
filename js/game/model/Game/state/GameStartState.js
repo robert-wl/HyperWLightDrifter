@@ -7,6 +7,7 @@ import menuHandler from "../../../ui/menuHandler.js";
 import Game from "../Game.js";
 import MenuModal from "../../modal/MenuModal.js";
 import SelectionModal from "../../modal/SelectionModal.js";
+import SettingsModal from "../../modal/SettingsModal.js";
 
 
 export default class GameStartState extends GameBaseState {
@@ -21,6 +22,7 @@ export default class GameStartState extends GameBaseState {
 
         MenuModal.handleInteraction();
         SelectionModal.handleInteraction();
+        SettingsModal.handleInteraction();
         menuHandler();
 
         const { audio } = game;

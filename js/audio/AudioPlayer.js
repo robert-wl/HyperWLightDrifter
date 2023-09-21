@@ -3,7 +3,7 @@ export default class AudioPlayer {
 
     constructor() {
         this.playerList = [];
-        this.volume = 0.1;
+        this.volume = 0.5;
         this.allowSound = true;
     }
 
@@ -12,6 +12,32 @@ export default class AudioPlayer {
             this.instance = new AudioPlayer();
         }
         return this.instance;
+    }
+
+    increaseVolume() {
+        if(this.volume < 1) {
+            this.volume += 0.1;
+        }
+        if(this.volume > 1) {
+            this.volume = 1;
+        }
+
+        for(const played of this.playerList) {
+            played.volume = this.volume;
+        }
+    }
+
+    decreaseVolume() {
+        if(this.volume > 0) {
+            this.volume -= 0.1;
+        }
+        if(this.volume < 0) {
+            this.volume = 0;
+        }
+
+        for(const played of this.playerList) {
+            played.volume = this.volume;
+        }
     }
 
     async playSound({ sound, loop }) {

@@ -17,7 +17,9 @@ export default class Game {
     static instance = null;
     constructor() {
         this.stage = 1;
-        this.paused = false;
+        this.showFPS = false;
+        this.fullscreenData = {};
+        this.fullscreen = false;
         this.loading = false;
         this.player = null;
         this.width = GameSettings.game.SCREEN_WIDTH;
@@ -116,6 +118,32 @@ export default class Game {
             return;
         }
         this.currState.updateState(this);
+    }
+
+    toggleFullscreen() {
+        this.fullscreen = !this.fullscreen;
+        if(this.fullscreenData === {}) {
+            this.fullscreenData = {
+                game: $('#game').css(),
+                HUD: $('#HUD').css(),
+            }
+        }
+        if(this.fullscreen) {
+            const game = $('#game');
+            const HUD = $('.ui');
+
+
+            game
+                .css('max-width', '100vw')
+                .css('height', '100vh');
+
+            HUD
+                .css('max-width', '100vw')
+                .css('height', '100vh');
+        }
+        else {
+            document.exitFullscreen();
+        }
     }
 
     pauseHandler() {

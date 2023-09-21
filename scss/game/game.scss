@@ -127,7 +127,7 @@ $pink-color: rgb(254, 31, 136);
                 margin-top: 2rem;
                 text-align: center;
 
-                #arrow-left {
+                .arrow-left {
                     @include animationArrow(left);
                     background-color: transparent;
                     width: 20rem;
@@ -139,7 +139,7 @@ $pink-color: rgb(254, 31, 136);
                     aspect-ratio: 92/140;
                 }
 
-                #arrow-right {
+                .arrow-right {
                     @include animationArrow(right);
                     background-color: transparent;
                     width: 20rem;
@@ -152,7 +152,102 @@ $pink-color: rgb(254, 31, 136);
                 @include text-config(button);
                 width: 91%;
                 text-align: center;
+            }
+        }
 
+        #settings-modal {
+            //align-items: center;
+            //justify-content: space-between;
+
+            .title {
+                @include text-config(title);
+                @include absolute(10%, 50%);
+                background-color: transparent;
+                text-align: center;
+            }
+
+            .settings-container {
+                @include flex-rules(column, center, center);
+                @include text-config(button);
+                text-align: center;
+                background-color: transparent;
+
+                .settings-content {
+                    @include flex-rules(row, center, center);
+                    @include hoverable;
+                    background-color: transparent;
+                    width: 100%;
+                    padding: 1.5rem 0;
+
+                    .settings-content-title {
+                        width: 20rem;
+                    }
+
+                    > div {
+                        @include flex-rules(row, space-between, center);
+                        width: 90%;
+                        background-color: transparent;
+
+                        > span {
+                            background-color: transparent;
+                        }
+
+                        .volume-bar {
+                            @include flex-rules(row, center, center);
+
+                            .volume-meter {
+                                width: 1.5rem;
+                                height: 2rem;
+                                margin: 0 0.1rem;
+                            }
+
+                            .on {
+                                background-color: rgb(255, 255, 255, 0.8);
+                            }
+
+                            .off {
+                                background-color: rgb(100, 100, 100, 0.5);
+                            }
+                        }
+                    }
+
+                    .arrow-left {
+                        @include animationArrow(left);
+                        opacity: 0;
+                        background-color: transparent;
+                        width: 3rem;
+                        cursor: pointer;
+                    }
+
+                    .arrow-right {
+                        @include animationArrow(right);
+                        opacity: 0;
+                        background-color: transparent;
+                        width: 3rem;
+                        cursor: pointer;
+                    }
+
+                    &:hover * .arrow-left {
+                        opacity: 100% !important;
+                    }
+
+                    &:hover .arrow-right {
+                        opacity: 100% !important;
+                    }
+                }
+            }
+
+            .exit-button {
+                @include text-config(button);
+                @include absolute(80%, 45.5%);
+                @include hoverable;
+                width: 91%;
+                background-color: transparent;
+                text-align: center;
+
+                > div {
+                    background-color: transparent;
+                }
             }
         }
 
@@ -206,49 +301,6 @@ $pink-color: rgb(254, 31, 136);
         width: 100vw;
         height: fit-content;
     }
-}
-
-#settings-modal {
-    align-items: center;
-    justify-content: space-between;
-}
-#settings-modal .title {
-    color: white;
-    background-color: transparent;
-    text-align: center;
-    margin: 4rem 2.75rem 0;
-    padding: 1rem 0;
-    font-size: 2rem;
-    font-family: 'Press Start 2P', cursive;
-}
-
-.settings-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    background-color: transparent;
-}
-
-.settings-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    padding: 1rem 0;
-    align-items: center;
-    width: 90%;
-    background-color: transparent;
-}
-
-.settings-content:hover {
-    background-color: rgb(254, 31, 136);
-    cursor: pointer;
-}
-
-.settings-container div {
-    font-family: 'Press Start 2P', cursive;
-    color: white;
 }
 
 @keyframes arrowMoveLeft {

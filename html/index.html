@@ -1,75 +1,186 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
-    <title>Document</title>
-    <link rel="stylesheet" href="../scss/game/game.css">
-</head>
-<body>
-<div class="container">
-    <canvas id="game" width="1920" height="1080"></canvas>
-    <div class="ui">
-        <div id="menu-modal" class="modal">
-            <div class="new-game hoverable">
-                New Game
-            </div>
-            <div class="settings hoverable">
-                Settings
-            </div>
-            <div class="exit hoverable">
-                Exit
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+            name="viewport"
+        />
+        <title>Document</title>
+        <link
+            rel="stylesheet"
+            href="../scss/game/game.css"
+        />
+    </head>
+    <body>
+        <div class="container">
+            <canvas
+                id="game"
+                width="1920"
+                height="1080"
+            ></canvas>
+            <div class="ui">
+                <div
+                    id="menu-modal"
+                    class="modal"
+                >
+                    <div class="new-game hoverable">New Game</div>
+                    <div class="settings hoverable">Settings</div>
+                    <div class="exit hoverable">Exit</div>
+                </div>
+                <div
+                    id="selection-modal"
+                    class="modal"
+                >
+                    <div class="title">Select Outfit</div>
+                    <main class="image-container">
+                        <div class="clickable arrow-left"><</div>
+                        <img
+                            id="player-preview"
+                            src="../assets/ui/player_select/player-red.png"
+                            alt=""
+                        />
+                        <div class="clickable arrow-right">></div>
+                    </main>
+                    <div
+                        class="button hoverable"
+                        id="play-button"
+                    >
+                        Play
+                    </div>
+                    <div
+                        class="button hoverable"
+                        id="cancel-button"
+                    >
+                        Cancel
+                    </div>
+                </div>
+                <div
+                    class="modal-background"
+                    id="pause-modal"
+                >
+                    <div class="modal">
+                        <div class="title">Paused</div>
+                        <div
+                            id="continue-button"
+                            class="button hoverable"
+                        >
+                            Continue
+                        </div>
+                        <div
+                            id="settings-button"
+                            class="button hoverable"
+                        >
+                            Settings
+                        </div>
+                        <div
+                            id="exit-button"
+                            class="button hoverable"
+                        >
+                            Exit
+                        </div>
+                    </div>
+                </div>
+                <div
+                    id="settings-modal"
+                    class="modal"
+                >
+                    <div class="title">Settings</div>
+                    <main class="settings-container">
+                        <div class="settings-content hoverable">
+                            <div>
+                                <span class="settings-content-title">Volume</span>
+                                <span class="volume-bar">
+                                    <div
+                                        id="volume-down"
+                                        class="clickable arrow-left"
+                                    >
+                                        <
+                                    </div>
+                                    <div class="volume-meter on"></div>
+                                    <div class="volume-meter on"></div>
+                                    <div class="volume-meter on"></div>
+                                    <div class="volume-meter on"></div>
+                                    <div class="volume-meter on"></div>
+                                    <div class="volume-meter off"></div>
+                                    <div class="volume-meter off"></div>
+                                    <div class="volume-meter off"></div>
+                                    <div class="volume-meter off"></div>
+                                    <div class="volume-meter off"></div>
+                                    <div
+                                        id="volume-up"
+                                        class="clickable arrow-right"
+                                    >
+                                        >
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="settings-content hoverable">
+                            <div class="settings-middle">
+                                <span class="settings-content-title">Fullscreen</span>
+                                <div
+                                    id="fullscreen-toggle-left"
+                                    class="clickable arrow-left"
+                                >
+                                    <
+                                </div>
+                                <span id="fullscreen-text"> Off </span>
+                                <div
+                                    id="fullscreen-toggle-right"
+                                    class="clickable arrow-right"
+                                >
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-content hoverable">
+                            <div class="settings-middle">
+                                <span class="settings-content-title">FPS Counter</span>
+                                <div
+                                    id="fps-counter-toggle-left"
+                                    class="clickable arrow-left"
+                                >
+                                    <
+                                </div>
+                                <span id="fps-counter-text"> Off </span>
+                                <div
+                                    id="fps-counter-toggle-right"
+                                    class="clickable arrow-right"
+                                >
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    <div class="exit-button" id="exit-button-settings">
+                        <div class="hoverable">
+                            Exit
+                        </div>
+                    </div>
+                </div>
+                <img
+                    id="opening-screen"
+                    src="../assets/ui/start.png"
+                    alt=""
+                    width="1920"
+                    height="1080"
+                />
+                <canvas
+                    id="HUD"
+                    width="1920"
+                    height="1080"
+                ></canvas>
             </div>
         </div>
-        <div id="selection-modal" class="modal">
-            <div class="title">Select Outfit</div>
-            <main class="image-container">
-                <div id="arrow-left" class="clickable"><</div>
-                <img id="player-preview" src="../assets/ui/player_select/player-red.png" alt="">
-                <div id="arrow-right" class="clickable">></div>
-            </main>
-            <div class="button hoverable" id="play-button">Play</div>
-            <div class="button hoverable" id="cancel-button">Cancel</div>
-        </div>
-        <div class="modal-background" id="pause-modal">
-            <div class="modal">
-                <div class="title">Paused</div>
-                <div id="continue-button" class="button hoverable">
-                    Continue
-                </div>
-                <div id="settings-button" class="button hoverable">
-                    Settings
-                </div>
-                <div id="exit-button" class="button hoverable">
-                    Exit
-                </div>
-            </div>
-        </div>
-<!--        <div id="settings-modal" class="modal">-->
-<!--            <div class="title">Settings</div>-->
-<!--            <main class="settings-container">-->
-<!--                <div class="settings-content">-->
-<!--                    <div>Volume</div>-->
-<!--                    <div>-->
-<!--                        <div></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="settings-content">-->
-<!--                    <div>Fullscreen</div>-->
-<!--                    <div>On</div>-->
-<!--                </div>-->
-<!--                <div class="settings-content">-->
-<!--                    <div>FPS Counter</div>-->
-<!--                    <div>On</div>-->
-<!--                </div>-->
-<!--            </main>-->
-<!--            <div></div>-->
-<!--        </div>-->
-       <img id="opening-screen" src="../assets/ui/start.png" alt="" width="1920" height="1080">
-        <canvas id="HUD" width="1920" height="1080"></canvas>
-    </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-<script type="module" src="../js/index.js"></script>
-</body>
+        <script
+            src="https://code.jquery.com/jquery-3.7.0.js"
+            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            type="module"
+            src="../js/index.js"
+        ></script>
+    </body>
 </html>
