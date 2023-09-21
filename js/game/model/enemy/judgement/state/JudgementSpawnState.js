@@ -29,6 +29,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
                     y: -(camera.position.y - 100) * 0.05,
                 }
             });
+
         }
 
 
@@ -69,6 +70,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
         if(this.firstSpawn) {
             const { camera } = Game.getInstance();
             camera.setSnapBackToPlayer();
+            AudioPlayer.getInstance().playAudio('boss/music.wav', null, true);
         }
         this.firstSpawn = false;
     }

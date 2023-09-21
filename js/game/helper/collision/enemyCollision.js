@@ -2,7 +2,7 @@ import Game from "../../model/Game/Game.js";
 
 
 export default function enemyCollision({ position }) {
-    const { enemyList } = Game.getInstance().enemyManager;
+    const { enemyList, bossEntities, boss } = Game.getInstance().enemyManager;
 
     for (const enemy of enemyList) {
         if (enemy.currState === enemy.dieState) {
@@ -16,6 +16,36 @@ export default function enemyCollision({ position }) {
             enemy.position.y + enemy.height / 2 - enemy.hitbox.h > position.y
         ) {
             return enemy;
+        }
+    }
+
+    for (const entity of bossEntities) {
+        if (entity.currState === entity.dieState) {
+            continue;
+        }
+
+        if (
+            entity.position.x + entity.hitbox.x < position.x &&
+            entity.position.x + entity.width / 2 - entity.hitbox.w > position.x &&
+            entity.position.y + entity.hitbox.y < position.y &&
+            entity.position.y + entity.height / 2 - entity.hitbox.h > position.y
+        ) {
+            return entity;
+        }
+    }
+
+    if(boss) {
+        if (boss.currState === boss.dieState) {
+            return null;
+        }
+
+        if (
+            boss.position.x + boss.hitbox.x < position.x &&
+            boss.position.x + boss.width / 2 - boss.hitbox.w > position.x &&
+            boss.position.y + boss.hitbox.y < position.y &&
+            boss.position.y + boss.height / 2 - boss.hitbox.h > position.y
+        ) {
+            return boss;
         }
     }
 }

@@ -57,8 +57,8 @@ export default class JudgementBomb extends Enemy {
         this.healthbar = HealthBar.generate({
             position: this.position,
             offset: {
-                x: this.hitbox.x,
-                y: this.hitbox.y,
+                x: 3,
+                y: 30,
             },
             maxHealth: this.maxHealth,
         });
@@ -70,11 +70,20 @@ export default class JudgementBomb extends Enemy {
 
         this.drawBomb();
 
+
         this.healthbar.update({
             health: this.health,
             position: {
-                x: this.position.x,
-                y: this.position.y + 40,
+                x: getHorizontalValue({
+                    initial: this.position.x,
+                    magnitude: this.offset,
+                    angle: this.angle,
+                }),
+                y: getVerticalValue({
+                    initial: this.position.y,
+                    magnitude: this.offset,
+                    angle: this.angle,
+                }),
             },
         });
 

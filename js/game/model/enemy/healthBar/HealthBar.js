@@ -19,31 +19,35 @@ export default class HealthBar {
 
     draw({ health, position }) {
         //TODO REVISIT
-        if (health === this.maxHealth) {
-            return;
-        }
-        this.ctx.translate(-this.width, -this.height / 2);
+        // if (health === this.maxHealth) {
+        //     return;
+        // }
 
-        const x = position.x + this.offset.x + this.width / 2;
+        this.ctx.translate(-this.width / 4, 0);
+
+
+
+        const x = position.x + this.offset.x;
         const y = position.y + this.offset.y;
 
         this.drawOuterBox({
-            x: x + this.width / 4 - 4,
-            y: y + this.height - 4,
+            x: x - 4,
+            y: y - 4,
         });
 
         this.drawInnerBox({
-            x: x + this.width / 4 - 2,
-            y: y + this.height - 2,
+            x: x - 2,
+            y: y - 2,
         })
 
         this.drawHealthBox({
-            x: x + this.width / 4,
-            y: y + this.height,
+            x: x,
+            y: y,
             health: health,
         });
 
-        this.ctx.translate(this.width, this.height / 2);
+        this.ctx.translate(this.width / 4, 0);
+
     }
 
     drawOuterBox({ x, y }) {

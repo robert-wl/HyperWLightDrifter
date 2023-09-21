@@ -6,6 +6,7 @@ import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import GameSettings from '../../../../constants.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
+import AudioPlayer from "../../../../../audio/AudioPlayer.js";
 
 export default class JudgementLaserState extends JudgementBaseState {
     enterState(currJudgement) {
@@ -15,15 +16,17 @@ export default class JudgementLaserState extends JudgementBaseState {
         this.maxAttackCount = 1;
 
         this.attackCount = 0;
-        this.attacking = 5;
+        this.attacking = 8;
 
         this.attackAngle = currJudgement.angle;
+
+        AudioPlayer.getInstance().playAudio('boss/laser.wav');
     }
 
     updateState(currJudgement) {
         this.number += 1;
 
-        if (this.number % 15 === 0) {
+        if (this.number % 12 === 0) {
             this.animationStage += 1;
         }
 
@@ -38,7 +41,7 @@ export default class JudgementLaserState extends JudgementBaseState {
             currJudgement.angle = this.attackAngle;
         }
 
-        if (this.attacking !== 5 && this.animationStage < 12) {
+        if (this.attacking !== 8 && this.animationStage < 12) {
             let offset = 60;
             if (getFaceDirection(currJudgement.angle) === 'left') {
                 offset = -60;

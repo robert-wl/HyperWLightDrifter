@@ -29,7 +29,6 @@ export default class Game {
         this.collideables = [];
         this.elevator = null;
         this.enemyManager = null;
-        this.bossEntities = [];
         this.canvas = null;
         this.ctx = null;
         this.debug = true;
@@ -121,29 +120,29 @@ export default class Game {
     }
 
     toggleFullscreen() {
-        this.fullscreen = !this.fullscreen;
-        if(this.fullscreenData === {}) {
-            this.fullscreenData = {
-                game: $('#game').css(),
-                HUD: $('#HUD').css(),
-            }
-        }
-        if(this.fullscreen) {
-            const game = $('#game');
-            const HUD = $('.ui');
-
-
-            game
-                .css('max-width', '100vw')
-                .css('height', '100vh');
-
-            HUD
-                .css('max-width', '100vw')
-                .css('height', '100vh');
-        }
-        else {
-            document.exitFullscreen();
-        }
+        // this.fullscreen = !this.fullscreen;
+        // if(this.fullscreenData === {}) {
+        //     this.fullscreenData = {
+        //         game: $('#game').css(),
+        //         HUD: $('#HUD').css(),
+        //     }
+        // }
+        // if(this.fullscreen) {
+        //     const game = $('#game');
+        //     const HUD = $('.ui');
+        //
+        //
+        //     game
+        //         .css('max-width', '100vw')
+        //         .css('height', '100vh');
+        //
+        //     HUD
+        //         .css('max-width', '100vw')
+        //         .css('height', '100vh');
+        // }
+        // else {
+        //     document.exitFullscreen();
+        // }
     }
 
     pauseHandler() {

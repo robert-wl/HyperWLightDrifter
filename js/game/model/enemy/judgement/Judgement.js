@@ -9,10 +9,12 @@ import JudgementDashState from './state/JudgementDashState.js';
 import JudgementBombState from './state/JudgementBombState.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
 import HealthBar from "../healthBar/HealthBar.js";
+import AudioPlayer from "../../../../audio/AudioPlayer.js";
 
 export default class Judgement extends Enemy {
     static generate({ x, y }) {
-        Game.getInstance().boss = new Judgement({
+        const { enemyManager } = Game.getInstance();
+        enemyManager.boss = new Judgement({
             x,
             y,
             moveSpeed: 1,
@@ -47,10 +49,7 @@ export default class Judgement extends Enemy {
         this.angle = 0;
         this.moveSpeed = moveSpeed;
         this.bombs = [];
-        // this.position = {
-        //     x: this.position.x + this.width / 2,
-        //     y: this.position.y + this.height / 2,
-        // };
+        this.damaged = 0;
         this.currState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
@@ -61,7 +60,7 @@ export default class Judgement extends Enemy {
 
         this.healthBar = HealthBar.generate({
             position: this.position,
-            offset: { x: 0, y: 200 },
+            offset: { x: 5, y: 200 },
             maxHealth: this.maxHealth,
             HUD: Game.getInstance().HUD,
         })
@@ -76,6 +75,8 @@ export default class Judgement extends Enemy {
     }
 
     handleSwitchState({ dash, attack, laser, bomb }) {
+
+        AudioPlayer.getInstance().playAudio("boss/scream.wav");
         if (Math.random() < 0.6 && dash) {
             this.switchState(this.dashState);
             return;
@@ -108,15 +109,27 @@ export default class Judgement extends Enemy {
         }
 
         this.drawHealthbar();
+
+        if(this.damaged >= 0) {
+            Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');
+        }
+        this.currState.drawImage(this);
+        if(this.damaged >= 0) {
+            Game.getInstance().setFilter('none');
+            this.damaged -= 1;
+        }
     }
 
     drawHealthbar() {
-        const { HUD } = Game.getInstance();
 
         this.healthBar.update({
             health: this.health,
-            position: this.position,
-        })
+            position: {
+                x: this.position.x,
+                y: this.position.y,
+            }
+        });
+
     }
 
     // debugMode() {

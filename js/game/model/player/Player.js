@@ -40,10 +40,10 @@ export default class Player {
         this.width = playerDefault.WIDTH;
         this.height = playerDefault.HEIGHT;
         this.hitbox = {
-            x: -this.width / 2,
-            y: -this.height / 2,
-            w: 0,
-            h: 0,
+            x: -this.width / 2 + 10,
+            y: -this.height / 2 + 5,
+            w: 20,
+            h: 10,
         };
         this.attackBox = {
             x: 0,

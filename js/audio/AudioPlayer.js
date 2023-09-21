@@ -3,7 +3,7 @@ export default class AudioPlayer {
 
     constructor() {
         this.playerList = [];
-        this.volume = 0.5;
+        this.volume = 0.1;
         this.allowSound = true;
     }
 

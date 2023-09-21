@@ -4,6 +4,7 @@ import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelp
 import {getImage} from "../../../helper/imageLoader.js";
 import {drawImage} from "../../../helper/renderer/drawer.js";
 import EnemyManager from "../EnemyManager.js";
+import playerCollision from "../../../helper/collision/playerCollision.js";
 
 export default class JudgementLaser extends Enemy {
     static generate({ x, y, angle }) {
@@ -60,6 +61,14 @@ export default class JudgementLaser extends Enemy {
         this.position.y += getVerticalValue({
             angle: this.velocity.angle,
             magnitude: this.velocity.value,
+        });
+
+        playerCollision({
+            position: {
+                x: this.position.x,
+                y: this.position.y,
+            },
+            angle: this.velocity.angle,
         });
 
         this.render();

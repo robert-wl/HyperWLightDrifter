@@ -42,7 +42,7 @@ export default class CrystalBrute extends Enemy {
         this.healthBar = HealthBar.generate({
             position: this.position,
             offset: {
-                x: 0,
+                x: 5,
                 y: 75,
             },
             maxHealth: this.maxHealth,

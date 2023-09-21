@@ -3,6 +3,8 @@ import firefliesSpawner from '../../../helper/renderer/firefliesSpawner.js';
 import {getImage, imageLoader} from "../../../helper/imageLoader.js";
 import GameSettings from "../../../constants.js";
 import Judgement from "../../enemy/judgement/Judgement.js";
+import AudioPlayer from "../../../../audio/AudioPlayer.js";
+import Collideable from "../../collideable/Collideable.js";
 
 export default class GameStageTwoState extends GameBaseState {
 
@@ -10,6 +12,7 @@ export default class GameStageTwoState extends GameBaseState {
 
     async enterState(game) {
 
+        AudioPlayer.getInstance().stopAll();
         game.stage = 2;
         await this.stageInitializer(game);
 
@@ -19,7 +22,7 @@ export default class GameStageTwoState extends GameBaseState {
 
         game.pauseHandler();
 
-        const { ctx, camera, player, boss, enemyManager, backgroundOpacity, elevator } = game;
+        const { ctx, camera, player, enemyManager, backgroundOpacity, elevator } = game;
 
         if(player.currState === player.inElevatorState && player.currState.isBelowGround) {
             game.brightenBackground();
@@ -35,7 +38,9 @@ export default class GameStageTwoState extends GameBaseState {
         }
 
 
-        ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+        ctx.clearRect(0, 0, game.canvas.width * 2, game.canvas.height * 2);
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, game.canvas.width * 2, game.canvas.height * 3);
         camera.shakeCamera();
 
         if(elevator.currState === elevator.mountedDownState) {
@@ -64,7 +69,7 @@ export default class GameStageTwoState extends GameBaseState {
 
         // camera.renderTopBackground();
 
-        boss?.update();
+        enemyManager.updateBoss();
 
         enemyManager.updateBossEntities()
 
@@ -94,15 +99,15 @@ export default class GameStageTwoState extends GameBaseState {
 
 
         const colliders = [
-            { x: 100, y: 0, w: 300, h: 1000 },
-            { x: 400, y: 0, w: 1025, h: 300 },
-            { x: 1425, y: 0, w: 300, h: 1000 },
-            { x: 100, y: 1050, w: 800, h: 500 },
-            { x: 1000, y: 1050, w: 800, h: 500 },
-            { x: 100, y: 1550, w: 530, h: 800 },
-            { x: 1250, y: 1550, w: 530, h: 800 },
-            { x: 630, y: 2150, w: 620, h: 800 },
+            { x: 100, y: 0, w: 370, h: 1000 },
+            { x: 470, y: 0, w: 995, h: 350 },
+            { x: 1465, y: 0, w: 300, h: 1000 },
+            { x: 100, y: 1000, w: 1664, h: 500 },
         ];
+
+        colliders.forEach((collider) => {
+            Collideable.generate(collider);
+        });
 
         camera.position.x = 0;
         camera.position.y = 0;
@@ -122,26 +127,9 @@ export default class GameStageTwoState extends GameBaseState {
             }
         });
 
-        //971.1727663816865, y: 197.45720130794825
-
         const yDiff = oldYPosition - elevator.y;
         elevator.y = 0;
         player.centerPosition.y = yDiff;
 
-
-
-        // for (const collider of colliders) {
-        //     Collideable.generate(collider);
-        // }
-        //
-        // const medkits = [
-        //     { x: 1400, y: 300 },
-        //     { x: 1400, y: 800 },
-        //     { x: 400, y: 500 },
-        // ];
-        //
-        // for (const medkit of medkits) {
-        //     Medkit.generate(medkit);
-        // }
     }
 }

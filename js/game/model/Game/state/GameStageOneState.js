@@ -1,20 +1,21 @@
-import GameBaseState from "./GameBaseState.js";
-import firefliesSpawner from "../../../helper/renderer/firefliesSpawner.js";
-import ParticlesManager from "../../particles/ParticlesManager.js";
-import InteractionBar from "../../interactables/InteractionBar.js";
-import Game from "../Game.js";
-import {getImage, imageLoader} from "../../../helper/imageLoader.js";
-import GameSettings from "../../../constants.js";
-import Elevator from "../../interactables/Elevator/Elevator.js";
-import Door from "../../interactables/Door.js";
-import Collideable from "../../collideable/Collideable.js";
-import Medkit from "../../interactables/Medkit.js";
-import PauseModal from "../../modal/PauseModal.js";
-
+import GameBaseState from './GameBaseState.js';
+import firefliesSpawner from '../../../helper/renderer/firefliesSpawner.js';
+import ParticlesManager from '../../particles/ParticlesManager.js';
+import InteractionBar from '../../interactables/InteractionBar.js';
+import Game from '../Game.js';
+import { getImage, imageLoader } from '../../../helper/imageLoader.js';
+import GameSettings from '../../../constants.js';
+import Elevator from '../../interactables/Elevator/Elevator.js';
+import Door from '../../interactables/Door.js';
+import Collideable from '../../collideable/Collideable.js';
+import Medkit from '../../interactables/Medkit.js';
+import PauseModal from '../../modal/PauseModal.js';
+import CrystalBrute from '../../enemy/crystalBrute/CrystalBrute.js';
+import JudgementBomb from "../../enemy/judgement/JudgementBomb.js";
+import EnemyManager from "../../enemy/EnemyManager.js";
 
 export default class GameStageOneState extends GameBaseState {
     async enterState(game) {
-
         game.stage = 1;
         await this.stageInitializer(game);
 
@@ -26,7 +27,6 @@ export default class GameStageOneState extends GameBaseState {
     }
 
     updateState(game) {
-
         game.pauseHandler();
 
         const { ctx, camera, player, enemyManager, elevator } = game;
@@ -39,24 +39,22 @@ export default class GameStageOneState extends GameBaseState {
 
         elevator.update();
 
-        if(player.currState?.isBelowGround) {
+        if (player.currState?.isBelowGround) {
             player.updateState();
         }
         game.setTransparency(game.backgroundOpacity);
         camera.renderLowerBackground();
         game.setTransparency(1);
 
-
         game.enemySpawnHandler();
 
         firefliesSpawner();
-
 
         enemyManager.update();
 
         game.collideables.forEach((collideable) => collideable.update());
 
-        if(!player.currState?.isBelowGround) {
+        if (!player.currState?.isBelowGround) {
             player.updateState();
         }
 
@@ -69,11 +67,10 @@ export default class GameStageOneState extends GameBaseState {
 
         ParticlesManager.getInstance().update();
         game.collideables.forEach((collideable) => {
-            if(collideable.detectInteraction) {
-                collideable.detectInteraction()
+            if (collideable.detectInteraction) {
+                collideable.detectInteraction();
             }
         });
-
         InteractionBar.drawBar();
 
         game.drawHUD();
@@ -82,14 +79,14 @@ export default class GameStageOneState extends GameBaseState {
 
     handleStageChange(game) {
         const { player, backgroundOpacity } = Game.getInstance();
-        if(player.currState?.isBelowGround && backgroundOpacity === 0) {
+        if (player.currState?.isBelowGround && backgroundOpacity === 0) {
             game.switchState(game.stageTwoState);
         }
     }
 
     async stageInitializer(game) {
-        $("#menu-modal").css("display", "none");
-        const { camera, player } = game
+        $('#menu-modal').css('display', 'none');
+        const { camera, player } = game;
 
         await imageLoader(GameSettings.IMAGES.STAGE_ONE);
 
@@ -99,7 +96,7 @@ export default class GameStageOneState extends GameBaseState {
         camera.init({
             lowerBackground: mapGround,
             topBackground: mapTop,
-        })
+        });
 
         player.position = {
             x: 900,
@@ -111,16 +108,18 @@ export default class GameStageOneState extends GameBaseState {
             y: 1600 + player.height / 2,
         };
 
+
+
         Elevator.generate({
             x: 950,
             y: 2011,
-        })
+        });
 
         Door.generate({
             x: 904,
             y: 1040,
             collideable: true,
-        })
+        });
 
         const colliders = [
             { x: 100, y: 0, w: 300, h: 1000 },
@@ -148,7 +147,6 @@ export default class GameStageOneState extends GameBaseState {
         });
 
         game.prepareCanvas();
-
 
         camera.setCameraPosition({
             position: game.player.centerPosition,
