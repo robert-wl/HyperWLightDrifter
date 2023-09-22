@@ -1,12 +1,13 @@
 import JudgementBaseState from './JudgementBaseState.js';
 import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
-import GameSettings from "../../../../constants.js";
-import Game from "../../../Game/Game.js";
-import AudioPlayer from "../../../../../audio/AudioPlayer.js";
+import GameSettings from '../../../../constants.js';
+import Game from '../../../Game/Game.js';
+import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 export default class JudgementSpawnState extends JudgementBaseState {
     firstSpawn = true;
+
     enterState() {
         this.number = 0;
         this.animationStage = 1;
@@ -14,44 +15,13 @@ export default class JudgementSpawnState extends JudgementBaseState {
         AudioPlayer.getInstance().playAudio('boss/spawn.wav');
     }
 
-    updateState(currJudgement) {
-        const { camera } = Game.getInstance();
-        this.number += 1;
-
-        if (this.number === 7) {
-            this.number = 0;
-            this.animationStage += 1;
+    exitState() {
+        if (this.firstSpawn) {
+            const { camera } = Game.getInstance();
+            camera.setSnapBackToPlayer();
+            AudioPlayer.getInstance().playAudio('boss/music.wav', null, true);
         }
-
-        if(this.firstSpawn) {
-            camera.moveCameraPosition({
-                direction: {
-                    y: -(camera.position.y - 100) * 0.05,
-                }
-            });
-
-        }
-
-
-        if(this.number === 0 && this.animationStage === 16) {
-            camera.setShakeCamera({
-                duration: 200,
-                angle: Math.PI / 2
-            });
-        }
-
-        if(this.animationStage === 14) {
-            AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
-        }
-
-        if (this.animationStage === 22) {
-            currJudgement.handleSwitchState({
-                move: true,
-                dash: true,
-                attack: true,
-                laser: true,
-            });
-        }
+        this.firstSpawn = false;
     }
 
     drawImage(currJudgement) {
@@ -66,12 +36,37 @@ export default class JudgementSpawnState extends JudgementBaseState {
             translate: true,
         });
     }
-    exitState() {
-        if(this.firstSpawn) {
-            const { camera } = Game.getInstance();
-            camera.setSnapBackToPlayer();
-            AudioPlayer.getInstance().playAudio('boss/music.wav', null, true);
+
+    updateState(currJudgement) {
+        const { camera } = Game.getInstance();
+        this.number += 1;
+
+        if (this.number % 7 === 0) {
+            this.number = 0;
+            this.animationStage += 1;
         }
-        this.firstSpawn = false;
+
+        if (this.firstSpawn) {
+            camera.moveCameraPosition({
+                direction: {
+                    y: -(camera.position.y - 100) * 0.05,
+                },
+            });
+        }
+
+        if (this.number % 7 === 0 && this.animationStage === 16) {
+            camera.setShakeCamera({
+                duration: 200,
+                angle: Math.PI / 2,
+            });
+        }
+
+        if (this.animationStage === 14) {
+            AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
+        }
+
+        if (this.animationStage === 22) {
+            currJudgement.handleSwitchState();
+        }
     }
 }

@@ -1,32 +1,12 @@
 import Game from '../../Game/Game.js';
 import Enemy from '../Enemy.js';
-import {getRandomValue} from "../../../helper/randomHelper.js";
-import {getNumberedImage} from "../../../helper/imageLoader.js";
-import {drawImage} from "../../../helper/renderer/drawer.js";
-import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
-import playerCollision from "../../../helper/collision/playerCollision.js";
+import { getRandomValue } from '../../../helper/randomHelper.js';
+import { getNumberedImage } from '../../../helper/imageLoader.js';
+import { drawImage } from '../../../helper/renderer/drawer.js';
+import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
+import playerCollision from '../../../helper/collision/playerCollision.js';
 
 export default class JudgementBullet extends Enemy {
-    static generate({ x, y, angle }) {
-        const newJudgementBullet = new JudgementBullet({
-            x,
-            y,
-            velocity: {
-                value: getRandomValue({
-                    initialValue: 5,
-                    randomValue: 1,
-                }),
-                angle: angle,
-            },
-            lifetime: getRandomValue({
-                initialValue: 100,
-                randomValue: 200,
-            }),
-        });
-
-        const { bossEntities } = Game.getInstance().enemyManager;
-        bossEntities.push(newJudgementBullet);
-    }
     constructor({ x, y, velocity, lifetime }) {
         super({
             x,
@@ -47,6 +27,27 @@ export default class JudgementBullet extends Enemy {
         this.lifetime = lifetime;
     }
 
+    static generate({ x, y, angle }) {
+        const newJudgementBullet = new JudgementBullet({
+            x,
+            y,
+            velocity: {
+                value: getRandomValue({
+                    initialValue: 5,
+                    randomValue: 1,
+                }),
+                angle: angle,
+            },
+            lifetime: getRandomValue({
+                initialValue: 100,
+                randomValue: 200,
+            }),
+        });
+
+        const { bossEntities } = Game.getInstance().enemyManager;
+        bossEntities.push(newJudgementBullet);
+    }
+
     damage({ amount, angle }) {
         super.damage({ amount, angle });
         this.knockback();
@@ -58,6 +59,7 @@ export default class JudgementBullet extends Enemy {
 
     update() {
         this.lifetime -= 1;
+
         this.position.x += getHorizontalValue({
             angle: this.velocity.angle,
             magnitude: this.velocity.value,
@@ -66,7 +68,6 @@ export default class JudgementBullet extends Enemy {
             angle: this.velocity.angle,
             magnitude: this.velocity.value,
         });
-
 
         playerCollision({
             position: {

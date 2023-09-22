@@ -32,6 +32,7 @@ export default class InteractionBar {
             if (object.interactionStage === 20) {
                 if (object instanceof Medkit) {
                     player.healing = 6;
+                    player.healthPack += 1;
                 }
                 return true;
             }

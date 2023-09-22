@@ -5,8 +5,10 @@ import GameSettings from "../../constants.js";
 export default function playerInput() {
     $(document).keydown((e) => {
         const { keys } = Game.getInstance();
+        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q'];
 
-        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 's' || e.key === 'e' || e.key === 'c'  || e.key === 'c') {
+        console.log(e.key)
+        if (keyList.includes(e.key)) {
             if (keys.includes(e.key)) {
                 return;
             }
@@ -27,12 +29,15 @@ export default function playerInput() {
 
             keys.push('escape');
         }
+
     });
 
 
     $(document).keyup((e) => {
         const { keys } = Game.getInstance();
-        if (e.key === 'a' || e.key === 'w' || e.key === 'd' || e.key === 's' || e.key === 'e' || e.key === 'c') {
+        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q'];
+
+        if (keyList.includes(e.key)) {
             const index = keys.indexOf(e.key);
             if (index > -1) {
                 keys.splice(index, 1);

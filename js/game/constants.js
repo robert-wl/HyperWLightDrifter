@@ -517,6 +517,11 @@ const GameSettings = {
                 amount: 4,
             },
             {
+                ref: 'boss/death/judgement_death.png',
+                name: 'judgement_death',
+                amount: 21,
+            },
+            {
                 ref: 'boss/laser/judgement_laser_bullet.png',
                 name: 'judgement_laser_bullet',
             },

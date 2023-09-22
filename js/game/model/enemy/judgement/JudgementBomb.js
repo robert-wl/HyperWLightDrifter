@@ -1,27 +1,13 @@
 import Game from '../../Game/Game.js';
 import Enemy from '../Enemy.js';
 import HealthBar from '../healthBar/HealthBar.js';
-import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
+import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../../helper/distanceHelper.js';
 import { getNumberedImage } from '../../../helper/imageLoader.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
-import EnemyManager from "../EnemyManager.js";
 
 export default class JudgementBomb extends Enemy {
-    static generate({ position, angle }) {
-        const newJudgementBomb = new JudgementBomb({
-            position: position,
-            angle: angle,
-            offset: 120,
-            lifetime: 300,
-            width: 40,
-            height: 40,
-        });
-
-        const { bossEntities } = Game.getInstance().enemyManager;
-        bossEntities.push(newJudgementBomb);
-    }
     constructor({ position, offset, angle, lifetime, width, height }) {
         super({
             x: position.x,
@@ -65,11 +51,24 @@ export default class JudgementBomb extends Enemy {
         this.moveAngle = Math.random() * Math.PI * 2;
     }
 
+    static generate({ position, angle }) {
+        const newJudgementBomb = new JudgementBomb({
+            position: position,
+            angle: angle,
+            offset: 120,
+            lifetime: 300,
+            width: 40,
+            height: 40,
+        });
+
+        const { bossEntities } = Game.getInstance().enemyManager;
+        bossEntities.push(newJudgementBomb);
+    }
+
     update() {
         this.handleTimer();
 
         this.drawBomb();
-
 
         this.healthbar.update({
             health: this.health,
@@ -99,8 +98,8 @@ export default class JudgementBomb extends Enemy {
     handleTimer() {
         this.number++;
 
-        if(this.health <= 0) {
-            if(this.number % 10 === 0 && this.animationStage < 11) {
+        if (this.health <= 0) {
+            if (this.number % 10 === 0 && this.animationStage < 11) {
                 this.animationStage++;
             }
 
@@ -130,16 +129,43 @@ export default class JudgementBomb extends Enemy {
         this.lifeTime--;
         this.position = { ...this.position };
 
-
-        if(this.exploding) {
+        if (this.exploding) {
             this.drawExplosion();
 
             if (this.number % 7 === 0 && this.animationStage < 11) {
                 this.animationStage++;
             }
+
+            const { player } = Game.getInstance();
+
+            const distance = getManhattanDistance({
+                x:
+                    player.centerPosition.x -
+                    getHorizontalValue({
+                        initial: this.position.x,
+                        magnitude: this.offset,
+                        angle: this.angle,
+                    }),
+                y:
+                    player.centerPosition.y -
+                    getVerticalValue({
+                        initial: this.position.y,
+                        magnitude: this.offset,
+                        angle: this.angle,
+                    }),
+            });
+
+            console.log(player.centerPosition);
+            console.log(distance);
+            if (distance < 150) {
+                player.damage({
+                    amount: 3,
+                    angle: 0,
+                });
+            }
         }
 
-        if(!this.exploding) {
+        if (!this.exploding) {
             this.position.x += getHorizontalValue({
                 magnitude: 3,
                 angle: this.moveAngle,

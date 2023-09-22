@@ -40,9 +40,6 @@ function healingHandler(currPlayer){
             currPlayer.width - currPlayer.hitbox.x,
         );
         ctx.restore();
-        if(currPlayer.health < currPlayer.maxhealth) {
-            currPlayer.health += 1;
-        }
     }
 }
 

@@ -1,11 +1,11 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js';
+import { drawMirroredY } from '../../../../helper/renderer/drawer.js';
 import JudgementBullet from '../JudgementBullet.js';
 import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import GameSettings from "../../../../constants.js";
-import AudioPlayer from "../../../../../audio/AudioPlayer.js";
+import GameSettings from '../../../../constants.js';
+import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 export default class JudgementAttackState extends JudgementBaseState {
     enterState() {
@@ -13,13 +13,29 @@ export default class JudgementAttackState extends JudgementBaseState {
         this.animationStage = 1;
         this.maxAttackCount =
             getRandomValue({
-                randomValue: 3,
+                randomValue: 8,
                 rounded: true,
-            }) + 3;
+            }) + 5;
         this.attackCount = 0;
         this.attacking = false;
         this.attackAngle = getRandomValue({
             randomValue: Math.PI * 2,
+        });
+    }
+
+    drawImage(currJudgement) {
+        const judgementAttack = getNumberedImage('judgement_attack', this.animationStage);
+
+        drawMirroredY({
+            img: judgementAttack,
+            position: {
+                x: currJudgement.position.x,
+                y: currJudgement.position.y,
+            },
+            width: judgementAttack.width * GameSettings.GAME.GAME_SCALE,
+            height: judgementAttack.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+            mirrored: getFaceDirection(currJudgement.angle) === 'left',
         });
     }
 
@@ -43,19 +59,11 @@ export default class JudgementAttackState extends JudgementBaseState {
         }
 
         if (this.attackCount === this.maxAttackCount) {
-            currJudgement.handleSwitchState({
-                move: true,
-                dash: true,
-                attack: true,
-                laser: true,
-                bomb: true,
-            });
+            currJudgement.handleSwitchState();
         }
     }
 
     attack(currJudgement) {
-
-
         if (this.attacking && this.number % 2 === 0) {
             this.attackAngle += getRandomValue({
                 initialValue: (2 / 30) * Math.PI,
@@ -80,36 +88,8 @@ export default class JudgementAttackState extends JudgementBaseState {
             });
         }
 
-        if(this.attacking && this.number % 8 === 0) {
+        if (this.attacking && this.number % 8 === 0) {
             AudioPlayer.getInstance().playAudio('boss/bullet.wav');
         }
-    }
-
-    drawImage(currJudgement) {
-        const judgementAttack = getNumberedImage('judgement_attack', this.animationStage);
-
-        if (getFaceDirection(currJudgement.angle) === 'left') {
-            drawMirroredY({
-                img: judgementAttack,
-                position: {
-                    x: currJudgement.position.x,
-                    y: currJudgement.position.y,
-                },
-                width: judgementAttack.width * GameSettings.GAME.GAME_SCALE,
-                height: judgementAttack.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-            });
-
-            return;
-        }
-
-        drawImage({
-            img: judgementAttack,
-            x: currJudgement.position.x,
-            y: currJudgement.position.y,
-            width: judgementAttack.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementAttack.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-        });
     }
 }

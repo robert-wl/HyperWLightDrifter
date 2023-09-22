@@ -10,9 +10,6 @@ import Door from '../../interactables/Door.js';
 import Collideable from '../../collideable/Collideable.js';
 import Medkit from '../../interactables/Medkit.js';
 import PauseModal from '../../modal/PauseModal.js';
-import CrystalBrute from '../../enemy/crystalBrute/CrystalBrute.js';
-import JudgementBomb from "../../enemy/judgement/JudgementBomb.js";
-import EnemyManager from "../../enemy/EnemyManager.js";
 
 export default class GameStageOneState extends GameBaseState {
     async enterState(game) {
@@ -99,16 +96,14 @@ export default class GameStageOneState extends GameBaseState {
         });
 
         player.position = {
-            x: 900,
-            y: 1600,
+            x: 950,
+            y: 500,
         };
 
         player.centerPosition = {
-            x: 900 + player.width / 2,
-            y: 1600 + player.height / 2,
+            x: 950 + player.width / 2,
+            y: 500 + player.height / 2,
         };
-
-
 
         Elevator.generate({
             x: 950,

@@ -1,5 +1,4 @@
 import Game from './game/model/Game/Game.js';
-import EnemyManager from './game/model/enemy/EnemyManager.js';
 
 $(document).ready(async () => {
     const game = Game.getInstance();

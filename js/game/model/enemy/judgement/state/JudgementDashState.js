@@ -1,16 +1,17 @@
 import JudgementBaseState from './JudgementBaseState.js';
 import Game from '../../../Game/Game.js';
-import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js';
+import { drawImage } from '../../../../helper/renderer/drawer.js';
 import judgementDashDrawer from '../../../../helper/boss/judgementDashDrawer.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import GameSettings from "../../../../constants.js";
+import GameSettings from '../../../../constants.js';
 
 export default class JudgementDashState extends JudgementBaseState {
     lastData = [];
+
     enterState(currJudgement) {
         this.number = 0;
         this.animationStage = 1;
@@ -24,12 +25,38 @@ export default class JudgementDashState extends JudgementBaseState {
             ];
     }
 
+    drawImage(currJudgement) {
+        this.lastData.forEach((data, index) => {
+            Game.getInstance().setTransparency(1 - (this.lastData.length - index) / this.lastData.length);
+
+            judgementDashDrawer(data);
+        });
+
+        Game.getInstance().setTransparency(1);
+
+        const judgementMove = getNumberedImage('judgement_move', this.animationStage);
+
+        drawImage({
+            img: judgementMove,
+            x: currJudgement.position.x,
+            y: currJudgement.position.y,
+            width: judgementMove.width * GameSettings.GAME.GAME_SCALE,
+            height: judgementMove.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+            mirrored: getFaceDirection(currJudgement.angle) === 'left',
+        });
+    }
+
     updateState(currJudgement) {
         this.number += 1;
 
         if (this.number === 15) {
             this.number = 0;
             this.animationStage += 1;
+
+            if (this.animationStage === 4) {
+                this.animationStage = 1;
+            }
         }
 
         const { player } = Game.getInstance();
@@ -49,13 +76,7 @@ export default class JudgementDashState extends JudgementBaseState {
         });
 
         if (Math.abs(dist) < 20) {
-            currJudgement.handleSwitchState({
-                move: false,
-                moveTwo: false,
-                attack: true,
-                laser: true,
-                bomb: true,
-            });
+            currJudgement.handleSwitchState();
         }
 
         currJudgement.position.x += getHorizontalValue({
@@ -70,42 +91,6 @@ export default class JudgementDashState extends JudgementBaseState {
         this.shadowHandler(currJudgement);
     }
 
-    drawImage(currJudgement) {
-        this.lastData.forEach((data, index) => {
-            Game.getInstance().setTransparency(1 - (this.lastData.length - index) / this.lastData.length);
-
-            judgementDashDrawer(data);
-        });
-
-        Game.getInstance().setTransparency(1);
-
-        const judgementMove = getNumberedImage('judgement_move', (this.animationStage % 3) + 1);
-
-        if (getFaceDirection(currJudgement.angle) === 'left') {
-            drawMirroredY({
-                img: judgementMove,
-                position: {
-                    x: currJudgement.position.x,
-                    y: currJudgement.position.y,
-                },
-                width: judgementMove.width * GameSettings.GAME.GAME_SCALE,
-                height: judgementMove.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-            });
-
-            return;
-        }
-
-        drawImage({
-            img: judgementMove,
-            x: currJudgement.position.x,
-            y: currJudgement.position.y,
-            width: judgementMove.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementMove.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-        });
-    }
-
     shadowHandler(currJudgement) {
         const data = {
             moveNumber: this.animationStage,
@@ -116,6 +101,7 @@ export default class JudgementDashState extends JudgementBaseState {
         if (this.number % 5 === 0) {
             this.lastData.push(data);
         }
+
         if (this.lastData.length > 3) {
             this.lastData.shift();
         }

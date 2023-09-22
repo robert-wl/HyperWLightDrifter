@@ -1,26 +1,11 @@
 import Game from '../../Game/Game.js';
 import Enemy from '../Enemy.js';
-import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
-import {getImage} from "../../../helper/imageLoader.js";
-import {drawImage} from "../../../helper/renderer/drawer.js";
-import EnemyManager from "../EnemyManager.js";
-import playerCollision from "../../../helper/collision/playerCollision.js";
+import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
+import { getImage } from '../../../helper/imageLoader.js';
+import { drawImage } from '../../../helper/renderer/drawer.js';
+import playerCollision from '../../../helper/collision/playerCollision.js';
 
 export default class JudgementLaser extends Enemy {
-    static generate({ x, y, angle }) {
-        const newJudgementLaser = new JudgementLaser({
-            x,
-            y,
-            velocity: {
-                value: 12.5,
-                angle: angle,
-            },
-            lifetime: 200 + Math.random() * 200,
-        });
-
-        const { bossEntities } = Game.getInstance().enemyManager;
-        bossEntities.push(newJudgementLaser);
-    }
     constructor({ x, y, velocity, lifetime }) {
         super({
             x,
@@ -36,15 +21,27 @@ export default class JudgementLaser extends Enemy {
             health: 1,
             maxHealth: 1,
         });
-        this.imageAngle = Math.random() * 2 * Math.PI;
         this.velocity = velocity;
         this.maxLifetime = lifetime;
         this.lifetime = lifetime;
     }
 
-    damage(_) {
-        // override
+    static generate({ x, y, angle }) {
+        const newJudgementLaser = new JudgementLaser({
+            x,
+            y,
+            velocity: {
+                value: 12.5,
+                angle: angle,
+            },
+            lifetime: 300,
+        });
+
+        const { bossEntities } = Game.getInstance().enemyManager;
+        bossEntities.push(newJudgementLaser);
     }
+
+    damage(_) {}
 
     knockback() {
         this.velocity.value *= 3;
@@ -79,7 +76,7 @@ export default class JudgementLaser extends Enemy {
     }
 
     kill() {
-        const { bossEntities } = EnemyManager.getInstance();
+        const { bossEntities } = Game.getInstance().enemyManager;
         bossEntities.splice(bossEntities.indexOf(this), 1);
     }
 

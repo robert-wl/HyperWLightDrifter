@@ -120,6 +120,7 @@ export default class Player {
 
         this.moveHandler();
 
+        this.heal();
         if (Game.getInstance().debug) {
             this.renderDebugBox();
         }
@@ -135,6 +136,24 @@ export default class Player {
     updateCounter() {
         // console.log(Game.getInstance().keys)
         this.counter = (this.counter + 1) % 7;
+    }
+
+    heal() {
+        const { keys } = Game.getInstance();
+
+        if(!keys.includes("q")) {
+            return;
+        }
+
+        keys.splice(keys.indexOf("q"), 1);
+
+        if(this.healthPack <= 0) {
+            return;
+        }
+
+        this.healthPack -= 1;
+        this.health += 5;
+        this.healing = 6;
     }
 
     getHitboxCoordinates() {
@@ -158,6 +177,11 @@ export default class Player {
         if (this.currState === this.deathState) {
             return;
         }
+
+        if(this.immunity < 50 || this.currState === this.dashState) {
+            return;
+        }
+
         this.immunity = 0;
         this.health -= 1;
 

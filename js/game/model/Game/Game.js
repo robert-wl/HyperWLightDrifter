@@ -4,17 +4,18 @@ import { get_image } from '../../helper/fileReader.js';
 import Camera from '../camera/Camera.js';
 import hudHandler from '../../ui/hudHandler.js';
 import GameSettings from '../../constants.js';
-import EnemyManager from "../enemy/EnemyManager.js";
-import GameStartState from "./state/GameStartState.js";
-import GameStageOneState from "./state/GameStageOneState.js";
-import GameStageTwoState from "./state/GameStageTwoState.js";
-import GamePausedState from "./state/GamePausedState.js";
-import GameBaseState from "./state/GameBaseState.js";
-import AudioPlayer from "../../../audio/AudioPlayer.js";
-import GameLoseState from "./state/GameLoseState.js";
+import EnemyManager from '../enemy/EnemyManager.js';
+import GameStartState from './state/GameStartState.js';
+import GameStageOneState from './state/GameStageOneState.js';
+import GameStageTwoState from './state/GameStageTwoState.js';
+import GamePausedState from './state/GamePausedState.js';
+import GameBaseState from './state/GameBaseState.js';
+import AudioPlayer from '../../../audio/AudioPlayer.js';
+import GameLoseState from './state/GameLoseState.js';
 
 export default class Game {
     static instance = null;
+
     constructor() {
         this.stage = 1;
         this.showFPS = false;
@@ -43,18 +44,27 @@ export default class Game {
         this.loseState = new GameLoseState();
     }
 
+    static getInstance() {
+        if (Game.instance == null) {
+            Game.instance = new Game();
+        }
+        return Game.instance;
+    }
+
     changeState() {
+        this.enemyManager.enemyList = [];
         this.collideables = [];
         this.ctx.fillStyle = '#000000';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height * 2);
     }
+
     async init() {
         playerInput();
         this.camera = new Camera();
-        this.enemyManager = new EnemyManager()
-        this.player = new Player()
+        this.enemyManager = new EnemyManager();
+        this.player = new Player();
 
-        this.player.init()
+        this.player.init();
 
         // await secondStage({
         //     game: this,
@@ -63,20 +73,12 @@ export default class Game {
         //
     }
 
-    static getInstance() {
-        if (Game.instance == null) {
-            Game.instance = new Game();
-        }
-        return Game.instance;
-    }
-
     async playGame(outfitNumber) {
-
-        console.log("hello")
-        if(outfitNumber === 1) {
+        console.log('hello');
+        if (outfitNumber === 1) {
             this.player.outfit = 'dark';
         }
-        if(outfitNumber === 2) {
+        if (outfitNumber === 2) {
             this.player.outfit = 'yellow';
         }
 
@@ -113,7 +115,7 @@ export default class Game {
     }
 
     updateGame() {
-        if(this.loading) {
+        if (this.loading) {
             return;
         }
         this.currState.updateState(this);
@@ -146,7 +148,7 @@ export default class Game {
     }
 
     pauseHandler() {
-        if(this.keys.includes("escape")) {
+        if (this.keys.includes('escape')) {
             this.switchState(this.pausedState);
         }
     }
@@ -154,12 +156,11 @@ export default class Game {
     unpauseGame() {
         this.keys = [];
         this.clicks = [];
-        if(this.stage === 1) {
-            this.currState.exitState(this)
+        if (this.stage === 1) {
+            this.currState.exitState(this);
             this.currState = this.stageOneState;
-        }
-        else if(this.stage === 2) {
-            this.currState.exitState(this)
+        } else if (this.stage === 2) {
+            this.currState.exitState(this);
             this.currState = this.stageTwoState;
         }
     }
@@ -183,9 +184,7 @@ export default class Game {
         this.setTransparency(1);
     }
 
-    enemySpawnHandler() {
-
-    }
+    enemySpawnHandler() {}
 
     darkenBackground(darken = 0.05) {
         this.backgroundOpacity -= darken;
@@ -196,13 +195,13 @@ export default class Game {
 
     brightenBackground() {
         this.backgroundOpacity += 0.05;
-        if(this.backgroundOpacity > 1) {
+        if (this.backgroundOpacity > 1) {
             this.backgroundOpacity = 1;
         }
     }
 
     setTransparency(transparency, canvas = this.ctx) {
-        if(transparency < 0) {
+        if (transparency < 0) {
             transparency = 0;
         }
         canvas.globalAlpha = transparency;
@@ -211,5 +210,4 @@ export default class Game {
     setFilter(filter) {
         this.ctx.filter = filter;
     }
-
 }

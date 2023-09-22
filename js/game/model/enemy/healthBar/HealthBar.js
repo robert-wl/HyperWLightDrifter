@@ -1,31 +1,38 @@
 import Game from '../../Game/Game.js';
 
 export default class HealthBar {
-    static generate({ position, offset, maxHealth, HUD }) {
-        return new HealthBar({ position, offset, maxHealth, HUD });
-    }
     constructor({ position, offset, maxHealth, HUD }) {
         this.width = maxHealth * 14 + 6;
         this.height = 10;
         this.position = position;
         this.offset = offset;
         this.maxHealth = maxHealth;
-        this.ctx = HUD || Game.getInstance().ctx;
+
+        if (HUD) {
+            this.ctx = HUD;
+            this.translate = false;
+            return;
+        }
+        this.ctx = Game.getInstance().ctx;
+        this.translate = true;
     }
 
-    update({ health, position }) {
-        this.draw({ health, position });
+    static generate({ position, offset, maxHealth, HUD }) {
+        return new HealthBar({ position, offset, maxHealth, HUD });
     }
 
-    draw({ health, position }) {
-        //TODO REVISIT
-        // if (health === this.maxHealth) {
-        //     return;
-        // }
+    update({ health, position, bypass }) {
+        this.draw({ health, position, bypass });
+    }
 
-        this.ctx.translate(-this.width / 4, 0);
+    draw({ health, position, bypass }) {
+        if (health === this.maxHealth && !bypass) {
+            return;
+        }
 
-
+        if (this.translate) {
+            this.ctx.translate(-this.width / 4, 0);
+        }
 
         const x = position.x + this.offset.x;
         const y = position.y + this.offset.y;
@@ -38,7 +45,7 @@ export default class HealthBar {
         this.drawInnerBox({
             x: x - 2,
             y: y - 2,
-        })
+        });
 
         this.drawHealthBox({
             x: x,
@@ -46,17 +53,17 @@ export default class HealthBar {
             health: health,
         });
 
-        this.ctx.translate(this.width / 4, 0);
-
+        if (this.translate) {
+            this.ctx.translate(this.width / 4, 0);
+        }
     }
 
     drawOuterBox({ x, y }) {
-        const { ctx } = Game.getInstance();
-        ctx.fillStyle = 'rgb(255, 75, 75, 0.5)';
-        ctx.fillRect(x, y, this.width / 2 + 3, 5 + 8);
+        this.ctx.fillStyle = 'rgb(255, 75, 75, 0.5)';
+        this.ctx.fillRect(x, y, this.width / 2 + 3, 5 + 8);
     }
 
-    drawInnerBox({ x, y }){
+    drawInnerBox({ x, y }) {
         this.ctx.fillStyle = 'rgb(50, 50, 50, 0.9)';
 
         this.ctx.fillRect(x, y, this.width / 2 - 1, 5 + 4);

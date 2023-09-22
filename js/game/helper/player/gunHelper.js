@@ -1,34 +1,25 @@
-import {getHorizontalValue, getVerticalValue} from "../distanceHelper.js";
-import Game from "../../model/Game/Game.js";
-import enemyCollision from "../collision/enemyCollision.js";
-import {getImage, getNumberedImage} from "../imageLoader.js";
-import {drawImage, drawRotated} from "../renderer/drawer.js";
-
+import { getHorizontalValue, getVerticalValue } from '../distanceHelper.js';
+import Game from '../../model/Game/Game.js';
+import enemyCollision from '../collision/enemyCollision.js';
+import { getImage, getNumberedImage } from '../imageLoader.js';
+import { drawImage, drawRotated } from '../renderer/drawer.js';
 
 export function shootHandler({ currPlayer, clicks, angle, length, first }) {
-
-
     drawRay({
         length: length,
         currPlayer: currPlayer,
         lookAngle: angle,
-    })
+    });
 
     clicks.splice(clicks.indexOf('left'), 1);
 
-
     const { audio } = Game.getInstance();
 
-
-    if(first) {
+    if (first) {
         currPlayer.bullets -= 1;
         audio.playAudio('player/gun_fire.wav');
     }
-
 }
-
-
-
 
 export function drawShootLine(currPlayer) {
     const { ctx } = Game.getInstance();
@@ -36,7 +27,7 @@ export function drawShootLine(currPlayer) {
 
     let length = 1200;
     let enemy = null;
-    for(let i = 0; i < 300; i++) {
+    for (let i = 0; i < 300; i++) {
         const x = getHorizontalValue({
             initial: currPlayer.centerPosition.x,
             magnitude: i * 3,
@@ -48,9 +39,9 @@ export function drawShootLine(currPlayer) {
             angle: lookAngle,
         });
 
-        const position = { x, y }
+        const position = { x, y };
         enemy = enemyCollision({ position });
-        if(enemy) {
+        if (enemy) {
             length = i * 3 + 10;
             break;
         }
@@ -67,7 +58,6 @@ export function drawShootLine(currPlayer) {
         angle: lookAngle,
     });
 
-
     const lineWidth = 2;
     ctx.beginPath();
     ctx.strokeStyle = `rgb(255, 0, 0, ${Math.random() * 0.5 + 0.1})`;
@@ -78,15 +68,14 @@ export function drawShootLine(currPlayer) {
     ctx.translate(lineWidth / 2, lineWidth / 2);
     ctx.stroke();
 
-    return {length, enemy};
+    return { length, enemy };
 }
 
 function drawRay({ length, currPlayer, lookAngle }) {
     const rayImage = getImage('gun_ray');
 
-    let lastX = currPlayer.centerPosition.x;
-    let lastY = currPlayer.centerPosition.y;
-    for(let i = 0; i < length; i += 3) {
+    let { x: lastX, y: lastY } = currPlayer.centerPosition;
+    for (let i = 0; i < length; i += 3) {
         lastX = getHorizontalValue({
             initial: lastX,
             magnitude: 3,
@@ -106,8 +95,7 @@ function drawRay({ length, currPlayer, lookAngle }) {
             },
             angle: lookAngle,
             size: 2,
-        })
-
+        });
     }
 }
 
@@ -130,7 +118,7 @@ export function drawExplosion({ distance, currPlayer, angle, number }) {
         width: effect.width * 2,
         height: effect.height * 2,
         translate: true,
-    })
+    });
 }
 
 export function drawEffect({ explosionDistance, currPlayer, angle }) {
@@ -152,5 +140,5 @@ export function drawEffect({ explosionDistance, currPlayer, angle }) {
             }),
         },
         angle: angle + Math.PI / 2,
-    })
+    });
 }
