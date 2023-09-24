@@ -10,63 +10,65 @@ export default class ElevatorMoveState extends ElevatorBaseState {
     enterState(elevator) {
         const { player } = Game.getInstance();
         player.switchState(player.inElevatorState);
-        this.acceleration = 0;
+        this.velocity = 0;
+        this.frictionCoefficient = 0.05;
         this.aboutToMount = false;
         this.number = 49;
     }
 
     updateState(elevator) {
-        this.number += 1;
+        super.updateState(elevator);
 
-        if (this.number % 100 === 0) {
+        if (this.checkCounter(100)) {
             AudioPlayer.getInstance().playAudio('elevator/move.wav');
+
+            this.number = 0;
         }
         const { player, camera } = Game.getInstance();
 
-        this.handleAcceleration(elevator);
+        this.handleVelocity(elevator);
 
-        elevator.y += this.acceleration;
-        player.centerPosition.y += this.acceleration;
-        elevator.travelDistance += this.acceleration;
+        elevator.y += this.velocity;
+        player.centerPosition.y += this.velocity;
+        elevator.travelDistance += this.velocity;
 
         if (this.aboutToMount) {
-            elevator.bottomCrop += this.acceleration * 0.415;
+            elevator.bottomCrop += this.velocity * 0.415;
         }
 
         if (elevator.stageLocation === 2) {
             camera.moveCameraPosition({
                 direction: {
-                    y: this.acceleration,
+                    y: this.velocity,
                 },
             });
         }
 
-        if (this.acceleration === 0) {
+        if (this.velocity === 0) {
             elevator.switchState(elevator.mountedDownState);
         }
     }
 
 
-    handleAcceleration(elevator) {
-
-        if (elevator.stageLocation === 2 && elevator.travelDistance > 620) {
-            this.acceleration -= 0.05;
+    handleVelocity(elevator) {
+        const { deltaTime } = Game.getInstance();
+        if (elevator.stageLocation === 2 && elevator.travelDistance > 650) {
+            this.velocity = this.velocity * (1 - this.frictionCoefficient * deltaTime);
 
             if (elevator.travelDistance > 681) {
                 this.aboutToMount = true;
             }
 
-            if (this.acceleration <= 0) {
-                this.acceleration = 0;
+            if (this.velocity <= 0.01) {
+                this.velocity = 0;
             }
 
             return;
         }
-        this.acceleration += 0.1;
 
-        if (this.acceleration > 3) {
-            this.acceleration = 3;
-        }
+        this.velocity += 0.1 * deltaTime;
+
+        this.velocity = Math.min(this.velocity, 3 * deltaTime);
     }
 
     drawImage(elevator) {
@@ -76,7 +78,6 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         elevator.height = -2 * elevatorImage.height;
 
 
-        // console.log((elevatorImage.height - this.bottomCrop) * GameSettings.GAME.GAME_SCALE)
         drawImageCropped({
             img: elevatorImage,
             imgX: 0,

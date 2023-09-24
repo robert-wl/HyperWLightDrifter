@@ -78,7 +78,7 @@ export default class GameStageTwoState extends GameBaseState {
     async stageInitializer(game) {
         game.prepareCanvas();
         game.changeState();
-        await imageLoader(GameSettings.IMAGES.STAGE_TWO);
+        await imageLoader([GameSettings.IMAGES.STAGE_TWO, GameSettings.IMAGES.PLAYER]);
 
         const { camera, player, elevator } = game;
 

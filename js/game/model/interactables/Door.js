@@ -27,7 +27,7 @@ export default class Door extends Collideable {
     }
 
     update() {
-        const { enemyManager, audio } = Game.getInstance();
+        const { enemyManager, audio, deltaTime } = Game.getInstance();
 
         if (enemyManager.difficulty >= 8) {
             this.isLocked = false;
@@ -36,12 +36,13 @@ export default class Door extends Collideable {
         if (this.openingStage > 0) {
             this.updateAnimationCounter();
 
-            if (this.checkCounter(5)) {
-                this.openingStage += 1;
+            if (this.checkCounter(5) && this.openingStage === 1) {
+                audio.playAudio('forest_stage/door_activate.ogg');
             }
 
-            if (this.checkCounter(4) && this.openingStage === 1) {
-                audio.playAudio('forest_stage/door_activate.ogg');
+            if (this.checkCounter(5)) {
+                this.openingStage += 1;
+                this.number = 0;
             }
         }
 

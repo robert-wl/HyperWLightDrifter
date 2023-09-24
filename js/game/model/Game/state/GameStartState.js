@@ -22,7 +22,7 @@ export default class GameStartState extends GameBaseState {
 
         game.prepareCanvas();
         game.changeState();
-        await imageLoader(GameSettings.IMAGES.SPAWN);
+        await imageLoader([GameSettings.IMAGES.SPAWN]);
         MenuModal.handleInteraction();
         SelectionModal.handleInteraction();
         SettingsModal.handleInteraction();

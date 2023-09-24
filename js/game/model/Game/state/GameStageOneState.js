@@ -88,7 +88,7 @@ export default class GameStageOneState extends GameBaseState {
 
         game.keys = [];
         game.clicks = [];
-        await imageLoader(GameSettings.IMAGES.STAGE_ONE);
+        await imageLoader([GameSettings.IMAGES.STAGE_ONE, GameSettings.IMAGES.PLAYER]);
 
         const mapGround = getImage('map_ground');
         const mapTop = getImage('map_top');

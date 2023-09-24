@@ -1,4 +1,4 @@
-import Game from "../model/Game/Game.js";
+import Game from '../model/Game/Game.js';
 
 const images = {};
 
@@ -9,25 +9,33 @@ const colors = {
         [213, 108, 98],
         [187, 0, 41],
         [101, 14, 57],
-        [166, 212, 52]
+        [166, 212, 52],
     ],
     dark: [
         [26, 8, 32], // 1
         [61, 20, 69],
         [105, 30, 116], //3
         [35, 35, 35],
-        [213, 85, 24]
+        [213, 85, 24],
     ],
     yellow: [
         [249, 171, 9],
         [247, 199, 10],
         [21, 21, 21],
         [68, 23, 9],
-        [70, 85, 255]
-    ]
-}
+        [70, 85, 255],
+    ],
+};
+
 export async function imageLoader(imageData) {
-    for (const { ref, name, amount, outfit } of imageData) {
+
+    let images = [];
+
+    imageData.forEach((imagesD) => {
+        images = [...images, ...imagesD];
+    });
+
+    for (const { ref, name, amount, outfit } of images) {
         if (amount) {
             for (let i = 1; i <= amount; i++) {
                 const refNumbered = `${ref.split('.')[0]}_${i}.png`;
@@ -90,7 +98,7 @@ async function replaceOutfitColor(image) {
 
     const pixel = imageData.data;
     for (let i = 0; i < pixel.length; i += 4) {
-        for(let j = 0; j < defaultColor.length; j++) {
+        for (let j = 0; j < defaultColor.length; j++) {
             if (getEqualPixel(defaultColor[j], pixel, i)) {
                 imageData.data[i] = color[j][0];
                 imageData.data[i + 1] = color[j][1];

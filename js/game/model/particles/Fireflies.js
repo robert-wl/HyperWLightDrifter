@@ -94,8 +94,8 @@ export default class Fireflies extends Particles {
                 ) / 2;
         }
 
-        const { movementDeltaTime } = Game.getInstance();
-        const speed = this.speed * movementDeltaTime;
+        const { deltaTime } = Game.getInstance();
+        const speed = this.speed * deltaTime;
 
         this.position.x += getHorizontalValue({
             magnitude: speed,

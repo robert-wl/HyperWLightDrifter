@@ -19,7 +19,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
         }
 
         if (currPlayer.centerPosition.y - this.initialPosition.y > 200) {
-            Game.getInstance().darkenBackground(0.01);
+            Game.getInstance().darkenBackground(0.0025);
         }
     }
 
