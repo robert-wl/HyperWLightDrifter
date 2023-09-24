@@ -1,5 +1,4 @@
 import { getImage } from '../helper/imageLoader.js';
-import { drawImage } from '../helper/renderer/drawer.js';
 
 export default function hudHandler({ HUD, player }) {
     HUD.clearRect(0, 0, HUD.canvas.width, HUD.canvas.height);
@@ -7,7 +6,7 @@ export default function hudHandler({ HUD, player }) {
     HUD.fillStyle = 'rgb(100, 100, 100)';
     HUD.fillRect(2, 30, 15, 4);
     HUD.fillStyle = 'lightgreen';
-    HUD.fillRect(2, 30, ((player.healthPack % 4) / 3) * 15, 4);
+    HUD.fillRect(2, 30, (Math.min(player.healthPack, 3) / 3) * 15, 4);
 
     HUD.fillStyle = 'rgb(100, 100, 100)';
     HUD.fillRect(2, 4, 130, 2);
@@ -17,7 +16,7 @@ export default function hudHandler({ HUD, player }) {
     HUD.fillStyle = 'rgb(100, 100, 100)';
     HUD.fillRect(24, 30, 15, 4);
     HUD.fillStyle = 'white';
-    HUD.fillRect(24, 30, ((player.bombs % 3) / 2) * 15, 4);
+    HUD.fillRect(24, 30, (Math.min(player.bombs, 2) / 2) * 15, 4);
 
     const width = [0, 15, 27, 42, 57, 72];
 
@@ -37,5 +36,5 @@ export default function hudHandler({ HUD, player }) {
 
     const HUDImage = getImage('HUD');
 
-    HUD.drawImage(HUDImage, 0, 0, HUDImage.width * 1.5, HUDImage.height * 1.5)
+    HUD.drawImage(HUDImage, 0, 0, HUDImage.width * 1.5, HUDImage.height * 1.5);
 }

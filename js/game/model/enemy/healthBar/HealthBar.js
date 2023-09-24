@@ -30,6 +30,10 @@ export default class HealthBar {
             return;
         }
 
+        if (health <= 0) {
+            return;
+        }
+
         if (this.translate) {
             this.ctx.translate(-this.width / 4, 0);
         }

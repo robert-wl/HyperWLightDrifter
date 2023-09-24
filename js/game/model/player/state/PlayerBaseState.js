@@ -1,8 +1,36 @@
-
+import Game from '../../Game/Game.js';
 
 export default class PlayerBaseState {
-  updateState(currPlayer){}
-  drawImage(currPlayer){}
-  enterState(currPlayer){}
-  exitState(currPlayer){}
+    number = 0;
+    animationStage = 1;
+
+    updateState(currPlayer) {
+        const { deltaTime } = Game.getInstance();
+        this.number += deltaTime;
+    }
+
+    drawImage(currPlayer) {
+    }
+
+    enterState(currPlayer) {
+        this.number = 0;
+        this.animationStage = 1;
+    }
+
+    exitState(currPlayer) {
+    }
+
+
+    checkCounter(number) {
+        return this.number >= number;
+    }
+
+    advanceAnimationStage(number) {
+        const advanceStage = Math.floor(this.number / number);
+
+        if (advanceStage > 0) {
+            this.animationStage += advanceStage;
+            this.number = 0;
+        }
+    }
 }

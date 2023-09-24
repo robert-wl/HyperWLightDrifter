@@ -3,13 +3,13 @@ import { getMouseDirection } from '../../../helper/collision/directionHandler.js
 import Game from '../../Game/Game.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
-import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
-import { getNumberedImage} from "../../../helper/imageLoader.js";
-import GameSettings from "../../../constants.js";
+import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
+import { getNumberedImage } from '../../../helper/imageLoader.js';
+import GameSettings from '../../../constants.js';
 
 export default class PlayerAttackTwoState extends PlayerBaseState {
     number = 1;
-    attackNumber = 1;
+    animationStage = 1;
 
     enterState(currPlayer) {
         const angle = currPlayer.lookAngle;
@@ -44,11 +44,12 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
 
     exitState(currPlayer) {
         this.direction = '';
-        this.attackNumber = 1;
+        this.animationStage = 1;
     }
 
     updateState(currPlayer) {
-        this.number += 1;
+        const { deltaTime } = Game.getInstance();
+        this.number += deltaTime;
 
         currPlayer.getAttackBox({
             direction: this.direction,
@@ -68,49 +69,33 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
             this.drawDebug(currPlayer);
         }
 
+        let attackImage = null;
+
+        console.log(this.animationStage);
+
         if (this.direction === 'w') {
-            const attack2Up = getNumberedImage('attack2_up', this.attackNumber);
-
-            drawImage({
-                img: attack2Up,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: attack2Up.width * GameSettings.GAME.GAME_SCALE,
-                height: attack2Up.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-                mirrored: !currPlayer.reversed,
-            });
-
-            return;
+            attackImage = getNumberedImage('attack_two_up', this.animationStage);
         }
         if (this.direction === 'a' || this.direction === 'd') {
-            const attack2Side = getNumberedImage('attack2_side', this.attackNumber);
-
-            drawImage({
-                img: attack2Side,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: attack2Side.width * GameSettings.GAME.GAME_SCALE,
-                height: attack2Side.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-                mirrored: this.direction === 'a',
-            });
-
-            return;
+            attackImage = getNumberedImage('attack_two_side', this.animationStage);
         }
         if (this.direction === 's') {
-            const attack2Down = getNumberedImage('attack2_down', this.attackNumber);
-
-            drawImage({
-                img: attack2Down,
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                width: attack2Down.width * GameSettings.GAME.GAME_SCALE,
-                height: attack2Down.height * GameSettings.GAME.GAME_SCALE,
-                translate: true,
-                mirrored: !currPlayer.reversed,
-            });
+            attackImage = getNumberedImage('attack_two_down', this.animationStage);
         }
+
+        if (attackImage === null) {
+            return;
+        }
+        // const mirrored = this.direction === 'w' || this.direction === 's' ? currPlayer.reversed : false;
+        drawImage({
+            img: attackImage,
+            x: currPlayer.centerPosition.x,
+            y: currPlayer.centerPosition.y,
+            width: attackImage.width * GameSettings.GAME.GAME_SCALE,
+            height: attackImage.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+            mirrored: this.direction === 'a',
+        });
     }
 
     drawDebug(currPlayer) {
@@ -120,29 +105,17 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
             currPlayer.attackBox.x,
             currPlayer.attackBox.y,
             currPlayer.attackBox.w,
-            currPlayer.attackBox.h
+            currPlayer.attackBox.h,
         );
     }
 
     attackSideTiming(currPlayer) {
-        if (this.number === 4 && this.attackNumber === 1) {
-            this.number = 0;
-            this.attackNumber += 1;
-            return;
-        }
-        if (this.number === 2 && this.attackNumber < 4) {
-            this.number = 0;
-            this.attackNumber += 1;
-            return;
-        }
-        if (this.number === 4 && this.attackNumber < 8) {
-            this.number = 0;
-            this.attackNumber += 1;
-        }
-        if (this.attackNumber === 8) {
+        this.advanceAnimationStage(1);
+
+        if (this.animationStage >= 20) {
             currPlayer.handleSwitchState({
                 move: true,
-                attackOne: true,
+                attack: true,
                 dash: true,
                 aim: true,
                 throws: true,
@@ -151,19 +124,12 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
     }
 
     attackVerticalTiming(currPlayer) {
-        if (this.number === 2 && this.attackNumber < 2) {
-            this.number = 0;
-            this.attackNumber += 1;
-            return;
-        }
-        if (this.number === 4 && this.attackNumber < 7) {
-            this.number = 0;
-            this.attackNumber += 1;
-        }
-        if (this.attackNumber === 7) {
+        this.advanceAnimationStage(2);
+
+        if (this.animationStage >= 12) {
             currPlayer.handleSwitchState({
                 move: true,
-                attackOne: true,
+                attack: true,
                 dash: true,
                 aim: true,
                 throws: true,

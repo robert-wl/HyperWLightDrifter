@@ -22,7 +22,7 @@ export default class JudgementDashState extends JudgementBaseState {
                     randomValue: currJudgement.attackPosition.length - 1,
                     rounded: true,
                 })
-            ];
+                ];
     }
 
     drawImage(currJudgement) {
@@ -62,8 +62,8 @@ export default class JudgementDashState extends JudgementBaseState {
         const { player } = Game.getInstance();
 
         currJudgement.angle = getAngle({
-            x: player.position.x - currJudgement.position.x,
-            y: player.position.y - (currJudgement.position.y + 40),
+            x: player.centerPosition.x - currJudgement.position.x,
+            y: player.centerPosition.y - (currJudgement.position.y + 40),
         });
         this.angle = getAngle({
             x: this.destination.x - (currJudgement.position.x + currJudgement.width / 2),

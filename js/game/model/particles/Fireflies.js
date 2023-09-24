@@ -7,6 +7,20 @@ import { getNumberedImage } from '../../helper/imageLoader.js';
 import ParticlesManager from './ParticlesManager.js';
 
 export default class Fireflies extends Particles {
+    constructor({ position, speed, angle, lifeSpan, width, height, canvas }) {
+        super({
+            position,
+            speed,
+            lifeSpan,
+            width,
+            height,
+            canvas,
+        });
+        this.angle = angle;
+        this.number = 0;
+        this.rotation = 0;
+    }
+
     static generate({ canvas, distance, position, speed, lifespan }) {
         const spawnPosition = position || Game.getInstance().player;
 
@@ -65,19 +79,6 @@ export default class Fireflies extends Particles {
         });
 
         ParticlesManager.getInstance().particleList.push(newFireflies);
-    }
-    constructor({ position, speed, angle, lifeSpan, width, height, canvas }) {
-        super({
-            position,
-            speed,
-            lifeSpan,
-            width,
-            height,
-            canvas,
-        });
-        this.angle = angle;
-        this.number = 0;
-        this.rotation = 0;
     }
 
     update() {

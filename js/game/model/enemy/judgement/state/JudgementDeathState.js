@@ -4,24 +4,31 @@ import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import Game from '../../../Game/Game.js';
+import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 export default class JudgementDeathState extends JudgementBaseState {
-    enterState(currJudgement) {
-        this.number = 0;
-        this.animationStage = 1;
-        this.mirrored = getFaceDirection(currJudgement.angle) === 'left';
-        this.deadTime = 0;
+    updateState(currJudgement) {
+        this.number += 1;
 
-        const { camera, player } = Game.getInstance();
-        const x = currJudgement.position.x - player.centerPosition.x;
-        const y = currJudgement.position.y - player.centerPosition.y;
+        if (this.number % 5 === 0) {
+            this.animationStage += 1;
 
-        camera.moveCameraPosition({
-            direction: {
-                x: -x * 0.05,
-                y: -y * 0.05,
-            },
-        });
+            if (this.animationStage === 22) {
+                this.animationStage = 21;
+            }
+        }
+
+        if (this.animationStage === 21) {
+            this.deadTime += 1;
+        }
+
+        if (this.deadTime === 100) {
+            AudioPlayer.getInstance().playAudio('death.wav');
+        }
+
+        if (this.deadTime > 100 && this.number % 2 === 0) {
+            Game.getInstance().darkenBackground(0.01);
+        }
     }
 
     drawImage(currJudgement) {
@@ -38,25 +45,21 @@ export default class JudgementDeathState extends JudgementBaseState {
         });
     }
 
-    updateState(currJudgement) {
-        this.number += 1;
+    enterState(currJudgement) {
+        this.number = 0;
+        this.animationStage = 1;
+        this.mirrored = getFaceDirection(currJudgement.angle) === 'left';
+        this.deadTime = 0;
 
-        if (this.number % 5 === 0) {
-            this.animationStage += 1;
+        const { camera, player } = Game.getInstance();
+        const x = currJudgement.position.x - player.centerPosition.x;
+        const y = currJudgement.position.y - player.centerPosition.y;
 
-            if (this.animationStage === 22) {
-                this.animationStage = 21;
-            }
-        }
-
-        if (this.animationStage === 21) {
-            this.deadTime += 1;
-        }
-
-        if (this.deadTime > 100 && this.number % 2 === 0) {
-            const { ctx, HUD } = Game.getInstance();
-            Game.getInstance().setTransparency((200 - this.deadTime) / 100, ctx);
-            Game.getInstance().setTransparency((200 - this.deadTime) / 1000, HUD);
-        }
+        camera.moveCameraPosition({
+            direction: {
+                x: -x * 0.05,
+                y: -y * 0.05,
+            },
+        });
     }
 }

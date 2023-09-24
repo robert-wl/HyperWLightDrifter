@@ -17,11 +17,12 @@ export default class PlayerDashState extends PlayerBaseState {
         currPlayer.lastDirection = direction;
 
         currPlayer.stamina -= 10;
-        this.lastPosition = { ...currPlayer.position };
+        this.lastPosition = { ...currPlayer.centerPosition };
 
         const { audio } = Game.getInstance();
         audio.playAudio('player/dash.wav');
     }
+
     updateState(currPlayer) {
         this.number += 1;
 
@@ -39,6 +40,7 @@ export default class PlayerDashState extends PlayerBaseState {
             angle: this.angle,
         });
     }
+
     drawImage(currPlayer) {
         this.lastData.forEach((data) => {
             Game.getInstance().setFilter('brightness(50%) hue-rotate(200deg)');
@@ -56,6 +58,7 @@ export default class PlayerDashState extends PlayerBaseState {
             this.lastData.push(data);
         }
     }
+
     exitState(_currPlayer) {
         this.number = 1;
         this.dashNumber = 1;
@@ -74,6 +77,7 @@ export default class PlayerDashState extends PlayerBaseState {
             direction: this.direction,
         };
     }
+
     handleTiming(currPlayer) {
         if (this.direction === 'w') {
             this.dashUpTiming(currPlayer);
@@ -87,6 +91,7 @@ export default class PlayerDashState extends PlayerBaseState {
             this.dashDownTiming(currPlayer);
         }
     }
+
     dashUpTiming(currPlayer) {
         if (this.number === 5 && this.dashNumber <= 3) {
             this.number = 0;

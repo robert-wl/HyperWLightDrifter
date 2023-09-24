@@ -18,6 +18,7 @@ export default class Game {
 
     constructor() {
         this.stage = 1;
+        this.deltaTime = 0;
         this.showFPS = false;
         this.fullscreenData = {};
         this.fullscreen = false;
@@ -114,7 +115,9 @@ export default class Game {
         await this.currState.enterState(this);
     }
 
-    updateGame() {
+    updateGame(deltaTime) {
+        this.deltaTime = deltaTime * GameSettings.GAME.GAME_SPEED;
+        
         if (this.loading) {
             return;
         }
@@ -184,7 +187,8 @@ export default class Game {
         this.setTransparency(1);
     }
 
-    enemySpawnHandler() {}
+    enemySpawnHandler() {
+    }
 
     darkenBackground(darken = 0.05) {
         this.backgroundOpacity -= darken;

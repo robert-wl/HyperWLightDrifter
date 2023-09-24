@@ -1,8 +1,6 @@
-import GameBaseState from "./GameBaseState.js";
-import EnemyManager from "../../enemy/EnemyManager.js";
-import ParticlesManager from "../../particles/ParticlesManager.js";
-import AudioPlayer from "../../../../audio/AudioPlayer.js";
-
+import GameBaseState from './GameBaseState.js';
+import ParticlesManager from '../../particles/ParticlesManager.js';
+import AudioPlayer from '../../../../audio/AudioPlayer.js';
 
 export default class GameLoseState extends GameBaseState {
     enterState(game) {
@@ -15,28 +13,29 @@ export default class GameLoseState extends GameBaseState {
         this.number += 1;
         const { ctx, camera, player, enemyManager } = game;
 
-
-        if(this.number > 250) {
+        if (this.number > 250) {
             this.transparency -= 0.01;
         }
 
-        if(this.transparency < -1) {
+        if (this.transparency < -1) {
             game.switchState(game.startState);
             return;
         }
 
         game.setFilter('hue-rotate(90deg)');
-        game.setTransparency(this.transparency)
+        game.setTransparency(this.transparency);
         game.setTransparency(this.transparency, game.HUD);
         ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
 
-
         camera.renderLowerBackground();
-
 
         enemyManager.update();
 
         player.updateState();
+
+        enemyManager.updateBoss();
+
+        enemyManager.updateBossEntities();
 
         camera.renderTopBackground();
         ParticlesManager.getInstance().update();
@@ -49,7 +48,6 @@ export default class GameLoseState extends GameBaseState {
     }
 
     exitState(game) {
-        $('#opening-screen').css('animation', 'fadeIn 0.5s ease-in-out')
-
+        $('#opening-screen').css('animation', 'fadeIn 0.5s ease-in-out');
     }
 }

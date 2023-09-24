@@ -15,7 +15,7 @@ import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../h
 import { checkCollision } from '../../helper/collision/playerCollision.js';
 import PlayerSpawnState from './state/PlayerSpawnState.js';
 import PlayerDeathState from './state/PlayerDeathState.js';
-import PlayerInElevatorState from "./state/PlayerInElevatorState.js";
+import PlayerInElevatorState from './state/PlayerInElevatorState.js';
 
 export default class Player {
     constructor() {
@@ -141,13 +141,13 @@ export default class Player {
     heal() {
         const { keys } = Game.getInstance();
 
-        if(!keys.includes("q")) {
+        if (!keys.includes('q')) {
             return;
         }
 
-        keys.splice(keys.indexOf("q"), 1);
+        keys.splice(keys.indexOf('q'), 1);
 
-        if(this.healthPack <= 0) {
+        if (this.healthPack <= 0) {
             return;
         }
 
@@ -178,10 +178,11 @@ export default class Player {
             return;
         }
 
-        if(this.immunity < 50 || this.currState === this.dashState) {
+        if (this.immunity < 50 || this.currState === this.dashState) {
             return;
         }
 
+        const { deltaTime } = Game.getInstance();
         this.immunity = 0;
         this.health -= 1;
 
@@ -190,11 +191,11 @@ export default class Player {
         }
 
         this.direction.x += getHorizontalValue({
-            magnitude: 5,
+            magnitude: 5 * deltaTime,
             angle: angle + Math.PI,
         });
         this.direction.y += getVerticalValue({
-            magnitude: 5,
+            magnitude: 5 * deltaTime,
             angle: angle + Math.PI,
         });
     }
@@ -235,10 +236,11 @@ export default class Player {
         this.currState = newState;
         this.currState.enterState(this);
     }
+
     moveHandler() {
         this.theta = Math.atan2(this.direction.y, this.direction.x);
 
-        // console.log(this.direction.y)
+        const { collideables, deltaTime } = Game.getInstance();
         const absVector =
             getMagnitudeValue({
                 x: this.direction.x,
@@ -255,9 +257,8 @@ export default class Player {
             angle: this.theta,
         });
 
-        const { collideables } = Game.getInstance();
         let { x, y, w, h } = this.getHitboxCoordinates();
-        
+
         if (
             checkCollision({
                 collideables,
@@ -267,8 +268,8 @@ export default class Player {
                 h: h,
             })
         ) {
-            this.position.x += this.direction.x;
-            this.centerPosition.x += this.direction.x;
+            this.position.x += this.direction.x * deltaTime;
+            this.centerPosition.x += this.direction.x * deltaTime;
         }
 
         if (
@@ -280,8 +281,8 @@ export default class Player {
                 h: h,
             })
         ) {
-            this.position.y += this.direction.y;
-            this.centerPosition.y += this.direction.y;
+            this.position.y += this.direction.y * deltaTime;
+            this.centerPosition.y += this.direction.y * deltaTime;
         }
     }
 

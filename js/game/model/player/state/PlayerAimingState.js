@@ -9,14 +9,6 @@ import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHe
 
 const scale = 2;
 export default class PlayerAimingState extends PlayerBaseState {
-    enterState(currPlayer) {
-        this.exploding = 0;
-        this.shooting = 0;
-        this.canAim = true;
-        this.length = 0;
-        this.enemy = null;
-    }
-
     updateState(currPlayer) {
         const { clicks } = Game.getInstance();
         this.angle = currPlayer.lookAngle;
@@ -79,6 +71,94 @@ export default class PlayerAimingState extends PlayerBaseState {
         }
     }
 
+    drawImage(currPlayer) {
+        if (this.shooting === 0) {
+            const { length, enemy } = drawShootLine(currPlayer);
+            this.length = length;
+            this.enemy = enemy;
+        }
+
+        const { image, offset, angle, mirrored, bottom } = this.getAimDrawConstant(currPlayer);
+
+        if (!image) {
+            return;
+        }
+
+        this.drawPlayer({
+            image: image,
+            currPlayer: currPlayer,
+            gunOffset: {
+                x: offset.x,
+                y: offset.y,
+            },
+            playerOffset: {
+                x: -70,
+                y: -30,
+            },
+            angle: angle,
+            mirrored: mirrored,
+            bottom: bottom,
+        });
+    }
+
+    enterState(currPlayer) {
+        this.exploding = 0;
+        this.shooting = 0;
+        this.canAim = true;
+        this.length = 0;
+        this.enemy = null;
+    }
+
+    getAimDrawConstant(currPlayer) {
+        if (this.direction === 'w') {
+            return {
+                image: getImage('aim_top'),
+                offset: {
+                    x: currPlayer.playerDefault.GUN.OFFSET.UP.X,
+                    y: currPlayer.playerDefault.GUN.OFFSET.UP.Y,
+                },
+                angle: this.angle + (Math.PI - Math.PI / 16),
+                mirrored: false,
+            };
+        }
+        if (this.direction === 'a') {
+            return {
+                image: getImage('aim_side'),
+                offset: {
+                    x: currPlayer.playerDefault.GUN.OFFSET.LEFT.X,
+                    y: currPlayer.playerDefault.GUN.OFFSET.LEFT.Y,
+                },
+                angle: this.angle + 3 * Math.PI,
+                mirrored: true,
+            };
+        }
+        if (this.direction === 's') {
+            return {
+                image: getImage('aim_bottom'),
+                offset: {
+                    x: currPlayer.playerDefault.GUN.OFFSET.BOTTOM.X,
+                    y: currPlayer.playerDefault.GUN.OFFSET.BOTTOM.Y,
+                },
+                angle: this.angle + 3 * Math.PI,
+                mirrored: false,
+                bottom: true,
+            };
+        }
+        if (this.direction === 'd') {
+            return {
+                image: getImage('aim_side'),
+                offset: {
+                    x: currPlayer.playerDefault.GUN.OFFSET.RIGHT.X,
+                    y: currPlayer.playerDefault.GUN.OFFSET.RIGHT.Y,
+                },
+                angle: this.angle + 3 * Math.PI,
+                mirrored: false,
+            };
+        }
+
+        return {};
+    }
+
     handleRecoil(currPlayer) {
         if (this.shooting !== 11) {
             return;
@@ -98,89 +178,6 @@ export default class PlayerAimingState extends PlayerBaseState {
             duration: currPlayer.playerDefault.GUN.RECOIL * 20,
             angle: this.angle + Math.PI,
         });
-    }
-    drawImage(currPlayer) {
-        if (this.shooting === 0) {
-            const { length, enemy } = drawShootLine(currPlayer);
-            this.length = length;
-            this.enemy = enemy;
-        }
-        if (this.direction === 'w') {
-            const aimTop = getImage('aim_top');
-
-            this.drawPlayer({
-                image: aimTop,
-                currPlayer: currPlayer,
-                gunOffset: {
-                    x: currPlayer.playerDefault.GUN.OFFSET.UP.X,
-                    y: currPlayer.playerDefault.GUN.OFFSET.UP.Y,
-                },
-                playerOffset: {
-                    x: -70,
-                    y: -30,
-                },
-                angle: this.angle + (Math.PI - Math.PI / 16),
-            });
-
-            return;
-        }
-        if (this.direction === 'a') {
-            const aimSide = getImage('aim_side');
-
-            this.drawPlayer({
-                image: aimSide,
-                currPlayer: currPlayer,
-                gunOffset: {
-                    x: currPlayer.playerDefault.GUN.OFFSET.LEFT.X,
-                    y: currPlayer.playerDefault.GUN.OFFSET.LEFT.Y,
-                },
-                playerOffset: {
-                    x: -70,
-                    y: -30,
-                },
-                angle: this.angle + 3 * Math.PI,
-                mirrored: true,
-            });
-
-            return;
-        }
-        if (this.direction === 's') {
-            const aimBottom = getImage('aim_bottom');
-
-            this.drawPlayer({
-                image: aimBottom,
-                currPlayer: currPlayer,
-                gunOffset: {
-                    x: currPlayer.playerDefault.GUN.OFFSET.BOTTOM.X,
-                    y: currPlayer.playerDefault.GUN.OFFSET.BOTTOM.Y,
-                },
-                playerOffset: {
-                    x: -70,
-                    y: -30,
-                },
-                angle: this.angle + 3 * Math.PI,
-                bottom: true,
-            });
-
-            return;
-        }
-        if (this.direction === 'd') {
-            const aimSide = getImage('aim_side');
-
-            this.drawPlayer({
-                image: aimSide,
-                currPlayer: currPlayer,
-                gunOffset: {
-                    x: currPlayer.playerDefault.GUN.OFFSET.RIGHT.X,
-                    y: currPlayer.playerDefault.GUN.OFFSET.RIGHT.Y,
-                },
-                playerOffset: {
-                    x: -70,
-                    y: -30,
-                },
-                angle: this.angle + 3 * Math.PI,
-            });
-        }
     }
 
     drawPlayer({ image, currPlayer, angle, mirrored = false, bottom = false }) {

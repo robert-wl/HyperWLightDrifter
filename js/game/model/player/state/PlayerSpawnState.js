@@ -6,21 +6,18 @@ import Game from '../../Game/Game.js';
 
 export default class PlayerSpawnState extends PlayerBaseState {
     enterState(currPlayer) {
-        this.animationStage = 0;
-        this.number = 0;
+        super.enterState(currPlayer);
     }
 
     updateState(currPlayer) {
-        this.number += 1;
+        super.updateState(currPlayer);
 
-        if (this.number % 10 === 1 && this.animationStage === 0) {
+        if (this.checkCounter(10) && this.animationStage === 1) {
             const { audio } = Game.getInstance();
             audio.playAudio('player/teleport_arrive.wav');
         }
 
-        if (this.number % 10 === 0) {
-            this.animationStage += 1;
-        }
+        this.advanceAnimationStage(10);
 
         if (this.animationStage === 9) {
             currPlayer.switchState(currPlayer.idleState);
@@ -28,7 +25,7 @@ export default class PlayerSpawnState extends PlayerBaseState {
     }
 
     drawImage(currPlayer) {
-        const playerSpawn = getNumberedImage('player_spawn', (this.animationStage % 9) + 1);
+        const playerSpawn = getNumberedImage('player_spawn', this.animationStage);
 
         drawImage({
             img: playerSpawn,

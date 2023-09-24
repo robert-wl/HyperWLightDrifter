@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JSLintConfiguration">
+    <option browser="true" />
+    <option long="true" />
+    <option single="true" />
+    <option this="true" />
+    <option white="true" />
+  </component>
+</project>

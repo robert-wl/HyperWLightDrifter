@@ -1,45 +1,48 @@
-import GameBaseState from "./GameBaseState.js";
-import ParticlesManager from "../../particles/ParticlesManager.js";
-import Fireflies from "../../particles/Fireflies.js";
-import {imageLoader} from "../../../helper/imageLoader.js";
-import GameSettings from "../../../constants.js";
-import menuHandler from "../../../ui/menuHandler.js";
-import Game from "../Game.js";
-import MenuModal from "../../modal/MenuModal.js";
-import SelectionModal from "../../modal/SelectionModal.js";
-import SettingsModal from "../../modal/SettingsModal.js";
-
+import GameBaseState from './GameBaseState.js';
+import ParticlesManager from '../../particles/ParticlesManager.js';
+import Fireflies from '../../particles/Fireflies.js';
+import menuHandler from '../../../ui/menuHandler.js';
+import Game from '../Game.js';
+import MenuModal from '../../modal/MenuModal.js';
+import SelectionModal from '../../modal/SelectionModal.js';
+import SettingsModal from '../../modal/SettingsModal.js';
+import {imageLoader} from '../../../helper/imageLoader.js';
+import GameSettings from '../../../constants.js';
 
 export default class GameStartState extends GameBaseState {
     async enterState(game) {
-        game.instance = null;
-        Game.getInstance();
-        await game.init();
-        game.prepareCanvas();
-        await imageLoader(GameSettings.IMAGES.SPAWN);
         this.number = 0;
         this.spawnParticles = true;
 
+        game.instance = null;
+
+        Game.getInstance();
+
+        await game.init();
+
+        game.prepareCanvas();
+        game.changeState();
+        await imageLoader(GameSettings.IMAGES.SPAWN);
         MenuModal.handleInteraction();
         SelectionModal.handleInteraction();
         SettingsModal.handleInteraction();
+
         menuHandler();
 
-        const { audio } = game;
+        const {audio} = game;
+
         audio.allowSound = true;
         audio.playAudio('menu/background.ogg', null, true);
 
-        $('#opening-screen')
-            .css('opacity', '100%')
-            .css('display', 'block');
+        $('#opening-screen').css('opacity', '100%').css('display', 'block');
     }
 
     updateState(game) {
-        this.number += 1;
-        const { HUD } = game;
+        this.number += 1 * game.deltaTime;
+        const {HUD} = game;
 
         HUD.clearRect(0, 0, game.canvas.width, game.canvas.height);
-        if(this.spawnParticles) {
+        if (this.spawnParticles) {
             Fireflies.generate({
                 canvas: HUD,
                 distance: 1000,
@@ -57,8 +60,7 @@ export default class GameStartState extends GameBaseState {
     }
 
     exitState(game) {
-        const { audio } = game;
+        const {audio} = game;
         audio.stopAll();
     }
-
 }

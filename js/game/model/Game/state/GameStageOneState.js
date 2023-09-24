@@ -85,6 +85,8 @@ export default class GameStageOneState extends GameBaseState {
         $('#menu-modal').css('display', 'none');
         const { camera, player } = game;
 
+        game.keys = [];
+        game.clicks = [];
         await imageLoader(GameSettings.IMAGES.STAGE_ONE);
 
         const mapGround = getImage('map_ground');
@@ -94,12 +96,6 @@ export default class GameStageOneState extends GameBaseState {
             lowerBackground: mapGround,
             topBackground: mapTop,
         });
-
-        player.position = {
-            x: 950,
-            y: 500,
-        };
-
         player.centerPosition = {
             x: 950 + player.width / 2,
             y: 500 + player.height / 2,

@@ -1,11 +1,12 @@
 const GameSettings = {
     GAME: {
         GAME_SCALE: 2,
+        GAME_SPEED: 60,
         ELEVATOR: {
             POSITION: {
                 X: 950,
                 Y: 2000,
-            }
+            },
         },
         SCREEN_WIDTH: 1920,
         SCREEN_HEIGHT: 1080,
@@ -107,7 +108,8 @@ const GameSettings = {
             },
         ],
         STAGE_ONE: [
-            { //PLAYER ======================================
+            {
+                //PLAYER ======================================
                 ref: 'player/aim/gun/railgun.png',
                 name: 'railgun',
             },
@@ -196,39 +198,39 @@ const GameSettings = {
                 outfit: true,
             },
             {
-                ref: 'player/attack/attack_up.png',
+                ref: 'player/attack/up/attack.png',
                 name: 'attack_up',
-                amount: 6,
+                amount: 11,
                 outfit: true,
             },
             {
-                ref: 'player/attack/attack_side.png',
+                ref: 'player/attack/side/attack.png',
                 name: 'attack_side',
-                amount: 7,
+                amount: 19,
                 outfit: true,
             },
             {
-                ref: 'player/attack/attack_down.png',
+                ref: 'player/attack/down/attack.png',
                 name: 'attack_down',
-                amount: 6,
+                amount: 11,
                 outfit: true,
             },
             {
-                ref: 'player/attack/attack2_up.png',
-                name: 'attack2_up',
-                amount: 6,
+                ref: 'player/attack_two/up/attack.png',
+                name: 'attack_two_up',
+                amount: 11,
                 outfit: true,
             },
             {
-                ref: 'player/attack/attack2_side.png',
-                name: 'attack2_side',
-                amount: 7,
+                ref: 'player/attack_two/side/attack.png',
+                name: 'attack_two_side',
+                amount: 19,
                 outfit: true,
             },
             {
-                ref: 'player/attack/attack2_down.png',
-                name: 'attack2_down',
-                amount: 6,
+                ref: 'player/attack_two/down/attack.png',
+                name: 'attack_two_down',
+                amount: 11,
                 outfit: true,
             },
             {
@@ -253,7 +255,7 @@ const GameSettings = {
             {
                 ref: 'player/aim/gun/impact.png',
                 name: 'gun_impact',
-                amount: 2
+                amount: 2,
             },
             {
                 ref: 'player/grenade/grenade.png',
@@ -267,7 +269,7 @@ const GameSettings = {
             },
             {
                 ref: 'player/aim/gun/projectile.png',
-                name: 'projectile'
+                name: 'projectile',
             },
             {
                 ref: 'ui/interaction_bar/interaction_bar.png',
@@ -334,17 +336,17 @@ const GameSettings = {
             {
                 ref: 'other/medkit/medkit.png',
                 name: 'medkit',
-                amount: 2
+                amount: 2,
             },
             {
                 ref: 'world/door/door.png',
                 name: 'door',
-                amount: 13
+                amount: 13,
             },
             {
                 ref: 'UI/HUD.png',
                 name: 'HUD',
-            }
+            },
         ],
         STAGE_TWO: [
             {
@@ -532,12 +534,12 @@ const GameSettings = {
             },
             {
                 ref: 'player/aim/gun/projectile.png',
-                name: 'projectile'
+                name: 'projectile',
             },
             {
                 ref: 'ui/interaction_bar/interaction_bar.png',
                 name: 'interaction_bar',
-                amount: 4.
+                amount: 4,
             },
             {
                 ref: 'world/boss_room.png',
@@ -551,9 +553,9 @@ const GameSettings = {
     },
     DEBUG: {
         COLOR: {
-            CAMERA_BOX: 'rgb(255, 255, 255, 0.25)'
-        }
-    }
+            CAMERA_BOX: 'rgb(255, 255, 255, 0.25)',
+        },
+    },
 };
 
 export default GameSettings;

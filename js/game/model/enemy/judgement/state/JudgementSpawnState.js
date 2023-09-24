@@ -8,37 +8,9 @@ import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 export default class JudgementSpawnState extends JudgementBaseState {
     firstSpawn = true;
 
-    enterState() {
-        this.number = 0;
-        this.animationStage = 1;
-
-        AudioPlayer.getInstance().playAudio('boss/spawn.wav');
-    }
-
-    exitState() {
-        if (this.firstSpawn) {
-            const { camera } = Game.getInstance();
-            camera.setSnapBackToPlayer();
-            AudioPlayer.getInstance().playAudio('boss/music.wav', null, true);
-        }
-        this.firstSpawn = false;
-    }
-
-    drawImage(currJudgement) {
-        const judgementSpawn = getNumberedImage('judgement_spawn', this.animationStage);
-
-        drawImage({
-            img: judgementSpawn,
-            x: currJudgement.position.x,
-            y: currJudgement.position.y,
-            width: judgementSpawn.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementSpawn.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-        });
-    }
-
     updateState(currJudgement) {
         const { camera } = Game.getInstance();
+
         this.number += 1;
 
         if (this.number % 7 === 0) {
@@ -68,5 +40,37 @@ export default class JudgementSpawnState extends JudgementBaseState {
         if (this.animationStage === 22) {
             currJudgement.handleSwitchState();
         }
+    }
+
+    drawImage(currJudgement) {
+        const judgementSpawn = getNumberedImage('judgement_spawn', this.animationStage);
+
+        drawImage({
+            img: judgementSpawn,
+            x: currJudgement.position.x,
+            y: currJudgement.position.y,
+            width: judgementSpawn.width * GameSettings.GAME.GAME_SCALE,
+            height: judgementSpawn.height * GameSettings.GAME.GAME_SCALE,
+            translate: true,
+        });
+    }
+
+    enterState() {
+        this.number = 0;
+        this.animationStage = 1;
+
+        AudioPlayer.getInstance().playAudio('boss/spawn.wav');
+    }
+
+    exitState() {
+        if (this.firstSpawn) {
+            const { camera } = Game.getInstance();
+
+            camera.setSnapBackToPlayer();
+
+            AudioPlayer.getInstance().playAudio('boss/music.wav', null, true);
+        }
+
+        this.firstSpawn = false;
     }
 }

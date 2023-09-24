@@ -82,6 +82,8 @@ export default class GameStageTwoState extends GameBaseState {
 
         const { camera, player, elevator } = game;
 
+        game.keys = [];
+        game.clicks = [];
         const mapGround = getImage('map_ground_second');
 
         camera.init({
@@ -115,7 +117,7 @@ export default class GameStageTwoState extends GameBaseState {
         camera.setCameraPosition({
             position: {
                 x: player.centerPosition.x,
-                y: 300,
+                y: 320,
             },
         });
 

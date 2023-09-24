@@ -1,9 +1,9 @@
-import ElevatorBaseState from "./ElevatorBaseState.js";
-import Game from "../../../Game/Game.js";
-import {getImage} from "../../../../helper/imageLoader.js";
-import GameSettings from "../../../../constants.js";
-import {drawImage, drawImageCropped} from "../../../../helper/renderer/drawer.js";
-import AudioPlayer from "../../../../../audio/AudioPlayer.js";
+import ElevatorBaseState from './ElevatorBaseState.js';
+import Game from '../../../Game/Game.js';
+import { getImage } from '../../../../helper/imageLoader.js';
+import GameSettings from '../../../../constants.js';
+import { drawImageCropped } from '../../../../helper/renderer/drawer.js';
+import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 
 export default class ElevatorMoveState extends ElevatorBaseState {
@@ -18,7 +18,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
     updateState(elevator) {
         this.number += 1;
 
-        if(this.number % 100 === 0) {
+        if (this.number % 100 === 0) {
             AudioPlayer.getInstance().playAudio('elevator/move.wav');
         }
         const { player, camera } = Game.getInstance();
@@ -27,22 +27,21 @@ export default class ElevatorMoveState extends ElevatorBaseState {
 
         elevator.y += this.acceleration;
         player.centerPosition.y += this.acceleration;
-        player.position.y += this.acceleration;
         elevator.travelDistance += this.acceleration;
 
-        if(this.aboutToMount) {
+        if (this.aboutToMount) {
             elevator.bottomCrop += this.acceleration * 0.415;
         }
 
-        if(elevator.stageLocation === 2) {
-            camera.moveCameraPosition( {
+        if (elevator.stageLocation === 2) {
+            camera.moveCameraPosition({
                 direction: {
                     y: this.acceleration,
-                }
-            })
+                },
+            });
         }
 
-        if(this.acceleration === 0) {
+        if (this.acceleration === 0) {
             elevator.switchState(elevator.mountedDownState);
         }
     }
@@ -50,14 +49,14 @@ export default class ElevatorMoveState extends ElevatorBaseState {
 
     handleAcceleration(elevator) {
 
-        if(elevator.stageLocation === 2 && elevator.travelDistance > 620) {
+        if (elevator.stageLocation === 2 && elevator.travelDistance > 620) {
             this.acceleration -= 0.05;
 
-            if(elevator.travelDistance > 681) {
+            if (elevator.travelDistance > 681) {
                 this.aboutToMount = true;
             }
 
-            if(this.acceleration <= 0) {
+            if (this.acceleration <= 0) {
                 this.acceleration = 0;
             }
 
@@ -65,7 +64,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         }
         this.acceleration += 0.1;
 
-        if(this.acceleration > 3) {
+        if (this.acceleration > 3) {
             this.acceleration = 3;
         }
     }
@@ -88,6 +87,6 @@ export default class ElevatorMoveState extends ElevatorBaseState {
             y: elevator.y - elevatorImage.height,
             width: elevatorImage.width * GameSettings.GAME.GAME_SCALE,
             height: (elevatorImage.height - elevator.bottomCrop) * GameSettings.GAME.GAME_SCALE,
-        })
+        });
     }
 }

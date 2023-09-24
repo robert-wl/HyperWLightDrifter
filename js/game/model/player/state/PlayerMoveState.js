@@ -11,13 +11,15 @@ export default class PlayerMoveState extends PlayerBaseState {
     number = 0;
 
     updateState(currPlayer) {
-        this.number += 1;
+        const { deltaTime } = Game.getInstance();
+        this.number += deltaTime;
 
-        if (this.number % 4 === 0) {
+        if (this.number >= 4) {
             this.animationStage += 1;
+            this.number = 0;
         }
 
-        if (this.number % 24 === 0) {
+        if (this.animationStage % 5 === 0) {
             const randomValue = getRandomValue({
                 initialValue: 1,
                 randomValue: 2,
@@ -50,6 +52,7 @@ export default class PlayerMoveState extends PlayerBaseState {
             throws: true,
         });
     }
+
     drawImage(currPlayer) {
         let moveImage = null;
         if (this.direction === 'w') {
@@ -65,7 +68,7 @@ export default class PlayerMoveState extends PlayerBaseState {
             moveImage = getNumberedImage('move_right', (this.animationStage % 12) + 1);
         }
 
-        if(moveImage === null) {
+        if (moveImage === null) {
             return;
         }
 
