@@ -4,16 +4,17 @@ import AudioPlayer from '../../../../audio/AudioPlayer.js';
 
 export default class GameLoseState extends GameBaseState {
     enterState(game) {
-        this.number = 0;
+        super.enterState(game);
         this.transparency = 1;
         AudioPlayer.getInstance().disableSound();
     }
 
     updateState(game) {
-        this.number += 1;
+        super.updateState(game);
+
         const { ctx, camera, player, enemyManager } = game;
 
-        if (this.number > 250) {
+        if (this.checkCounter(250)) {
             this.transparency -= 0.01;
         }
 
@@ -40,7 +41,6 @@ export default class GameLoseState extends GameBaseState {
         camera.renderTopBackground();
         ParticlesManager.getInstance().update();
 
-        // game.elevator?.update();
 
         game.drawHUD();
 

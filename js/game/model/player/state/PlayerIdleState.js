@@ -8,10 +8,6 @@ export default class PlayerIdleState extends PlayerBaseState {
     updateState(currPlayer) {
         currPlayer.regenerateStamina();
 
-        if (currPlayer.counter !== 6) {
-            return;
-        }
-
         currPlayer.handleSwitchState({
             move: true,
             attackOne: true,
@@ -20,6 +16,7 @@ export default class PlayerIdleState extends PlayerBaseState {
             throws: true,
         });
     }
+
     drawImage(currPlayer) {
         let idleImage = null;
         if (currPlayer.lastDirection === 'd') {
@@ -35,10 +32,10 @@ export default class PlayerIdleState extends PlayerBaseState {
             idleImage = getImage('idle_up');
         }
 
-        if(idleImage === null) {
-            return
+        if (idleImage === null) {
+            return;
         }
-        
+
         drawImage({
             img: idleImage,
             x: currPlayer.centerPosition.x,

@@ -9,19 +9,17 @@ $(document).ready(async () => {
 
     let lastTimestamp = 0;
 
-    const animationLoop = (timestamp) => {
+    const updateLoop = (timestamp) => {
 
         const deltaTime = (timestamp - lastTimestamp) / 1000;
 
-        // console.log(1 / deltaTime)
-        game.updateGame(deltaTime);
+        game.update(deltaTime);
         lastTimestamp = timestamp;
 
-
-        requestAnimationFrame(animationLoop);
+        requestAnimationFrame(updateLoop);
     };
 
+
     await game.switchState(game.startState);
-    animationLoop();
-    // game.init();
+    updateLoop();
 });

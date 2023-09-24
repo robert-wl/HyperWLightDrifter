@@ -2,14 +2,14 @@ import PlayerBaseState from './PlayerBaseState.js';
 import { getImage } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
-import Game from "../../Game/Game.js";
+import Game from '../../Game/Game.js';
 
 export default class PlayerInElevatorState extends PlayerBaseState {
     isBelowGround = false;
     initialPosition = {};
 
     enterState(currPlayer) {
-        currPlayer.direction.x = 0;
+        currPlayer.velocity.x = 0;
         this.initialPosition = { ...currPlayer.centerPosition };
     }
 
@@ -18,7 +18,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
             this.isBelowGround = true;
         }
 
-        if(currPlayer.centerPosition.y - this.initialPosition.y > 200) {
+        if (currPlayer.centerPosition.y - this.initialPosition.y > 200) {
             Game.getInstance().darkenBackground(0.01);
         }
     }
@@ -35,6 +35,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
             translate: true,
         });
     }
+
     exitState(currPlayer) {
         this.isBelowGround = false;
     }

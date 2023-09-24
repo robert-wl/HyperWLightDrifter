@@ -1,4 +1,4 @@
-import Game from "../../model/Game/Game.js";
+import Game from '../../model/Game/Game.js';
 
 export function getMouseDirection({ angle }) {
     if (angle <= (Math.PI * 5) / 6 && angle > (Math.PI) / 6) {
@@ -17,39 +17,39 @@ export function getMouseDirection({ angle }) {
 }
 
 export function getMoveDirection({ currPlayer }) {
-    const { keys } = Game.getInstance();
+    const { keys, deltaTime } = Game.getInstance();
     let direction = '';
     if (keys.includes('a')) {
-        if (currPlayer.direction.x > -currPlayer.maxSpeed) {
-            currPlayer.direction.x += -1;
+        if (currPlayer.velocity.x > -currPlayer.maxSpeed * deltaTime) {
+            currPlayer.velocity.x += -deltaTime;
         }
         direction = 'a';
     }
     if (keys.includes('w')) {
-        if (currPlayer.direction.y > -currPlayer.maxSpeed) {
-            currPlayer.direction.y += -1;
+        if (currPlayer.velocity.y > -currPlayer.maxSpeed * deltaTime) {
+            currPlayer.velocity.y += -deltaTime;
         }
         direction = 'w';
     }
     if (keys.includes('d')) {
-        if (currPlayer.direction.x < currPlayer.maxSpeed) {
-            currPlayer.direction.x += 1;
+        if (currPlayer.velocity.x < currPlayer.maxSpeed * deltaTime) {
+            currPlayer.velocity.x += deltaTime;
         }
         direction = 'd';
     }
     if (keys.includes('s')) {
-        if (currPlayer.direction.y < currPlayer.maxSpeed) {
-            currPlayer.direction.y += 1;
+        if (currPlayer.velocity.y < currPlayer.maxSpeed * deltaTime) {
+            currPlayer.velocity.y += deltaTime;
         }
         direction = 's';
     }
 
-    return { direction, playerDirection: currPlayer.direction };
+    return { direction, playerDirection: currPlayer.velocity };
 }
 
 export function getFaceDirection(angle) {
-    if(angle > Math.PI / 2 || angle < -Math.PI / 2){
-        return "left";
+    if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
+        return 'left';
     }
-    return "right";
+    return 'right';
 }

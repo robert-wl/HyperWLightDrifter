@@ -7,8 +7,7 @@ import Game from '../../Game/Game.js';
 
 export default class PlayerDeathState extends PlayerBaseState {
     enterState(currPlayer) {
-        this.number = 0;
-        this.animationStage = 0;
+        super.enterState(currPlayer);
 
         const { loseState, audio } = Game.getInstance();
         Game.getInstance().switchState(loseState);
@@ -17,18 +16,17 @@ export default class PlayerDeathState extends PlayerBaseState {
     }
 
     updateState(currPlayer) {
-        this.number += 1;
-        if (this.animationStage === 5) {
+        super.updateState(currPlayer);
+
+        if (this.animationStage === 6) {
             return;
         }
 
-        if (this.number % 30 === 0) {
-            this.animationStage += 1;
-        }
+        this.advanceAnimationStage(30);
     }
 
     drawImage(currPlayer) {
-        const death = getNumberedImage('player_death', this.animationStage + 1);
+        const death = getNumberedImage('player_death', this.animationStage);
 
         drawImage({
             img: death,

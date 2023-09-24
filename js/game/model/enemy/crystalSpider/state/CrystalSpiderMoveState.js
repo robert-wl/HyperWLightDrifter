@@ -1,12 +1,11 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import Game from '../../../Game/Game.js';
-import { get_image } from '../../../../helper/fileReader.js';
-import { getRandomBoolean, getRandomValue } from '../../../../helper/randomHelper.js';
+import { getRandomBoolean } from '../../../../helper/randomHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
-import {getNumberedImage} from "../../../../helper/imageLoader.js";
-import {drawImage} from "../../../../helper/renderer/drawer.js";
-import {getFaceDirection} from "../../../../helper/collision/directionHandler.js";
+import { getNumberedImage } from '../../../../helper/imageLoader.js';
+import { drawImage } from '../../../../helper/renderer/drawer.js';
+import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 
 export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
     enterState(_currSpider) {
@@ -15,25 +14,26 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         this.clockwise = getRandomBoolean(0.5);
         this.attackCooldown = 100;
     }
+
     updateState(currSpider) {
         this.number += 1;
 
-        if(this.number % 20 === 0) {
+        if (this.number % 20 === 0) {
             const { audio } = Game.getInstance();
             audio.playAudio('enemy/crystal_spider/walk.wav');
         }
-        const { position } = Game.getInstance().player;
+        const { centerPosition } = Game.getInstance().player;
         const distance = getMagnitudeValue({
-            x: position.x - currSpider.position.x,
-            y: position.y - currSpider.position.y,
+            x: centerPosition.x - currSpider.position.x,
+            y: centerPosition.y - currSpider.position.y,
         });
 
         if (distance < 100 && this.number > this.attackCooldown) {
             currSpider.switchState(currSpider.attackState);
         } else if (distance < 100) {
             currSpider.angle = getAngle({
-                x: position.x - currSpider.position.x,
-                y: position.y - currSpider.position.y,
+                x: centerPosition.x - currSpider.position.x,
+                y: centerPosition.y - currSpider.position.y,
             });
 
             const rotate_angle = this.getRotateAngle(currSpider.angle);
@@ -49,8 +49,8 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
             });
         } else {
             currSpider.angle = getAngle({
-                x: position.x - currSpider.position.x,
-                y: position.y - currSpider.position.y,
+                x: centerPosition.x - currSpider.position.x,
+                y: centerPosition.y - currSpider.position.y,
             });
 
             currSpider.position.x += getHorizontalValue({
@@ -64,6 +64,7 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
             });
         }
     }
+
     drawImage(currSpider) {
         const { angle } = currSpider;
         const { ctx } = Game.getInstance();
@@ -82,7 +83,7 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
             height: currSpider.height,
             translate: true,
             mirrored: getFaceDirection(angle) === 'left',
-        })
+        });
     }
 
     getRotateAngle(angle) {

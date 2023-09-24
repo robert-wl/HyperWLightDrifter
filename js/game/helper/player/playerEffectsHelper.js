@@ -1,8 +1,8 @@
-import Game from "../../model/Game/Game.js";
+import Game from '../../model/Game/Game.js';
 
 
-export default function playerEffectsHandler({ currPlayer, clear }){
-    if(clear){
+export default function playerEffectsHandler({ currPlayer, clear }) {
+    if (clear) {
         clearFilter(currPlayer);
         return;
     }
@@ -10,18 +10,20 @@ export default function playerEffectsHandler({ currPlayer, clear }){
     healingHandler(currPlayer);
 }
 
-function damagedHandler(currPlayer){
+function damagedHandler(currPlayer) {
     if (currPlayer.immunity < 50) {
-        currPlayer.immunity++;
+        const { deltaTime } = Game.getInstance();
+        currPlayer.immunity += deltaTime;
     }
     if (currPlayer.immunity <= 5) {
         Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');
     }
 }
 
-function healingHandler(currPlayer){
-    if(currPlayer.healing > 0){
-        currPlayer.healing -= 1;
+function healingHandler(currPlayer) {
+    if (currPlayer.healing > 0) {
+        const { deltaTime } = Game.getInstance();
+        currPlayer.healing -= deltaTime;
 
         const { ctx } = Game.getInstance();
 
@@ -43,7 +45,7 @@ function healingHandler(currPlayer){
     }
 }
 
-function clearFilter(currPlayer){
+function clearFilter(currPlayer) {
     if (currPlayer.immunity <= 5 || currPlayer.healing >= 0) {
         Game.getInstance().setFilter('none');
     }

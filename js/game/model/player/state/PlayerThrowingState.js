@@ -4,7 +4,7 @@ import Game from '../../Game/Game.js';
 
 export default class PlayerThrowingState extends PlayerBaseState {
     enterState(currPlayer) {
-        this.number = 0;
+        super.enterState(currPlayer);
 
         const { audio } = Game.getInstance();
 
@@ -16,8 +16,9 @@ export default class PlayerThrowingState extends PlayerBaseState {
             angle: currPlayer.lookAngle,
         });
     }
+
     updateState(currPlayer) {
-        this.number += 1;
+        super.updateState(currPlayer);
 
         if (this.number < 20) {
             return;

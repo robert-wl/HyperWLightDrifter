@@ -9,20 +9,20 @@ import Game from '../../Game/Game.js';
 const scale = 2;
 export default class PlayerHurtState extends PlayerBaseState {
     enterState(currPlayer) {
-        this.number = 0;
-        this.animationStage = 0;
+        super.enterState(currPlayer);
+
         this.mirrored = this.mirroredHandler(currPlayer);
 
         const { audio } = Game.getInstance();
         audio.playAudio('player/hurt.wav');
     }
-    updateState(currPlayer) {
-        this.number++;
 
-        if (this.number % 10 === 0) {
-            this.animationStage++;
-        }
-        if (this.animationStage === 3) {
+    updateState(currPlayer) {
+        super.updateState(currPlayer);
+
+        this.advanceAnimationStage(10);
+
+        if (this.animationStage >= 4) {
             currPlayer.handleSwitchState({
                 move: true,
                 idle: true,
@@ -33,8 +33,9 @@ export default class PlayerHurtState extends PlayerBaseState {
             });
         }
     }
+
     drawImage(currPlayer) {
-        const playerHurt = getNumberedImage('player_hurt', this.animationStage + 1);
+        const playerHurt = getNumberedImage('player_hurt', this.animationStage);
 
         drawImage({
             img: playerHurt,

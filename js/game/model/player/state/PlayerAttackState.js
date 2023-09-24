@@ -70,11 +70,11 @@ export default class PlayerAttackState extends PlayerBaseState {
     enterState(currPlayer) {
         const { lookAngle } = currPlayer;
 
-        currPlayer.direction.x = getHorizontalValue({
+        currPlayer.velocity.x = getHorizontalValue({
             magnitude: currPlayer.attackMoveSpeed,
             angle: lookAngle,
         });
-        currPlayer.direction.y = getVerticalValue({
+        currPlayer.velocity.y = getVerticalValue({
             magnitude: currPlayer.attackMoveSpeed,
             angle: lookAngle,
         });

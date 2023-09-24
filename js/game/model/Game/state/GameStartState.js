@@ -6,12 +6,12 @@ import Game from '../Game.js';
 import MenuModal from '../../modal/MenuModal.js';
 import SelectionModal from '../../modal/SelectionModal.js';
 import SettingsModal from '../../modal/SettingsModal.js';
-import {imageLoader} from '../../../helper/imageLoader.js';
+import { imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 
 export default class GameStartState extends GameBaseState {
     async enterState(game) {
-        this.number = 0;
+        super.enterState(game);
         this.spawnParticles = true;
 
         game.instance = null;
@@ -29,7 +29,7 @@ export default class GameStartState extends GameBaseState {
 
         menuHandler();
 
-        const {audio} = game;
+        const { audio } = game;
 
         audio.allowSound = true;
         audio.playAudio('menu/background.ogg', null, true);
@@ -38,11 +38,11 @@ export default class GameStartState extends GameBaseState {
     }
 
     updateState(game) {
-        this.number += 1 * game.deltaTime;
-        const {HUD} = game;
+        super.updateState(game);
+        const { HUD } = game;
 
         HUD.clearRect(0, 0, game.canvas.width, game.canvas.height);
-        if (this.spawnParticles) {
+        if (this.spawnParticles && this.checkCounter(1)) {
             Fireflies.generate({
                 canvas: HUD,
                 distance: 1000,
@@ -53,14 +53,15 @@ export default class GameStartState extends GameBaseState {
                 speed: 0.25,
                 lifespan: 3,
             });
+
+            this.resetCounter();
         }
 
-        // game.switchState(game.stageOneState);
         ParticlesManager.getInstance().update();
     }
 
     exitState(game) {
-        const {audio} = game;
+        const { audio } = game;
         audio.stopAll();
     }
 }

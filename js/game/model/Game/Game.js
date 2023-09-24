@@ -19,6 +19,7 @@ export default class Game {
     constructor() {
         this.stage = 1;
         this.deltaTime = 0;
+        this.movementDeltaTime = 0;
         this.showFPS = false;
         this.fullscreenData = {};
         this.fullscreen = false;
@@ -115,9 +116,9 @@ export default class Game {
         await this.currState.enterState(this);
     }
 
-    updateGame(deltaTime) {
+    update(deltaTime) {
         this.deltaTime = deltaTime * GameSettings.GAME.GAME_SPEED;
-        
+        this.movementDeltaTime = Math.cbrt(deltaTime * GameSettings.GAME.GAME_SPEED);
         if (this.loading) {
             return;
         }

@@ -74,6 +74,7 @@ export default class GameStageOneState extends GameBaseState {
         this.handleStageChange(game);
     }
 
+
     handleStageChange(game) {
         const { player, backgroundOpacity } = Game.getInstance();
         if (player.currState?.isBelowGround && backgroundOpacity === 0) {

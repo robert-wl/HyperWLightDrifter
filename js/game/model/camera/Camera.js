@@ -1,7 +1,6 @@
 import Game from '../Game/Game.js';
 import GameSettings from '../../constants.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
-import { getAngle } from '../../helper/angleHelper.js';
 
 const CAMERA_X_CONSTANT = -45;
 const CAMERA_Y_CONSTANT = -25;
@@ -49,6 +48,7 @@ export default class Camera {
     getTranslatePosition({ position, length }) {
         return position - length;
     }
+
     setCameraPosition({ position }) {
         const { ctx } = Game.getInstance();
 
@@ -74,7 +74,7 @@ export default class Camera {
         this.translateCamera({
             direction: directionArr,
             moveDirection: direction,
-        })
+        });
     }
 
     setSnapBackToPlayer() {
@@ -83,7 +83,7 @@ export default class Camera {
 
     setShakeCamera({ duration, angle = Math.PI / 2, strength = 3 }) {
         this.shakeStrength = strength;
-        this.shakeDuration = duration
+        this.shakeDuration = duration;
         this.shakeAngle = angle;
         this.shakeStartTime = Date.now();
     }
@@ -93,7 +93,7 @@ export default class Camera {
             this.translateOffset = {
                 x: 0,
                 y: 0,
-            }
+            };
 
             return;
         }
@@ -128,7 +128,7 @@ export default class Camera {
     }
 
     resetShakeCamera() {
-        if(this.shakeStartTime === -1 || !this.hasTranslated) {
+        if (this.shakeStartTime === -1 || !this.hasTranslated) {
             return;
         }
 
@@ -141,6 +141,7 @@ export default class Camera {
         const { canvas } = Game.getInstance();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
+
     updateCamera() {
         this.moveCamera();
 
@@ -158,21 +159,21 @@ export default class Camera {
             this.renderDebugBox();
         }
 
-        if(this.snapBackToPlayer) {
+        if (this.snapBackToPlayer) {
             this.moveCameraPosition({
                 direction: {
                     x: (player.centerPosition.x - this.position.x) * 0.05,
                     y: (player.centerPosition.y - this.position.y) * 0.05,
-                }
-            })
+                },
+            });
 
             const distance = getMagnitudeValue({
                 x: player.centerPosition.x - this.position.x,
                 y: player.centerPosition.y - this.position.y,
-            })
+            });
 
 
-            if(distance < 600) {
+            if (distance < 600) {
                 this.snapBackToPlayer = false;
             }
         }
@@ -186,9 +187,10 @@ export default class Camera {
             this.cameraBox.position.x,
             this.cameraBox.position.y,
             this.cameraBox.width,
-            this.cameraBox.height
+            this.cameraBox.height,
         );
     }
+
     renderLowerBackground() {
         this.drawCamera({
             img: this.lowerBackground,
@@ -241,22 +243,22 @@ export default class Camera {
         const { player, ctx } = Game.getInstance();
 
         if (direction.includes('d')) {
-            const displacement = moveDirection?.x || Math.abs(player.direction.x);
+            const displacement = moveDirection?.x || Math.abs(player.velocity.x);
             ctx.translate(-displacement, 0);
             this.position.x += displacement;
         }
         if (direction.includes('a')) {
-            const displacement = moveDirection?.x || Math.abs(player.direction.x);
+            const displacement = moveDirection?.x || Math.abs(player.velocity.x);
             ctx.translate(displacement, 0);
             this.position.x -= displacement;
         }
         if (direction.includes('w')) {
-            const displacement = moveDirection?.xy || Math.abs(player.direction.y);
+            const displacement = moveDirection?.xy || Math.abs(player.velocity.y);
             ctx.translate(0, displacement);
             this.position.y -= displacement;
         }
         if (direction.includes('s')) {
-            const displacement = moveDirection?.y || Math.abs(player.direction.y);
+            const displacement = moveDirection?.y || Math.abs(player.velocity.y);
             ctx.translate(0, -displacement);
             this.position.y += displacement;
         }
@@ -289,17 +291,17 @@ export default class Camera {
 
     filterCameraMovement(directionArray) {
         const cameraBoxRight = this.cameraBox.position.x + this.cameraBox.width;
-        if(cameraBoxRight < Game.getInstance().width) {
+        if (cameraBoxRight < Game.getInstance().width) {
             directionArray.splice(directionArray.indexOf('d'), 1);
         }
 
         const cameraBoxLeft = this.cameraBox.position.x;
-        if(cameraBoxLeft < 100) {
+        if (cameraBoxLeft < 100) {
             directionArray.splice(directionArray.indexOf('a'), 1);
         }
 
         const cameraBoxBottom = this.cameraBox.position.y + this.cameraBox.height;
-        if(cameraBoxBottom > Game.getInstance().height * 2) {
+        if (cameraBoxBottom > Game.getInstance().height * 2) {
             directionArray.splice(directionArray.indexOf('s'), 1);
         }
         const cameraBoxTop = this.cameraBox.position.y;
@@ -327,7 +329,7 @@ export default class Camera {
             imagePosition.x,
             imagePosition.y,
             imageCanvasSize.x,
-            imageCanvasSize.y
+            imageCanvasSize.y,
         );
     }
 }

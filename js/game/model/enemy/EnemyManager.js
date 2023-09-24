@@ -14,7 +14,7 @@ export default class EnemyManager {
         this.bossEntities = [];
         this.enemySpawn = true;
         this.enemyAliveCount = 0;
-        this.difficulty = 8;
+        this.difficulty = 0;
     }
 
     static getInstance() {

@@ -7,19 +7,16 @@ import GameSettings from '../../../constants.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
 
 export default class PlayerMoveState extends PlayerBaseState {
-    animationStage = 0;
-    number = 0;
+    enterState(currPlayer) {
+
+    }
 
     updateState(currPlayer) {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
+        super.updateState(currPlayer);
 
-        if (this.number >= 4) {
-            this.animationStage += 1;
-            this.number = 0;
-        }
+        this.advanceAnimationStage(4, 12);
 
-        if (this.animationStage % 5 === 0) {
+        if (this.animationStage >= 5) {
             const randomValue = getRandomValue({
                 initialValue: 1,
                 randomValue: 2,
@@ -38,7 +35,7 @@ export default class PlayerMoveState extends PlayerBaseState {
 
         this.direction = direction;
 
-        currPlayer.direction = playerDirection;
+        currPlayer.velocity = playerDirection;
 
         if (direction) {
             currPlayer.lastDirection = direction;
@@ -56,16 +53,16 @@ export default class PlayerMoveState extends PlayerBaseState {
     drawImage(currPlayer) {
         let moveImage = null;
         if (this.direction === 'w') {
-            moveImage = getNumberedImage('move_up', (this.animationStage % 12) + 1);
+            moveImage = getNumberedImage('move_up', this.animationStage);
         }
         if (this.direction === 'a') {
-            moveImage = getNumberedImage('move_left', (this.animationStage % 12) + 1);
+            moveImage = getNumberedImage('move_left', this.animationStage);
         }
         if (this.direction === 's') {
-            moveImage = getNumberedImage('move_down', (this.animationStage % 12) + 1);
+            moveImage = getNumberedImage('move_down', this.animationStage);
         }
         if (this.direction === 'd') {
-            moveImage = getNumberedImage('move_right', (this.animationStage % 12) + 1);
+            moveImage = getNumberedImage('move_right', this.animationStage);
         }
 
         if (moveImage === null) {

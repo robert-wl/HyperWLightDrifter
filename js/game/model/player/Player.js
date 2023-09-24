@@ -11,7 +11,7 @@ import PlayerHurtState from './state/PlayerHurtState.js';
 import playerEffectsHandler from '../../helper/player/playerEffectsHelper.js';
 import PlayerThrowingState from './state/PlayerThrowingState.js';
 import GameSettings from '../../constants.js';
-import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
+import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import { checkCollision } from '../../helper/collision/playerCollision.js';
 import PlayerSpawnState from './state/PlayerSpawnState.js';
 import PlayerDeathState from './state/PlayerDeathState.js';
@@ -30,13 +30,12 @@ export default class Player {
         this.maxSpeed = playerDefault.MAX_SPEED;
         this.attackMoveSpeed = playerDefault.ATTACK_MOVE_SPEED;
         this.dashMoveSpeed = playerDefault.DASH_MOVE_SPEED;
-        this.direction = {
+        this.velocity = {
             x: 0,
             y: 0,
         };
         this.theta = 0;
         this.lookAngle = 0;
-        this.position = playerDefault.START_POSITION;
         this.width = playerDefault.WIDTH;
         this.height = playerDefault.HEIGHT;
         this.hitbox = {
@@ -52,12 +51,11 @@ export default class Player {
             h: 0,
         };
         this.centerPosition = {
-            x: this.position.x + this.width / 2,
-            y: this.position.y + this.height / 2,
+            x: playerDefault.START_POSITION.x + this.width / 2,
+            y: playerDefault.START_POSITION.y + this.height / 2,
         };
         this.lastDirection = playerDefault.LAST_DIRECTION;
         this.combo = false;
-        this.reversed = false;
         this.counter = 0;
         this.currState = new PlayerBaseState();
         this.spawnState = new PlayerSpawnState();
@@ -89,6 +87,7 @@ export default class Player {
             this.switchState(this.deathState);
         }
 
+
         this.updateBombs();
 
         renderShadow({
@@ -109,6 +108,8 @@ export default class Player {
             });
         }
 
+        this.moveHandler();
+
         this.currState.drawImage(this);
 
         playerEffectsHandler({
@@ -118,24 +119,29 @@ export default class Player {
 
         this.projectiles.forEach((projectile) => projectile.update());
 
-        this.moveHandler();
-
         this.heal();
         if (Game.getInstance().debug) {
             this.renderDebugBox();
         }
     }
 
+
     updateBombs() {
         if (this.bombs > 2) {
             return;
         }
-        this.bombs += 0.001;
+
+        const { deltaTime } = Game.getInstance();
+        this.bombs += 0.001 * deltaTime;
     }
 
     updateCounter() {
-        // console.log(Game.getInstance().keys)
-        this.counter = (this.counter + 1) % 7;
+        const { deltaTime } = Game.getInstance();
+        if (this.counter >= 1) {
+            this.counter = 0;
+        }
+
+        this.counter += deltaTime;
     }
 
     heal() {
@@ -182,7 +188,6 @@ export default class Player {
             return;
         }
 
-        const { deltaTime } = Game.getInstance();
         this.immunity = 0;
         this.health -= 1;
 
@@ -190,19 +195,21 @@ export default class Player {
             this.switchState(this.hurtState);
         }
 
-        this.direction.x += getHorizontalValue({
-            magnitude: 5 * deltaTime,
+        const { movementDeltaTime } = Game.getInstance();
+        this.velocity.x += getHorizontalValue({
+            magnitude: 5 * movementDeltaTime,
             angle: angle + Math.PI,
         });
-        this.direction.y += getVerticalValue({
-            magnitude: 5 * deltaTime,
+        this.velocity.y += getVerticalValue({
+            magnitude: 5 * movementDeltaTime,
             angle: angle + Math.PI,
         });
     }
 
     regenerateStamina() {
+        const { deltaTime } = Game.getInstance();
         if (this.stamina < 100) {
-            this.stamina += 0.5;
+            this.stamina += 0.5 * deltaTime;
         }
     }
 
@@ -238,51 +245,37 @@ export default class Player {
     }
 
     moveHandler() {
-        this.theta = Math.atan2(this.direction.y, this.direction.x);
+        this.theta = Math.atan2(this.velocity.y, this.velocity.x);
 
-        const { collideables, deltaTime } = Game.getInstance();
-        const absVector =
-            getMagnitudeValue({
-                x: this.direction.x,
-                y: this.direction.y,
-            }) * this.friction;
+        const { collideables, movementDeltaTime } = Game.getInstance();
 
-        this.direction.x = getHorizontalValue({
-            magnitude: absVector,
-            angle: this.theta,
-        });
-
-        this.direction.y = getVerticalValue({
-            magnitude: absVector,
-            angle: this.theta,
-        });
+        this.velocity.x = this.velocity.x * (1 - this.friction * movementDeltaTime);
+        this.velocity.y = this.velocity.y * (1 - this.friction * movementDeltaTime);
 
         let { x, y, w, h } = this.getHitboxCoordinates();
 
         if (
             checkCollision({
                 collideables,
-                x: x + this.direction.x,
+                x: x + this.velocity.x,
                 y: y,
                 w: w,
                 h: h,
             })
         ) {
-            this.position.x += this.direction.x * deltaTime;
-            this.centerPosition.x += this.direction.x * deltaTime;
+            this.centerPosition.x += this.velocity.x;
         }
 
         if (
             checkCollision({
                 collideables,
                 x: x,
-                y: y + this.direction.y,
+                y: y + this.velocity.y,
                 w: w,
                 h: h,
             })
         ) {
-            this.position.y += this.direction.y * deltaTime;
-            this.centerPosition.y += this.direction.y * deltaTime;
+            this.centerPosition.y += this.velocity.y;
         }
     }
 

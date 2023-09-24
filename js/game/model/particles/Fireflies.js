@@ -17,7 +17,6 @@ export default class Fireflies extends Particles {
             canvas,
         });
         this.angle = angle;
-        this.number = 0;
         this.rotation = 0;
     }
 
@@ -31,14 +30,14 @@ export default class Fireflies extends Particles {
                 initialValue: -1,
                 randomValue: 2,
             }) *
-                distanceConst;
+            distanceConst;
         const y =
             spawnPosition.y +
             getRandomValue({
                 initialValue: -1,
                 randomValue: 2,
             }) *
-                distanceConst;
+            distanceConst;
 
         const width = getRandomValue({
             initialValue: 5,
@@ -82,9 +81,9 @@ export default class Fireflies extends Particles {
     }
 
     update() {
-        this.number++;
+        super.update();
 
-        if (this.number % 20 === 0) {
+        if (this.number >= 20) {
             this.lifeSpan -= 1;
             this.number = 0;
             this.rotation =
@@ -95,13 +94,16 @@ export default class Fireflies extends Particles {
                 ) / 2;
         }
 
+        const { movementDeltaTime } = Game.getInstance();
+        const speed = this.speed * movementDeltaTime;
+
         this.position.x += getHorizontalValue({
-            magnitude: this.speed,
+            magnitude: speed,
             angle: this.angle,
         });
 
         this.position.y += getVerticalValue({
-            magnitude: this.speed,
+            magnitude: speed,
             angle: this.angle,
         });
 

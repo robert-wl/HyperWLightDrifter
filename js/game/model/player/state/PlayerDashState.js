@@ -5,38 +5,41 @@ import Game from '../../Game/Game.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
 
 export default class PlayerDashState extends PlayerBaseState {
-    number = 1;
-    dashNumber = 1;
     lastData = [];
 
     enterState(currPlayer) {
+        super.enterState(currPlayer);
         this.angle = currPlayer.lookAngle;
 
         const direction = getMouseDirection({ angle: this.angle });
         this.direction = direction;
-        currPlayer.lastDirection = direction;
-
-        currPlayer.stamina -= 10;
         this.lastPosition = { ...currPlayer.centerPosition };
+        this.finished = false;
+
+
+        currPlayer.lastDirection = direction;
+        currPlayer.stamina -= 10;
 
         const { audio } = Game.getInstance();
         audio.playAudio('player/dash.wav');
     }
 
     updateState(currPlayer) {
-        this.number += 1;
+        super.updateState(currPlayer);
 
-        this.handleTiming(currPlayer);
-        if (this.dashNumber >= 4) {
+        this.dashTiming(currPlayer);
+        if (this.checkCounter(4)) {
             return;
         }
 
-        currPlayer.direction.x = getHorizontalValue({
-            magnitude: currPlayer.dashMoveSpeed,
+        const { deltaTime } = Game.getInstance();
+
+        currPlayer.velocity.x = getHorizontalValue({
+            magnitude: currPlayer.dashMoveSpeed * deltaTime,
             angle: this.angle,
         });
-        currPlayer.direction.y = getVerticalValue({
-            magnitude: currPlayer.dashMoveSpeed,
+        currPlayer.velocity.y = getVerticalValue({
+            magnitude: currPlayer.dashMoveSpeed * deltaTime,
             angle: this.angle,
         });
     }
@@ -54,14 +57,14 @@ export default class PlayerDashState extends PlayerBaseState {
         if (this.lastData.length > 2) {
             this.lastData.shift();
         }
-        if (this.dashNumber % 2 === 0 && this.number < 7) {
+        if (this.animationStage % 3 === 0 && this.number < 7 && !this.finished) {
             this.lastData.push(data);
         }
     }
 
     exitState(_currPlayer) {
         this.number = 1;
-        this.dashNumber = 1;
+        this.animationStage = 1;
         this.lastData = [];
     }
 
@@ -71,97 +74,25 @@ export default class PlayerDashState extends PlayerBaseState {
                 x: currPlayer.centerPosition.x,
                 y: currPlayer.centerPosition.y,
             },
-            dashNumber: this.dashNumber,
+            animationStage: this.animationStage,
             angle: this.angle,
             lastPosition: this.lastPosition,
             direction: this.direction,
         };
     }
 
-    handleTiming(currPlayer) {
-        if (this.direction === 'w') {
-            this.dashUpTiming(currPlayer);
-            return;
-        }
-        if (this.direction === 'a' || this.direction === 'd') {
-            this.dashSideTiming(currPlayer);
-            return;
-        }
-        if (this.direction === 's') {
-            this.dashDownTiming(currPlayer);
-        }
-    }
+    dashTiming(currPlayer) {
+        this.advanceAnimationStage(2);
+        this.animationStage = Math.min(this.animationStage, 11);
 
-    dashUpTiming(currPlayer) {
-        if (this.number === 5 && this.dashNumber <= 3) {
-            this.number = 0;
-            this.dashNumber += 1;
-            return;
-        }
-        if (this.number === 2 && this.dashNumber > 3 && this.dashNumber < 6) {
-            this.number = 0;
-            this.dashNumber += 1;
-            return;
-        }
-        if (this.number === 3 && this.dashNumber > 5 && this.dashNumber < 7) {
-            this.number = 0;
-            this.dashNumber += 1;
-        }
-        if (this.dashNumber === 7) {
+        if (this.animationStage >= 11) {
+            this.finished = true;
             if (this.lastData.length > 0) {
                 this.lastData.shift();
                 return;
             }
-            currPlayer.handleSwitchState({
-                move: true,
-                attackOne: true,
-                dash: true,
-                aim: true,
-                throws: true,
-            });
-        }
-    }
 
-    dashSideTiming(currPlayer) {
-        if (this.number === 5 && this.dashNumber < 3) {
-            this.number = 0;
-            this.dashNumber += 1;
-            return;
-        }
-        if (this.number === 3 && this.dashNumber >= 3 && this.dashNumber < 5) {
-            this.number = 0;
-            this.dashNumber += 1;
-        }
-        if (this.dashNumber === 5) {
-            if (this.lastData.length > 0) {
-                this.lastData.shift();
-                return;
-            }
-            currPlayer.handleSwitchState({
-                move: true,
-                attackOne: true,
-                dash: true,
-                aim: true,
-                throws: true,
-            });
-        }
-    }
 
-    dashDownTiming(currPlayer) {
-        if (this.number === 5 && this.dashNumber < 3) {
-            this.number = 0;
-            this.dashNumber += 1;
-            return;
-        }
-        if (this.number === 3 && this.dashNumber >= 3 && this.dashNumber < 6) {
-            this.number = 0;
-            this.dashNumber += 1;
-        }
-        if (this.dashNumber === 6) {
-            if (this.lastData.length > 0) {
-                this.lastData.shift();
-                return;
-            }
             currPlayer.handleSwitchState({
                 move: true,
                 attackOne: true,

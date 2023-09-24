@@ -1,17 +1,16 @@
-import { get_image } from '../fileReader.js';
-import { drawImage, drawMirroredY, drawRotated } from './drawer.js';
-import { getImage, getNumberedImage } from '../imageLoader.js';
+import { drawImage, drawRotated } from './drawer.js';
+import { getNumberedImage } from '../imageLoader.js';
 import Game from '../../model/Game/Game.js';
 import GameSettings from '../../constants.js';
 
 export default function playerDashDrawer(data) {
-    const { dashNumber, angle, lastPosition, filter } = data;
+    const { animationStage, angle, lastPosition, filter } = data;
     if (filter) {
         Game.getInstance().setFilter(filter);
     }
 
-    if (dashNumber < 4 && !filter) {
-        const dashAnimation = getNumberedImage('dash_animation', dashNumber);
+    if (animationStage < 4 && !filter) {
+        const dashAnimation = getNumberedImage('dash_animation', animationStage);
 
         drawRotated({
             img: dashAnimation,
@@ -26,9 +25,9 @@ export default function playerDashDrawer(data) {
     drawDirectionalDash(data);
 }
 
-function drawDirectionalDash({ canvas, currPosition, dashNumber, direction }) {
+function drawDirectionalDash({ canvas, currPosition, animationStage, direction }) {
     if (direction === 'w') {
-        const dashUp = getNumberedImage('dash_up', dashNumber);
+        const dashUp = getNumberedImage('dash_up', animationStage);
 
         drawImage({
             img: dashUp,
@@ -40,7 +39,7 @@ function drawDirectionalDash({ canvas, currPosition, dashNumber, direction }) {
         });
     }
     if (direction === 'd' || direction === 'a') {
-        const dashSide = getNumberedImage('dash_side', dashNumber);
+        const dashSide = getNumberedImage('dash_side', animationStage);
 
         drawImage({
             img: dashSide,
@@ -53,7 +52,7 @@ function drawDirectionalDash({ canvas, currPosition, dashNumber, direction }) {
         });
     }
     if (direction === 's') {
-        const dashDown = getNumberedImage('dash_down', dashNumber);
+        const dashDown = getNumberedImage('dash_down', animationStage);
 
         drawImage({
             img: dashDown,
