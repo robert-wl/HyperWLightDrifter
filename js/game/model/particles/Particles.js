@@ -1,8 +1,10 @@
 import Game from '../Game/Game.js';
+import Animateable from '../Animateable.js';
 
 
-export default class Particles {
+export default class Particles extends Animateable {
     constructor({ position, speed, lifeSpan, width, height, canvas }) {
+        super();
         this.position = position;
         this.speed = speed;
         this.lifeSpan = lifeSpan;
@@ -15,9 +17,5 @@ export default class Particles {
     update() {
         const { deltaTime } = Game.getInstance();
         this.number += deltaTime;
-    }
-
-    checkCounter(number) {
-        return this.number >= number;
     }
 }

@@ -16,7 +16,7 @@ export default class PlayerMoveState extends PlayerBaseState {
 
         this.advanceAnimationStage(4, 12);
 
-        if (this.animationStage >= 5) {
+        if (this.animationStage % 6 === 0) {
             const randomValue = getRandomValue({
                 initialValue: 1,
                 randomValue: 2,

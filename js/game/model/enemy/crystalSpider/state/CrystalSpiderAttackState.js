@@ -1,30 +1,47 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import Game from '../../../Game/Game.js';
 import playerCollision from '../../../../helper/collision/playerCollision.js';
-import {getImage} from "../../../../helper/imageLoader.js";
-import {drawImage} from "../../../../helper/renderer/drawer.js";
-import {getFaceDirection} from "../../../../helper/collision/directionHandler.js";
-import {getHorizontalValue, getVerticalValue} from "../../../../helper/distanceHelper.js";
+import { getImage } from '../../../../helper/imageLoader.js';
+import { drawImage } from '../../../../helper/renderer/drawer.js';
+import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 
 export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
     enterState(currSpider) {
-        currSpider.attackSpeed = 0;
-        this.number = 0;
+        super.enterState(currSpider);
         this.angle = currSpider.angle;
+        this.attackDrag = 0.25;
+
+        currSpider.attackSpeed = 20;
 
         const { audio } = Game.getInstance();
         audio.playAudio('enemy/crystal_spider/attack.wav');
     }
-    updateState(currSpider) {
-        this.number += 1;
 
-        if (this.number <= 10) {
+    updateState(currSpider) {
+        super.updateState(currSpider);
+        const { deltaTime, movementDeltaTime } = Game.getInstance();
+
+
+        if (this.checkCounterReversed(10)) {
             currSpider.attackSpeed = 20;
         }
-        if (this.number === 20) {
+
+        if (this.checkCounter(20)) {
             currSpider.switchState(currSpider.moveState);
         }
-        currSpider.attackSpeed *= 0.75;
+
+        currSpider.attackSpeed = currSpider.attackSpeed * (1 - this.attackDrag * movementDeltaTime);
+
+        currSpider.position.x += getHorizontalValue({
+            magnitude: currSpider.attackSpeed * deltaTime,
+            angle: this.angle,
+        });
+         
+        currSpider.position.y += getVerticalValue({
+            magnitude: currSpider.attackSpeed * deltaTime,
+            angle: this.angle,
+        });
 
         playerCollision({
             position: {
@@ -33,17 +50,8 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
             },
             angle: this.angle,
         });
-
-        currSpider.position.x += getHorizontalValue({
-            magnitude: currSpider.attackSpeed,
-            angle: this.angle,
-        });
-
-        currSpider.position.y += getVerticalValue({
-            magnitude: currSpider.attackSpeed,
-            angle: this.angle,
-        });
     }
+
     drawImage(currSpider) {
         const spiderAttack = getImage('crystal_spider_attack');
 
@@ -54,8 +62,8 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
             width: currSpider.width,
             height: currSpider.height,
             translate: true,
-            mirrored: getFaceDirection(this.angle) === 'left'
-        })
+            mirrored: getFaceDirection(this.angle) === 'left',
+        });
 
     }
 }

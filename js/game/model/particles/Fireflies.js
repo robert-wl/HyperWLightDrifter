@@ -83,7 +83,7 @@ export default class Fireflies extends Particles {
     update() {
         super.update();
 
-        if (this.number >= 20) {
+        if (this.checkCounter(20)) {
             this.lifeSpan -= 1;
             this.number = 0;
             this.rotation =

@@ -56,7 +56,8 @@ export default class CrystalSpider extends Enemy {
     }
 
     update() {
-        if (Game.getInstance().debug) {
+        const { debug, deltaTime } = Game.getInstance();
+        if (debug) {
             this.debugMode();
         }
 
@@ -79,10 +80,12 @@ export default class CrystalSpider extends Enemy {
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');
         }
+
         this.currState.drawImage(this);
+
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('none');
-            this.damaged -= 1;
+            this.damaged -= deltaTime;
         }
     }
 }

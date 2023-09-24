@@ -6,20 +6,11 @@ import { getNumberedImage } from '../../helper/imageLoader.js';
 import { getAngle } from '../../helper/angleHelper.js';
 import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
 import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
+import Animateable from '../Animateable.js';
 
-export default class Grenade {
-    static generate({ x, y, angle }) {
-        const newGrenade = new Grenade({
-            x,
-            y,
-            w: 16,
-            h: 16,
-            angle,
-            velocity: 10,
-        });
-        Game.getInstance().player.projectiles.push(newGrenade);
-    }
+export default class Grenade extends Animateable {
     constructor({ x, y, w, h, angle, velocity }) {
+        super();
         this.position = {
             x: x,
             y: y,
@@ -28,50 +19,69 @@ export default class Grenade {
         this.height = h;
         this.angle = angle;
         this.velocity = velocity;
-        this.rotation = getRandomValue({
-            randomValue: Math.PI * 7,
-        });
-        this.friction = 0.97;
+        this.friction = 0.03;
         this.number = 0;
         this.animationStage = 1;
+        this.rotation = getRandomValue({
+            randomValue: Math.PI * 3,
+        });
+        this.playedAudio = false;
+    }
+
+    static generate({ x, y, angle }) {
+        const newGrenade = new Grenade({
+            x: x,
+            y: y,
+            w: 16,
+            h: 16,
+            angle: angle,
+            velocity: 10,
+        });
+
+        Game.getInstance().player.projectiles.push(newGrenade);
     }
 
     update() {
-        this.number += 1;
+        const { deltaTime } = Game.getInstance();
+        if (deltaTime) {
+            this.number += deltaTime;
+        }
+
         this.position.x += getHorizontalValue({
-            magnitude: this.velocity,
+            magnitude: this.velocity * deltaTime,
             angle: this.angle,
         });
 
         this.position.y += getVerticalValue({
-            magnitude: this.velocity,
+            magnitude: this.velocity * deltaTime,
             angle: this.angle,
         });
-        this.velocity *= this.friction;
 
-        if (this.animationStage === 1 && this.number === 50) {
+        this.velocity = this.velocity * (1 - this.friction * deltaTime);
+
+        if (this.checkCounter(50) && this.animationStage === 1) {
             this.animationStage += 1;
             this.number = 0;
         }
-        if (this.animationStage > 1 && this.animationStage < 11 && this.number === 2) {
+        if (this.animationStage > 1) {
+            this.advanceAnimationStage(2);
             this.velocity = 0;
-            this.animationStage += 1;
-            this.number = 0;
         }
 
         const { player, audio } = Game.getInstance();
         const { projectiles } = player;
 
-        if (this.animationStage === 11) {
-
-
-            projectiles.splice(projectiles.indexOf(this), 1);
-        }
-
-        if (this.animationStage === 2 && this.number === 1) {
-            audio.playAudio('player/grenade/explode.wav')
+        if (!this.playedAudio && this.animationStage >= 2) {
+            audio.playAudio('player/grenade/explode.wav');
+            this.playedAudio = true;
             this.handleDamage();
         }
+
+        if (this.animationStage >= 11) {
+            projectiles.splice(projectiles.indexOf(this), 1);
+            return;
+        }
+
         this.render();
     }
 
@@ -93,7 +103,7 @@ export default class Grenade {
         const { enemyList } = enemyManager;
 
         enemyList.forEach((enemy) => {
-            if(enemy.currState === enemy.dieState) {
+            if (enemy.currState === enemy.dieState) {
                 return;
             }
 
@@ -107,16 +117,16 @@ export default class Grenade {
                 y: this.position.y - enemy.position.y,
             });
 
-            if(distance > 250) {
+            if (distance >= 250) {
                 return;
             }
 
             if (enemy instanceof CrystalSpider) {
-                audio.playAudio('enemy/crystal_spider/hit.wav');
+                audio.playAudio('enemy/crystal_spider/hurt.wav');
             }
 
             if (enemy instanceof CrystalBrute) {
-                audio.playAudio('enemy/crystal_brute/hit.wav');
+                audio.playAudio('enemy/crystal_brute/hurt.wav');
             }
             enemy.damage({
                 amount: 3,
@@ -124,4 +134,5 @@ export default class Grenade {
             });
         });
     }
+
 }

@@ -1,9 +1,7 @@
 import Game from '../../Game/Game.js';
+import Animateable from '../../Animateable.js';
 
-export default class PlayerBaseState {
-    number = 0;
-    animationStage = 1;
-
+export default class PlayerBaseState extends Animateable {
     updateState(currPlayer) {
         const { deltaTime } = Game.getInstance();
         this.number += deltaTime;
@@ -18,23 +16,5 @@ export default class PlayerBaseState {
     }
 
     exitState(currPlayer) {
-    }
-
-
-    checkCounter(number) {
-        return this.number >= number;
-    }
-
-    advanceAnimationStage(number, maxStage) {
-        const advanceStage = Math.floor(this.number / number);
-
-        if (advanceStage > 0) {
-            this.animationStage += advanceStage;
-            this.number = 0;
-
-            if (maxStage && this.animationStage > maxStage) {
-                this.animationStage = 1;
-            }
-        }
     }
 }

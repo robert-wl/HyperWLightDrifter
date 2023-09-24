@@ -11,7 +11,6 @@ export default class Enemy {
             x: x + w / 2,
             y: y + h / 2,
         };
-        this.image = null;
         this.damaged = -1;
         this.velocity = {
             value: 0,

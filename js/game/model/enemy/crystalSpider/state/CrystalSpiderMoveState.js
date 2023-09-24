@@ -8,72 +8,29 @@ import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 
 export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
-    enterState(_currSpider) {
-        this.number = 0;
-        this.animationStage = 0;
+    enterState(currSpider) {
+        super.enterState(currSpider);
         this.clockwise = getRandomBoolean(0.5);
+        this.moveTime = 0;
         this.attackCooldown = 100;
     }
 
     updateState(currSpider) {
-        this.number += 1;
+        super.updateState(currSpider);
+        const { deltaTime } = Game.getInstance();
+        this.moveTime += deltaTime;
 
-        if (this.number % 20 === 0) {
+        if (Math.round(this.moveTime) % 20 === 0) {
             const { audio } = Game.getInstance();
             audio.playAudio('enemy/crystal_spider/walk.wav');
         }
-        const { centerPosition } = Game.getInstance().player;
-        const distance = getMagnitudeValue({
-            x: centerPosition.x - currSpider.position.x,
-            y: centerPosition.y - currSpider.position.y,
-        });
 
-        if (distance < 100 && this.number > this.attackCooldown) {
-            currSpider.switchState(currSpider.attackState);
-        } else if (distance < 100) {
-            currSpider.angle = getAngle({
-                x: centerPosition.x - currSpider.position.x,
-                y: centerPosition.y - currSpider.position.y,
-            });
-
-            const rotate_angle = this.getRotateAngle(currSpider.angle);
-
-            currSpider.position.x += getHorizontalValue({
-                magnitude: currSpider.speed,
-                angle: rotate_angle,
-            });
-
-            currSpider.position.y += getVerticalValue({
-                magnitude: currSpider.speed,
-                angle: rotate_angle,
-            });
-        } else {
-            currSpider.angle = getAngle({
-                x: centerPosition.x - currSpider.position.x,
-                y: centerPosition.y - currSpider.position.y,
-            });
-
-            currSpider.position.x += getHorizontalValue({
-                magnitude: currSpider.speed,
-                angle: currSpider.angle,
-            });
-
-            currSpider.position.y += getVerticalValue({
-                magnitude: currSpider.speed,
-                angle: currSpider.angle,
-            });
-        }
+        this.advanceAnimationStage(4, 4);
+        this.handleMovement(currSpider);
     }
 
     drawImage(currSpider) {
-        const { angle } = currSpider;
-        const { ctx } = Game.getInstance();
-
-        if (this.number % 4 === 0) {
-            this.animationStage = (this.animationStage + 1) % 4;
-        }
-
-        const spiderWalk = getNumberedImage('crystal_spider_walk', this.animationStage + 1);
+        const spiderWalk = getNumberedImage('crystal_spider_walk', this.animationStage);
 
         drawImage({
             img: spiderWalk,
@@ -82,11 +39,48 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
             width: currSpider.width,
             height: currSpider.height,
             translate: true,
-            mirrored: getFaceDirection(angle) === 'left',
+            mirrored: getFaceDirection(currSpider.angle) === 'left',
         });
     }
 
     getRotateAngle(angle) {
         return angle + (Math.PI / 2) * (this.clockwise ? 1 : -1);
+    }
+
+    handleMovement(currSpider) {
+        const { player, deltaTime } = Game.getInstance();
+        const { centerPosition } = player;
+        const speed = currSpider.speed * deltaTime;
+
+        const distance = getMagnitudeValue({
+            x: centerPosition.x - currSpider.position.x,
+            y: centerPosition.y - currSpider.position.y,
+        });
+
+        if (distance < 100 && this.moveTime > this.attackCooldown) {
+            currSpider.switchState(currSpider.attackState);
+            return;
+        }
+
+        let angle = getAngle({
+            x: centerPosition.x - currSpider.position.x,
+            y: centerPosition.y - currSpider.position.y,
+        });
+
+        currSpider.angle = angle;
+
+        if (distance < 100) {
+            angle = this.getRotateAngle(currSpider.angle);
+        }
+
+        currSpider.position.x += getHorizontalValue({
+            magnitude: speed,
+            angle: angle,
+        });
+
+        currSpider.position.y += getVerticalValue({
+            magnitude: speed,
+            angle: angle,
+        });
     }
 }

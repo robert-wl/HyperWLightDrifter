@@ -23,14 +23,14 @@ export default class InteractionBar {
     }
 
     static handler(object) {
-        const { player, keys, audio } = Game.getInstance();
+        const { player, keys, audio, deltaTime } = Game.getInstance();
 
         if (keys.includes('e') && this.transparency >= 0.5) {
-            this.number += 1;
+            this.number += deltaTime;
 
-            object.interactionStage++;
+            object.interactionStage += deltaTime;
 
-            if (object.interactionStage === 20) {
+            if (object.interactionStage >= 20) {
                 if (object instanceof Medkit) {
                     player.healing = 6;
 
@@ -40,13 +40,11 @@ export default class InteractionBar {
                 return true;
             }
 
-            if (this.number % 7 === 0) {
+            if (this.checkCounter(10)) {
                 audio.playAudio('player/interact/interact.wav');
             }
 
-            if (this.number % 10 === 0) {
-                this.animationStage = (this.animationStage % 3) + 2;
-            }
+            this.advanceAnimationStage(10);
         } else {
             if (object.interactionStage > 0) {
                 object.interactionStage -= 1;
@@ -78,9 +76,11 @@ export default class InteractionBar {
 
     static drawBar() {
         if (!this.allowDraw) {
+            this.animationStage = 1;
             return;
         }
         const { player, ctx } = Game.getInstance();
+        
         const interactionBar = getNumberedImage('interaction_bar', this.animationStage);
 
         Game.getInstance().setTransparency(this.transparency);
@@ -99,5 +99,22 @@ export default class InteractionBar {
 
         Game.getInstance().setTransparency(1);
         this.allowDraw = false;
+    }
+
+    static checkCounter(number) {
+        return this.number >= number;
+    }
+
+    static advanceAnimationStage(number, maxStage) {
+        const advanceStage = Math.floor(this.number / number);
+
+        if (advanceStage > 0) {
+            this.animationStage += advanceStage;
+            this.number = 0;
+
+            if (maxStage && this.animationStage > maxStage) {
+                this.animationStage = 1;
+            }
+        }
     }
 }

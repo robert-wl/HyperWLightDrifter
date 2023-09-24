@@ -21,9 +21,13 @@ function damagedHandler(currPlayer) {
 }
 
 function healingHandler(currPlayer) {
+    const { deltaTime } = Game.getInstance();
+
     if (currPlayer.healing > 0) {
-        const { deltaTime } = Game.getInstance();
         currPlayer.healing -= deltaTime;
+    }
+
+    if (currPlayer.healing > 0) {
 
         const { ctx } = Game.getInstance();
 

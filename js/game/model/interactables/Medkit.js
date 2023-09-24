@@ -3,9 +3,16 @@ import Game from '../Game/Game.js';
 import { getNumberedImage } from '../../helper/imageLoader.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
-import InteractionBar from "./InteractionBar.js";
+import InteractionBar from './InteractionBar.js';
 
 export default class Medkit extends Collideable {
+    constructor({ x, y, w, h, collideable }) {
+        super({ x, y, w, h, collideable });
+        this.number = 0;
+        this.animationStage = 1;
+        this.interactionStage = 1;
+    }
+
     static generate({ x, y }) {
         const newMedkit = new Medkit({
             x,
@@ -17,20 +24,11 @@ export default class Medkit extends Collideable {
 
         Game.getInstance().collideables.push(newMedkit);
     }
-    constructor({ x, y, w, h, collideable }) {
-        super({ x, y, w, h, collideable });
-        this.number = 0;
-        this.animationStage = 1;
-        this.interactionStage = 1;
-    }
 
     update() {
-        this.number += 1;
+        this.updateAnimationCounter();
 
-        if (this.number === 100) {
-            this.number = 0;
-            this.animationStage = (this.animationStage % 2) + 1;
-        }
+        this.advanceAnimationStage(100, 2);
 
         this.render();
     }
@@ -47,7 +45,7 @@ export default class Medkit extends Collideable {
         });
     }
 
-    detectInteraction(){
+    detectInteraction() {
         InteractionBar.detectPlayerInteraction(this);
     }
 
@@ -56,5 +54,4 @@ export default class Medkit extends Collideable {
         audio.playAudio('player/medkit/use.wav');
         collideables.splice(collideables.indexOf(this), 1);
     }
-
 }
