@@ -4,11 +4,11 @@ import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanc
 import { getImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
-import EnemyManager from "../../EnemyManager.js";
-import {getFaceDirection} from "../../../../helper/collision/directionHandler.js";
+import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
     enterState(currBrute) {
+        this.friction = 0.1;
         const { audio, enemyManager } = Game.getInstance();
 
         enemyManager.enemyAliveCount -= 5;
@@ -16,16 +16,17 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
     }
 
     updateState(currBrute) {
+        const { deltaTime, movementDeltaTime } = Game.getInstance();
         currBrute.position.x += getHorizontalValue({
-            magnitude: currBrute.speed,
+            magnitude: currBrute.speed * deltaTime,
             angle: currBrute.angle,
         });
         currBrute.position.y += getVerticalValue({
-            magnitude: currBrute.speed,
+            magnitude: currBrute.speed * deltaTime,
             angle: currBrute.angle,
         });
 
-        currBrute.speed *= 0.9;
+        currBrute.speed *= (1 - this.friction * movementDeltaTime);
     }
 
     drawImage(currBrute) {

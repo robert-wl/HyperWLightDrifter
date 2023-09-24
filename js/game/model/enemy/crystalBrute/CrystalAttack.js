@@ -1,11 +1,8 @@
 import CrystalSpike from './CrystalSpike.js';
-import {getHorizontalValue, getVerticalValue} from "../../../helper/distanceHelper.js";
-import Game from "../../Game/Game.js";
+import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
+import Game from '../../Game/Game.js';
 
 export default class CrystalAttack {
-    static generate({ position, angle, playAudio }) {
-        return new CrystalAttack({ position, angle, playAudio });
-    }
     constructor({ position, angle, playAudio }) {
         this.position = position;
         this.angle = angle;
@@ -14,46 +11,54 @@ export default class CrystalAttack {
         this.spikes = [];
         this.speed = 7;
         this.number = 0;
+        this.lifetime = 0;
         this.playAudio = playAudio;
     }
 
+    static generate({ position, angle, playAudio }) {
+        return new CrystalAttack({ position, angle, playAudio });
+    }
+
     update() {
-        this.number += 1;
+        const { deltaTime } = Game.getInstance();
+        this.number += deltaTime;
+        this.lifetime += deltaTime;
 
         this.position.x += getHorizontalValue({
-            magnitude: this.speed,
+            magnitude: this.speed * deltaTime,
             angle: this.angle,
         });
 
         this.position.y += getVerticalValue({
-            magnitude: this.speed,
+            magnitude: this.speed * deltaTime,
             angle: this.angle,
         });
 
-        if (this.number % 10 === 0) {
+        if (this.number >= 10) {
             const spike = CrystalSpike.generate({
-                    position: {
-                        x: this.position.x,
-                        y: this.position.y,
-                    },
-                });
+                position: {
+                    x: this.position.x,
+                    y: this.position.y,
+                },
+            });
             this.spikes.push(spike);
 
-            if(this.playAudio) {
+            if (this.playAudio) {
                 const { audio } = Game.getInstance();
 
                 audio.playAudio('enemy/crystal_brute/spike_spawn.wav');
             }
+            this.number = 0;
         }
 
 
-        if (this.number >= 200) {
+        if (this.lifetime >= 200) {
             return true;
         }
 
 
         this.spikes.forEach((spike) => {
-            if(spike.update()){
+            if (spike.update()) {
                 this.spikes.splice(this.spikes.indexOf(spike), 1);
             }
         });

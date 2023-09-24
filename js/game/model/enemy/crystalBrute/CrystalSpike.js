@@ -3,13 +3,12 @@ import { drawImage } from '../../../helper/renderer/drawer.js';
 import playerCollision from '../../../helper/collision/playerCollision.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
 import { getNumberedImage } from '../../../helper/imageLoader.js';
-import GameSettings from "../../../constants.JS";
+import GameSettings from '../../../constants.js';
+import Animateable from '../../Animateable.js';
 
-export default class CrystalSpike {
-    static generate({ position }) {
-        return new CrystalSpike({ position });
-    }
+export default class CrystalSpike extends Animateable {
     constructor({ position }) {
+        super();
         this.position = position;
         this.width = 27 * 2;
         this.height = 45 * 2;
@@ -19,30 +18,25 @@ export default class CrystalSpike {
             w: 0,
             h: 0,
         };
-        this.number = 0;
-        this.animationStage = 0;
         this.left = getRandomBoolean(0.5);
         this.damaged = false;
     }
 
+    static generate({ position }) {
+        return new CrystalSpike({ position });
+    }
+
     update() {
-        this.number++;
+        const { deltaTime } = Game.getInstance();
+        this.number += deltaTime;
 
         if (!this.damaged) {
             this.damaged = this.handlePlayerCollision();
         }
 
-        if (this.number === 30 && this.animationStage === 5) {
-            this.animationStage += 1;
-            this.number = 0;
-        }
+        this.advanceAnimationStage(5);
 
-        if (this.number === 5 && (this.animationStage < 5 || this.animationStage === 6)) {
-            this.animationStage += 1;
-            this.number = 0;
-        }
-
-        if (this.animationStage === 7) {
+        if (this.animationStage >= 12) {
             return this;
         }
 
@@ -53,7 +47,7 @@ export default class CrystalSpike {
     }
 
     render() {
-        const crystalSpike = getNumberedImage('crystal_spike', this.animationStage + 1);
+        const crystalSpike = getNumberedImage('crystal_spike', this.animationStage);
 
         drawImage({
             img: crystalSpike,

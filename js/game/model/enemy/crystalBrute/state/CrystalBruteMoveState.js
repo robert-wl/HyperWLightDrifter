@@ -1,32 +1,34 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
 import Game from '../../../Game/Game.js';
 import { getRandomBoolean, getRandomValue } from '../../../../helper/randomHelper.js';
-import {getHorizontalValue, getMagnitudeValue, getVerticalValue} from '../../../../helper/distanceHelper.js';
+import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
 import { getNumberedImage } from '../../../../helper/imageLoader.js';
-import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js';
+import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 
 export default class CrystalBruteMoveState extends CrystalBruteBaseState {
     clockwise = true;
+
     enterState(currBrute) {
-        this.number = 0;
-        this.animationStage = 0;
         this.clockwise = getRandomBoolean(0.5);
-        currBrute.speed = 0.5;
+        this.moveTime = 0;
         this.attackDelay = getRandomValue({
             initialValue: 200,
             randomValue: 200,
         });
+
+        currBrute.speed = 0.5;
     }
+
     updateState(currBrute) {
-        this.number += 1;
+        super.updateState(currBrute);
+        const { deltaTime } = Game.getInstance();
+        this.moveTime += deltaTime;
 
-        if (this.number % 20 === 0) {
-            this.animationStage = (this.animationStage + 1) % 6;
-        }
+        this.advanceAnimationStage(20, 6);
 
-        if(this.number % 20 === 0 && (this.animationStage === 0 || this.animationStage === 3)) {
+        if (this.checkCounter(20) && (this.animationStage === 0 || this.animationStage === 3)) {
             const { audio } = Game.getInstance();
             audio.playAudio('enemy/crystal_brute/walk.wav');
         }
@@ -36,7 +38,7 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
             return;
         }
 
-        if (this.number > this.attackDelay) {
+        if (this.moveTime > this.attackDelay) {
             currBrute.switchState(currBrute.attackState);
             return;
         }
@@ -45,41 +47,33 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
     }
 
     handleMovement(currBrute) {
-        const { centerPosition } = Game.getInstance().player;
+        const { player, deltaTime } = Game.getInstance();
+        const { centerPosition } = player;
 
         const distance = getMagnitudeValue({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
         });
 
-        currBrute.angle = getAngle({
+        let angle = getAngle({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
         });
 
-        if(distance < 200) {
-            const rotate_angle = this.getRotateAngle(currBrute.angle);
+        currBrute.angle = angle;
 
-            currBrute.position.x += getHorizontalValue({
-                magnitude: currBrute.speed,
-                angle: rotate_angle,
-            });
-
-            currBrute.position.y += getVerticalValue({
-                magnitude: currBrute.speed,
-                angle: rotate_angle,
-            });
-
-            return;
+        if (distance < 200) {
+            angle = this.getRotateAngle(currBrute.angle);
         }
 
         currBrute.position.x += getHorizontalValue({
-            magnitude: currBrute.speed,
-            angle: currBrute.angle,
+            magnitude: currBrute.speed * deltaTime,
+            angle: angle,
         });
+
         currBrute.position.y += getVerticalValue({
-            magnitude: currBrute.speed,
-            angle: currBrute.angle,
+            magnitude: currBrute.speed * deltaTime,
+            angle: angle,
         });
     }
 
@@ -87,8 +81,9 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         return angle + (Math.PI / 2) * (this.clockwise ? 1 : -1);
 
     }
+
     drawImage(currBrute) {
-        const bruteWalk = getNumberedImage('crystal_brute_walk', this.animationStage + 1);
+        const bruteWalk = getNumberedImage('crystal_brute_walk', this.animationStage);
 
         drawImage({
             img: bruteWalk,

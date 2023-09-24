@@ -9,31 +9,40 @@ import { getAngle } from '../../../../helper/angleHelper.js';
 import { getRandomValue } from '../../../../helper/randomHelper.js';
 
 export default class CrystalBruteAttackState extends CrystalBruteBaseState {
-    angle = 0;
-    number = 0;
-    animationStage = 1;
     enterState(currBrute) {
-        currBrute.speed = 0;
-        this.number = 0;
+        super.enterState(currBrute);
         this.angle = currBrute.angle;
-        this.animationStage = 1;
+        this.hasAttacked = false;
+
+        const { centerPosition } = Game.getInstance().player;
+
+        currBrute.speed = 0;
+        currBrute.angle = getAngle({
+            x: centerPosition.x - currBrute.position.x,
+            y: centerPosition.y - currBrute.position.y,
+        });
     }
+
     updateState(currBrute) {
-        this.number += 1;
+        super.updateState(currBrute);
 
         if (currBrute.health <= 0) {
             currBrute.switchState(currBrute.dieState);
             return;
         }
 
-        const { centerPosition } = Game.getInstance().player;
-        currBrute.angle = getAngle({
-            x: centerPosition.x - currBrute.position.x,
-            y: centerPosition.y - currBrute.position.y,
-        });
+        this.advanceAnimationStage(5);
 
-        this.attackTiming(currBrute);
+        if (this.animationStage >= 9 && !this.hasAttacked) {
+            this.handleAttack(currBrute);
+            this.hasAttacked = true;
+        }
+
+        if (this.animationStage >= 21) {
+            currBrute.switchState(currBrute.moveState);
+        }
     }
+
     drawImage(currBrute) {
         const bruteAttack = getNumberedImage('crystal_brute_attack', this.animationStage);
 
@@ -46,36 +55,6 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
             translate: true,
             mirrored: getFaceDirection(currBrute.angle) === 'left',
         });
-    }
-
-    attackTiming(currBrute) {
-        if (this.number === 10 && this.animationStage < 5) {
-            this.animationStage += 1;
-            this.number = 0;
-            return;
-        }
-
-        if (this.number === 5 && this.animationStage >= 5 && this.animationStage < 10) {
-            this.animationStage += 1;
-            this.number = 0;
-
-            if (this.animationStage === 9) {
-                this.handleAttack(currBrute);
-            }
-
-            return;
-        }
-
-        if (this.number === 50 && this.animationStage === 10) {
-            this.animationStage += 1;
-            this.number = 0;
-
-            return;
-        }
-
-        if (this.number === 5 && this.animationStage === 11) {
-            currBrute.switchState(currBrute.moveState);
-        }
     }
 
     handleAttack(currBrute) {
@@ -94,9 +73,8 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
 
         camera.setShakeCamera({
             duration: 200,
-            strength: 10
+            strength: 10,
         });
-
 
         const constant = {
             0: [0],

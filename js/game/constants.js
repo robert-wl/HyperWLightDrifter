@@ -291,18 +291,18 @@ const GameSettings = {
                 amount: 6,
             },
             {
-                ref: 'enemy/crystal_brute/attack/crystal_brute_attack.png',
+                ref: 'enemy/crystal_brute/attack/attack.png',
                 name: 'crystal_brute_attack',
-                amount: 11,
+                amount: 20,
             },
             {
                 ref: 'enemy/crystal_brute/die/crystal_brute_die.png',
                 name: 'crystal_brute_die',
             },
             {
-                ref: 'enemy/crystal_brute/spike/crystal_spike.png',
+                ref: 'enemy/crystal_brute/spike/spike.png',
                 name: 'crystal_spike',
-                amount: 7,
+                amount: 11,
             },
             {
                 ref: 'enemy/crystal_spider/walk/walk.png',

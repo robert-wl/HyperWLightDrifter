@@ -66,7 +66,7 @@ export default class EnemyManager {
                 randomValue: Math.PI * 2,
             });
 
-            if (this.difficulty > 5 && getRandomBoolean(0.25)) {
+            if (this.difficulty > 5 && getRandomBoolean(0.25) || true) {
                 CrystalBrute.generate({
                     x: getHorizontalValue({
                         initial: GameSettings.GAME.SCREEN_WIDTH / 2,
