@@ -1,4 +1,5 @@
 import { getImage } from '../helper/imageLoader.js';
+import Game from '../model/Game/Game.js';
 
 export default function hudHandler({ HUD, player }) {
     HUD.clearRect(0, 0, HUD.canvas.width, HUD.canvas.height);
@@ -37,4 +38,10 @@ export default function hudHandler({ HUD, player }) {
     const HUDImage = getImage('HUD');
 
     HUD.drawImage(HUDImage, 0, 0, HUDImage.width * 1.5, HUDImage.height * 1.5);
+
+    const { deltaTime } = Game.getInstance();
+
+    ctx.font = '30px Arial';
+    ctx.fillStyle = 'white';
+    HUD.fillText((1 / deltaTime).toString(), 1800, 100);
 }

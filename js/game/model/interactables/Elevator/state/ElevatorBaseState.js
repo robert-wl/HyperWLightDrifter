@@ -1,5 +1,4 @@
 import Animateable from '../../../Animateable.js';
-import Game from '../../../Game/Game.js';
 
 
 export default class ElevatorBaseState extends Animateable {
@@ -8,8 +7,7 @@ export default class ElevatorBaseState extends Animateable {
     }
 
     updateState(elevator) {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
+        this.updateNumberCounter();
     }
 
     drawImage(elevator) {

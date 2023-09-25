@@ -58,15 +58,16 @@ export default class JudgementBullet extends Enemy {
     }
 
     update() {
-        this.lifetime -= 1;
+        const { deltaTime } = Game.getInstance();
+        this.lifetime -= deltaTime;
 
         this.position.x += getHorizontalValue({
             angle: this.velocity.angle,
-            magnitude: this.velocity.value,
+            magnitude: this.velocity.value * deltaTime,
         });
         this.position.y += getVerticalValue({
             angle: this.velocity.angle,
-            magnitude: this.velocity.value,
+            magnitude: this.velocity.value * deltaTime,
         });
 
         playerCollision({

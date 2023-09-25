@@ -35,7 +35,7 @@ export default class GameStartState extends GameBaseState {
         audio.playAudio('menu/background.ogg', null, true);
 
         $('#opening-screen').css('opacity', '100%').css('display', 'block');
-    }
+    }               
 
     updateState(game) {
         super.updateState(game);
@@ -56,7 +56,7 @@ export default class GameStartState extends GameBaseState {
 
             this.resetCounter();
         }
-
+        
         ParticlesManager.getInstance().update();
     }
 

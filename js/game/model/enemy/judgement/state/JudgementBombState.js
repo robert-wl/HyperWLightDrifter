@@ -10,8 +10,7 @@ import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 export default class JudgementBombState extends JudgementBaseState {
     enterState(currJudgement) {
-        this.number = 0;
-        this.animationStage = 1;
+        super.enterState(currJudgement);
         this.maxAttackCount = 6;
         this.attackCount = 0;
         this.attacking = 5;
@@ -29,7 +28,7 @@ export default class JudgementBombState extends JudgementBaseState {
         }
 
         if (!this.isEnemyAboutToExplode()) {
-            this.animationStage = 0;
+            this.animationStage = 1;
             return;
         }
 
@@ -37,16 +36,27 @@ export default class JudgementBombState extends JudgementBaseState {
     }
 
     updateState(currJudgement) {
+        super.updateState(currJudgement);
+
         const { backgroundOpacity, enemyManager, player } = Game.getInstance();
-        this.number += 1;
 
-        if (this.number % 2 === 0 && this.attackCount < this.maxAttackCount) {
-            Game.getInstance().darkenBackground();
 
-            this.animationStage += 1;
+        this.backgroundHandler();
+
+
+        if (backgroundOpacity < 0.05 && this.checkCounter(25) && this.attackCount < this.maxAttackCount) {
+            JudgementBomb.generate({
+                position: player.centerPosition,
+                angle: this.startAngle + (this.attackCount * Math.PI) / 3,
+            });
+
+            AudioPlayer.getInstance().playAudio('boss/bomb_summon.wav');
+
+            this.number = 0;
+            this.attackCount += 1;
         }
 
-        if (this.number % 100 === 0 && this.attackCount === this.maxAttackCount) {
+        if (this.checkCounter(25) && this.attackCount === this.maxAttackCount) {
             const { bossEntities } = enemyManager;
             bossEntities.forEach((enemy) => {
                 if (enemy instanceof JudgementBomb) {
@@ -62,31 +72,22 @@ export default class JudgementBombState extends JudgementBaseState {
             this.attackCount += 1;
         }
 
-        if (backgroundOpacity < 0.05 && this.number % 25 === 0 && this.attackCount < this.maxAttackCount) {
-            JudgementBomb.generate({
-                position: player.centerPosition,
-                angle: this.startAngle + (this.attackCount * Math.PI) / 3,
-            });
 
-            AudioPlayer.getInstance().playAudio('boss/bomb_summon.wav');
-
-            this.attackCount += 1;
-        }
-
-        if (backgroundOpacity !== 1 && this.attackCount >= this.maxAttackCount + 1 && this.number % 2 === 0) {
-            Game.getInstance().brightenBackground();
-
+        if (backgroundOpacity <= 0.05 && this.attackCount >= this.maxAttackCount + 1) {
             this.finished = true;
 
             this.attackCount++;
         }
 
-        if (backgroundOpacity === 1 && this.finished && this.number % 7 === 0) {
+
+        if (backgroundOpacity === 1 && this.finished && this.checkCounter(7)) {
+
             if (this.animationStage === 1) {
                 AudioPlayer.getInstance().playAudio('boss/spawn.wav');
             }
 
             this.animationStage += 1;
+            this.number = 0;
         }
 
         if (this.animationStage === 14) {
@@ -120,7 +121,8 @@ export default class JudgementBombState extends JudgementBaseState {
     }
 
     drawSpawn(currJudgement) {
-        const judgementSpawn = getNumberedImage('judgement_spawn', this.animationStage + 1);
+        console.log(this.animationStage);
+        const judgementSpawn = getNumberedImage('judgement_spawn', this.animationStage);
 
         drawImage({
             img: judgementSpawn,
@@ -140,5 +142,16 @@ export default class JudgementBombState extends JudgementBaseState {
                 return enemy.isAboutToExplode();
             }
         });
+    }
+
+    backgroundHandler() {
+        const { deltaTime } = Game.getInstance();
+
+        if (this.finished) {
+            Game.getInstance().brightenBackground(0.05 * deltaTime);
+            return;
+        }
+
+        Game.getInstance().darkenBackground(0.05 * deltaTime);
     }
 }

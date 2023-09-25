@@ -119,6 +119,7 @@ export default class Game {
     update(deltaTime) {
         this.deltaTime = deltaTime * GameSettings.GAME.GAME_SPEED;
         this.movementDeltaTime = Math.cbrt(deltaTime * GameSettings.GAME.GAME_SPEED);
+        
         if (this.loading) {
             return;
         }
@@ -198,8 +199,8 @@ export default class Game {
         }
     }
 
-    brightenBackground() {
-        this.backgroundOpacity += 0.05;
+    brightenBackground(brighten = 0.05) {
+        this.backgroundOpacity += brighten;
         if (this.backgroundOpacity > 1) {
             this.backgroundOpacity = 1;
         }

@@ -10,13 +10,12 @@ import { getFaceDirection } from '../../../../helper/collision/directionHandler.
 
 export default class JudgementMoveState extends JudgementBaseState {
     enterState() {
-        this.number = 0;
-        this.animationStage = 1;
+        super.enterState();
+        this.walkAmount = 0;
         this.walkTime = getRandomValue({
             initialValue: 5,
             randomValue: 10,
         });
-        this.walkAmount = 0;
     }
 
     drawImage(currJudgement) {
@@ -34,22 +33,20 @@ export default class JudgementMoveState extends JudgementBaseState {
     }
 
     updateState(currJudgement) {
-        this.number += 1;
+        super.updateState();
 
-        if (this.number % 15 === 0) {
-            this.animationStage += 1;
+        if (this.checkCounter(15)) {
             this.walkAmount += 1;
-
-            if (this.animationStage === 5) {
-                this.animationStage = 1;
-            }
         }
+
+        this.advanceAnimationStage(15, 4);
 
         if (this.walkTime <= this.walkAmount) {
             currJudgement.handleSwitchState();
         }
 
-        const { centerPosition } = Game.getInstance().player;
+        const { player, deltaTime } = Game.getInstance();
+        const { centerPosition } = player;
 
         const distance = getMagnitudeValue({
             x: centerPosition.x - currJudgement.position.x,
@@ -66,11 +63,11 @@ export default class JudgementMoveState extends JudgementBaseState {
         }
 
         currJudgement.position.x += getHorizontalValue({
-            magnitude: currJudgement.moveSpeed,
+            magnitude: currJudgement.moveSpeed * deltaTime,
             angle: currJudgement.angle,
         });
         currJudgement.position.y += getVerticalValue({
-            magnitude: currJudgement.moveSpeed,
+            magnitude: currJudgement.moveSpeed * deltaTime,
             angle: currJudgement.angle,
         });
     }

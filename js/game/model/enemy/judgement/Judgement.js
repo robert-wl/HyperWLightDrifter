@@ -130,7 +130,9 @@ export default class Judgement extends Enemy {
         this.currState.updateState(this);
         this.currState.drawImage(this);
 
-        if (Game.getInstance().debug) {
+        const { debug, deltaTime } = Game.getInstance();
+
+        if (debug) {
             this.debugMode();
         }
 
@@ -144,7 +146,7 @@ export default class Judgement extends Enemy {
 
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('none');
-            this.damaged -= 1;
+            this.damaged -= deltaTime;
         }
     }
 

@@ -6,21 +6,23 @@ import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import GameSettings from '../../../../constants.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
+import Game from '../../../Game/Game.js';
 
 export default class JudgementAttackState extends JudgementBaseState {
     enterState() {
-        this.number = 0;
-        this.animationStage = 1;
+        super.enterState();
+        this.attackCount = 0;
+        this.attackNumber = 0;
+        this.attacking = false;
+        this.playedAudio = false;
+        this.attackAngle = getRandomValue({
+            randomValue: Math.PI * 2,
+        });
         this.maxAttackCount =
             getRandomValue({
                 randomValue: 8,
                 rounded: true,
             }) + 5;
-        this.attackCount = 0;
-        this.attacking = false;
-        this.attackAngle = getRandomValue({
-            randomValue: Math.PI * 2,
-        });
     }
 
     drawImage(currJudgement) {
@@ -40,21 +42,20 @@ export default class JudgementAttackState extends JudgementBaseState {
     }
 
     updateState(currJudgement) {
-        this.number += 1;
+        super.updateState();
+        const { deltaTime } = Game.getInstance();
+        this.attackNumber += deltaTime;
 
-        if (this.number === 15) {
-            this.number = 0;
-            this.animationStage += 1;
-        }
+        this.advanceAnimationStage(15);
 
         this.attack(currJudgement);
 
-        if (this.animationStage === 7) {
+        if (this.animationStage >= 7) {
             this.animationStage -= 3;
             this.attackCount += 1;
         }
 
-        if (this.animationStage === 4) {
+        if (this.animationStage >= 4) {
             this.attacking = true;
         }
 
@@ -64,32 +65,39 @@ export default class JudgementAttackState extends JudgementBaseState {
     }
 
     attack(currJudgement) {
-        if (this.attacking && this.number % 2 === 0) {
+        const { deltaTime } = Game.getInstance();
+
+        if (this.attacking && this.attackNumber >= 2) {
+            this.playedAudio = false;
+
             this.attackAngle += getRandomValue({
                 initialValue: (2 / 30) * Math.PI,
                 randomValue: (1 / 45) * Math.PI,
             });
 
-            let offset = 15;
-            if (getFaceDirection(currJudgement.angle) === 'left') {
-                offset = -15;
-            }
 
             JudgementBullet.generate({
-                x: currJudgement.position.x + offset,
+                x: currJudgement.position.x + this.getAttackOffset(currJudgement),
                 y: currJudgement.position.y - 40,
                 angle: this.attackAngle,
             });
 
             JudgementBullet.generate({
-                x: currJudgement.position.x + offset,
+                x: currJudgement.position.x + this.getAttackOffset(currJudgement),
                 y: currJudgement.position.y - 40,
                 angle: this.attackAngle + Math.PI,
             });
+
+            this.attackNumber = 0;
         }
 
-        if (this.attacking && this.number % 8 === 0) {
+        if (this.attacking && !this.playedAudio && this.number >= 8) {
             AudioPlayer.getInstance().playAudio('boss/bullet.wav');
+            this.playedAudio = true;
         }
+    }
+
+    getAttackOffset(currJudgement) {
+        return getFaceDirection(currJudgement.angle) === 'left' ? -15 : 15;
     }
 }

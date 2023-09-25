@@ -43,9 +43,4 @@ export default class Collideable extends Animateable {
             this.renderDebug();
         }
     }
-
-    updateAnimationCounter() {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
-    }
 }

@@ -26,7 +26,7 @@ export default class Medkit extends Collideable {
     }
 
     update() {
-        this.updateAnimationCounter();
+        this.updateNumberCounter();
 
         this.advanceAnimationStage(100, 2);
 

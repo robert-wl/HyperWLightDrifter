@@ -11,14 +11,13 @@ $(document).ready(async () => {
 
     const updateLoop = (timestamp) => {
 
-        const deltaTime = (timestamp - lastTimestamp) / 1000;
+        let deltaTime = (timestamp - lastTimestamp) / 1000;
 
         game.update(deltaTime);
         lastTimestamp = timestamp;
 
         requestAnimationFrame(updateLoop);
     };
-
 
     await game.switchState(game.startState);
     updateLoop();

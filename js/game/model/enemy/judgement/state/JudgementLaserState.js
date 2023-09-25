@@ -10,11 +10,12 @@ import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 export default class JudgementLaserState extends JudgementBaseState {
     enterState(currJudgement) {
-        this.number = 0;
-        this.animationStage = 1;
-        this.maxAttackCount = 1;
+        super.enterState(currJudgement);
         this.attackCount = 0;
         this.attacking = 8;
+        this.attackingNumber = 0;
+        this.attackAmount = 0;
+        this.angleConstant = 0;
         this.attackAngle = currJudgement.angle;
 
         AudioPlayer.getInstance().playAudio('boss/laser.wav');
@@ -35,14 +36,16 @@ export default class JudgementLaserState extends JudgementBaseState {
     }
 
     updateState(currJudgement) {
-        this.number += 1;
+        super.updateState(currJudgement);
 
-        if (this.number % 12 === 0) {
-            this.animationStage += 1;
-        }
+        this.advanceAnimationStage(12);
 
-        if (this.animationStage === 7) {
-            const { player } = Game.getInstance();
+        const { player, deltaTime } = Game.getInstance();
+        this.attackingNumber += deltaTime;
+        this.angleConstant += deltaTime;
+        this.attackAmount += deltaTime;
+
+        if (this.animationStage === 8) {
 
             this.attackAngle = getAngle({
                 x: player.centerPosition.x - currJudgement.position.x,
@@ -52,32 +55,35 @@ export default class JudgementLaserState extends JudgementBaseState {
             currJudgement.angle = this.attackAngle;
         }
 
-        if (this.attacking !== 8 && this.animationStage < 12) {
-            let offset = 60;
-            if (getFaceDirection(currJudgement.angle) === 'left') {
-                offset = -60;
-            }
+        if (this.attacking < 8 && this.animationStage < 13 && this.attackAmount >= 1) {
             JudgementLaser.generate({
-                x: currJudgement.position.x + offset,
+                x: currJudgement.position.x + this.getAttackOffset(currJudgement),
                 y: currJudgement.position.y + 60,
                 angle: this.getAttackAngle(currJudgement.angle),
             });
+            this.attackAmount = 0;
         }
 
-        if (this.animationStage === 8 && this.number % 14 === 0) {
+        if (this.animationStage === 9 && this.attackingNumber >= 14) {
+            console.log(this.attacking);
             this.attacking -= 1;
+            this.attackingNumber = 0;
         }
 
-        if (this.animationStage === 12 && this.attacking > 0) {
+        if (this.animationStage === 13 && this.attacking > 0) {
             this.animationStage -= 4;
         }
 
-        if (this.animationStage === 13) {
+        if (this.animationStage >= 14) {
             currJudgement.switchState(currJudgement.moveState);
         }
     }
 
     getAttackAngle(angle) {
-        return angle + (Math.random() - 0.5) * 0.25 + Math.sin(this.number * 0.05) * 0.5;
+        return angle + (Math.random() - 0.5) * 0.25 + Math.sin(this.angleConstant * 0.05) * 0.5;
+    }
+
+    getAttackOffset(currJudgement) {
+        return getFaceDirection(currJudgement.angle) === 'left' ? -60 : 60;
     }
 }

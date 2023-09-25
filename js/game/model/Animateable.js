@@ -1,3 +1,5 @@
+import Game from './Game/Game.js';
+
 export default class Animateable {
     number = 0;
     animationStage = 1;
@@ -21,5 +23,10 @@ export default class Animateable {
                 this.animationStage = 1;
             }
         }
+    }
+
+    updateNumberCounter() {
+        const { deltaTime } = Game.getInstance();
+        this.number += deltaTime;
     }
 }

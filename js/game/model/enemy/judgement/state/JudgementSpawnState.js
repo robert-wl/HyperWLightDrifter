@@ -9,24 +9,21 @@ export default class JudgementSpawnState extends JudgementBaseState {
     firstSpawn = true;
 
     updateState(currJudgement) {
-        const { camera } = Game.getInstance();
+        super.updateState();
+        const { camera, deltaTime } = Game.getInstance();
 
-        this.number += 1;
 
-        if (this.number % 7 === 0) {
-            this.number = 0;
-            this.animationStage += 1;
-        }
+        this.advanceAnimationStage(7);
 
         if (this.firstSpawn) {
             camera.moveCameraPosition({
                 direction: {
-                    y: -(camera.position.y - 100) * 0.05,
+                    y: -(camera.position.y - 100) * 0.05 * deltaTime,
                 },
             });
         }
 
-        if (this.number % 7 === 0 && this.animationStage === 16) {
+        if (this.checkCounter(6) && this.animationStage === 16) {
             camera.setShakeCamera({
                 duration: 200,
                 angle: Math.PI / 2,
@@ -56,8 +53,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
     }
 
     enterState() {
-        this.number = 0;
-        this.animationStage = 1;
+        super.enterState();
 
         AudioPlayer.getInstance().playAudio('boss/spawn.wav');
     }

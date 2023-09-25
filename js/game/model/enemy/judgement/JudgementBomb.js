@@ -96,89 +96,32 @@ export default class JudgementBomb extends Enemy {
     }
 
     handleTimer() {
-        this.number++;
+        this.updateNumberCounter();
 
-        if (this.health <= 0) {
-            if (this.number % 10 === 0 && this.animationStage < 11) {
-                this.animationStage++;
-            }
-
+        if (this.health <= 0 && this.animationStage < 11) {
+            this.advanceAnimationStage(10);
             return;
         }
 
-        if (this.number % 10 === 0 && this.animationStage < 5) {
-            this.animationStage++;
-        }
+        if (this.animationStage < 5) {
+            this.advanceAnimationStage(10);
 
-        if (!this.exploding && this.animationStage === 5 && this.number % 10 === 1 && getRandomBoolean(0.15)) {
-            this.animationStage--;
-
-            if (!this.spawning) {
-                this.moveAngle = Math.random() * Math.PI * 2;
-            }
+            this.animationStage = Math.min(this.animationStage, 5);
         }
 
         if (this.spawning) {
-            this.position = this.positionFollow;
+            this.position = { ...this.positionFollow };
         }
+
+
+        this.handleExplosion();
 
         if (this.spawning) {
             return;
         }
 
-        this.lifeTime--;
-        this.position = { ...this.position };
-
-        if (this.exploding) {
-            this.drawExplosion();
-
-            if (this.number % 7 === 0 && this.animationStage < 11) {
-                this.animationStage++;
-            }
-
-            const { player } = Game.getInstance();
-
-            const distance = getManhattanDistance({
-                x:
-                    player.centerPosition.x -
-                    getHorizontalValue({
-                        initial: this.position.x,
-                        magnitude: this.offset,
-                        angle: this.angle,
-                    }),
-                y:
-                    player.centerPosition.y -
-                    getVerticalValue({
-                        initial: this.position.y,
-                        magnitude: this.offset,
-                        angle: this.angle,
-                    }),
-            });
-
-            console.log(player.centerPosition);
-            console.log(distance);
-            if (distance < 150) {
-                player.damage({
-                    amount: 3,
-                    angle: 0,
-                });
-            }
-        }
-
-        if (!this.exploding) {
-            this.position.x += getHorizontalValue({
-                magnitude: 3,
-                angle: this.moveAngle,
-            });
-            this.position.y += getVerticalValue({
-                magnitude: 3,
-                angle: this.moveAngle,
-            });
-        }
-
-        if (this.lifeTime === 50) {
-            this.exploding = true;
-        }
+        const { deltaTime } = Game.getInstance();
+        this.lifeTime -= deltaTime;
     }
 
     kill() {
@@ -188,7 +131,7 @@ export default class JudgementBomb extends Enemy {
 
     drawBomb() {
         const judgementBomb = getNumberedImage('judgement_bomb', this.animationStage);
-
+        // console.log(this.animationStage, judgementBomb);
         drawImage({
             img: judgementBomb,
             x: getHorizontalValue({
@@ -208,6 +151,7 @@ export default class JudgementBomb extends Enemy {
     }
 
     drawExplosion() {
+        // console.log(this.animationStage - 3);
         const judgementExplosion = getNumberedImage('judgement_explosion', this.animationStage - 3);
 
         drawImage({
@@ -230,5 +174,65 @@ export default class JudgementBomb extends Enemy {
 
     isAboutToExplode() {
         return this.lifeTime <= 160;
+    }
+
+    handleExplosion() {
+        const { player, deltaTime } = Game.getInstance();
+
+
+        if (this.exploding) {
+            this.drawExplosion();
+
+            this.advanceAnimationStage(7);
+
+            this.animationStage = Math.min(this.animationStage, 11);
+
+            const distance = getManhattanDistance({
+                x:
+                    player.centerPosition.x -
+                    getHorizontalValue({
+                        initial: this.position.x,
+                        magnitude: this.offset,
+                        angle: this.angle,
+                    }),
+                y:
+                    player.centerPosition.y -
+                    getVerticalValue({
+                        initial: this.position.y,
+                        magnitude: this.offset,
+                        angle: this.angle,
+                    }),
+            });
+
+            if (distance < 150) {
+                player.damage({
+                    amount: 3,
+                    angle: 0,
+                });
+            }
+        }
+
+        if (!this.exploding) {
+            if (this.animationStage === 5 && this.checkCounter(10) && getRandomBoolean(0.15)) {
+                this.animationStage--;
+
+                if (!this.spawning) {
+                    this.moveAngle = Math.random() * Math.PI * 2;
+                }
+            }
+
+            this.position.x += getHorizontalValue({
+                magnitude: 3 * deltaTime,
+                angle: this.moveAngle,
+            });
+            this.position.y += getVerticalValue({
+                magnitude: 3 * deltaTime,
+                angle: this.moveAngle,
+            });
+        }
+
+        if (this.lifeTime <= 50) {
+            this.exploding = true;
+        }
     }
 }

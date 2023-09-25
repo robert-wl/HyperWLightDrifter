@@ -30,6 +30,8 @@ export default function playerCollision({ position, box, angle }) {
             return true;
         }
     }
+
+
     return false;
 }
 

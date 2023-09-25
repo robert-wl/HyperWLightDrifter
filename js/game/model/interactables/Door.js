@@ -34,7 +34,7 @@ export default class Door extends Collideable {
         }
 
         if (this.openingStage > 0) {
-            this.updateAnimationCounter();
+            this.updateNumberCounter();
 
             if (this.checkCounter(5) && this.openingStage === 1) {
                 audio.playAudio('forest_stage/door_activate.ogg');

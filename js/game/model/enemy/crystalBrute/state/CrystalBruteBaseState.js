@@ -1,11 +1,9 @@
 import Animateable from '../../../Animateable.js';
-import Game from '../../../Game/Game.js';
 
 
 export default class CrystalBruteBaseState extends Animateable {
     updateState(_currSpider) {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
+        this.updateNumberCounter();
     }
 
     drawImage(_currSpider) {
