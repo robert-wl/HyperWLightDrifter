@@ -30,7 +30,7 @@ const GameSettings = {
         FRICTION: 0.2,
         MAX_SPEED: 4,
         ATTACK_MOVE_SPEED: 2,
-        DASH_MOVE_SPEED: 16,
+        DASH_MOVE_SPEED: 12,
         START_POSITION: {
             x: 200,
             y: 200,

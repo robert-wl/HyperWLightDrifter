@@ -21,6 +21,8 @@ export default class Game {
         this.deltaTime = 0;
         this.movementDeltaTime = 0;
         this.showFPS = false;
+        this.fpsShowCounter = 0;
+        this.fps = 60;
         this.fullscreenData = {};
         this.fullscreen = false;
         this.loading = false;
@@ -119,37 +121,21 @@ export default class Game {
     update(deltaTime) {
         this.deltaTime = deltaTime * GameSettings.GAME.GAME_SPEED;
         this.movementDeltaTime = Math.cbrt(deltaTime * GameSettings.GAME.GAME_SPEED);
-        
+
         if (this.loading) {
             return;
         }
         this.currState.updateState(this);
+        this.fpsHandler();
     }
 
     toggleFullscreen() {
         // this.fullscreen = !this.fullscreen;
-        // if(this.fullscreenData === {}) {
-        //     this.fullscreenData = {
-        //         game: $('#game').css(),
-        //         HUD: $('#HUD').css(),
-        //     }
-        // }
-        // if(this.fullscreen) {
-        //     const game = $('#game');
-        //     const HUD = $('.ui');
-        //
-        //
-        //     game
-        //         .css('max-width', '100vw')
-        //         .css('height', '100vh');
-        //
-        //     HUD
-        //         .css('max-width', '100vw')
-        //         .css('height', '100vh');
-        // }
-        // else {
-        //     document.exitFullscreen();
-        // }
+        if (this.fullscreen) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
     }
 
     pauseHandler() {
@@ -168,6 +154,26 @@ export default class Game {
             this.currState.exitState(this);
             this.currState = this.stageTwoState;
         }
+    }
+
+    fpsHandler() {
+        if (!this.showFPS) {
+            return;
+        }
+
+        const { deltaTime } = Game.getInstance();
+
+        if (!deltaTime) return;
+        this.fpsShowCounter += deltaTime;
+        if (this.fpsShowCounter > 5) {
+            this.fpsShowCounter = 0;
+            this.fps = Math.round(60 / (deltaTime));
+        }
+
+        this.HUD.font = '25px Arial';
+        this.HUD.fillStyle = 'white';
+        this.HUD.textAlign = 'right';
+        this.HUD.fillText(this.fps, GameSettings.GAME.SCREEN_WIDTH / 2 - 5, 25);
     }
 
     drawHUD() {

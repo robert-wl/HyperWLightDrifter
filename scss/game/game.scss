@@ -37,11 +37,10 @@ $pink-color: rgb(254, 31, 136);
   color: white;
   font-family: 'Press Start 2P', cursive;
   @if ($place == title) {
-    font-size: 2.5rem;
+    font-size: 2.5vw;
   }
   @if ($place == button) {
-    font-size: 2rem;
-    margin: 0 2.75rem;
+    font-size: 2vw;
     padding: 1rem 0;
   }
 }
@@ -74,6 +73,7 @@ $pink-color: rgb(254, 31, 136);
 .container {
   @include flex-rules(row, center, center);
   @include size(100vw, 100vh);
+  //@include max-size(1920px, 1080vh);
   overflow: hidden;
   position: relative;
 
@@ -94,6 +94,7 @@ $pink-color: rgb(254, 31, 136);
 
     .modal {
       @include size(55vw, auto);
+      @include max-size(960px, 1000px);
       @include flex-rules(column, center, none);
       @include background-image-settings;
       aspect-ratio: 18/15;
@@ -105,10 +106,15 @@ $pink-color: rgb(254, 31, 136);
       z-index: 100;
     }
 
-    #menu-modal div {
-      @include text-config(button);
-      @include hoverable;
-      text-align: center;
+    #menu-modal {
+      @include flex-rules(column, center, center);
+
+      > div {
+        @include text-config(button);
+        @include hoverable;
+        text-align: center;
+        width: 91%;
+      }
     }
 
     #selection-modal {
@@ -136,7 +142,7 @@ $pink-color: rgb(254, 31, 136);
         }
 
         img {
-          @include size(50rem, fit-content);
+          @include size(30rem, fit-content);
           aspect-ratio: 92/140;
         }
 
@@ -157,8 +163,7 @@ $pink-color: rgb(254, 31, 136);
     }
 
     #settings-modal {
-      //align-items: center;
-      //justify-content: space-between;
+      @include flex-rules(column, center, center);
 
       .title {
         @include text-config(title);
@@ -170,6 +175,7 @@ $pink-color: rgb(254, 31, 136);
       .settings-container {
         @include flex-rules(column, center, center);
         @include text-config(button);
+        width: 100%;
         text-align: center;
         background-color: transparent;
 
@@ -177,7 +183,7 @@ $pink-color: rgb(254, 31, 136);
           @include flex-rules(row, center, center);
           @include hoverable;
           background-color: transparent;
-          width: 100%;
+          width: 91%;
           padding: 1.5rem 0;
 
           .settings-content-title {
@@ -186,7 +192,7 @@ $pink-color: rgb(254, 31, 136);
 
           > div {
             @include flex-rules(row, space-between, center);
-            width: 90%;
+            width: 91%;
             background-color: transparent;
 
             > span {
@@ -240,7 +246,7 @@ $pink-color: rgb(254, 31, 136);
 
       .exit-button {
         @include text-config(button);
-        @include absolute(80%, 45.5%);
+        @include absolute(80%, 50%);
         @include hoverable;
         width: 91%;
         background-color: transparent;
@@ -283,6 +289,7 @@ $pink-color: rgb(254, 31, 136);
     #HUD {
       @include max-size(1920px, 1080px);
       @include size(100vw, fit-content);
+      margin-top: 1.5rem;
       position: absolute;
       top: 0;
       background-color: transparent;

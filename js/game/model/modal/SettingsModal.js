@@ -1,7 +1,7 @@
-import Modal from "./Modal.js";
-import AudioPlayer from "../../../audio/AudioPlayer.js";
-import Game from "../Game/Game.js";
-import MenuModal from "./MenuModal.js";
+import Modal from './Modal.js';
+import AudioPlayer from '../../../audio/AudioPlayer.js';
+import Game from '../Game/Game.js';
+import MenuModal from './MenuModal.js';
 
 
 export default class SettingsModal extends Modal {
@@ -18,16 +18,16 @@ export default class SettingsModal extends Modal {
     static exitButton = $('#exit-button-settings');
 
     static handleVolumeInteraction(type) {
-        if(type === 'lower') {
+        if (type === 'lower') {
             AudioPlayer.getInstance().decreaseVolume();
         }
-        if(type === 'higher') {
+        if (type === 'higher') {
             AudioPlayer.getInstance().increaseVolume();
         }
 
         const { volume } = AudioPlayer.getInstance();
-        for(let i = 0; i < 10; i++) {
-            if(i + 1 <= Math.round(volume * 10)) {
+        for (let i = 0; i < 10; i++) {
+            if (i + 1 <= Math.round(volume * 10)) {
                 this.volumeMeter.eq(i).removeClass('off');
                 this.volumeMeter.eq(i).addClass('on');
             } else {
@@ -39,26 +39,30 @@ export default class SettingsModal extends Modal {
 
     static handleFullscreenInteraction() {
         const { fullscreen } = Game.getInstance();
-        if(fullscreen) {
+        console.log(fullscreen);
+        if (fullscreen) {
             this.fullscreenText.text('Off');
+            Game.getInstance().fullscreen = false;
         }
-        if(!fullscreen) {
+        if (!fullscreen) {
             this.fullscreenText.text('On');
+            Game.getInstance().fullscreen = true;
         }
         Game.getInstance().toggleFullscreen();
     }
 
     static handleFPSCounterInteraction() {
         const { showFPS } = Game.getInstance();
-        if(showFPS) {
+        if (showFPS) {
             this.fpsCounterText.text('Off');
             Game.getInstance().showFPS = false;
         }
-        if(!showFPS) {
+        if (!showFPS) {
             this.fpsCounterText.text('On');
             Game.getInstance().showFPS = true;
         }
     }
+
     static handleInteraction() {
         this.volumeLowerButton.mousedown(() => {
             this.handleVolumeInteraction('lower');
@@ -82,6 +86,6 @@ export default class SettingsModal extends Modal {
         this.exitButton.mousedown(() => {
             this.close();
             MenuModal.open();
-        })
+        });
     }
 }

@@ -40,6 +40,8 @@
 .container .ui .modal {
   width: 55vw;
   height: auto;
+  max-width: 960px;
+  max-height: 1000px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -55,17 +57,23 @@
   display: none;
   z-index: 100;
 }
-.container .ui #menu-modal div {
+.container .ui #menu-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container .ui #menu-modal > div {
   color: white;
   font-family: "Press Start 2P", cursive;
-  font-size: 2rem;
-  margin: 0 2.75rem;
+  font-size: 2vw;
   padding: 1rem 0;
   cursor: pointer;
   background-color: transparent;
   text-align: center;
+  width: 91%;
 }
-.container .ui #menu-modal div:hover {
+.container .ui #menu-modal > div:hover {
   background-color: rgb(254, 31, 136);
 }
 .container .ui #selection-modal {
@@ -74,7 +82,7 @@
 .container .ui #selection-modal .title {
   color: white;
   font-family: "Press Start 2P", cursive;
-  font-size: 2.5rem;
+  font-size: 2.5vw;
   background-color: transparent;
   text-align: center;
 }
@@ -85,8 +93,7 @@
   align-items: center;
   color: white;
   font-family: "Press Start 2P", cursive;
-  font-size: 2rem;
-  margin: 0 2.75rem;
+  font-size: 2vw;
   padding: 1rem 0;
   background-color: transparent;
   width: 35rem;
@@ -100,7 +107,7 @@
   cursor: pointer;
 }
 .container .ui #selection-modal .image-container img {
-  width: 50rem;
+  width: 30rem;
   height: fit-content;
   aspect-ratio: 92/140;
 }
@@ -115,8 +122,7 @@
   background-color: transparent;
   color: white;
   font-family: "Press Start 2P", cursive;
-  font-size: 2rem;
-  margin: 0 2.75rem;
+  font-size: 2vw;
   padding: 1rem 0;
   width: 91%;
   text-align: center;
@@ -124,10 +130,16 @@
 .container .ui #selection-modal .button:hover {
   background-color: rgb(254, 31, 136);
 }
+.container .ui #settings-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .container .ui #settings-modal .title {
   color: white;
   font-family: "Press Start 2P", cursive;
-  font-size: 2.5rem;
+  font-size: 2.5vw;
   position: absolute;
   top: 10%;
   left: 50%;
@@ -142,9 +154,9 @@
   align-items: center;
   color: white;
   font-family: "Press Start 2P", cursive;
-  font-size: 2rem;
-  margin: 0 2.75rem;
+  font-size: 2vw;
   padding: 1rem 0;
+  width: 100%;
   text-align: center;
   background-color: transparent;
 }
@@ -156,7 +168,7 @@
   cursor: pointer;
   background-color: transparent;
   background-color: transparent;
-  width: 100%;
+  width: 91%;
   padding: 1.5rem 0;
 }
 .container .ui #settings-modal .settings-container .settings-content:hover {
@@ -170,7 +182,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
+  width: 91%;
   background-color: transparent;
 }
 .container .ui #settings-modal .settings-container .settings-content > div > span {
@@ -216,12 +228,11 @@
 .container .ui #settings-modal .exit-button {
   color: white;
   font-family: "Press Start 2P", cursive;
-  font-size: 2rem;
-  margin: 0 2.75rem;
+  font-size: 2vw;
   padding: 1rem 0;
   position: absolute;
   top: 80%;
-  left: 45.5%;
+  left: 50%;
   transform: translate(-50%, -50%);
   cursor: pointer;
   background-color: transparent;
@@ -258,7 +269,7 @@
 .container .ui .modal-background .modal .title {
   color: white;
   font-family: "Press Start 2P", cursive;
-  font-size: 2.5rem;
+  font-size: 2.5vw;
   position: absolute;
   top: 10%;
   left: 50%;
@@ -271,8 +282,7 @@
   background-color: transparent;
   color: white;
   font-family: "Press Start 2P", cursive;
-  font-size: 2rem;
-  margin: 0 2.75rem;
+  font-size: 2vw;
   padding: 1rem 0;
   width: 91%;
   text-align: center;
@@ -285,6 +295,7 @@
   max-height: 1080px;
   width: 100vw;
   height: fit-content;
+  margin-top: 1.5rem;
   position: absolute;
   top: 0;
   background-color: transparent;
