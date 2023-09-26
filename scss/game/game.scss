@@ -37,11 +37,11 @@ $pink-color: rgb(254, 31, 136);
   color: white;
   font-family: 'Press Start 2P', cursive;
   @if ($place == title) {
-    font-size: 2.5vw;
+    font-size: 2vw;
   }
   @if ($place == button) {
-    font-size: 2vw;
-    padding: 1rem 0;
+    font-size: 1.5vw;
+    padding: 1vw 0;
   }
 }
 
@@ -164,6 +164,7 @@ $pink-color: rgb(254, 31, 136);
 
     #settings-modal {
       @include flex-rules(column, center, center);
+      display: none;
 
       .title {
         @include text-config(title);
@@ -184,7 +185,7 @@ $pink-color: rgb(254, 31, 136);
           @include hoverable;
           background-color: transparent;
           width: 91%;
-          padding: 1.5rem 0;
+          padding: 1.5vw 0;
 
           .settings-content-title {
             width: 20rem;
@@ -203,8 +204,8 @@ $pink-color: rgb(254, 31, 136);
               @include flex-rules(row, center, center);
 
               .volume-meter {
-                width: 1.5rem;
-                height: 2rem;
+                width: 1.5vw;
+                height: 2vw;
                 margin: 0 0.1rem;
               }
 
@@ -258,6 +259,11 @@ $pink-color: rgb(254, 31, 136);
       }
     }
 
+    #pause-modal {
+      .modal {
+        @include flex-rules(column, center, center);
+      }
+    }
     .modal-background {
       @include absolute(50%, 50%);
       @include max-size(1920px, 1080px);

@@ -15,10 +15,12 @@ export default class JudgementBombState extends JudgementBaseState {
         this.attackCount = 0;
         this.attacking = 5;
         this.attackAngle = currJudgement.angle;
+        this.finished = false;
+        this.playedSpawnAudio = false;
+        this.playedSmashAudio = false;
         this.startAngle = getRandomValue({
             randomValue: Math.PI * 2,
         });
-        this.finished = false;
     }
 
     drawImage(currJudgement) {
@@ -82,16 +84,18 @@ export default class JudgementBombState extends JudgementBaseState {
 
         if (backgroundOpacity === 1 && this.finished && this.checkCounter(7)) {
 
-            if (this.animationStage === 1) {
+            if (this.animationStage === 2 && !this.playedSpawnAudio) {
                 AudioPlayer.getInstance().playAudio('boss/spawn.wav');
+                this.playedSpawnAudio = true;
             }
 
             this.animationStage += 1;
             this.number = 0;
         }
 
-        if (this.animationStage === 14) {
+        if (this.animationStage === 14 && !this.playedSmashAudio) {
             AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
+            this.playedSmashAudio = true;
         }
 
         if (this.animationStage === 21 && this.finished) {

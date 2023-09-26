@@ -1,4 +1,5 @@
 import Game from '../../model/Game/Game.js';
+import AudioPlayer from '../../../audio/AudioPlayer.js';
 
 
 export default function playerEffectsHandler({ currPlayer, clear }) {
@@ -23,6 +24,9 @@ function damagedHandler(currPlayer) {
 function healingHandler(currPlayer) {
     const { deltaTime } = Game.getInstance();
 
+    if (currPlayer.healing === 6) {
+        AudioPlayer.getInstance().playAudio('player/medkit/use.wav');
+    }
     if (currPlayer.healing > 0) {
         currPlayer.healing -= deltaTime;
     }

@@ -18,7 +18,7 @@ export default class PlayerDashState extends PlayerBaseState {
 
 
         currPlayer.lastDirection = direction;
-        currPlayer.stamina -= 10;
+        currPlayer.stamina -= 20;
 
         const { audio } = Game.getInstance();
         audio.playAudio('player/dash.wav');

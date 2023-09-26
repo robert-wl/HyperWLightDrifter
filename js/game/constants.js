@@ -236,7 +236,7 @@ const GameSettings = {
             {
                 ref: 'player/spawn/spawn.png',
                 name: 'player_spawn',
-                amount: 9,
+                amount: 15,
                 outfit: true,
             },
             {
@@ -261,6 +261,21 @@ const GameSettings = {
                 ref: 'player/grenade/grenade.png',
                 name: 'grenade',
                 amount: 11,
+            },
+            {
+                ref: 'player/grenade/throw/side/throw.png',
+                name: 'player_throw_side',
+                amount: 8,
+            },
+            {
+                ref: 'player/grenade/throw/down/throw.png',
+                name: 'player_throw_down',
+                amount: 8,
+            },
+            {
+                ref: 'player/grenade/throw/up/throw.png',
+                name: 'player_throw_up',
+                amount: 8,
             },
             {
                 ref: 'player/aim/gun/projectile.png',

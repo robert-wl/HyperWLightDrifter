@@ -1,13 +1,13 @@
 import Game from '../../model/Game/Game.js';
-import {getAngle} from "../angleHelper.js";
-import GameSettings from "../../constants.js";
+import { getAngle } from '../angleHelper.js';
+import GameSettings from '../../constants.js';
 
 export default function playerInput() {
     $(document).keydown((e) => {
         const { keys } = Game.getInstance();
-        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q'];
+        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'A', 'W', 'D', 'S', 'E', 'C', 'Q'];
 
-        console.log(e.key)
+        console.log(e.key);
         if (keyList.includes(e.key)) {
             if (keys.includes(e.key)) {
                 return;
@@ -35,7 +35,7 @@ export default function playerInput() {
 
     $(document).keyup((e) => {
         const { keys } = Game.getInstance();
-        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q'];
+        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'A', 'W', 'D', 'S', 'E', 'C', 'Q'];
 
         if (keyList.includes(e.key)) {
             const index = keys.indexOf(e.key);

@@ -12,14 +12,14 @@ export default class PlayerSpawnState extends PlayerBaseState {
     updateState(currPlayer) {
         super.updateState(currPlayer);
 
-        if (this.checkCounter(10) && this.animationStage === 1) {
+        if (this.checkCounter(4) && this.animationStage === 1) {
             const { audio } = Game.getInstance();
             audio.playAudio('player/teleport_arrive.wav');
         }
 
-        this.advanceAnimationStage(10);
+        this.advanceAnimationStage(5);
 
-        if (this.animationStage === 9) {
+        if (this.animationStage === 15) {
             currPlayer.switchState(currPlayer.idleState);
         }
     }

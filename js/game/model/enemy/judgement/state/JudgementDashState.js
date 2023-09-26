@@ -13,9 +13,9 @@ export default class JudgementDashState extends JudgementBaseState {
     lastData = [];
 
     enterState(currJudgement) {
-        this.number = 0;
-        this.animationStage = 1;
+        super.enterState(currJudgement);
         this.flyTime = 10;
+        this.shadowCounter = 0;
         this.destination =
             currJudgement.attackPosition[
                 getRandomValue({
@@ -48,18 +48,13 @@ export default class JudgementDashState extends JudgementBaseState {
     }
 
     updateState(currJudgement) {
-        this.number += 1;
+        this.updateNumberCounter();
 
-        if (this.number === 15) {
-            this.number = 0;
-            this.animationStage += 1;
+        this.advanceAnimationStage(15, 3);
 
-            if (this.animationStage === 4) {
-                this.animationStage = 1;
-            }
-        }
+        const { player, deltaTime } = Game.getInstance();
 
-        const { player } = Game.getInstance();
+        this.shadowCounter += deltaTime;
 
         currJudgement.angle = getAngle({
             x: player.centerPosition.x - currJudgement.position.x,
@@ -80,11 +75,11 @@ export default class JudgementDashState extends JudgementBaseState {
         }
 
         currJudgement.position.x += getHorizontalValue({
-            magnitude: this.flyTime,
+            magnitude: this.flyTime * deltaTime,
             angle: this.angle,
         });
         currJudgement.position.y += getVerticalValue({
-            magnitude: this.flyTime,
+            magnitude: this.flyTime * deltaTime,
             angle: this.angle,
         });
 
@@ -98,8 +93,9 @@ export default class JudgementDashState extends JudgementBaseState {
             lastPosition: { ...currJudgement.position },
         };
 
-        if (this.number % 5 === 0) {
+        if (this.shadowCounter >= 5) {
             this.lastData.push(data);
+            this.shadowCounter = 0;
         }
 
         if (this.lastData.length > 3) {

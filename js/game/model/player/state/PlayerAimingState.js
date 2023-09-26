@@ -33,7 +33,7 @@ export default class PlayerAimingState extends PlayerBaseState {
             return;
         }
 
-        if (clicks.includes('left') && currPlayer.bullets > 0) {
+        if (clicks.includes('left') && currPlayer.bullets > 0 && this.shooting <= 0) {
             this.shooting = 20;
         }
 
@@ -166,7 +166,6 @@ export default class PlayerAimingState extends PlayerBaseState {
         }
 
         const { movementDeltaTime } = Game.getInstance();
-        console.log(movementDeltaTime);
         this.hasKnockedBack = true;
 
         currPlayer.velocity.x = getHorizontalValue({

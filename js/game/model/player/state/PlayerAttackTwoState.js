@@ -71,8 +71,6 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
 
         let attackImage = null;
 
-        console.log(this.animationStage);
-
         if (this.direction === 'w') {
             attackImage = getNumberedImage('attack_two_up', this.animationStage);
         }
@@ -86,7 +84,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         if (attackImage === null) {
             return;
         }
-        // const mirrored = this.direction === 'w' || this.direction === 's' ? currPlayer.reversed : false;
+
         drawImage({
             img: attackImage,
             x: currPlayer.centerPosition.x,
