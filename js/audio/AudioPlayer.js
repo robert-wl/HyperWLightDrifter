@@ -2,7 +2,7 @@ export default class AudioPlayer {
     static instance = null;
 
     constructor() {
-        this.playerList = [];
+        this.audioList = [];
         this.volume = 0.1;
         this.allowSound = true;
     }
@@ -15,27 +15,27 @@ export default class AudioPlayer {
     }
 
     increaseVolume() {
-        if(this.volume < 1) {
+        if (this.volume < 1) {
             this.volume += 0.1;
         }
-        if(this.volume > 1) {
+        if (this.volume > 1) {
             this.volume = 1;
         }
 
-        for(const played of this.playerList) {
+        for (const played of this.audioList) {
             played.volume = this.volume;
         }
     }
 
     decreaseVolume() {
-        if(this.volume > 0) {
+        if (this.volume > 0) {
             this.volume -= 0.1;
         }
-        if(this.volume < 0) {
+        if (this.volume < 0) {
             this.volume = 0;
         }
 
-        for(const played of this.playerList) {
+        for (const played of this.audioList) {
             played.volume = this.volume;
         }
     }
@@ -46,22 +46,31 @@ export default class AudioPlayer {
         player.src = `../assets/audio/${sound}`;
         await player.play();
 
-        if(loop) {
+        if (loop) {
             player.loop = true;
         }
 
         player.addEventListener('ended', () => {
-            const { playerList } = AudioPlayer.getInstance();
+            const { audioList } = AudioPlayer.getInstance();
             player.pause();
-            playerList.splice(playerList.indexOf(player), 1);
+            audioList.splice(audioList.indexOf(player), 1);
         });
 
-        this.playerList.push(player);
+        this.audioList.push(player);
+    }
+
+    stop(audio) {
+        if (!audio) {
+            return;
+        }
+        audio.pause();
+        audio.currentTime = 0;
+        audio.src = audio.src;
     }
 
     stopAll() {
-        this.playerList.forEach((player) => {
-            player.pause()
+        this.audioList.forEach((player) => {
+            player.pause();
             player.currentTime = 0;
             player.src = player.src;
         });
@@ -73,12 +82,12 @@ export default class AudioPlayer {
     }
 
     async playAudio(audio, number = null, loop = false, bypass = false, volume = this.volume) {
-        if(!this.allowSound && !bypass) {
+        if (!this.allowSound && !bypass) {
             return;
         }
 
         let audioName = audio;
-        if(number) {
+        if (number) {
             audioName = `${audio.split('.')[0]}_${number}.${audio.split('.')[1]}`;
         }
 
@@ -87,15 +96,16 @@ export default class AudioPlayer {
         player.src = `../assets/audio/${audioName}`;
         await player.play();
 
-        if(loop) {
+        if (loop) {
             player.loop = true;
         }
 
         player.addEventListener('ended', () => {
-            const { playerList } = AudioPlayer.getInstance();
-            playerList.splice(playerList.indexOf(player), 1);
+            const { audioList } = AudioPlayer.getInstance();
+            audioList.splice(audioList.indexOf(player), 1);
         });
 
-        this.playerList.push(player);
+        this.audioList.push(player);
+        return player;
     }
 }

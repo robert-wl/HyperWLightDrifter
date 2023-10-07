@@ -9,6 +9,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jquery-3.7.0" level="application" />
+    <orderEntry type="library" name="jquery-3.7.0" level="application" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="335a8be6-39d7-409c-b455-f500a52e66b9" />

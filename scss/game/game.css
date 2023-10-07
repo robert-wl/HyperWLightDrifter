@@ -62,6 +62,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  display: none;
 }
 .container .ui #menu-modal > div {
   color: white;

@@ -108,6 +108,7 @@ $pink-color: rgb(254, 31, 136);
 
     #menu-modal {
       @include flex-rules(column, center, center);
+      display: none;
 
       > div {
         @include text-config(button);
@@ -264,6 +265,7 @@ $pink-color: rgb(254, 31, 136);
         @include flex-rules(column, center, center);
       }
     }
+
     .modal-background {
       @include absolute(50%, 50%);
       @include max-size(1920px, 1080px);

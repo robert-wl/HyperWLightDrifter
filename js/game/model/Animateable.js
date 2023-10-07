@@ -16,7 +16,7 @@ export default class Animateable {
         const advanceStage = Math.floor(this.number / number);
 
         if (advanceStage > 0) {
-            this.animationStage += advanceStage;
+            this.animationStage += 1;
             this.number = 0;
 
             if (maxStage && this.animationStage > maxStage) {

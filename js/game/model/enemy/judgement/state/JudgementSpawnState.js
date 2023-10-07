@@ -30,8 +30,11 @@ export default class JudgementSpawnState extends JudgementBaseState {
             });
         }
 
-        if (this.animationStage === 14) {
+        console.log(this.animationStage, this.playedSmash);
+        if (this.animationStage === 14 && !this.playedSmash) {
+            console.log('henlo');
             AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
+            this.playedSmash = true;
         }
 
         if (this.animationStage === 22) {
@@ -54,6 +57,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
 
     enterState() {
         super.enterState();
+        this.playedSmash = false;
 
         AudioPlayer.getInstance().playAudio('boss/spawn.wav');
     }

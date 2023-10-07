@@ -7,15 +7,20 @@ import Game from '../../Game/Game.js';
 export default class PlayerSpawnState extends PlayerBaseState {
     enterState(currPlayer) {
         super.enterState(currPlayer);
+        this.spawnDelay = 0;
+        const { audio } = Game.getInstance();
+        audio.playAudio('player/teleport_arrive.wav');
     }
 
     updateState(currPlayer) {
-        super.updateState(currPlayer);
+        const { deltaTime } = Game.getInstance();
+        this.spawnDelay += deltaTime;
 
-        if (this.checkCounter(4) && this.animationStage === 1) {
-            const { audio } = Game.getInstance();
-            audio.playAudio('player/teleport_arrive.wav');
+        if (this.spawnDelay < 20) {
+            return;
         }
+
+        super.updateState(currPlayer);
 
         this.advanceAnimationStage(5);
 
@@ -25,6 +30,10 @@ export default class PlayerSpawnState extends PlayerBaseState {
     }
 
     drawImage(currPlayer) {
+        if (this.spawnDelay < 20) {
+            return;
+        }
+
         const playerSpawn = getNumberedImage('player_spawn', this.animationStage);
 
         drawImage({

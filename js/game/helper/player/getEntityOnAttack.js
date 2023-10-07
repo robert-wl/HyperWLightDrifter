@@ -1,7 +1,8 @@
 import Game from '../../model/Game/Game.js';
-import EnemyManager from '../../model/enemy/EnemyManager.js';
-import CrystalBrute from "../../model/enemy/crystalBrute/CrystalBrute.js";
-import CrystalSpider from "../../model/enemy/crystalSpider/CrystalSpider.js";
+import CrystalBrute from '../../model/enemy/crystalBrute/CrystalBrute.js';
+import CrystalSpider from '../../model/enemy/crystalSpider/CrystalSpider.js';
+import GameSettings from '../../constants.js';
+
 
 export default function getEntityOnAttack({ player }) {
     const { enemyManager } = Game.getInstance();
@@ -18,8 +19,8 @@ export default function getEntityOnAttack({ player }) {
         checkCollision(enemy);
     }
 
-    if(boss) {
-        checkCollision(boss)
+    if (boss) {
+        checkCollision(boss);
     }
 
 }
@@ -41,12 +42,12 @@ function checkCollision(enemy) {
             audio.playAudio('enemy/crystal_spider/hurt.wav');
         }
 
-        if(enemy instanceof CrystalBrute) {
+        if (enemy instanceof CrystalBrute) {
             audio.playAudio('enemy/crystal_brute/hurt_.wav');
         }
 
         enemy.damage({
-            amount: 1,
+            amount: GameSettings.PLAYER.DAMAGE.HIT,
             angle: player.lookAngle,
         });
 

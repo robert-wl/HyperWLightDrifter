@@ -77,11 +77,6 @@ export default class Player {
         this.outfit = 'default';
     }
 
-    init() {
-        this.currState = this.spawnState;
-        this.currState.enterState(this);
-    }
-
     updateState() {
         if (this.health <= 0 && this.currState !== this.deathState) {
             this.switchState(this.deathState);
@@ -90,13 +85,15 @@ export default class Player {
 
         this.updateBombs();
 
-        renderShadow({
-            position: {
-                x: this.centerPosition.x,
-                y: this.centerPosition.y + 12.5,
-            },
-            sizeMultiplier: 1.5,
-        });
+        if (this.currState !== this.spawnState) {
+            renderShadow({
+                position: {
+                    x: this.centerPosition.x,
+                    y: this.centerPosition.y + 12.5,
+                },
+                sizeMultiplier: 1.5,
+            });
+        }
 
         this.updateCounter();
 

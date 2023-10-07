@@ -68,8 +68,6 @@ export default class Game {
         this.enemyManager = new EnemyManager();
         this.player = new Player();
 
-        this.player.init();
-
         // await secondStage({
         //     game: this,
         // });

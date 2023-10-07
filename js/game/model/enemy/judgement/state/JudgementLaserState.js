@@ -9,7 +9,7 @@ import { getAngle } from '../../../../helper/angleHelper.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 export default class JudgementLaserState extends JudgementBaseState {
-    enterState(currJudgement) {
+    async enterState(currJudgement) {
         super.enterState(currJudgement);
         this.attackCount = 0;
         this.attacking = 8;
@@ -18,7 +18,7 @@ export default class JudgementLaserState extends JudgementBaseState {
         this.angleConstant = 0;
         this.attackAngle = currJudgement.angle;
 
-        AudioPlayer.getInstance().playAudio('boss/laser.wav');
+        this.audio = await AudioPlayer.getInstance().playAudio('boss/laser.wav');
     }
 
     drawImage(currJudgement) {
@@ -46,7 +46,6 @@ export default class JudgementLaserState extends JudgementBaseState {
         this.attackAmount += deltaTime;
 
         if (this.animationStage === 8) {
-
             this.attackAngle = getAngle({
                 x: player.centerPosition.x - currJudgement.position.x,
                 y: player.centerPosition.y - (currJudgement.position.y + 40),
@@ -65,7 +64,6 @@ export default class JudgementLaserState extends JudgementBaseState {
         }
 
         if (this.animationStage === 9 && this.attackingNumber >= 14) {
-            console.log(this.attacking);
             this.attacking -= 1;
             this.attackingNumber = 0;
         }
@@ -85,5 +83,9 @@ export default class JudgementLaserState extends JudgementBaseState {
 
     getAttackOffset(currJudgement) {
         return getFaceDirection(currJudgement.angle) === 'left' ? -60 : 60;
+    }
+
+    exitState() {
+        AudioPlayer.getInstance().stop(this.audio);
     }
 }

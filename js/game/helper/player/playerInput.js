@@ -1,13 +1,14 @@
 import Game from '../../model/Game/Game.js';
 import { getAngle } from '../angleHelper.js';
 import GameSettings from '../../constants.js';
+import detectCheatCode from '../cheatCodeHelper.js';
 
 export default function playerInput() {
     $(document).keydown((e) => {
         const { keys } = Game.getInstance();
         const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'A', 'W', 'D', 'S', 'E', 'C', 'Q'];
 
-        console.log(e.key);
+        detectCheatCode(e.key);
         if (keyList.includes(e.key)) {
             if (keys.includes(e.key)) {
                 return;
@@ -29,9 +30,7 @@ export default function playerInput() {
 
             keys.push('escape');
         }
-
     });
-
 
     $(document).keyup((e) => {
         const { keys } = Game.getInstance();
@@ -75,7 +74,6 @@ export default function playerInput() {
         }
     });
 
-
     $(document).mouseup((e) => {
         const { clicks } = Game.getInstance();
         if (e.which === 3) {
@@ -103,6 +101,5 @@ export default function playerInput() {
             x: x - playerX,
             y: y - playerY,
         });
-
     });
 }

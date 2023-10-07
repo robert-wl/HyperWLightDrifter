@@ -1,15 +1,11 @@
-import Game from "../../Game/Game.js";
-import ElevatorBaseState from "./state/ElevatorBaseState.js";
-import ElevatorMountedTopState from "./state/ElevatorMountedTopStage.js";
-import ElevatorMoveState from "./state/ElevatorMoveState.js";
-import InteractionBar from "../InteractionBar.js";
-import ElevatorMountedDownState from "./state/ElevatorMountedDownState.js";
+import Game from '../../Game/Game.js';
+import ElevatorBaseState from './state/ElevatorBaseState.js';
+import ElevatorMountedTopState from './state/ElevatorMountedTopStage.js';
+import ElevatorMoveState from './state/ElevatorMoveState.js';
+import ElevatorMountedDownState from './state/ElevatorMountedDownState.js';
 
 
 export default class Elevator {
-    static generate({ x, y}) {
-        Game.getInstance().elevator = new Elevator({x, y});
-    }
     constructor({ x, y }) {
         this.x = x;
         this.y = y;
@@ -26,9 +22,13 @@ export default class Elevator {
         this.switchState(this.mountedTopState);
     }
 
+    static generate({ x, y }) {
+        Game.getInstance().elevator = new Elevator({ x, y });
+    }
+
     update() {
         this.currState.updateState(this);
-        this.currState.drawImage(this)
+        this.currState.drawImage(this);
     }
 
     switchState(nextState) {

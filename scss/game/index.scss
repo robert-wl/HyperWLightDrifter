@@ -1,0 +1,101 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
+
+@mixin flex-rules($direction, $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin max-size($width, $height) {
+  max-width: $width;
+  max-height: $height;
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin background-image-settings {
+  background-repeat: no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+@mixin text-config($place) {
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  @if ($place == title) {
+    font-size: 2vw;
+  }
+  @if ($place == button) {
+    font-size: 1.5vw;
+    padding: 1vw 0;
+  }
+}
+
+@mixin animationArrow($direction) {
+  @if ($direction == left) {
+    animation: arrowMoveLeft 0.5s steps(2) infinite;
+  }
+  @if ($direction == right) {
+    animation: arrowMoveRight 0.5s steps(2) infinite;
+  }
+}
+
+@mixin hoverable {
+  cursor: pointer;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $pink-color;
+  }
+}
+
+@mixin absolute($top, $left) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  transform: translate(-50%, -50%);
+}
+
+
+.navbar {
+  @include flex-rules(row, center, center);
+  @include size(100vw, 5rem);
+  position: absolute;
+  background: transparent;
+
+  .navbar-container {
+    @include flex-rules(row, start, center);
+    width: 100%;
+
+
+    .navbar-image-container {
+      @include flex-rules(row, center, center);
+      font-family: alternate-gothic-no-2-d, sans-serif;
+      font-weight: bold;
+      font-size: 2rem;
+      color: rgb(255, 2, 69);
+
+      img {
+        width: 5rem;
+      }
+    }
+  }
+}
+
+.video-top {
+  height: 5rem;
+}
+
+video {
+  height: 50rem;
+  width: 100vw;
+  object-fit: cover;
+}

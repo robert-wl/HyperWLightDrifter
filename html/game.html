@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8' />
+    <meta
+        content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'
+        name='viewport'
+    />
+    <title>Document</title>
+    <link
+        href='../scss/game/game.css'
+        rel='stylesheet'
+    />
+</head>
+<body>
+<div class='container'>
+    <canvas
+        height='1080'
+        id='game'
+        width='1920'
+    ></canvas>
+    <div class='ui'>
+        <div
+            class='modal'
+            id='menu-modal'
+        >
+            <div class='new-game hoverable'>New Game</div>
+            <div class='settings hoverable'>Settings</div>
+            <div class='exit hoverable'>Exit</div>
+        </div>
+        <div
+            class='modal'
+            id='selection-modal'
+        >
+            <div class='title'>Select Outfit</div>
+            <main class='image-container'>
+                <div class='clickable arrow-left' id='image-arrow-left'><</div>
+                <img
+                    alt=''
+                    id='player-preview'
+                    src='../assets/ui/player_select/player-red.png'
+                />
+                <div class='clickable arrow-right' id='image-arrow-right'>></div>
+            </main>
+            <div
+                class='button hoverable'
+                id='play-button'
+            >
+                Play
+            </div>
+            <div
+                class='button hoverable'
+                id='cancel-button'
+            >
+                Cancel
+            </div>
+        </div>
+        <div
+            class='modal-background'
+            id='pause-modal'
+        >
+            <div class='modal'>
+                <div class='title'>Paused</div>
+                <div
+                    class='button hoverable'
+                    id='continue-button'
+                >
+                    Continue
+                </div>
+                <div
+                    class='button hoverable'
+                    id='settings-button'
+                >
+                    Settings
+                </div>
+            </div>
+        </div>
+        <div
+            class='modal'
+            id='settings-modal'
+        >
+            <div class='title'>Settings</div>
+            <main class='settings-container'>
+                <div class='settings-content hoverable'>
+                    <div>
+                        <span class='settings-content-title'>Volume</span>
+                        <span class='volume-bar'>
+                                    <div
+                                        class='clickable arrow-left'
+                                        id='volume-down'
+                                    >
+                                        <
+                                    </div>
+                                    <div class='volume-meter on'></div>
+                                    <div class='volume-meter off'></div>
+                                    <div class='volume-meter off'></div>
+                                    <div class='volume-meter off'></div>
+                                    <div class='volume-meter off'></div>
+                                    <div class='volume-meter off'></div>
+                                    <div class='volume-meter off'></div>
+                                    <div class='volume-meter off'></div>
+                                    <div class='volume-meter off'></div>
+                                    <div class='volume-meter off'></div>
+                                    <div
+                                        class='clickable arrow-right'
+                                        id='volume-up'
+                                    >
+                                        >
+                                    </div>
+                                </span>
+                    </div>
+                </div>
+                <div class='settings-content hoverable'>
+                    <div class='settings-middle'>
+                        <span class='settings-content-title'>Fullscreen</span>
+                        <div
+                            class='clickable arrow-left'
+                            id='fullscreen-toggle-left'
+                        >
+                            <
+                        </div>
+                        <span id='fullscreen-text'> Off </span>
+                        <div
+                            class='clickable arrow-right'
+                            id='fullscreen-toggle-right'
+                        >
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class='settings-content hoverable'>
+                    <div class='settings-middle'>
+                        <span class='settings-content-title'>FPS Counter</span>
+                        <div
+                            class='clickable arrow-left'
+                            id='fps-counter-toggle-left'
+                        >
+                            <
+                        </div>
+                        <span id='fps-counter-text'> Off </span>
+                        <div
+                            class='clickable arrow-right'
+                            id='fps-counter-toggle-right'
+                        >
+                            >
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <div class='exit-button' id='exit-button-settings'>
+                <div class='hoverable'>
+                    Exit
+                </div>
+            </div>
+        </div>
+        <img
+            alt=''
+            height='1080'
+            id='opening-screen'
+            src='../assets/ui/start.png'
+            width='1920'
+        />
+        <canvas
+            height='1080'
+            id='HUD'
+            width='1920'
+        ></canvas>
+    </div>
+</div>
+<script
+    crossorigin='anonymous'
+    integrity='sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM='
+    src='https://code.jquery.com/jquery-3.7.0.js'
+></script>
+<script
+    src='../js/index.js'
+    type='module'
+></script>
+</body>
+</html>

@@ -8,9 +8,9 @@ $(document).ready(async () => {
 
 
     let lastTimestamp = 0;
+    let isTabVisible = true;
 
     const updateLoop = (timestamp) => {
-
         let deltaTime = (timestamp - lastTimestamp) / 1000;
 
         game.update(deltaTime);
@@ -18,6 +18,10 @@ $(document).ready(async () => {
 
         requestAnimationFrame(updateLoop);
     };
+
+    document.addEventListener('visibilitychange', () => {
+        isTabVisible = document.visibilityState === 'visible';
+    });
 
     await game.switchState(game.startState);
     updateLoop();

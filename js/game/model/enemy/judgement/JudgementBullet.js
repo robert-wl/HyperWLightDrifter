@@ -104,6 +104,6 @@ export default class JudgementBullet extends Enemy {
     }
 
     getAnimationNumber() {
-        return Math.floor((this.lifetime / this.maxLifetime) * 4) + 1;
+        return Math.min(Math.floor((this.lifetime / this.maxLifetime) * 4) + 1, 4);
     }
 }

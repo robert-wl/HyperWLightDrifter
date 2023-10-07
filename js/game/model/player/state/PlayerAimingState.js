@@ -59,7 +59,7 @@ export default class PlayerAimingState extends PlayerBaseState {
 
         if (this.shooting >= 20) {
             this.enemy?.damage({
-                amount: 2,
+                amount: GameSettings.PLAYER.DAMAGE.BULLET,
                 angle: this.angle,
             });
         }

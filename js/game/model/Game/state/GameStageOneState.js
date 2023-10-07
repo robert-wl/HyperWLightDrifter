@@ -15,9 +15,10 @@ export default class GameStageOneState extends GameBaseState {
     async enterState(game) {
         game.stage = 1;
         await this.stageInitializer(game);
+        const { audio, player } = game;
 
-        const { audio } = game;
-
+        player.switchState(player.spawnState);
+        
         PauseModal.handleInteraction();
 
         audio.playAudio('forest_stage/background.ogg', null, true);

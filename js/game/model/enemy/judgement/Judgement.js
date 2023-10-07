@@ -84,7 +84,7 @@ export default class Judgement extends Enemy {
 
     handleSwitchState() {
         AudioPlayer.getInstance().playAudio('boss/scream.wav');
-
+        
         const random = getRandomValue({
             randomValue: 10,
         });

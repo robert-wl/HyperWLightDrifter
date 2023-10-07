@@ -8,26 +8,25 @@ import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 export default class JudgementDeathState extends JudgementBaseState {
     updateState(currJudgement) {
-        this.number += 1;
+        super.updateState();
 
-        if (this.number % 5 === 0) {
-            this.animationStage += 1;
+        this.advanceAnimationStage(5);
 
-            if (this.animationStage === 22) {
-                this.animationStage = 21;
-            }
+        const { deltaTime } = Game.getInstance();
+        if (this.animationStage >= 21) {
+            this.deadTime += deltaTime;
+
+            this.animationStage = 21;
         }
 
-        if (this.animationStage === 21) {
-            this.deadTime += 1;
+        if (this.deadTime >= 0 && !this.playedAudio) {
+            AudioPlayer.getInstance().playAudio('boss/death.wav');
+
+            this.playedAudio = true;
         }
 
-        if (this.deadTime === 100) {
-            AudioPlayer.getInstance().playAudio('death.wav');
-        }
-
-        if (this.deadTime > 100 && this.number % 2 === 0) {
-            Game.getInstance().darkenBackground(0.01);
+        if (this.deadTime > 100) {
+            Game.getInstance().darkenBackground(0.005 * deltaTime);
         }
     }
 
@@ -46,8 +45,8 @@ export default class JudgementDeathState extends JudgementBaseState {
     }
 
     enterState(currJudgement) {
-        this.number = 0;
-        this.animationStage = 1;
+        super.enterState(currJudgement);
+        this.playedAudio = false;
         this.mirrored = getFaceDirection(currJudgement.angle) === 'left';
         this.deadTime = 0;
 

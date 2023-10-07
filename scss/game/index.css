@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 5rem;
+  position: absolute;
+  background: transparent;
+}
+.navbar .navbar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+}
+.navbar .navbar-container .navbar-image-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: alternate-gothic-no-2-d, sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  color: rgb(255, 2, 69);
+}
+.navbar .navbar-container .navbar-image-container img {
+  width: 5rem;
+}
+
+.video-top {
+  height: 5rem;
+}
+
+video {
+  height: 50rem;
+  width: 100vw;
+  object-fit: cover;
+}
+
+/*# sourceMappingURL=index.css.map */

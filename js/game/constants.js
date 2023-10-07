@@ -20,13 +20,20 @@ const GameSettings = {
         SPAWN_RADIUS: 1500,
         SPAWN_RANDOM_RADIUS: 500,
     },
+    PLAYER: {
+        DAMAGE: {
+            HIT: 1,
+            BULLET: 2,
+            GRENADE: 2,
+        },
+    },
     player: {
         MAX_IMMUNITY: 30,
         MAX_HEALTH: 6,
         MAX_HEALTHPACKS: 3,
         MAX_STAMINA: 100,
         MAX_BOMBS: 3000,
-        MAX_BULLETS: 300,
+        MAX_BULLETS: 3,
         FRICTION: 0.2,
         MAX_SPEED: 4,
         ATTACK_MOVE_SPEED: 2,
@@ -43,6 +50,9 @@ const GameSettings = {
             w: 15,
             h: 0,
         },
+        HIT_DAMAGE: 1,
+        BULLET_DAMAGE: 2,
+        GRENADE_DAMAGE: 3,
         LAST_DIRECTION: 's',
         DEBUG_COLOR: 'rgb(0, 255, 0, 0.5)',
         ATTACK_BOX: {
