@@ -13,21 +13,85 @@
     />
 </head>
 <body>
+<div id='light'></div>
 <div class='navbar'>
     <div class='navbar-container'>
         <div class='navbar-image-container'>
             <img src='../assets/web/logo.png'>
-            Hyper Light Drifter
         </div>
     </div>
 </div>
-<div class='video-top'></div>
-<video autoplay loop muted>
-    <source src='../assets/web/trailer.mp4' type='video/mp4' />
+<!--<div class='video-top'></div>-->
+<div class='video-container'>
+    <video autoplay loop muted>
+        <source src='../assets/web/trailer.mkv' type='video/mp4' />
+    </video>
+    <div class='video-cover'>
+    </div>
+    <div class='video-text'>
+        <img src='../assets/web/title.png'>
+        <a class='try-demo-button' href='game.html'>TRY DEMO</a>
+    </div>
+</div>
+<div class='about-container'>
+    <div class='about-content'>
+        <div class='about-image-container'>
+            <img src='../assets/web/about.png'>
+        </div>
+        <div class='about-text-container'>
+            <h1>ABOUT</h1>
+            <p>
+                Echoes of a dark and violent past resonate throughout a savage land, steeped in treasure and blood.
+                Hyper
+                Light Drifter is an action adventure RPG in the vein of the best 16­bit classics, with modernized
+                mechanics
+                and designs on a much grander scale.
+            </p>
+            <p>
+                Drifters of this world are the collectors of forgotten knowledge, lost technologies and broken
+                histories.
+                Our Drifter is haunted by an insatiable illness, traveling further into the lands of Buried Time, hoping
+                to
+                discover a way to quiet the vicious disease.
+            </p>
+            <p>
+                • From each character to subtle background elements, everything is lovingly hand-animated.
+            </p>
+            <p>
+                • Easy to pick up, difficult to master; enemies are vicious and numerous, hazards will easily crush your
+                frail body, and friendly faces remain rare.
+            </p>
+            <p>
+                • Upgrade weapons, learn new skills, discover equipment and traverse a dark, detailed world with
+                branching
+                paths and secrets abound.
+            </p>
+        </div>
+    </div>
+</div>
+<div class='map-container'>
+    <h1>EXPLORE THE LAND OF LIGHT</h1>
+    <div class='image-container'>
+        <img alt='Color' class='map-top' src='../assets/web/map-upground.png' />
+        <img alt='B/W' class='map-bottom' src='../assets/web/map-underground.png' />
+        <input class='image-range' max='100' min='0'
+               oninput="this.parentNode.style.setProperty('--value', `${this.value}%`)"
+               step='0.001' type='range'
+               value='50' />
+    </div>
+</div>
 <script
     crossorigin='anonymous'
     integrity='sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM='
     src='https://code.jquery.com/jquery-3.7.0.js'
 ></script>
+<script>
+    $(document).mousemove(function(event) {
+        const light = document.getElementById('light');
+        light.style.setProperty('--light-position-y', (event.clientY - 50) + 'px');
+        light.style.setProperty('--light-position-x', (event.clientX - 50) + 'px');
+
+    });
+</script>
 </body>
 </html>

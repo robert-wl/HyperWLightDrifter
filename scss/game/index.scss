@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap');
+
 body {
+  position: relative;
   margin: 0;
   padding: 0;
   background-color: black;
@@ -27,16 +30,10 @@ body {
   image-rendering: pixelated;
 }
 
-@mixin text-config($place) {
+@mixin text-config($config) {
   color: white;
-  font-family: 'Press Start 2P', cursive;
-  @if ($place == title) {
-    font-size: 2vw;
-  }
-  @if ($place == button) {
-    font-size: 1.5vw;
-    padding: 1vw 0;
-  }
+  font-family: 'omnes-pro', sans-serif;
+  font-size: $config;
 }
 
 @mixin animationArrow($direction) {
@@ -65,11 +62,38 @@ body {
 }
 
 
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: red;
+  border-radius: 0.5rem;
+}
+
+#light {
+  --x: 50%;
+  --y: 50%;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: rgb(231, 221, 122, 0.5);
+  -webkit-mask: radial-gradient(white 15%, transparent 16%) 10rem 10rem / 30px 30px repeat;
+}
+
 .navbar {
   @include flex-rules(row, center, center);
   @include size(100vw, 5rem);
-  position: absolute;
-  background: transparent;
+  position: fixed;
+  background: rgb(0, 0, 0, 0.75);
+  z-index: 100;
 
   .navbar-container {
     @include flex-rules(row, start, center);
@@ -94,8 +118,144 @@ body {
   height: 5rem;
 }
 
-video {
-  height: 50rem;
-  width: 100vw;
-  object-fit: cover;
+.video-container {
+  position: relative;
+
+
+  > video {
+    height: 45rem;
+    width: 100vw;
+    object-fit: cover;
+
+
+  }
+
+  .video-cover {
+    @include absolute(0, 50%);
+    height: 90rem;
+    width: 100vw;
+    box-shadow: 0 0 1rem 1rem inset;
+  }
+
+  .video-text {
+    @include flex-rules(column, center, center);
+    @include absolute(45%, 51.7%);
+
+    > img {
+      @include size(40rem, 20rem);
+      z-index: 1;
+    }
+
+    .try-demo-button {
+      font-family: 'Kanit', sans-serif;
+      letter-spacing: 0.1rem;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: transparent;
+      color: white;
+      outline: none;
+      border: 0.15rem solid white;
+      border-radius: 0.25rem;
+      padding: 0.5rem 1rem;
+      margin-top: 2rem;
+      cursor: pointer;
+      text-decoration: none;
+      text-underline: none;
+
+      &:hover {
+        background-color: white;
+        color: black;
+        transition: 0.5s;
+      }
+    }
+  }
+}
+
+.about-container {
+  @include flex-rules(column, center, center);
+  z-index: 10;
+  margin-top: 2rem;
+
+  .about-content {
+    @include flex-rules(row, center, none);
+    width: 60rem;
+
+    .about-image-container {
+      img {
+        width: 30rem;
+        height: 40rem;
+        margin: 0 2rem;
+        object-fit: cover;
+      }
+    }
+
+    .about-text-container {
+      > h1 {
+        width: 100%;
+        font-family: 'Kanit', sans-serif;
+        color: white;
+        padding-bottom: 0.2rem;
+        border-bottom: 0.2rem solid white;
+      }
+
+      > p {
+        font-family: 'Kanit', sans-serif;
+        font-weight: lighter;
+        letter-spacing: 0.1rem;
+        font-size: 1.1rem;
+        text-align: start;
+        color: white;
+      }
+    }
+  }
+}
+
+.map-container {
+  @include flex-rules(column, center, center);
+  position: relative;
+  height: 30rem;
+
+  > h1 {
+    font-family: 'Kanit', sans-serif;
+    color: white;
+    border-bottom: 0.2rem solid white;
+  }
+
+  .image-container {
+    --value: 50%;
+
+    img {
+      @include absolute(200%, 50%);
+    }
+
+    .map-bottom {
+      clip-path: polygon(0% 0%, var(--value) 0%, var(--value) 100%, 0% 100%);
+    }
+
+    .image-range {
+      @include absolute(140%, 50%);
+      background-color: transparent;
+      box-sizing: border-box;
+      font-family: inherit;
+      height: 70rem;
+      margin: 0;
+      outline: none;
+      width: 101rem;
+
+      &::-webkit-slider-thumb {
+        appearance: none;
+        background-color: transparent;
+        height: 72rem;
+        cursor: pointer;
+        width: 1rem;
+      }
+
+
+      &,
+      &::-webkit-slider-runnable-track {
+        -webkit-appearance: none;
+        appearance: none;
+      }
+    }
+  }
 }

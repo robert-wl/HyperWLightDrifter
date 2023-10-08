@@ -1,7 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap");
 body {
+  position: relative;
   margin: 0;
   padding: 0;
   background-color: black;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: red;
+  border-radius: 0.5rem;
+}
+
+#light {
+  --x: 50%;
+  --y: 50%;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: rgba(231, 221, 122, 0.5);
+  -webkit-mask: radial-gradient(white 15%, transparent 16%) 10rem 10rem/30px 30px repeat;
 }
 
 .navbar {
@@ -11,8 +39,9 @@ body {
   align-items: center;
   width: 100vw;
   height: 5rem;
-  position: absolute;
-  background: transparent;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 100;
 }
 .navbar .navbar-container {
   display: flex;
@@ -39,10 +68,145 @@ body {
   height: 5rem;
 }
 
-video {
-  height: 50rem;
+.video-container {
+  position: relative;
+}
+.video-container > video {
+  height: 45rem;
   width: 100vw;
   object-fit: cover;
+}
+.video-container .video-cover {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 90rem;
+  width: 100vw;
+  box-shadow: 0 0 1rem 1rem inset;
+}
+.video-container .video-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 45%;
+  left: 51.7%;
+  transform: translate(-50%, -50%);
+}
+.video-container .video-text > img {
+  width: 40rem;
+  height: 20rem;
+  z-index: 1;
+}
+.video-container .video-text .try-demo-button {
+  font-family: "Kanit", sans-serif;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: transparent;
+  color: white;
+  outline: none;
+  border: 0.15rem solid white;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  margin-top: 2rem;
+  cursor: pointer;
+  text-decoration: none;
+  text-underline: none;
+}
+.video-container .video-text .try-demo-button:hover {
+  background-color: white;
+  color: black;
+  transition: 0.5s;
+}
+
+.about-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  margin-top: 2rem;
+}
+.about-container .about-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: none;
+  width: 60rem;
+}
+.about-container .about-content .about-image-container img {
+  width: 30rem;
+  height: 40rem;
+  margin: 0 2rem;
+  object-fit: cover;
+}
+.about-container .about-content .about-text-container > h1 {
+  width: 100%;
+  font-family: "Kanit", sans-serif;
+  color: white;
+  padding-bottom: 0.2rem;
+  border-bottom: 0.2rem solid white;
+}
+.about-container .about-content .about-text-container > p {
+  font-family: "Kanit", sans-serif;
+  font-weight: lighter;
+  letter-spacing: 0.1rem;
+  font-size: 1.1rem;
+  text-align: start;
+  color: white;
+}
+
+.map-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 30rem;
+}
+.map-container > h1 {
+  font-family: "Kanit", sans-serif;
+  color: white;
+  border-bottom: 0.2rem solid white;
+}
+.map-container .image-container {
+  --value: 50%;
+}
+.map-container .image-container img {
+  position: absolute;
+  top: 200%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.map-container .image-container .map-bottom {
+  clip-path: polygon(0% 0%, var(--value) 0%, var(--value) 100%, 0% 100%);
+}
+.map-container .image-container .image-range {
+  position: absolute;
+  top: 140%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  box-sizing: border-box;
+  font-family: inherit;
+  height: 70rem;
+  margin: 0;
+  outline: none;
+  width: 101rem;
+}
+.map-container .image-container .image-range::-webkit-slider-thumb {
+  appearance: none;
+  background-color: transparent;
+  height: 72rem;
+  cursor: pointer;
+  width: 1rem;
+}
+.map-container .image-container .image-range, .map-container .image-container .image-range::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /*# sourceMappingURL=index.css.map */
