@@ -75,24 +75,12 @@ body {
   border-radius: 0.5rem;
 }
 
-#light {
-  --x: 50%;
-  --y: 50%;
-  top: 50%;
-  left: 50%;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  position: absolute;
-  background-color: rgb(231, 221, 122, 0.5);
-  -webkit-mask: radial-gradient(white 15%, transparent 16%) 10rem 10rem / 30px 30px repeat;
-}
 
 .navbar {
   @include flex-rules(row, center, center);
   @include size(100vw, 5rem);
   position: fixed;
-  background: rgb(0, 0, 0, 0.75);
+  background: rgb(0, 0, 0, 0.9);
   z-index: 100;
 
   .navbar-container {
@@ -206,6 +194,52 @@ body {
         text-align: start;
         color: white;
       }
+    }
+  }
+}
+
+
+.features-container {
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+
+  .image-cover {
+    @include absolute(50%, 50%);
+    height: 57vw;
+    width: 100vw;
+    box-shadow: 0 0 1rem 1rem inset;
+  }
+
+  > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transform: scale(1.5) translateX(10%);
+  }
+
+  .features-text-container {
+    position: absolute;
+    top: 25%;
+    left: 20%;
+    width: 25%;
+    font-family: 'Kanit', sans-serif;
+    color: white;
+
+    > h1 {
+      font-family: 'Kanit', sans-serif;
+      color: white;
+      padding-bottom: 0.2rem;
+      border-bottom: 0.2rem solid white;
+    }
+
+    > p {
+      font-family: 'Kanit', sans-serif;
+      font-weight: lighter;
+      letter-spacing: 0.1rem;
+      font-size: 1.1rem;
+      text-align: start;
+      color: white;
     }
   }
 }
