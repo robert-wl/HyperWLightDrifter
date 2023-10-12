@@ -1,9 +1,10 @@
 import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
 import GameSettings from '../../constants.js';
-import CrystalBrute from './crystalBrute/CrystalBrute.js';
 import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
-import CrystalSpider from './crystalSpider/CrystalSpider.js';
 import Game from '../Game/Game.js';
+import CrystalBrute from './crystalBrute/CrystalBrute.js';
+import CrystalWolf from './crystalWolf/CrystalWolf.js';
+import CrystalSpider from './crystalSpider/CrystalSpider.js';
 
 export default class EnemyManager {
     static instance = null;
@@ -55,35 +56,69 @@ export default class EnemyManager {
             return;
         }
 
-        for (let i = 0; i <= this.difficulty; i++) {
-            const radius = getRandomValue({
-                initialValue: 750,
-                randomizeValue: 500,
-            });
+        let counter = 0;
+        while (counter < this.difficulty) {
+            counter += this.enemySpawner();
+        }
 
-            const angle = getRandomValue({
-                initialValue: 0,
-                randomValue: Math.PI * 2,
-            });
+        const { audio } = Game.getInstance();
 
-            if (this.difficulty > 5 && getRandomBoolean(0.25)) {
-                CrystalBrute.generate({
-                    x: getHorizontalValue({
-                        initial: GameSettings.GAME.SCREEN_WIDTH / 2,
-                        magnitude: radius / 1.25,
-                        angle: angle,
-                    }),
-                    y: getVerticalValue({
-                        initial: GameSettings.GAME.SCREEN_HEIGHT / 2,
-                        magnitude: radius / 1.25,
-                        angle: angle,
-                    }),
-                });
-                i += 5;
-                this.enemyAliveCount += 5;
-                continue;
-            }
+        audio.playAudio('forest_stage/door_progress.wav', null, false, false, 0.75);
+        this.difficulty += 1;
+    }
 
+    enemySpawner() {
+        if (this.difficulty > 4 && getRandomBoolean(0.25)) {
+            return this.crystalBruteSpawner();
+        }
+
+        if (this.difficulty > 2 && getRandomBoolean(0.5)) {
+            return this.crystalWolfSpawner();
+        }
+
+        return this.crystalSpiderSpawner();
+    }
+
+    crystalBruteSpawner() {
+        const { radius, angle } = this.getRandomPosition();
+        CrystalBrute.generate({
+            x: getHorizontalValue({
+                initial: GameSettings.GAME.SCREEN_WIDTH / 2,
+                magnitude: radius / 1.25,
+                angle: angle,
+            }),
+            y: getVerticalValue({
+                initial: GameSettings.GAME.SCREEN_HEIGHT / 2,
+                magnitude: radius / 1.25,
+                angle: angle,
+            }),
+        });
+        this.enemyAliveCount += 3;
+        return 3;
+    }
+
+    crystalWolfSpawner() {
+        const { radius, angle } = this.getRandomPosition();
+        CrystalWolf.generate({
+            x: getHorizontalValue({
+                initial: GameSettings.game.SCREEN_WIDTH / 2,
+                magnitude: radius / 1,
+                angle: angle,
+            }),
+            y: getVerticalValue({
+                initial: GameSettings.game.SCREEN_HEIGHT / 2,
+                magnitude: radius / 1,
+                angle: angle,
+            }),
+        });
+
+        this.enemyAliveCount += 1;
+        return 1;
+    }
+
+    crystalSpiderSpawner() {
+        for (let i = 0; i < 2; i++) {
+            const { radius, angle } = this.getRandomPosition();
             CrystalSpider.generate({
                 x: getHorizontalValue({
                     initial: GameSettings.game.SCREEN_WIDTH / 2,
@@ -96,14 +131,24 @@ export default class EnemyManager {
                     angle: angle,
                 }),
             });
-
-            this.enemyAliveCount += 1;
         }
 
-        const { audio } = Game.getInstance();
+        this.enemyAliveCount += 2;
+        return 1;
+    }
 
-        audio.playAudio('forest_stage/door_progress.wav', null, false, false, 0.75);
-        this.difficulty += 1;
+    getRandomPosition() {
+        const radius = getRandomValue({
+            initialValue: 750,
+            randomizeValue: 500,
+        });
+
+        const angle = getRandomValue({
+            initialValue: 0,
+            randomValue: Math.PI * 2,
+        });
+
+        return { radius, angle };
     }
 
     kill(enemy) {

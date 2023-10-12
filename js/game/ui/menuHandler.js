@@ -22,13 +22,13 @@ export default function menuHandler() {
 function audioHandler() {
     $('.hoverable').mouseenter(() => {
         AudioPlayer.getInstance().playSound({
-            sound: 'menu/walk.wav',
+            sound: 'menu/move.wav',
         });
     });
 
     $('.clickable').mousedown(() => {
         AudioPlayer.getInstance().playSound({
-            sound: 'menu/walk.wav',
+            sound: 'menu/move.wav',
         });
     });
 }

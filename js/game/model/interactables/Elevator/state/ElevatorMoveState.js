@@ -19,7 +19,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         super.updateState(elevator);
 
         if (this.checkCounter(100)) {
-            AudioPlayer.getInstance().playAudio('elevator/walk.wav');
+            AudioPlayer.getInstance().playAudio('elevator/move.wav');
 
             this.number = 0;
         }

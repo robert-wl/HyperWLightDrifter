@@ -1,11 +1,12 @@
-import Enemy from '../Enemy';
-import { getRandomValue } from '../../../helper/randomHelper';
-import Game from '../../Game/Game';
-import renderShadow from '../../../helper/renderer/shadow';
-import CrystalWolfBaseState from './state/CrystalWolfBaseState';
-import CrystalWolfAttackState from './state/CrystalWolfAttackState';
-import CrystalWolfMoveState from './state/CrystalWolfMoveState';
-import CrystalWolfDieState from './state/CrystalWolfDieState';
+import Enemy from '../Enemy.js';
+import { getRandomValue } from '../../../helper/randomHelper.js';
+import Game from '../../Game/Game.js';
+import renderShadow from '../../../helper/renderer/shadow.js';
+import CrystalWolfBaseState from './state/CrystalWolfBaseState.js';
+import CrystalWolfAttackState from './state/CrystalWolfAttackState.js';
+import CrystalWolfMoveState from './state/CrystalWolfMoveState.js';
+import CrystalWolfDieState from './state/CrystalWolfDieState.js';
+import HealthBar from '../healthBar/HealthBar.js';
 
 export default class CrystalWolf extends Enemy {
     constructor({ x, y }) {
@@ -18,17 +19,26 @@ export default class CrystalWolf extends Enemy {
                 w: 0,
                 h: 0,
             },
-            w: 66,
-            h: 50,
-            health: 1,
+            w: 66 * 1.1,
+            h: 50 * 1.1,
+            health: 2,
+            maxHealth: 2,
         });
         this.currState = new CrystalWolfBaseState();
         this.attackState = new CrystalWolfAttackState();
         this.moveState = new CrystalWolfMoveState();
         this.dieState = new CrystalWolfDieState();
         this.speed = getRandomValue({
-            initialValue: 2,
+            initialValue: 3,
             randomValue: 2,
+        });
+        this.healthBar = HealthBar.generate({
+            position: this.position,
+            offset: {
+                x: -5,
+                y: 30,
+            },
+            maxHealth: this.maxHealth,
         });
         this.switchState(this.moveState);
     }
@@ -74,6 +84,16 @@ export default class CrystalWolf extends Enemy {
                     y: this.position.y,
                 },
                 sizeMultiplier: 1.5,
+            });
+        }
+
+        if (this.currState !== this.dieState) {
+            this.healthBar.update({
+                health: this.health,
+                position: {
+                    x: this.position.x,
+                    y: this.position.y,
+                },
             });
         }
 

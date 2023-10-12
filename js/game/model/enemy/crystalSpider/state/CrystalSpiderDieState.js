@@ -13,7 +13,7 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
         const { audio, enemyManager } = Game.getInstance();
 
         enemyManager.enemyAliveCount -= 1;
-        audio.playAudio('enemy/crystal_spider/die.wav');
+        audio.playAudio('enemy/crystal_spider/death.wav');
     }
 
     drawImage(currSpider) {

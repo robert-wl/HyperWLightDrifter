@@ -1,9 +1,10 @@
 import CrystalWolfBaseState from './CrystalWolfBaseState.js';
-import Game from '../../../Game/Game';
-import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanceHelper';
-import playerCollision from '../../../../helper/collision/playerCollision';
-import { getNumberedImage } from '../../../../helper/imageLoader';
-import { getFaceDirection } from '../../../../helper/collision/directionHandler';
+import Game from '../../../Game/Game.js';
+import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
+import playerCollision from '../../../../helper/collision/playerCollision.js';
+import { getNumberedImage } from '../../../../helper/imageLoader.js';
+import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import { drawImage } from '../../../../helper/renderer/drawer.js';
 
 export default class CrystalWolfAttackState extends CrystalWolfBaseState {
     enterState(currWolf) {
@@ -11,14 +12,20 @@ export default class CrystalWolfAttackState extends CrystalWolfBaseState {
         this.angle = currWolf.angle;
         this.attackDrag = 0.25;
 
-        currWolf.attackSpeed = 20;
+        currWolf.attackSpeed = 25;
 
         const { audio } = Game.getInstance();
-        audio.playAudio('enemy/crystal_spider/attack.wav');
+        audio.playAudio('enemy/crystal_wolf/attack.wav');
     }
 
     updateState(currWolf) {
         super.updateState(currWolf);
+
+        if (this.animationStage < 3) {
+            this.advanceAnimationStage(4);
+            return;
+        }
+
         const { deltaTime, movementDeltaTime } = Game.getInstance();
 
         if (this.checkCounterReversed(10)) {
@@ -48,8 +55,6 @@ export default class CrystalWolfAttackState extends CrystalWolfBaseState {
             },
             angle: this.angle,
         });
-
-        this.advanceAnimationStage(4, 4);
     }
 
     drawImage(currWolf) {

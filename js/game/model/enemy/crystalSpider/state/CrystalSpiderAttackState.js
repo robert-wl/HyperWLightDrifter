@@ -15,13 +15,12 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
         currSpider.attackSpeed = 20;
 
         const { audio } = Game.getInstance();
-        audio.playAudio('enemy/crystal_spider/attack.wav');
+        audio.playAudio('enemy/crystal_wolf/attack.wav');
     }
 
     updateState(currSpider) {
         super.updateState(currSpider);
         const { deltaTime, movementDeltaTime } = Game.getInstance();
-
 
         if (this.checkCounterReversed(10)) {
             currSpider.attackSpeed = 20;
@@ -37,7 +36,7 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
             magnitude: currSpider.attackSpeed * deltaTime,
             angle: this.angle,
         });
-         
+
         currSpider.position.y += getVerticalValue({
             magnitude: currSpider.attackSpeed * deltaTime,
             angle: this.angle,
@@ -64,6 +63,5 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
             translate: true,
             mirrored: getFaceDirection(this.angle) === 'left',
         });
-
     }
 }

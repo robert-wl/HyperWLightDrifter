@@ -2,7 +2,7 @@ import Game from '../../model/Game/Game.js';
 import CrystalBrute from '../../model/enemy/crystalBrute/CrystalBrute.js';
 import CrystalSpider from '../../model/enemy/crystalSpider/CrystalSpider.js';
 import GameSettings from '../../constants.js';
-
+import CrystalWolf from '../../model/enemy/crystalWolf/CrystalWolf.js';
 
 export default function getEntityOnAttack({ player }) {
     const { enemyManager } = Game.getInstance();
@@ -22,7 +22,6 @@ export default function getEntityOnAttack({ player }) {
     if (boss) {
         checkCollision(boss);
     }
-
 }
 
 function checkCollision(enemy) {
@@ -44,6 +43,10 @@ function checkCollision(enemy) {
 
         if (enemy instanceof CrystalBrute) {
             audio.playAudio('enemy/crystal_brute/hurt_.wav');
+        }
+
+        if (enemy instanceof CrystalWolf) {
+            audio.playAudio('enemy/crystal_wolf/hurt.wav');
         }
 
         enemy.damage({

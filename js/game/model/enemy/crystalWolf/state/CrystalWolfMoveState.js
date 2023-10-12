@@ -20,6 +20,11 @@ export default class CrystalWolfMoveState extends CrystalWolfBaseState {
         const { deltaTime } = Game.getInstance();
         this.moveTime += deltaTime;
 
+        if (Math.round(this.moveTime) % 40 === 0) {
+            const { audio } = Game.getInstance();
+            audio.playAudio('enemy/crystal_wolf/walk.wav');
+        }
+
         this.handleMovement(currWolf);
         this.advanceAnimationStage(4, 8);
     }
