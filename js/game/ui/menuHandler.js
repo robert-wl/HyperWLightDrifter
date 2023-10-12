@@ -1,40 +1,34 @@
 import AudioPlayer from '../../audio/AudioPlayer.js';
-import ParticlesManager from "../model/particles/ParticlesManager.js";
-import Game from "../model/Game/Game.js";
+import ParticlesManager from '../model/particles/ParticlesManager.js';
+import Game from '../model/Game/Game.js';
 
 const playerSelectImages = ['../assets/ui/player_select/player-red.png', '../assets/ui/player_select/player-dark.png', '../assets/ui/player_select/player-yellow.png'];
 
 let selected = 0;
 export default function menuHandler() {
-
     $('.settings').mousedown(() => {
         AudioPlayer.getInstance().playSound({
-            sound: 'menu/action.wav'
+            sound: 'menu/action.wav',
         });
 
         $('#menu-modal').css('display', 'none');
-        $('#settings-modal')
-            .css('display', 'flex')
-            .css('animation', 'fadeIn 0.25s ease-in-out')
-            .css('opacity', '100%');
+        $('#settings-modal').css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '100%');
     });
-
 
     audioHandler();
     selectScreenHandler();
 }
 
 function audioHandler() {
-
     $('.hoverable').mouseenter(() => {
         AudioPlayer.getInstance().playSound({
-            sound: 'menu/move.wav'
+            sound: 'menu/walk.wav',
         });
     });
 
     $('.clickable').mousedown(() => {
         AudioPlayer.getInstance().playSound({
-            sound: 'menu/move.wav',
+            sound: 'menu/walk.wav',
         });
     });
 }
@@ -48,7 +42,7 @@ function selectScreenHandler() {
 
     playButton.mousedown(() => {
         AudioPlayer.getInstance().playSound({
-            sound: 'menu/action.wav'
+            sound: 'menu/action.wav',
         });
 
         selectionModal.css('display', 'none');
@@ -84,7 +78,6 @@ function arrowKeysHandler() {
         $('#player-preview').attr('src', playerSelectImages[selected]);
     });
 }
-
 
 function removeMenuHandler() {
     $('#HUD').off('mousedown');

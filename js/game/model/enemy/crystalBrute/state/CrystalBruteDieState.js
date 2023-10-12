@@ -12,7 +12,7 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
         const { audio, enemyManager } = Game.getInstance();
 
         enemyManager.enemyAliveCount -= 5;
-        audio.playAudio('enemy/crystal_brute/death.wav');
+        audio.playAudio('enemy/crystal_brute/die.wav');
     }
 
     updateState(currBrute) {
@@ -26,7 +26,7 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
             angle: currBrute.angle,
         });
 
-        currBrute.speed *= (1 - this.friction * movementDeltaTime);
+        currBrute.speed *= 1 - this.friction * movementDeltaTime;
     }
 
     drawImage(currBrute) {

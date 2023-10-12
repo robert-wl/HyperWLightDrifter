@@ -344,6 +344,21 @@ const GameSettings = {
                 ref: 'enemy/crystal_spider/die/die.png',
                 name: 'crystal_spider_die',
             },
+
+            {
+                ref: 'enemy/crystal_wolf/walk/walk.png',
+                name: 'crystal_wolf_walk',
+                amount: 8,
+            },
+            {
+                ref: 'enemy/crystal_wolf/attack/attack.png',
+                name: 'crystal_wolf_attack',
+                amount: 4,
+            },
+            {
+                ref: 'enemy/crystal_wolf/die/die.png',
+                name: 'crystal_wolf_die',
+            },
             {
                 ref: 'other/shadow.png',
                 name: 'shadow',
@@ -387,7 +402,7 @@ const GameSettings = {
                 amount: 8,
             },
             {
-                ref: 'boss/move/judgement_move.png',
+                ref: 'boss/walk/judgement_move.png',
                 name: 'judgement_move',
                 amount: 4,
             },
@@ -412,7 +427,7 @@ const GameSettings = {
                 amount: 4,
             },
             {
-                ref: 'boss/death/judgement_death.png',
+                ref: 'boss/die/judgement_death.png',
                 name: 'judgement_death',
                 amount: 21,
             },

@@ -20,7 +20,7 @@ export default class JudgementDeathState extends JudgementBaseState {
         }
 
         if (this.deadTime >= 0 && !this.playedAudio) {
-            AudioPlayer.getInstance().playAudio('boss/death.wav');
+            AudioPlayer.getInstance().playAudio('boss/die.wav');
 
             this.playedAudio = true;
         }

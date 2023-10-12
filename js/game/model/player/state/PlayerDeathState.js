@@ -12,7 +12,7 @@ export default class PlayerDeathState extends PlayerBaseState {
         const { loseState, audio } = Game.getInstance();
         Game.getInstance().switchState(loseState);
 
-        audio.playAudio('player/death.wav', null, false, true);
+        audio.playAudio('player/die.wav', null, false, true);
     }
 
     updateState(currPlayer) {

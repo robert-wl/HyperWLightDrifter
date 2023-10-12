@@ -5,7 +5,6 @@ import GameSettings from '../../../../constants.js';
 import { drawImageCropped } from '../../../../helper/renderer/drawer.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
-
 export default class ElevatorMoveState extends ElevatorBaseState {
     enterState(elevator) {
         const { player } = Game.getInstance();
@@ -20,7 +19,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         super.updateState(elevator);
 
         if (this.checkCounter(100)) {
-            AudioPlayer.getInstance().playAudio('elevator/move.wav');
+            AudioPlayer.getInstance().playAudio('elevator/walk.wav');
 
             this.number = 0;
         }
@@ -49,7 +48,6 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         }
     }
 
-
     handleVelocity(elevator) {
         const { deltaTime } = Game.getInstance();
         if (elevator.stageLocation === 2 && elevator.travelDistance > 650) {
@@ -76,7 +74,6 @@ export default class ElevatorMoveState extends ElevatorBaseState {
 
         elevator.width = -0.5 * elevatorImage.width;
         elevator.height = -2 * elevatorImage.height;
-
 
         drawImageCropped({
             img: elevatorImage,
