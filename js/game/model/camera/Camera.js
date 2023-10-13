@@ -1,9 +1,9 @@
 import Game from '../Game/Game.js';
 import GameSettings from '../../constants.js';
-import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
+import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
+import CameraBox from './CameraBox.js';
+import CameraNormalState from './state/CameraNormalState.js';
 
-const CAMERA_X_CONSTANT = -45;
-const CAMERA_Y_CONSTANT = -25;
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
 
@@ -15,15 +15,9 @@ export default class Camera {
         };
         this.width = 0;
         this.height = 0;
-        this.cameraBox = {
-            position: {
-                x: 0,
-                y: 0,
-            },
-            width: 900,
-            height: 600,
-        };
+        this.cameraBox = new CameraBox();
         this.lowerBackground = null;
+        this.lowerLayers = new Map();
         this.topBackground = null;
         this.shakeDuration = {
             x: 0,
@@ -36,13 +30,30 @@ export default class Camera {
         };
         this.hasTranslated = false;
         this.snapBackToPlayer = false;
+        this.normalState = new CameraNormalState();
+        this.currState = this.normalState;
     }
 
     init({ lowerBackground, topBackground }) {
-        this.lowerBackground = lowerBackground;
+        this.lowerBackground = [lowerBackground];
         this.topBackground = topBackground;
-        this.width = lowerBackground.width / 2;
-        this.height = lowerBackground.height / 2;
+        this.width = GameSettings.GAME.SCREEN_WIDTH;
+        this.height = GameSettings.GAME.SCREEN_HEIGHT;
+    }
+
+    switchState(nextState) {
+        this.currState.exitState();
+        this.currState = nextState;
+        this.currState.enterState();
+    }
+
+    getCameraSides() {
+        return {
+            top: this.position.y,
+            bottom: this.position.y + this.height / 2,
+            left: this.position.x,
+            right: this.position.x + this.width / 2,
+        };
     }
 
     getTranslatePosition({ position, length }) {
@@ -69,8 +80,7 @@ export default class Camera {
     }
 
     moveCameraPosition({ direction }) {
-
-        const directionArr = this.getCameraBoxOverlap();
+        const directionArr = this.cameraBox.getOverlap();
         this.translateCamera({
             direction: directionArr,
             moveDirection: direction,
@@ -98,7 +108,6 @@ export default class Camera {
             return;
         }
 
-
         const tDiff = Date.now() - this.shakeStartTime;
         if (tDiff > this.shakeDuration) {
             this.shakeStartTime = -1;
@@ -106,17 +115,18 @@ export default class Camera {
             return;
         }
 
-
-        const easing = Math.pow((tDiff / this.shakeDuration) - 1, 3) + 1;
+        const easing = Math.pow(tDiff / this.shakeDuration - 1, 3) + 1;
 
         this.translateOffset.x =
-            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) * this.shakeStrength *
+            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) *
+            this.shakeStrength *
             getHorizontalValue({
                 magnitude: easing,
                 angle: this.shakeAngle,
             });
         this.translateOffset.y =
-            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) * this.shakeStrength *
+            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) *
+            this.shakeStrength *
             getVerticalValue({
                 magnitude: easing,
                 angle: this.shakeAngle,
@@ -143,105 +153,19 @@ export default class Camera {
     }
 
     updateCamera() {
-        this.moveCamera();
-
-        const { player } = Game.getInstance();
-        this.cameraBox.position.x = this.getTranslatePosition({
-            position: player.centerPosition.x,
-            length: this.cameraBox.width / 2 + CAMERA_X_CONSTANT,
-        });
-        this.cameraBox.position.y = this.getTranslatePosition({
-            position: player.centerPosition.y,
-            length: this.cameraBox.height / 2 + CAMERA_Y_CONSTANT,
-        });
-
-        if (Game.getInstance().debug) {
-            this.renderDebugBox();
-        }
-
-        if (this.snapBackToPlayer) {
-            this.moveCameraPosition({
-                direction: {
-                    x: (player.centerPosition.x - this.position.x) * 0.05,
-                    y: (player.centerPosition.y - this.position.y) * 0.05,
-                },
-            });
-
-            const distance = getMagnitudeValue({
-                x: player.centerPosition.x - this.position.x,
-                y: player.centerPosition.y - this.position.y,
-            });
-
-
-            if (distance < 600) {
-                this.snapBackToPlayer = false;
-            }
-        }
-    }
-
-    renderDebugBox() {
-        const { ctx } = Game.getInstance();
-
-        ctx.fillStyle = GameSettings.DEBUG.COLOR.CAMERA_BOX;
-        ctx.fillRect(
-            this.cameraBox.position.x,
-            this.cameraBox.position.y,
-            this.cameraBox.width,
-            this.cameraBox.height,
-        );
+        this.currState.updateState(this);
     }
 
     renderLowerBackground() {
-        this.drawCamera({
-            img: this.lowerBackground,
-            imageTopLeft: {
-                x: this.position.x / 2 - this.translateOffset.x,
-                y: this.position.y / 2 - this.translateOffset.y,
-            },
-            imageSelectSize: {
-                x: this.width + Math.abs(this.translateOffset.x),
-                y: this.height + Math.abs(this.translateOffset.y),
-            },
-            imagePosition: {
-                x: this.position.x - (this.translateOffset.x),
-                y: this.position.y - (this.translateOffset.y),
-            },
-            imageCanvasSize: {
-                x: SCREEN_WIDTH / 2 + Math.abs(this.translateOffset.x),
-                y: this.lowerBackground.height + Math.abs(this.translateOffset.y),
-            },
-        });
+        this.currState.renderLowerLayer(this);
     }
 
-    renderTopBackground() {
-        if (!this.topBackground) {
-            return;
-        }
-
-        this.drawCamera({
-            img: this.topBackground,
-            imageTopLeft: {
-                x: this.position.x / 2 - this.translateOffset.x,
-                y: this.position.y / 2 - this.translateOffset.y,
-            },
-            imageSelectSize: {
-                x: this.width + this.translateOffset.x,
-                y: this.height + this.translateOffset.y,
-            },
-            imagePosition: {
-                x: this.position.x - Math.abs(this.translateOffset.x),
-                y: this.position.y - Math.abs(this.translateOffset.y),
-            },
-            imageCanvasSize: {
-                x: SCREEN_WIDTH / 2 + Math.abs(this.translateOffset.x),
-                y: this.topBackground.height + Math.abs(this.translateOffset.y),
-            },
-        });
-    }
+    renderTopBackground() {}
 
     translateCamera({ direction, moveDirection }) {
         const { player, ctx } = Game.getInstance();
 
+        // console.log(direction);
         if (direction.includes('d')) {
             const displacement = moveDirection?.x || Math.abs(player.velocity.x);
             ctx.translate(-displacement, 0);
@@ -250,10 +174,11 @@ export default class Camera {
         if (direction.includes('a')) {
             const displacement = moveDirection?.x || Math.abs(player.velocity.x);
             ctx.translate(displacement, 0);
+            // console.log(displacement);
             this.position.x -= displacement;
         }
         if (direction.includes('w')) {
-            const displacement = moveDirection?.xy || Math.abs(player.velocity.y);
+            const displacement = moveDirection?.y || Math.abs(player.velocity.y);
             ctx.translate(0, displacement);
             this.position.y -= displacement;
         }
@@ -264,72 +189,14 @@ export default class Camera {
         }
     }
 
-    getCameraBoxOverlap() {
-        const directionArray = [];
-        const cameraBoxRight = this.cameraBox.position.x + this.cameraBox.width;
-        if (cameraBoxRight > this.position.x + this.lowerBackground.width + 25 && cameraBoxRight < Game.getInstance().width) {
-            directionArray.push('d');
-        }
-
-        const cameraBoxLeft = this.cameraBox.position.x;
-        if (cameraBoxLeft < this.position.x && cameraBoxLeft > 100) {
-            directionArray.push('a');
-        }
-
-        const cameraBoxBottom = this.cameraBox.position.y + this.cameraBox.height;
-        if (cameraBoxBottom > this.position.y + 550 && cameraBoxBottom < Game.getInstance().height * 2.5) {
-            directionArray.push('s');
-        }
-
-        const cameraBoxTop = this.cameraBox.position.y;
-        if (cameraBoxTop < this.position.y && cameraBoxTop > 0) {
-            directionArray.push('w');
-        }
-
-        return directionArray;
-    }
-
-    filterCameraMovement(directionArray) {
-        const cameraBoxRight = this.cameraBox.position.x + this.cameraBox.width;
-        if (cameraBoxRight < Game.getInstance().width) {
-            directionArray.splice(directionArray.indexOf('d'), 1);
-        }
-
-        const cameraBoxLeft = this.cameraBox.position.x;
-        if (cameraBoxLeft < 100) {
-            directionArray.splice(directionArray.indexOf('a'), 1);
-        }
-
-        const cameraBoxBottom = this.cameraBox.position.y + this.cameraBox.height;
-        if (cameraBoxBottom > Game.getInstance().height * 2) {
-            directionArray.splice(directionArray.indexOf('s'), 1);
-        }
-        const cameraBoxTop = this.cameraBox.position.y;
-        if (cameraBoxTop < 0) {
-            directionArray.splice(directionArray.indexOf('w'), 1);
-        }
-
-        return directionArray;
-    }
-
     moveCamera() {
         this.translateCamera({
-            direction: this.getCameraBoxOverlap(),
+            direction: this.cameraBox.getOverlap(this.getCameraSides()),
         });
     }
 
     drawCamera({ img, imageTopLeft, imageSelectSize, imagePosition, imageCanvasSize }) {
         const { ctx } = Game.getInstance();
-        ctx.drawImage(
-            img,
-            imageTopLeft.x,
-            imageTopLeft.y,
-            imageSelectSize.x,
-            imageSelectSize.y,
-            imagePosition.x,
-            imagePosition.y,
-            imageCanvasSize.x,
-            imageCanvasSize.y,
-        );
+        ctx.drawImage(img, imageTopLeft.x, imageTopLeft.y, imageSelectSize.x, imageSelectSize.y, imagePosition.x, imagePosition.y, imageCanvasSize.x, imageCanvasSize.y);
     }
 }

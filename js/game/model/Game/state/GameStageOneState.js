@@ -7,7 +7,6 @@ import { getImage, imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import Elevator from '../../interactables/Elevator/Elevator.js';
 import Door from '../../interactables/Door.js';
-import Collideable from '../../collideable/Collideable.js';
 import Medkit from '../../interactables/Medkit.js';
 import PauseModal from '../../modal/PauseModal.js';
 
@@ -18,7 +17,7 @@ export default class GameStageOneState extends GameBaseState {
         const { audio, player } = game;
 
         player.switchState(player.spawnState);
-        
+
         PauseModal.handleInteraction();
 
         audio.playAudio('forest_stage/background.ogg', null, true);
@@ -26,6 +25,7 @@ export default class GameStageOneState extends GameBaseState {
 
     updateState(game) {
         game.pauseHandler();
+        game.mapGenerator.update();
 
         const { ctx, camera, player, enemyManager, elevator } = game;
 
@@ -75,7 +75,6 @@ export default class GameStageOneState extends GameBaseState {
         this.handleStageChange(game);
     }
 
-
     handleStageChange(game) {
         const { player, backgroundOpacity } = Game.getInstance();
         if (player.currState?.isBelowGround && backgroundOpacity === 0) {
@@ -89,7 +88,11 @@ export default class GameStageOneState extends GameBaseState {
 
         game.keys = [];
         game.clicks = [];
+
         await imageLoader([GameSettings.IMAGES.STAGE_ONE, GameSettings.IMAGES.PLAYER]);
+
+        const positions = [{ x: 100, y: 0 }];
+        game.mapGenerator.init(positions);
 
         const mapGround = getImage('map_ground');
         const mapTop = getImage('map_top');
@@ -114,20 +117,20 @@ export default class GameStageOneState extends GameBaseState {
             collideable: true,
         });
 
-        const colliders = [
-            { x: 100, y: 0, w: 300, h: 1000 },
-            { x: 400, y: 0, w: 1025, h: 300 },
-            { x: 1425, y: 0, w: 300, h: 1000 },
-            { x: 100, y: 1050, w: 800, h: 500 },
-            { x: 1000, y: 1050, w: 800, h: 500 },
-            { x: 100, y: 1550, w: 530, h: 800 },
-            { x: 1250, y: 1550, w: 530, h: 800 },
-            { x: 630, y: 2150, w: 620, h: 800 },
-        ];
+        // const colliders = [
+        //     { x: 100, y: 0, w: 300, h: 1000 },
+        //     { x: 400, y: 0, w: 1025, h: 300 },
+        //     { x: 1425, y: 0, w: 300, h: 1000 },
+        //     { x: 100, y: 1050, w: 800, h: 500 },
+        //     { x: 1000, y: 1050, w: 800, h: 500 },
+        //     { x: 100, y: 1550, w: 530, h: 800 },
+        //     { x: 1250, y: 1550, w: 530, h: 800 },
+        //     { x: 630, y: 2150, w: 620, h: 800 },
+        // ];
 
-        colliders.forEach((collider) => {
-            Collideable.generate(collider);
-        });
+        // colliders.forEach((collider) => {
+        //     Collideable.generate(collider);
+        // });
 
         const medkits = [
             { x: 1400, y: 300 },

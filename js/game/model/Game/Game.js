@@ -12,6 +12,7 @@ import GamePausedState from './state/GamePausedState.js';
 import GameBaseState from './state/GameBaseState.js';
 import AudioPlayer from '../../../audio/AudioPlayer.js';
 import GameLoseState from './state/GameLoseState.js';
+import MapGenerator from '../map/MapGenerator.js';
 
 export default class Game {
     static instance = null;
@@ -67,6 +68,7 @@ export default class Game {
         this.camera = new Camera();
         this.enemyManager = new EnemyManager();
         this.player = new Player();
+        this.mapGenerator = new MapGenerator(this.camera);
     }
 
     async playGame(outfitNumber) {

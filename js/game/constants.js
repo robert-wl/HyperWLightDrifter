@@ -31,7 +31,7 @@ const GameSettings = {
         MAX_IMMUNITY: 30,
         MAX_HEALTH: 6,
         MAX_HEALTHPACKS: 3,
-        MAX_STAMINA: 100,
+        MAX_STAMINA: 10000,
         MAX_BOMBS: 3000,
         MAX_BULLETS: 3,
         FRICTION: 0.2,
@@ -366,6 +366,11 @@ const GameSettings = {
             {
                 ref: 'world/map_ground.png',
                 name: 'map_ground',
+            },
+            {
+                ref: 'world/forest/floor/floor.png',
+                name: 'forest_floor',
+                amount: 8,
             },
             {
                 ref: 'world/first_map_full.png',
