@@ -12,7 +12,6 @@ export default class JudgementSpawnState extends JudgementBaseState {
         super.updateState();
         const { camera, deltaTime } = Game.getInstance();
 
-
         this.advanceAnimationStage(7);
 
         if (this.firstSpawn) {
@@ -30,9 +29,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
             });
         }
 
-        console.log(this.animationStage, this.playedSmash);
         if (this.animationStage === 14 && !this.playedSmash) {
-            console.log('henlo');
             AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
             this.playedSmash = true;
         }

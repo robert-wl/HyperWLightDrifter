@@ -67,16 +67,9 @@ export default class Game {
         this.camera = new Camera();
         this.enemyManager = new EnemyManager();
         this.player = new Player();
-
-        // await secondStage({
-        //     game: this,
-        // });
-
-        //
     }
 
     async playGame(outfitNumber) {
-        console.log('hello');
         if (outfitNumber === 1) {
             this.player.outfit = 'dark';
         }
@@ -99,7 +92,6 @@ export default class Game {
         this.HUD = document.getElementById('HUD').getContext('2d');
         this.HUD.setTransform(1, 0, 0, 1, 0, 0);
         this.configCanvas();
-        // Trader.generate({ x: 800, y: 1500, collideable: true }); TODO
     }
 
     configCanvas() {
@@ -130,9 +122,9 @@ export default class Game {
     toggleFullscreen() {
         // this.fullscreen = !this.fullscreen;
         if (this.fullscreen) {
-            document.documentElement.requestFullscreen();
+            document.documentElement.requestFullscreen().then();
         } else {
-            document.exitFullscreen();
+            document.exitFullscreen().then();
         }
     }
 
@@ -165,7 +157,7 @@ export default class Game {
         this.fpsShowCounter += deltaTime;
         if (this.fpsShowCounter > 5) {
             this.fpsShowCounter = 0;
-            this.fps = Math.round(60 / (deltaTime));
+            this.fps = Math.round(60 / deltaTime);
         }
 
         this.HUD.font = '25px Arial';
@@ -193,8 +185,7 @@ export default class Game {
         this.setTransparency(1);
     }
 
-    enemySpawnHandler() {
-    }
+    enemySpawnHandler() {}
 
     darkenBackground(darken = 0.05) {
         this.backgroundOpacity -= darken;

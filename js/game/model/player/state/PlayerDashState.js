@@ -16,7 +16,6 @@ export default class PlayerDashState extends PlayerBaseState {
         this.lastPosition = { ...currPlayer.centerPosition };
         this.finished = false;
 
-
         currPlayer.lastDirection = direction;
         currPlayer.stamina -= 20;
 
@@ -54,10 +53,10 @@ export default class PlayerDashState extends PlayerBaseState {
         const data = this.generateDashData(currPlayer);
         playerDashDrawer(data);
 
-        if (this.lastData.length > 2) {
+        if (this.lastData.length > 4) {
             this.lastData.shift();
         }
-        if (this.animationStage % 3 === 0 && this.number < 7 && !this.finished) {
+        if (this.animationStage % 3 === 0 && this.number <= 1 && !this.finished) {
             this.lastData.push(data);
         }
     }
@@ -91,7 +90,6 @@ export default class PlayerDashState extends PlayerBaseState {
                 this.lastData.shift();
                 return;
             }
-
 
             currPlayer.handleSwitchState({
                 move: true,
