@@ -14,13 +14,7 @@ export default class Collideable extends Animateable {
     }
 
     static generate({ x, y, w, h, collideable }) {
-        const newCollideable = new Collideable({
-            x,
-            y,
-            w,
-            h,
-            collideable,
-        });
+        const newCollideable = new Collideable();
 
         Game.getInstance().collideables.push(newCollideable);
     }

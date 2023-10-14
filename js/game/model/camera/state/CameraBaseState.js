@@ -32,7 +32,24 @@ export default class CameraBaseState {
         });
     }
 
-    renderUpperLayer(camera) {}
+    renderUpperLayer(camera) {
+        camera.upperLayers.forEach((object, positionStr) => {
+            const position = {
+                x: Number(positionStr.split(',')[0]) * (object.width - 1) * GameSettings.GAME.GAME_SCALE,
+                y: Number(positionStr.split(',')[1]) * (object.height - 1) * GameSettings.GAME.GAME_SCALE,
+            };
+
+            if (position.x > camera.position.x + SCREEN_WIDTH / 2 || position.x < camera.position.x - SCREEN_WIDTH / 2) {
+                return;
+            }
+
+            if (position.y > camera.position.y + SCREEN_WIDTH / 2 || position.y < camera.position.y - SCREEN_WIDTH / 2) {
+                return;
+            }
+
+            object.update();
+        });
+    }
 
     exitState(camera) {}
 }

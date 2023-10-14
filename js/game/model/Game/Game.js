@@ -32,6 +32,7 @@ export default class Game {
         this.height = GameSettings.game.SCREEN_HEIGHT;
         this.keys = [];
         this.clicks = [];
+        this.objects = new Map();
         this.collideables = [];
         this.elevator = null;
         this.enemyManager = null;

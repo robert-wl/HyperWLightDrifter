@@ -10,8 +10,8 @@ export default class CameraBox {
             x: 0,
             y: 0,
         };
-        this.width = 900;
-        this.height = 600;
+        this.width = 800;
+        this.height = 500;
     }
 
     getTranslatePosition({ position, length }) {

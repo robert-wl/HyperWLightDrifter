@@ -2,6 +2,7 @@ import { getNumberedImage } from '../../helper/imageLoader.js';
 import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
 import Game from '../Game/Game.js';
 import GameSettings from '../../constants.js';
+import SetPieceGenerator from './setPieces/SetPieceGenerator.js';
 
 export default class MapGenerator {
     constructor(camera) {
@@ -14,9 +15,18 @@ export default class MapGenerator {
                 const x = Math.round(i / 128);
                 const y = Math.round(j / 128);
 
+                this.generateSetPiece(x, y);
                 this.lowerLayers.set(`${x},${y}`, this.getFloorImage());
             }
         }
+    }
+
+    generateSetPiece(x, y) {
+        if (!getRandomBoolean(0.3)) {
+            return;
+        }
+
+        SetPieceGenerator.generate({ x, y });
     }
 
     update() {
@@ -58,6 +68,9 @@ export default class MapGenerator {
                 if (this.lowerLayers.has(`${x},${y}`)) {
                     continue;
                 }
+
+                this.generateSetPiece(x, y);
+
                 this.lowerLayers.set(`${x},${y}`, this.getFloorImage());
             }
         }

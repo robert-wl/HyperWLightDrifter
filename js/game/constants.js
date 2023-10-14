@@ -10,6 +10,7 @@ const GameSettings = {
         },
         SCREEN_WIDTH: 1920,
         SCREEN_HEIGHT: 1080,
+        FLOOR_WIDTH: 128,
     },
     game: {
         GAME_SCALE: 2,
@@ -371,6 +372,11 @@ const GameSettings = {
                 ref: 'world/forest/floor/floor.png',
                 name: 'forest_floor',
                 amount: 8,
+            },
+            {
+                ref: 'world/forest/set_pieces/small/tree.png',
+                name: 'set_pieces_tree',
+                amount: 6,
             },
             {
                 ref: 'world/first_map_full.png',

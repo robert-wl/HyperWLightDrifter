@@ -18,6 +18,7 @@ export default class Camera {
         this.cameraBox = new CameraBox();
         this.lowerBackground = null;
         this.lowerLayers = new Map();
+        this.upperLayers = Game.getInstance().objects;
         this.topBackground = null;
         this.shakeDuration = {
             x: 0,
@@ -160,7 +161,9 @@ export default class Camera {
         this.currState.renderLowerLayer(this);
     }
 
-    renderTopBackground() {}
+    renderTopBackground() {
+        this.currState.renderUpperLayer(this);
+    }
 
     translateCamera({ direction, moveDirection }) {
         const { player, ctx } = Game.getInstance();
