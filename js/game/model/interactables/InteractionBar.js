@@ -59,10 +59,12 @@ export default class InteractionBar {
         const { player } = Game.getInstance();
 
         const distance = getMagnitudeValue({
-            x: player.centerPosition.x - (object.x + object.width / 2),
-            y: player.centerPosition.y - (object.y + object.height / 2),
+            x: player.centerPosition.x - (object.position.x + object.width / 2),
+            y: player.centerPosition.y - (object.position.y + object.height / 2),
         });
 
+        console.log(object);
+        console.log(distance);
         if (distance < interactDistance) {
             InteractionBar.setAllowDraw(true);
             this.transparency = Math.abs(distance - interactDistance) / interactDistance;
@@ -80,7 +82,7 @@ export default class InteractionBar {
             return;
         }
         const { player, ctx } = Game.getInstance();
-        
+
         const interactionBar = getNumberedImage('interaction_bar', this.animationStage);
 
         Game.getInstance().setTransparency(this.transparency);

@@ -1,28 +1,46 @@
-import Collider from '../collideable/Collider.js';
 import Game from '../Game/Game.js';
 import { getNumberedImage } from '../../helper/imageLoader.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
 import InteractionBar from './InteractionBar.js';
+import Animateable from '../Animateable.js';
+import Collider from '../collideable/Collider.js';
+import { getRandomValue } from '../../helper/randomHelper.js';
 
-export default class Medkit extends Collider {
-    constructor({ x, y, w, h, collideable }) {
-        super({ x, y, w, h, collideable });
-        this.number = 0;
-        this.animationStage = 1;
+export default class Medkit extends Animateable {
+    constructor({ position, width, height, key }) {
+        super();
+        this.position = position;
+        this.width = width;
+        this.height = height;
+        this.collider = new Collider({
+            x: position.x,
+            y: position.y,
+            width,
+            height,
+        });
+        this.key = key;
         this.interactionStage = 1;
     }
 
-    static generate({ x, y }) {
-        const newMedkit = new Medkit({
-            x,
-            y,
-            w: 10,
-            h: 0,
-            collideable: true,
-        });
+    static generate(position, key) {
+        const angle =
+            getRandomValue({
+                initialValue: 0,
+                randomValue: 4,
+            }) * Math.PI;
 
-        Game.getInstance().collideables.push(newMedkit);
+        position = {
+            x: position.x + Math.cos(angle) * 100,
+            y: position.y + Math.sin(angle) * 100,
+        };
+
+        return new Medkit({
+            position: position,
+            width: 10,
+            height: 10,
+            key,
+        });
     }
 
     update() {
@@ -38,8 +56,8 @@ export default class Medkit extends Collider {
 
         drawImage({
             img: medKit,
-            x: this.x,
-            y: this.y,
+            x: this.position.x,
+            y: this.position.y,
             width: medKit.width * GameSettings.GAME.GAME_SCALE,
             height: medKit.height * GameSettings.GAME.GAME_SCALE,
         });
@@ -50,8 +68,11 @@ export default class Medkit extends Collider {
     }
 
     activate() {
-        const { collideables, audio } = Game.getInstance();
+        const { interactables, audio } = Game.getInstance();
         audio.playAudio('player/medkit/use.wav');
-        collideables.splice(collideables.indexOf(this), 1);
+        interactables.splice(interactables.indexOf(this), 1);
+
+        const setPiece = Game.getInstance().objects.get(this.key);
+        setPiece.pieces.splice(setPiece.pieces.indexOf(this), 1);
     }
 }

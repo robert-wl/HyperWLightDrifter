@@ -5,7 +5,6 @@ import InteractionBar from '../../interactables/InteractionBar.js';
 import Game from '../Game.js';
 import { getImage, imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
-import Elevator from '../../interactables/Elevator/Elevator.js';
 import PauseModal from '../../modal/PauseModal.js';
 
 export default class GameStageOneState extends GameBaseState {
@@ -33,7 +32,7 @@ export default class GameStageOneState extends GameBaseState {
 
         camera.shakeCamera();
 
-        elevator.update();
+        // elevator.update();
 
         game.setTransparency(game.backgroundOpacity);
         camera.renderLowerBackground();
@@ -59,10 +58,9 @@ export default class GameStageOneState extends GameBaseState {
         camera.resetShakeCamera();
 
         ParticlesManager.getInstance().update();
-        game.collideables.forEach((collideable) => {
-            if (collideable.detectInteraction) {
-                collideable.detectInteraction();
-            }
+
+        game.interactables.forEach((interactable) => {
+            interactable.detectInteraction();
         });
         InteractionBar.drawBar();
 
@@ -100,11 +98,11 @@ export default class GameStageOneState extends GameBaseState {
             x: 256 + player.width / 2,
             y: 256 + player.height / 2,
         };
-
-        Elevator.generate({
-            x: 950,
-            y: 2011,
-        });
+        //
+        // Elevator.generate({
+        //     x: 950,
+        //     y: 2011,
+        // });
 
         // Door.generate({
         //     x: 904,

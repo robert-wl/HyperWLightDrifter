@@ -2,6 +2,7 @@ import { drawImage, drawImageFromBottom } from '../../../helper/renderer/drawer.
 import GameSettings from '../../../constants.js';
 import Game from '../../Game/Game.js';
 import { getManhattanDistance } from '../../../helper/distanceHelper.js';
+import Medkit from '../../interactables/Medkit.js';
 
 const SCREEN_SIZE = 1920;
 export default class CameraBaseState {
@@ -39,7 +40,13 @@ export default class CameraBaseState {
 
         const { objects, colliders } = this.getObjects(camera);
 
+        const interactables = [];
         objects.forEach((piece) => {
+            if (piece instanceof Medkit) {
+                piece.update();
+                interactables.push(piece);
+                return;
+            }
             const { image, position, flipped } = piece;
 
             if (!hasUpdatedPlayer) {
@@ -56,6 +63,8 @@ export default class CameraBaseState {
             });
         });
 
+        Game.getInstance().interactables = interactables;
+        console.log(interactables);
         if (!hasUpdatedPlayer) {
             player.updateState(colliders);
         }

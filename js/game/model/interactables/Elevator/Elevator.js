@@ -4,11 +4,14 @@ import ElevatorMountedTopState from './state/ElevatorMountedTopStage.js';
 import ElevatorMoveState from './state/ElevatorMoveState.js';
 import ElevatorMountedDownState from './state/ElevatorMountedDownState.js';
 
-
 export default class Elevator {
     constructor({ x, y }) {
         this.x = x;
         this.y = y;
+        this.position = {
+            x: x,
+            y: y,
+        };
         this.width = 0;
         this.height = 0;
         this.interactionStage = 0;
@@ -41,7 +44,6 @@ export default class Elevator {
         this.travelDistance = 0;
         this.stageLocation = 2;
     }
-
 
     activate() {
         this.switchState(this.moveState);

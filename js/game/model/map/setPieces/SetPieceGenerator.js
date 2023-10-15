@@ -4,6 +4,7 @@ import { getNumberedImage } from '../../../helper/imageLoader.js';
 import Collider from '../../collideable/Collider.js';
 import SetPiece from './SetPiece.js';
 import GameSettings from '../../../constants.js';
+import Medkit from '../../interactables/Medkit.js';
 
 const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
@@ -52,7 +53,7 @@ export default class SetPieceGenerator {
                 this.treeChance -= 0.2;
             }
             if (objects.get(key).type === 'health') {
-                this.treeChance += 0.1;
+                this.treeChance = 0;
                 this.healthChance = 0;
             }
         }
@@ -104,9 +105,21 @@ export default class SetPieceGenerator {
         const objectX = x * FLOOR_WIDTH * GAME_SCALE;
         const objectY = y * FLOOR_WIDTH * GAME_SCALE;
 
-        pieces.push(health({ x: objectX, y: objectY }));
+        const healthPiece = health({ x: objectX, y: objectY });
 
-        Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'health'));
+        const key = `${y},${x}`;
+        pieces.push(healthPiece);
+        pieces.push(
+            Medkit.generate(
+                {
+                    x: objectX + healthPiece.collider.width / 2,
+                    y: objectY - healthPiece.collider.height / 2,
+                },
+                key,
+            ),
+        );
+
+        Game.getInstance().objects.set(key, new SetPiece(pieces, 'health'));
     }
 }
 
