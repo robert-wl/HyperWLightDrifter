@@ -12,9 +12,10 @@ const GameSettings = {
         SCREEN_HEIGHT: 1080,
         FOREST_STAGE: {
             FLOOR_WIDTH: 128,
-            TREE_INITIAL_CHANCE: 0.5,
-            ENEMY_INITIAL_CHANCE: 0.2,
-            HEALTH_INITIAL_CHANCE: 0.2,
+            SETPIECE_TREE_INITIAL_CHANCE: 0.5,
+            SETPIECE_ENEMY_INITIAL_CHANCE: 0.2,
+            SETPIECE_HEALTH_INITIAL_CHANCE: 0.2,
+            SPIDER_SPAWN_CHANCE: 0.9,
         },
     },
     game: {
@@ -413,6 +414,11 @@ const GameSettings = {
                 ref: 'other/medkit/medkit.png',
                 name: 'medkit',
                 amount: 2,
+            },
+            {
+                ref: 'other/keys/keys.png',
+                name: 'keys',
+                amount: 6,
             },
             {
                 ref: 'world/door/door.png',

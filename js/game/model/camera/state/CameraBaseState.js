@@ -5,6 +5,7 @@ import { getManhattanDistance } from '../../../helper/distanceHelper.js';
 import Medkit from '../../interactables/Medkit.js';
 import CrystalSpider from '../../enemy/crystalSpider/CrystalSpider.js';
 import CrystalBrute from '../../enemy/crystalBrute/CrystalBrute.js';
+import Key from '../../interactables/Key.js';
 
 const SCREEN_SIZE = 1920;
 export default class CameraBaseState {
@@ -51,6 +52,7 @@ export default class CameraBaseState {
             }
 
             if (this.checkInteractables(piece)) {
+                // console.log(piece);
                 piece.update();
                 interactables.push(piece);
                 return;
@@ -96,6 +98,11 @@ export default class CameraBaseState {
             object.pieces.forEach((piece) => {
                 const { collider } = piece;
 
+                if (!collider) {
+                    objects.push(piece);
+                    return;
+                }
+
                 const distance = getManhattanDistance({
                     x: collider.x - player.centerPosition.x,
                     y: collider.y - player.centerPosition.y,
@@ -138,7 +145,7 @@ export default class CameraBaseState {
     }
 
     checkInteractables(object) {
-        return object instanceof Medkit;
+        return object instanceof Medkit || object instanceof Key;
     }
 
     updatePlayer(yAbsPosition, colliders) {

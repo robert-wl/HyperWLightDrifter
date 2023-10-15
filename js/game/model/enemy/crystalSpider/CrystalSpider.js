@@ -84,11 +84,11 @@ export default class CrystalSpider extends Enemy {
             Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');
         }
 
+        this.currState.drawImage(this);
+
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('none');
             this.damaged -= deltaTime;
         }
-
-        this.currState.drawImage(this);
     }
 }

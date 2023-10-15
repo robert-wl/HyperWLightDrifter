@@ -4,6 +4,7 @@ import GameSettings from '../../constants.js';
 import Game from '../Game/Game.js';
 import { getMagnitudeValue } from '../../helper/distanceHelper.js';
 import Medkit from './Medkit.js';
+import Key from './Key.js';
 
 export default class InteractionBar {
     static animationStage = 1;
@@ -37,6 +38,9 @@ export default class InteractionBar {
                     player.healthPack += 1;
                     player.healthPack = Math.min(player.healthPack, 3);
                 }
+                if (object instanceof Key) {
+                    Game.getInstance().keyCount += 1;
+                }
                 return true;
             }
 
@@ -62,7 +66,7 @@ export default class InteractionBar {
             x: player.centerPosition.x - (object.position.x + object.width / 2),
             y: player.centerPosition.y - (object.position.y + object.height / 2),
         });
-        
+
         if (distance < interactDistance) {
             InteractionBar.setAllowDraw(true);
             this.transparency = Math.abs(distance - interactDistance) / interactDistance;

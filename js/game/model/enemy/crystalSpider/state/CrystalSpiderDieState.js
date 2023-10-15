@@ -4,15 +4,19 @@ import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanc
 import { getImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import Key from '../../../interactables/Key.js';
+import { getRandomBoolean } from '../../../../helper/randomHelper.js';
 
 export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
     enterState(currSpider) {
         super.enterState(currSpider);
         this.friction = 0.1;
 
-        const { audio, enemyManager } = Game.getInstance();
+        const { audio } = Game.getInstance();
 
-        enemyManager.enemyAliveCount -= 1;
+        if (getRandomBoolean(0.05)) {
+            Key.generate(currSpider.position);
+        }
         audio.playAudio('enemy/crystal_spider/death.wav');
     }
 

@@ -15,10 +15,10 @@ export default class SetPieceGenerator {
             return;
         }
 
-        const { TREE_INITIAL_CHANCE, ENEMY_INITIAL_CHANCE, HEALTH_INITIAL_CHANCE } = GameSettings.GAME.FOREST_STAGE;
-        this.treeChance = TREE_INITIAL_CHANCE;
-        this.enemyChance = ENEMY_INITIAL_CHANCE;
-        this.healthChance = HEALTH_INITIAL_CHANCE;
+        const { SETPIECE_TREE_INITIAL_CHANCE, SETPIECE_ENEMY_INITIAL_CHANCE, SETPIECE_HEALTH_INITIAL_CHANCE } = GameSettings.GAME.FOREST_STAGE;
+        this.treeChance = SETPIECE_TREE_INITIAL_CHANCE;
+        this.enemyChance = SETPIECE_ENEMY_INITIAL_CHANCE;
+        this.healthChance = SETPIECE_HEALTH_INITIAL_CHANCE;
 
         this.updateChance(position);
 
@@ -41,17 +41,19 @@ export default class SetPieceGenerator {
         const { objects } = Game.getInstance();
         for (let i = 0; i < 8; i++) {
             const key = `${position.y + directionY[i]},${position.x + directionX[i]}`;
+
             if (!objects.has(key)) {
                 continue;
             }
-
             if (objects.get(key).type === 'tree') {
                 this.treeChance += 0.1;
                 this.healthChance += 0.05;
+                continue;
             }
             if (objects.get(key).type === 'enemy') {
                 this.enemyChance += 0.05;
                 this.treeChance -= 0.2;
+                continue;
             }
             if (objects.get(key).type === 'health') {
                 this.treeChance = 0;

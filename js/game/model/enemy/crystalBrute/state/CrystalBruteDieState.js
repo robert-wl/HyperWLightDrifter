@@ -5,11 +5,17 @@ import { getImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import Key from '../../../interactables/Key.js';
+import { getRandomBoolean } from '../../../../helper/randomHelper.js';
 
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
     enterState(currBrute) {
         this.friction = 0.1;
         const { audio, enemyManager } = Game.getInstance();
+
+        if (getRandomBoolean(0.5)) {
+            Key.generate(currBrute.position);
+        }
 
         enemyManager.enemyAliveCount -= 5;
         audio.playAudio('enemy/crystal_brute/death.wav');

@@ -11,8 +11,8 @@ export default class MapGenerator {
 
     init() {
         const { FLOOR_WIDTH } = GameSettings.GAME.FOREST_STAGE;
-        for (let i = 0; i < FLOOR_WIDTH * 5; i += FLOOR_WIDTH) {
-            for (let j = 0; j < FLOOR_WIDTH * 5; j += FLOOR_WIDTH) {
+        for (let i = 0; i < FLOOR_WIDTH * 3; i += FLOOR_WIDTH) {
+            for (let j = 0; j < FLOOR_WIDTH * 3; j += FLOOR_WIDTH) {
                 const x = Math.round(i / FLOOR_WIDTH);
                 const y = Math.round(j / FLOOR_WIDTH);
 

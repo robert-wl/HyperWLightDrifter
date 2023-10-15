@@ -40,6 +40,7 @@ export default class Game {
         this.ctx = null;
         this.debug = true;
         this.backgroundOpacity = 1;
+        this.keyCount = 0;
         this.elevator = null;
         this.audio = AudioPlayer.getInstance();
         this.currState = new GameBaseState();
@@ -173,6 +174,7 @@ export default class Game {
         hudHandler({
             HUD: this.HUD,
             player: this.player,
+            keyCount: this.keyCount,
         });
 
         if (this.player.immunity >= 30) {

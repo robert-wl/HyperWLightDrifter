@@ -1,6 +1,6 @@
 import { getImage } from '../helper/imageLoader.js';
 
-export default function hudHandler({ HUD, player }) {
+export default function hudHandler({ HUD, player, keyCount }) {
     HUD.clearRect(0, 0, HUD.canvas.width, HUD.canvas.height);
 
     HUD.fillStyle = 'rgb(100, 100, 100)';
@@ -37,4 +37,8 @@ export default function hudHandler({ HUD, player }) {
     const HUDImage = getImage('HUD');
 
     HUD.drawImage(HUDImage, 0, 0, HUDImage.width * 1.5, HUDImage.height * 1.5);
+
+    HUD.font = 'bold 25px Courier New';
+    HUD.fillStyle = '#ffb733';
+    HUD.fillText('' + keyCount, 25, 60);
 }

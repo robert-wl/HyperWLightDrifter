@@ -24,7 +24,7 @@ export default class GameStageOneState extends GameBaseState {
         game.pauseHandler();
         game.mapGenerator.update();
 
-        const { ctx, camera, player, enemyManager, elevator } = game;
+        const { ctx, camera, player, elevator } = game;
 
         ctx.clearRect(0, 0, game.canvas.width * 2, game.canvas.height * 2);
         ctx.fillStyle = '#000000';
@@ -41,8 +41,6 @@ export default class GameStageOneState extends GameBaseState {
         game.enemySpawnHandler();
 
         firefliesSpawner();
-
-        enemyManager.update();
 
         game.collideables.forEach((collideable) => collideable.update());
 
