@@ -25,6 +25,15 @@ export default class EnemyManager {
         return this.instance;
     }
 
+    static spawnEnemy(position) {
+        if (getRandomBoolean(0.7)) {
+            CrystalSpider.generate(position);
+            return;
+        }
+
+        CrystalBrute.generate(position);
+    }
+
     update() {
         this.enemyList.forEach((enemy) => {
             enemy.update();

@@ -319,6 +319,10 @@ const GameSettings = {
                 name: 'elevator',
             },
             {
+                ref: 'enemy/crystal_brute/idle/idle.png',
+                name: 'crystal_brute_idle',
+            },
+            {
                 ref: 'enemy/crystal_brute/walk/crystal_brute_walk.png',
                 name: 'crystal_brute_walk',
                 amount: 6,
@@ -336,6 +340,10 @@ const GameSettings = {
                 ref: 'enemy/crystal_brute/spike/spike.png',
                 name: 'crystal_spike',
                 amount: 11,
+            },
+            {
+                ref: 'enemy/crystal_spider/idle/idle.png',
+                name: 'crystal_spider_idle',
             },
             {
                 ref: 'enemy/crystal_spider/walk/walk.png',

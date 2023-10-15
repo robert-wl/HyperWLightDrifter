@@ -10,12 +10,6 @@ export default class Collider {
         this.animationStage = 1;
     }
 
-    // static generate({ x, y, w, h, collideable }) {
-    //     const newCollideable = new Collider({ x, y, w, h, collideable });
-    //
-    //     Game.getInstance().collideables.push(newCollideable);
-    // }
-
     renderDebug() {
         const ctx = Game.getInstance().ctx;
         ctx.fillStyle = 'rgb(0, 255, 0, 0.2)';

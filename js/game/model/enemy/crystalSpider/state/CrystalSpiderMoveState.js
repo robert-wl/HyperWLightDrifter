@@ -1,6 +1,6 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import Game from '../../../Game/Game.js';
-import { getRandomBoolean } from '../../../../helper/randomHelper.js';
+import { getRandomBoolean, getRandomValue } from '../../../../helper/randomHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
 import { getNumberedImage } from '../../../../helper/imageLoader.js';
@@ -12,7 +12,10 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         super.enterState(currSpider);
         this.clockwise = getRandomBoolean(0.5);
         this.moveTime = 0;
-        this.attackCooldown = 100;
+        this.attackCooldown = getRandomValue({
+            initialValue: 50,
+            randomValue: 100,
+        });
     }
 
     updateState(currSpider) {
@@ -57,6 +60,10 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
             y: centerPosition.y - currSpider.position.y,
         });
 
+        if (distance > 500) {
+            currSpider.switchState(currSpider.idleState);
+            return;
+        }
         if (distance < 100 && this.moveTime > this.attackCooldown) {
             currSpider.switchState(currSpider.attackState);
             return;

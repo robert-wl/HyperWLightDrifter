@@ -1,20 +1,16 @@
 import Animateable from '../../../Animateable.js';
 
-
 export default class CrystalBruteBaseState extends Animateable {
-    updateState(_currSpider) {
+    updateState(currBrute) {
         this.updateNumberCounter();
     }
 
-    drawImage(_currSpider) {
-    }
+    drawImage(currBrute) {}
 
-    enterState(_currSpider) {
+    enterState(currBrute) {
         this.number = 0;
         this.animationStage = 1;
     }
 
-    exitState(_currSpider) {
-    }
-
+    exitState(currBrute) {}
 }

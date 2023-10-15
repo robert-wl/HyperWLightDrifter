@@ -45,10 +45,6 @@ export default class GameStageOneState extends GameBaseState {
         enemyManager.update();
 
         game.collideables.forEach((collideable) => collideable.update());
-        //
-        // if (!player.currState?.isBelowGround) {
-        //     player.updateState();
-        // }
 
         game.setTransparency(game.backgroundOpacity);
         camera.renderTopBackground();
@@ -95,44 +91,13 @@ export default class GameStageOneState extends GameBaseState {
             topBackground: mapTop,
         });
         player.centerPosition = {
-            x: 256 + player.width / 2,
-            y: 256 + player.height / 2,
+            x: 512 + player.width / 2,
+            y: 512 + player.height / 2,
         };
         //
         // Elevator.generate({
         //     x: 950,
         //     y: 2011,
-        // });
-
-        // Door.generate({
-        //     x: 904,
-        //     y: 1040,
-        //     collideable: true,
-        // });
-
-        // const colliders = [
-        //     { x: 100, y: 0, w: 300, h: 1000 },
-        //     { x: 400, y: 0, w: 1025, h: 300 },
-        //     { x: 1425, y: 0, w: 300, h: 1000 },
-        //     { x: 100, y: 1050, w: 800, h: 500 },
-        //     { x: 1000, y: 1050, w: 800, h: 500 },
-        //     { x: 100, y: 1550, w: 530, h: 800 },
-        //     { x: 1250, y: 1550, w: 530, h: 800 },
-        //     { x: 630, y: 2150, w: 620, h: 800 },
-        // ];
-
-        // colliders.forEach((collider) => {
-        //     Collider.generate(collider);
-        // });
-
-        // const medkits = [
-        //     { x: 1400, y: 300 },
-        //     { x: 1400, y: 800 },
-        //     { x: 400, y: 500 },
-        // ];
-        //
-        // medkits.forEach((medkit) => {
-        //     Medkit.generate(medkit);
         // });
 
         game.prepareCanvas();

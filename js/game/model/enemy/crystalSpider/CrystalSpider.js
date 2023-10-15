@@ -6,6 +6,7 @@ import CrystalSpiderAttackState from './state/CrystalSpiderAttackState.js';
 import CrystalSpiderDieState from './state/CrystalSpiderDieState.js';
 import renderShadow from '../../../helper/renderer/shadow.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
+import CrystalSpiderIdleState from './state/CrystalSpiderIdleState.js';
 
 export default class CrystalSpider extends Enemy {
     constructor({ x, y }) {
@@ -26,11 +27,13 @@ export default class CrystalSpider extends Enemy {
         this.attackState = new CrystalSpiderAttackState();
         this.moveState = new CrystalSpiderMoveState();
         this.dieState = new CrystalSpiderDieState();
+        this.idleState = new CrystalSpiderIdleState();
         this.speed = getRandomValue({
             initialValue: 2,
             randomValue: 2,
         });
-        this.switchState(this.moveState);
+        this.angle = Math.random() * 2 * Math.PI;
+        this.switchState(this.idleState);
     }
 
     static generate({ x, y }) {
@@ -39,8 +42,8 @@ export default class CrystalSpider extends Enemy {
             y,
         });
 
-        const { enemyManager } = Game.getInstance();
-        enemyManager.enemyList.push(newCrystalSpider);
+        const { enemyList } = Game.getInstance();
+        enemyList.push(newCrystalSpider);
     }
 
     debugMode() {
@@ -81,11 +84,11 @@ export default class CrystalSpider extends Enemy {
             Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');
         }
 
-        this.currState.drawImage(this);
-
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('none');
             this.damaged -= deltaTime;
         }
+
+        this.currState.drawImage(this);
     }
 }

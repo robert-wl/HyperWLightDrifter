@@ -62,9 +62,7 @@ export default class InteractionBar {
             x: player.centerPosition.x - (object.position.x + object.width / 2),
             y: player.centerPosition.y - (object.position.y + object.height / 2),
         });
-
-        console.log(object);
-        console.log(distance);
+        
         if (distance < interactDistance) {
             InteractionBar.setAllowDraw(true);
             this.transparency = Math.abs(distance - interactDistance) / interactDistance;

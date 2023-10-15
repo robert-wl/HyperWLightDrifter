@@ -3,6 +3,8 @@ import GameSettings from '../../../constants.js';
 import Game from '../../Game/Game.js';
 import { getManhattanDistance } from '../../../helper/distanceHelper.js';
 import Medkit from '../../interactables/Medkit.js';
+import CrystalSpider from '../../enemy/crystalSpider/CrystalSpider.js';
+import CrystalBrute from '../../enemy/crystalBrute/CrystalBrute.js';
 
 const SCREEN_SIZE = 1920;
 export default class CameraBaseState {
@@ -41,8 +43,14 @@ export default class CameraBaseState {
         const { objects, colliders } = this.getObjects(camera);
 
         const interactables = [];
+
         objects.forEach((piece) => {
-            if (piece instanceof Medkit) {
+            if (this.checkEntity(piece)) {
+                piece.update();
+                return;
+            }
+
+            if (this.checkInteractables(piece)) {
                 piece.update();
                 interactables.push(piece);
                 return;
@@ -64,14 +72,13 @@ export default class CameraBaseState {
         });
 
         Game.getInstance().interactables = interactables;
-        console.log(interactables);
         if (!hasUpdatedPlayer) {
             player.updateState(colliders);
         }
     }
 
     getObjects(camera) {
-        const { player } = Game.getInstance();
+        const { player, enemyList } = Game.getInstance();
         const { GAME_SCALE, FOREST_STAGE } = GameSettings.GAME;
         const objects = [];
         const colliders = [];
@@ -101,8 +108,18 @@ export default class CameraBaseState {
             });
         });
 
+        objects.push(...enemyList);
         objects.sort((pieceOne, pieceTwo) => {
-            return pieceOne.position.y - pieceTwo.position.y;
+            let positionOne = pieceOne.position.y;
+            let positionTwo = pieceTwo.position.y;
+
+            if (this.checkEntity(pieceOne)) {
+                positionOne += pieceOne.height / 2;
+            }
+            if (this.checkEntity(pieceTwo)) {
+                positionTwo += pieceTwo.height / 2;
+            }
+            return positionOne - positionTwo;
         });
 
         return { objects, colliders };
@@ -114,6 +131,14 @@ export default class CameraBaseState {
         }
 
         return !(position.y > camera.position.y + SCREEN_SIZE / 2 || position.y < camera.position.y - SCREEN_SIZE / 2);
+    }
+
+    checkEntity(object) {
+        return object instanceof CrystalSpider || object instanceof CrystalBrute;
+    }
+
+    checkInteractables(object) {
+        return object instanceof Medkit;
     }
 
     updatePlayer(yAbsPosition, colliders) {

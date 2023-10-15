@@ -5,6 +5,7 @@ import Collider from '../../collideable/Collider.js';
 import SetPiece from './SetPiece.js';
 import GameSettings from '../../../constants.js';
 import Medkit from '../../interactables/Medkit.js';
+import EnemyManager from '../../enemy/EnemyManager.js';
 
 const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
@@ -92,6 +93,8 @@ export default class SetPieceGenerator {
             const objectY = y * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
 
             pieces.push(enemy({ x: objectX, y: objectY }));
+
+            EnemyManager.spawnEnemy({ x: objectX, y: objectY });
         }
 
         Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'enemy'));

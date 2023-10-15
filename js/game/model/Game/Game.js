@@ -33,7 +33,7 @@ export default class Game {
         this.keys = [];
         this.clicks = [];
         this.objects = new Map();
-        this.collideables = [];
+        this.enemyList = [];
         this.elevator = null;
         this.enemyManager = null;
         this.canvas = null;

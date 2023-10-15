@@ -6,6 +6,7 @@ import CrystalBruteAttackState from './state/CrystalBruteAttackState.js';
 import CrystalBruteDieState from './state/CrystalBruteDieState.js';
 import CrystalBruteMoveState from './state/CrystalBruteMoveState.js';
 import HealthBar from '../healthBar/HealthBar.js';
+import CrystalBruteIdleState from './state/CrystalBruteIdleState.js';
 
 export default class CrystalBrute extends Enemy {
     constructor({ x, y, width, height }) {
@@ -27,6 +28,7 @@ export default class CrystalBrute extends Enemy {
         this.attackState = new CrystalBruteAttackState();
         this.moveState = new CrystalBruteMoveState();
         this.dieState = new CrystalBruteDieState();
+        this.idleState = new CrystalBruteIdleState();
         this.speed = 3;
         this.attack = [];
         this.healthBar = HealthBar.generate({
@@ -37,7 +39,7 @@ export default class CrystalBrute extends Enemy {
             },
             maxHealth: this.maxHealth,
         });
-        this.switchState(this.moveState);
+        this.switchState(this.idleState);
     }
 
     static generate({ x, y }) {
@@ -48,8 +50,8 @@ export default class CrystalBrute extends Enemy {
             height: 140,
         });
 
-        const { enemyManager } = Game.getInstance();
-        enemyManager.enemyList.push(newCrystalBrute);
+        const { enemyList } = Game.getInstance();
+        enemyList.push(newCrystalBrute);
     }
 
     switchState(newState) {
@@ -79,7 +81,6 @@ export default class CrystalBrute extends Enemy {
             });
         }
 
-
         if (this.currState !== this.dieState) {
             this.healthBar.update({
                 health: this.health,
@@ -90,13 +91,11 @@ export default class CrystalBrute extends Enemy {
             });
         }
 
-
         this.attack.forEach((attack) => {
             if (attack.update()) {
                 this.attack.splice(this.attack.indexOf(attack), 1);
             }
         });
-
 
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');

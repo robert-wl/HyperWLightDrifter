@@ -62,6 +62,11 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
 
         currBrute.angle = angle;
 
+        if (distance > 750) {
+            currBrute.switchState(currBrute.idleState);
+            return;
+        }
+
         if (distance < 200) {
             angle = this.getRotateAngle(currBrute.angle);
         }
@@ -79,7 +84,6 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
 
     getRotateAngle(angle) {
         return angle + (Math.PI / 2) * (this.clockwise ? 1 : -1);
-
     }
 
     drawImage(currBrute) {

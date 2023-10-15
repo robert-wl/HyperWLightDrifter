@@ -106,8 +106,8 @@ export default class Grenade extends Animateable {
     }
 
     handleDamage() {
-        const { audio, enemyManager } = Game.getInstance();
-        const { enemyList, bossEntities, boss } = enemyManager;
+        const { audio, enemyManager, enemyList } = Game.getInstance();
+        // const { enemyList, bossEntities, boss } = enemyManager;
 
         enemyList.forEach((enemy) => {
             if (enemy.currState === enemy.dieState) {
@@ -141,37 +141,36 @@ export default class Grenade extends Animateable {
             });
         });
 
-        bossEntities.forEach((entity) => {
-            const distance = getMagnitudeValue({
-                x: this.position.x - entity.position.x,
-                y: this.position.y - entity.position.y,
-            });
-
-
-            if (distance >= 250) {
-                return;
-            }
-
-            entity.health -= GameSettings.PLAYER.DAMAGE.GRENADE;
-        });
-
-        if (!boss) {
-            return;
-        }
-
-        const distance = getMagnitudeValue({
-            x: this.position.x - boss.position.x,
-            y: this.position.y - boss.position.y,
-        });
-
-
-        if (distance >= 250) {
-            return;
-        }
-
-        boss.damage({
-            amount: GameSettings.PLAYER.DAMAGE.GRENADE,
-        });
+        // bossEntities.forEach((entity) => {
+        //     const distance = getMagnitudeValue({
+        //         x: this.position.x - entity.position.x,
+        //         y: this.position.y - entity.position.y,
+        //     });
+        //
+        //
+        //     if (distance >= 250) {
+        //         return;
+        //     }
+        //
+        //     entity.health -= GameSettings.PLAYER.DAMAGE.GRENADE;
+        // });
+        //
+        // if (!boss) {
+        //     return;
+        // }
+        //
+        // const distance = getMagnitudeValue({
+        //     x: this.position.x - boss.position.x,
+        //     y: this.position.y - boss.position.y,
+        // });
+        //
+        //
+        // if (distance >= 250) {
+        //     return;
+        // }
+        //
+        // boss.damage({
+        //     amount: GameSettings.PLAYER.DAMAGE.GRENADE,
+        // });
     }
-
 }
