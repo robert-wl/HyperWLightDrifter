@@ -77,11 +77,10 @@ export default class Player {
         this.outfit = 'default';
     }
 
-    updateState() {
+    updateState(colliders) {
         if (this.health <= 0 && this.currState !== this.deathState) {
             this.switchState(this.deathState);
         }
-
 
         this.updateBombs();
 
@@ -105,7 +104,7 @@ export default class Player {
             });
         }
 
-        this.moveHandler();
+        this.moveHandler(colliders);
 
         this.currState.drawImage(this);
 
@@ -121,7 +120,6 @@ export default class Player {
             this.renderDebugBox();
         }
     }
-
 
     updateBombs() {
         if (this.bombs > 2) {
@@ -241,10 +239,10 @@ export default class Player {
         this.currState.enterState(this);
     }
 
-    moveHandler() {
+    moveHandler(colliders) {
         this.theta = Math.atan2(this.velocity.y, this.velocity.x);
 
-        const { collideables, movementDeltaTime } = Game.getInstance();
+        const { movementDeltaTime } = Game.getInstance();
 
         this.velocity.x = this.velocity.x * (1 - this.friction * movementDeltaTime);
         this.velocity.y = this.velocity.y * (1 - this.friction * movementDeltaTime);
@@ -253,7 +251,7 @@ export default class Player {
 
         if (
             checkCollision({
-                collideables,
+                colliders,
                 x: x + this.velocity.x,
                 y: y,
                 w: w,
@@ -265,7 +263,7 @@ export default class Player {
 
         if (
             checkCollision({
-                collideables,
+                colliders,
                 x: x,
                 y: y + this.velocity.y,
                 w: w,

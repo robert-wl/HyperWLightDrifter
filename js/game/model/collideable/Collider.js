@@ -1,23 +1,20 @@
 import Game from '../Game/Game.js';
-import Animateable from '../Animateable.js';
 
-export default class Collideable extends Animateable {
-    constructor({ x, y, w, h, collideable }) {
-        super();
+export default class Collider {
+    constructor({ x, y, width, height }) {
         this.x = x;
         this.y = y;
-        this.width = w;
-        this.height = h;
-        this.collideable = collideable || true;
+        this.width = width;
+        this.height = height;
         this.number = 0;
         this.animationStage = 1;
     }
 
-    static generate({ x, y, w, h, collideable }) {
-        const newCollideable = new Collideable();
-
-        Game.getInstance().collideables.push(newCollideable);
-    }
+    // static generate({ x, y, w, h, collideable }) {
+    //     const newCollideable = new Collider({ x, y, w, h, collideable });
+    //
+    //     Game.getInstance().collideables.push(newCollideable);
+    // }
 
     renderDebug() {
         const ctx = Game.getInstance().ctx;
@@ -26,9 +23,7 @@ export default class Collideable extends Animateable {
     }
 
     checkCollision({ x, y, w, h }) {
-        if (!this.collideable) {
-            return false;
-        }
+        // this.renderDebug();
         return !(this.x + this.width >= x && this.x <= x + w && this.y + this.height >= y && this.y <= y + h);
     }
 

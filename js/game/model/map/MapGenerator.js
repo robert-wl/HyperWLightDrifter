@@ -15,18 +15,10 @@ export default class MapGenerator {
                 const x = Math.round(i / 128);
                 const y = Math.round(j / 128);
 
-                this.generateSetPiece(x, y);
+                SetPieceGenerator.generate({ x, y }, true);
                 this.lowerLayers.set(`${x},${y}`, this.getFloorImage());
             }
         }
-    }
-
-    generateSetPiece(x, y) {
-        if (!getRandomBoolean(0.3)) {
-            return;
-        }
-
-        SetPieceGenerator.generate({ x, y });
     }
 
     update() {
@@ -69,7 +61,7 @@ export default class MapGenerator {
                     continue;
                 }
 
-                this.generateSetPiece(x, y);
+                SetPieceGenerator.generate({ x, y });
 
                 this.lowerLayers.set(`${x},${y}`, this.getFloorImage());
             }

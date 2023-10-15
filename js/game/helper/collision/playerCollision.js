@@ -31,12 +31,11 @@ export default function playerCollision({ position, box, angle }) {
         }
     }
 
-
     return false;
 }
 
-export function checkCollision({ collideables, x, y, w, h }) {
-    return collideables.every((c) => {
+export function checkCollision({ colliders, x, y, w, h }) {
+    return colliders.every((c) => {
         return c.checkCollision({
             x: x,
             y: y,

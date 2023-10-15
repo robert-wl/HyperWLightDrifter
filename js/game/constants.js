@@ -10,7 +10,10 @@ const GameSettings = {
         },
         SCREEN_WIDTH: 1920,
         SCREEN_HEIGHT: 1080,
-        FLOOR_WIDTH: 128,
+        FOREST_STAGE: {
+            FLOOR_WIDTH: 128,
+            TREE_INITIAL_CHANCE: 0.5,
+        },
     },
     game: {
         GAME_SCALE: 2,
@@ -375,8 +378,13 @@ const GameSettings = {
             },
             {
                 ref: 'world/forest/set_pieces/small/tree.png',
-                name: 'set_pieces_tree',
+                name: 'set_pieces_tree_small',
                 amount: 6,
+            },
+            {
+                ref: 'world/forest/set_pieces/large/tree.png',
+                name: 'set_pieces_tree_large',
+                amount: 2,
             },
             {
                 ref: 'world/first_map_full.png',

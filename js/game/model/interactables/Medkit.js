@@ -1,11 +1,11 @@
-import Collideable from '../collideable/Collideable.js';
+import Collider from '../collideable/Collider.js';
 import Game from '../Game/Game.js';
 import { getNumberedImage } from '../../helper/imageLoader.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
 import InteractionBar from './InteractionBar.js';
 
-export default class Medkit extends Collideable {
+export default class Medkit extends Collider {
     constructor({ x, y, w, h, collideable }) {
         super({ x, y, w, h, collideable });
         this.number = 0;

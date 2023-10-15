@@ -4,7 +4,6 @@ import { getImage, imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import Judgement from '../../enemy/judgement/Judgement.js';
 import AudioPlayer from '../../../../audio/AudioPlayer.js';
-import Collideable from '../../collideable/Collideable.js';
 
 export default class GameStageTwoState extends GameBaseState {
     hasBossSpawned = false;
@@ -100,10 +99,6 @@ export default class GameStageTwoState extends GameBaseState {
             { x: 1465, y: 0, w: 300, h: 1000 },
             { x: 100, y: 1000, w: 1664, h: 500 },
         ];
-
-        colliders.forEach((collider) => {
-            Collideable.generate(collider);
-        });
 
         camera.position.x = 0;
         camera.position.y = 0;

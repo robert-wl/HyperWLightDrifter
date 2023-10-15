@@ -6,8 +6,6 @@ import Game from '../Game.js';
 import { getImage, imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import Elevator from '../../interactables/Elevator/Elevator.js';
-import Door from '../../interactables/Door.js';
-import Medkit from '../../interactables/Medkit.js';
 import PauseModal from '../../modal/PauseModal.js';
 
 export default class GameStageOneState extends GameBaseState {
@@ -37,9 +35,6 @@ export default class GameStageOneState extends GameBaseState {
 
         elevator.update();
 
-        if (player.currState?.isBelowGround) {
-            player.updateState();
-        }
         game.setTransparency(game.backgroundOpacity);
         camera.renderLowerBackground();
         game.setTransparency(1);
@@ -51,10 +46,10 @@ export default class GameStageOneState extends GameBaseState {
         enemyManager.update();
 
         game.collideables.forEach((collideable) => collideable.update());
-
-        if (!player.currState?.isBelowGround) {
-            player.updateState();
-        }
+        //
+        // if (!player.currState?.isBelowGround) {
+        //     player.updateState();
+        // }
 
         game.setTransparency(game.backgroundOpacity);
         camera.renderTopBackground();
@@ -111,11 +106,11 @@ export default class GameStageOneState extends GameBaseState {
             y: 2011,
         });
 
-        Door.generate({
-            x: 904,
-            y: 1040,
-            collideable: true,
-        });
+        // Door.generate({
+        //     x: 904,
+        //     y: 1040,
+        //     collideable: true,
+        // });
 
         // const colliders = [
         //     { x: 100, y: 0, w: 300, h: 1000 },
@@ -129,18 +124,18 @@ export default class GameStageOneState extends GameBaseState {
         // ];
 
         // colliders.forEach((collider) => {
-        //     Collideable.generate(collider);
+        //     Collider.generate(collider);
         // });
 
-        const medkits = [
-            { x: 1400, y: 300 },
-            { x: 1400, y: 800 },
-            { x: 400, y: 500 },
-        ];
-
-        medkits.forEach((medkit) => {
-            Medkit.generate(medkit);
-        });
+        // const medkits = [
+        //     { x: 1400, y: 300 },
+        //     { x: 1400, y: 800 },
+        //     { x: 400, y: 500 },
+        // ];
+        //
+        // medkits.forEach((medkit) => {
+        //     Medkit.generate(medkit);
+        // });
 
         game.prepareCanvas();
 
