@@ -15,6 +15,8 @@ const GameSettings = {
             SETPIECE_TREE_INITIAL_CHANCE: 0.5,
             SETPIECE_ENEMY_INITIAL_CHANCE: 0.2,
             SETPIECE_HEALTH_INITIAL_CHANCE: 0.2,
+            SETPIECE_ELEVATOR_INITIAL_CHANCE: 0.001,
+            SETPIECE_ELEVATOR_MAX_CHANCE: 0.05,
             SPIDER_SPAWN_CHANCE: 0.9,
         },
     },
@@ -386,6 +388,10 @@ const GameSettings = {
                 ref: 'world/forest/floor/floor.png',
                 name: 'forest_floor',
                 amount: 8,
+            },
+            {
+                ref: 'world/forest/floor/floor_elevator.png',
+                name: 'forest_floor_elevator',
             },
             {
                 ref: 'world/forest/set_pieces/tree/tree.png',

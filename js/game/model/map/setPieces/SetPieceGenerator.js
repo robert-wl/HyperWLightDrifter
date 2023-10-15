@@ -6,6 +6,7 @@ import SetPiece from './SetPiece.js';
 import GameSettings from '../../../constants.js';
 import Medkit from '../../interactables/Medkit.js';
 import EnemyManager from '../../enemy/EnemyManager.js';
+import Elevator from '../../interactables/Elevator/Elevator.js';
 
 const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
@@ -37,6 +38,33 @@ export default class SetPieceGenerator {
         }
     }
 
+    static generateElevator({ x, y }) {
+        const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
+        const { FLOOR_WIDTH } = FOREST_STAGE;
+        const pieces = [];
+
+        const objectX = x * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - x * GAME_SCALE;
+        const objectY = y * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - y * GAME_SCALE + 12;
+
+        const elevator = new Elevator({ x: objectX, y: objectY });
+
+        const key = `${y},${x}`;
+        pieces.push(elevator);
+
+        const { objects } = Game.getInstance();
+        objects.set(key, new SetPiece(pieces, 'elevator'));
+
+        for (let i = 0; i < 8; i++) {
+            const key = `${y + directionY[i]},${x + directionX[i]}`;
+
+            if (!objects.has(key)) {
+                continue;
+            }
+
+            objects.delete(key);
+        }
+    }
+
     static updateChance(position) {
         const { objects } = Game.getInstance();
         for (let i = 0; i < 8; i++) {
@@ -57,6 +85,11 @@ export default class SetPieceGenerator {
             }
             if (objects.get(key).type === 'health') {
                 this.treeChance = 0;
+                this.healthChance = 0;
+            }
+            if (objects.get(key).type === 'elevator') {
+                this.treeChance = 0;
+                this.enemyChance = 0;
                 this.healthChance = 0;
             }
         }

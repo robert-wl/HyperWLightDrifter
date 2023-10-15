@@ -24,7 +24,7 @@ export default class GameStageOneState extends GameBaseState {
         game.pauseHandler();
         game.mapGenerator.update();
 
-        const { ctx, camera, player, elevator } = game;
+        const { ctx, camera, player, elevators } = game;
 
         ctx.clearRect(0, 0, game.canvas.width * 2, game.canvas.height * 2);
         ctx.fillStyle = '#000000';
@@ -32,7 +32,9 @@ export default class GameStageOneState extends GameBaseState {
 
         camera.shakeCamera();
 
-        // elevator.update();
+        elevators.forEach((elevator) => {
+            elevator.update();
+        });
 
         game.setTransparency(game.backgroundOpacity);
         camera.renderLowerBackground();

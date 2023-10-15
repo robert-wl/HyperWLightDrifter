@@ -34,14 +34,13 @@ export default class Game {
         this.clicks = [];
         this.objects = new Map();
         this.enemyList = [];
-        this.elevator = null;
+        this.elevators = [];
         this.enemyManager = null;
         this.canvas = null;
         this.ctx = null;
         this.debug = true;
         this.backgroundOpacity = 1;
         this.keyCount = 0;
-        this.elevator = null;
         this.audio = AudioPlayer.getInstance();
         this.currState = new GameBaseState();
         this.startState = new GameStartState();

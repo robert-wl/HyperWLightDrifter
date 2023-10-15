@@ -1,9 +1,11 @@
-import { getNumberedImage } from '../../helper/imageLoader.js';
+import { getImage, getNumberedImage } from '../../helper/imageLoader.js';
 import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
 import Game from '../Game/Game.js';
 import GameSettings from '../../constants.js';
 import SetPieceGenerator from './setPieces/SetPieceGenerator.js';
 
+const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
+const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
 export default class MapGenerator {
     constructor(camera) {
         this.lowerLayers = camera.lowerLayers;
@@ -23,11 +25,15 @@ export default class MapGenerator {
     }
 
     update() {
-        this.generateFloor();
+        this.generateChunks();
     }
 
-    getFloorImage() {
-        if (getRandomBoolean(0.8)) {
+    getFloorImage(elevator = false) {
+        if (elevator) {
+            return getImage('forest_floor_elevator');
+        }
+
+        if (!getRandomBoolean(0.1)) {
             return getNumberedImage('forest_floor', 1);
         }
 
@@ -41,7 +47,7 @@ export default class MapGenerator {
         );
     }
 
-    generateFloor() {
+    generateChunks() {
         const { camera, player } = Game.getInstance();
 
         const pos1 = {
@@ -62,10 +68,36 @@ export default class MapGenerator {
                     continue;
                 }
 
-                SetPieceGenerator.generate({ x, y });
+                if (this.generateElevatorFloor({ x, y })) {
+                    continue;
+                }
 
-                this.lowerLayers.set(`${x},${y}`, this.getFloorImage());
+                this.generateNormalFloor({ x, y });
             }
         }
+    }
+
+    generateElevatorFloor({ x, y }) {
+        const { SETPIECE_ELEVATOR_INITIAL_CHANCE, SETPIECE_ELEVATOR_MAX_CHANCE } = GameSettings.GAME.FOREST_STAGE;
+
+        const chance = 0.5 || Math.min(SETPIECE_ELEVATOR_INITIAL_CHANCE + Game.getInstance().keyCount * 0.0005, SETPIECE_ELEVATOR_MAX_CHANCE);
+
+        if (getRandomBoolean(chance)) {
+            this.lowerLayers.set(`${x},${y}`, this.getFloorImage(true));
+            SetPieceGenerator.generateElevator({ x, y });
+
+            for (let i = 0; i < 8; i++) {
+                this.lowerLayers.set(`${x + directionX[i]},${y + directionY[i]}`, this.getFloorImage());
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    generateNormalFloor({ x, y }) {
+        this.lowerLayers.set(`${x},${y}`, this.getFloorImage());
+
+        SetPieceGenerator.generate({ x, y });
     }
 }

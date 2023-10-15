@@ -6,6 +6,7 @@ import Medkit from '../../interactables/Medkit.js';
 import CrystalSpider from '../../enemy/crystalSpider/CrystalSpider.js';
 import CrystalBrute from '../../enemy/crystalBrute/CrystalBrute.js';
 import Key from '../../interactables/Key.js';
+import Elevator from '../../interactables/Elevator/Elevator.js';
 
 const SCREEN_SIZE = 1920;
 export default class CameraBaseState {
@@ -44,6 +45,7 @@ export default class CameraBaseState {
         const { objects, colliders } = this.getObjects(camera);
 
         const interactables = [];
+        const elevators = [];
 
         objects.forEach((piece) => {
             if (this.checkEntity(piece)) {
@@ -52,11 +54,16 @@ export default class CameraBaseState {
             }
 
             if (this.checkInteractables(piece)) {
-                // console.log(piece);
                 piece.update();
                 interactables.push(piece);
                 return;
             }
+
+            if (this.checkElevator(piece)) {
+                elevators.push(piece);
+                return;
+            }
+
             const { image, position, flipped } = piece;
 
             if (!hasUpdatedPlayer) {
@@ -74,6 +81,7 @@ export default class CameraBaseState {
         });
 
         Game.getInstance().interactables = interactables;
+        Game.getInstance().elevators = elevators;
         if (!hasUpdatedPlayer) {
             player.updateState(colliders);
         }
@@ -146,6 +154,10 @@ export default class CameraBaseState {
 
     checkInteractables(object) {
         return object instanceof Medkit || object instanceof Key;
+    }
+
+    checkElevator(object) {
+        return object instanceof Elevator;
     }
 
     updatePlayer(yAbsPosition, colliders) {

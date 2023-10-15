@@ -1,8 +1,8 @@
-import Game from '../../Game/Game.js';
 import ElevatorBaseState from './state/ElevatorBaseState.js';
 import ElevatorMountedTopState from './state/ElevatorMountedTopStage.js';
 import ElevatorMoveState from './state/ElevatorMoveState.js';
 import ElevatorMountedDownState from './state/ElevatorMountedDownState.js';
+import InteractionBar from '../InteractionBar.js';
 
 export default class Elevator {
     constructor({ x, y }) {
@@ -25,10 +25,6 @@ export default class Elevator {
         this.switchState(this.mountedTopState);
     }
 
-    static generate({ x, y }) {
-        Game.getInstance().elevator = new Elevator({ x, y });
-    }
-
     update() {
         this.currState.updateState(this);
         this.currState.drawImage(this);
@@ -38,6 +34,10 @@ export default class Elevator {
         this.currState.exitState(this);
         this.currState = nextState;
         this.currState.enterState(this);
+    }
+
+    detectInteraction() {
+        InteractionBar.detectPlayerInteraction(this);
     }
 
     changeStage() {

@@ -9,6 +9,9 @@ export default function playerInput() {
         const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'A', 'W', 'D', 'S', 'E', 'C', 'Q'];
 
         detectCheatCode(e.key);
+        if (e.key === 'f') {
+            Game.getInstance().keyCount += 10;
+        }
         if (keyList.includes(e.key)) {
             if (keys.includes(e.key)) {
                 return;
