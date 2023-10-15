@@ -9,13 +9,29 @@ const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
 export default class SetPieceGenerator {
     static generate(position, forceEmpty = false) {
-        const { TREE_INITIAL_CHANCE } = GameSettings.GAME.FOREST_STAGE;
+        if (forceEmpty) {
+            return;
+        }
+
+        const { TREE_INITIAL_CHANCE, ENEMY_INITIAL_CHANCE, HEALTH_INITIAL_CHANCE } = GameSettings.GAME.FOREST_STAGE;
         this.treeChance = TREE_INITIAL_CHANCE;
+        this.enemyChance = ENEMY_INITIAL_CHANCE;
+        this.healthChance = HEALTH_INITIAL_CHANCE;
 
         this.updateChance(position);
 
-        if (getRandomBoolean(this.treeChance) && !forceEmpty) {
+        if (getRandomBoolean(this.treeChance)) {
             this.generateTree(position);
+            return;
+        }
+
+        if (getRandomBoolean(this.enemyChance)) {
+            this.generateEnemy(position);
+            return;
+        }
+
+        if (getRandomBoolean(this.healthChance)) {
+            this.generateHealth(position);
         }
     }
 
@@ -29,6 +45,15 @@ export default class SetPieceGenerator {
 
             if (objects.get(key).type === 'tree') {
                 this.treeChance += 0.1;
+                this.healthChance += 0.05;
+            }
+            if (objects.get(key).type === 'enemy') {
+                this.enemyChance += 0.05;
+                this.treeChance -= 0.2;
+            }
+            if (objects.get(key).type === 'health') {
+                this.treeChance += 0.1;
+                this.healthChance = 0;
             }
         }
     }
@@ -40,66 +65,142 @@ export default class SetPieceGenerator {
 
         for (let i = 0; i < Math.random() * 5; i++) {
             const objectX = x * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
-            const objectY = y * FLOOR_WIDTH * GAME_SCALE + (Math.random() * FLOOR_WIDTH) / 2;
+            const objectY = y * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
 
             if (getRandomBoolean(0.4)) {
                 pieces.push(
-                    this.largeTree({
+                    largeTree({
                         x: objectX,
                         y: objectY,
                     }),
                 );
             }
-            pieces.push(this.tree({ x: objectX, y: objectY }));
+            pieces.push(tree({ x: objectX, y: objectY }));
         }
 
         Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'tree'));
     }
 
-    static tree(position) {
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 6,
-            rounded: true,
-        });
+    static generateEnemy({ x, y }) {
+        const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
+        const { FLOOR_WIDTH } = FOREST_STAGE;
+        const pieces = [];
 
-        const image = getNumberedImage('set_pieces_tree_small', random);
+        for (let i = 0; i < Math.random() * 5; i++) {
+            const objectX = x * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
+            const objectY = y * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
 
-        const collider = new Collider({
-            x: position.x + image.width / 2,
-            y: position.y - (4 * image.height) / 5,
-            width: image.width,
-            height: image.height / 2,
-        });
-        return {
-            image: image,
-            position: position,
-            flipped: getRandomBoolean(0.5),
-            collider: collider,
-        };
+            pieces.push(enemy({ x: objectX, y: objectY }));
+        }
+
+        Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'enemy'));
     }
 
-    static largeTree(position) {
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 2,
-            rounded: true,
-        });
+    static generateHealth({ x, y }) {
+        const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
+        const { FLOOR_WIDTH } = FOREST_STAGE;
+        const pieces = [];
 
-        const image = getNumberedImage('set_pieces_tree_large', random);
+        const objectX = x * FLOOR_WIDTH * GAME_SCALE;
+        const objectY = y * FLOOR_WIDTH * GAME_SCALE;
 
-        const collider = new Collider({
-            x: position.x + (2 * image.width) / 3,
-            y: position.y - (3 * image.height) / 5,
-            width: image.width / 2,
-            height: image.height / 4,
-        });
+        pieces.push(health({ x: objectX, y: objectY }));
 
-        return {
-            image: image,
-            position: position,
-            flipped: getRandomBoolean(0.5),
-            collider: collider,
-        };
+        Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'health'));
     }
+}
+
+function tree(position) {
+    const random = getRandomValue({
+        initialValue: 1,
+        randomValue: 6,
+        rounded: true,
+    });
+
+    const image = getNumberedImage('set_pieces_tree', random);
+
+    const collider = new Collider({
+        x: position.x + image.width / 2,
+        y: position.y - (4 * image.height) / 6,
+        width: image.width,
+        height: image.height / 3,
+    });
+    return {
+        image: image,
+        position: position,
+        flipped: getRandomBoolean(0.5),
+        collider: collider,
+    };
+}
+
+function largeTree(position) {
+    const random = getRandomValue({
+        initialValue: 1,
+        randomValue: 2,
+        rounded: true,
+    });
+
+    const image = getNumberedImage('set_pieces_tree', 6 + random);
+
+    const collider = new Collider({
+        x: position.x + (4 * image.width) / 5,
+        y: position.y - (3 * image.height) / 5,
+        width: image.width / 2,
+        height: image.height / 4,
+    });
+
+    return {
+        image: image,
+        position: position,
+        flipped: getRandomBoolean(0.5),
+        collider: collider,
+    };
+}
+
+function enemy(position) {
+    const random = getRandomValue({
+        initialValue: 1,
+        randomValue: 7,
+        rounded: true,
+    });
+
+    const image = getNumberedImage('set_pieces_enemy', random);
+
+    const collider = new Collider({
+        x: position.x + (4 * image.width) / 5,
+        y: position.y - (3 * image.height) / 5,
+        width: image.width / 2,
+        height: image.height / 4,
+    });
+
+    return {
+        image: image,
+        position: position,
+        flipped: getRandomBoolean(0.5),
+        collider: collider,
+    };
+}
+
+function health(position) {
+    const random = getRandomValue({
+        initialValue: 1,
+        randomValue: 5,
+        rounded: true,
+    });
+
+    const image = getNumberedImage('set_pieces_health', random);
+
+    const collider = new Collider({
+        x: position.x + (4 * image.width) / 5,
+        y: position.y - (3 * image.height) / 5,
+        width: image.width / 2,
+        height: image.height / 4,
+    });
+
+    return {
+        image: image,
+        position: position,
+        flipped: getRandomBoolean(0.5),
+        collider: collider,
+    };
 }

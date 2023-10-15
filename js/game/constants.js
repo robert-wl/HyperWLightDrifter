@@ -13,6 +13,8 @@ const GameSettings = {
         FOREST_STAGE: {
             FLOOR_WIDTH: 128,
             TREE_INITIAL_CHANCE: 0.5,
+            ENEMY_INITIAL_CHANCE: 0.2,
+            HEALTH_INITIAL_CHANCE: 0.2,
         },
     },
     game: {
@@ -377,14 +379,19 @@ const GameSettings = {
                 amount: 8,
             },
             {
-                ref: 'world/forest/set_pieces/small/tree.png',
-                name: 'set_pieces_tree_small',
-                amount: 6,
+                ref: 'world/forest/set_pieces/tree/tree.png',
+                name: 'set_pieces_tree',
+                amount: 8,
             },
             {
-                ref: 'world/forest/set_pieces/large/tree.png',
-                name: 'set_pieces_tree_large',
-                amount: 2,
+                ref: 'world/forest/set_pieces/enemy/enemy.png',
+                name: 'set_pieces_enemy',
+                amount: 7,
+            },
+            {
+                ref: 'world/forest/set_pieces/health/health.png',
+                name: 'set_pieces_health',
+                amount: 5,
             },
             {
                 ref: 'world/first_map_full.png',

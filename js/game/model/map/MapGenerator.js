@@ -10,10 +10,11 @@ export default class MapGenerator {
     }
 
     init() {
-        for (let i = 0; i < 1280; i += 128) {
-            for (let j = 0; j < 1280; j += 128) {
-                const x = Math.round(i / 128);
-                const y = Math.round(j / 128);
+        const { FLOOR_WIDTH } = GameSettings.GAME.FOREST_STAGE;
+        for (let i = 0; i < FLOOR_WIDTH * 5; i += FLOOR_WIDTH) {
+            for (let j = 0; j < FLOOR_WIDTH * 5; j += FLOOR_WIDTH) {
+                const x = Math.round(i / FLOOR_WIDTH);
+                const y = Math.round(j / FLOOR_WIDTH);
 
                 SetPieceGenerator.generate({ x, y }, true);
                 this.lowerLayers.set(`${x},${y}`, this.getFloorImage());

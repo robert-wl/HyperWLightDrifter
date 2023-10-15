@@ -97,8 +97,8 @@ export default class GameStageOneState extends GameBaseState {
             topBackground: mapTop,
         });
         player.centerPosition = {
-            x: 950 + player.width / 2,
-            y: 500 + player.height / 2,
+            x: 256 + player.width / 2,
+            y: 256 + player.height / 2,
         };
 
         Elevator.generate({
