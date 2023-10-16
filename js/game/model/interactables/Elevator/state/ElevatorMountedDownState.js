@@ -1,15 +1,16 @@
-import ElevatorBaseState from "./ElevatorBaseState.js";
-import {getImage} from "../../../../helper/imageLoader.js";
-import GameSettings from "../../../../constants.js";
-import Game from "../../../Game/Game.js";
-import {drawImage, drawImageCropped} from "../../../../helper/renderer/drawer.js";
-import AudioPlayer from "../../../../../audio/AudioPlayer.js";
-
+import ElevatorBaseState from './ElevatorBaseState.js';
+import { getImage } from '../../../../helper/imageLoader.js';
+import GameSettings from '../../../../constants.js';
+import Game from '../../../Game/Game.js';
+import { drawImageCropped } from '../../../../helper/renderer/drawer.js';
+import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 export default class ElevatorMountedDownState extends ElevatorBaseState {
     enterState(elevator) {
-        const { player } = Game.getInstance();
+        const { player, camera } = Game.getInstance();
         player.switchState(player.idleState);
+        camera.followTarget = null;
+        camera.switchState(camera.normalState);
 
         AudioPlayer.getInstance().playAudio('elevator/mount.wav');
     }
@@ -26,10 +27,10 @@ export default class ElevatorMountedDownState extends ElevatorBaseState {
             imgY: 0,
             imgWidth: elevatorImage.width,
             imgHeight: elevatorImage.height - elevator.bottomCrop,
-            x: elevator.x - elevatorImage.width,
-            y: elevator.y - elevatorImage.height,
+            x: elevator.position.x - elevatorImage.width,
+            y: elevator.position.y - elevatorImage.height,
             width: elevatorImage.width * GameSettings.GAME.GAME_SCALE,
             height: (elevatorImage.height - elevator.bottomCrop) * GameSettings.GAME.GAME_SCALE,
-        })
+        });
     }
 }

@@ -2,12 +2,9 @@ import ElevatorBaseState from './state/ElevatorBaseState.js';
 import ElevatorMountedTopState from './state/ElevatorMountedTopStage.js';
 import ElevatorMoveState from './state/ElevatorMoveState.js';
 import ElevatorMountedDownState from './state/ElevatorMountedDownState.js';
-import InteractionBar from '../InteractionBar.js';
 
 export default class Elevator {
     constructor({ x, y }) {
-        this.x = x;
-        this.y = y;
         this.position = {
             x: x,
             y: y,
@@ -34,10 +31,6 @@ export default class Elevator {
         this.currState.exitState(this);
         this.currState = nextState;
         this.currState.enterState(this);
-    }
-
-    detectInteraction() {
-        InteractionBar.detectPlayerInteraction(this);
     }
 
     changeStage() {

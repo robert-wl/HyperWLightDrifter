@@ -10,10 +10,6 @@ import Elevator from '../../interactables/Elevator/Elevator.js';
 
 const SCREEN_SIZE = 1920;
 export default class CameraBaseState {
-    enterState(camera) {}
-
-    updateState(camera) {}
-
     renderLowerLayer(camera) {
         const { GAME_SCALE } = GameSettings.GAME;
         camera.lowerLayers.forEach((background, positionStr) => {
@@ -82,7 +78,7 @@ export default class CameraBaseState {
 
         Game.getInstance().interactables = interactables;
         Game.getInstance().elevators = elevators;
-        if (!hasUpdatedPlayer) {
+        if (!hasUpdatedPlayer && player.currState !== player.inElevatorState) {
             player.updateState(colliders);
         }
     }
@@ -141,6 +137,11 @@ export default class CameraBaseState {
     }
 
     isInScreen(camera, position) {
+        const { currState, stageTwoState } = Game.getInstance();
+
+        if (currState === stageTwoState) {
+            return true;
+        }
         if (position.x > camera.position.x + SCREEN_SIZE / 2 || position.x < camera.position.x - SCREEN_SIZE / 2) {
             return false;
         }
@@ -160,8 +161,17 @@ export default class CameraBaseState {
         return object instanceof Elevator;
     }
 
+    enterState(camera) {}
+
+    exitState(camera) {}
+
     updatePlayer(yAbsPosition, colliders) {
         const { player } = Game.getInstance();
+
+        if (player.currState === player.inElevatorState) {
+            return false;
+        }
+
         const { centerPosition, height } = player;
 
         const playerY = centerPosition.y + height;
@@ -173,6 +183,4 @@ export default class CameraBaseState {
         player.updateState(colliders);
         return true;
     }
-
-    exitState(camera) {}
 }

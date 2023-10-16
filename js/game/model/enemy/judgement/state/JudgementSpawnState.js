@@ -14,14 +14,6 @@ export default class JudgementSpawnState extends JudgementBaseState {
 
         this.advanceAnimationStage(7);
 
-        if (this.firstSpawn) {
-            camera.moveCameraPosition({
-                direction: {
-                    y: -(camera.position.y - 100) * 0.05 * deltaTime,
-                },
-            });
-        }
-
         if (this.checkCounter(6) && this.animationStage === 16) {
             camera.setShakeCamera({
                 duration: 200,

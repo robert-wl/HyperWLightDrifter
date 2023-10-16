@@ -10,6 +10,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
 
     enterState(currPlayer) {
         currPlayer.velocity.x = 0;
+        currPlayer.velocity.y = 0;
         this.initialPosition = { ...currPlayer.centerPosition };
     }
 
@@ -18,8 +19,9 @@ export default class PlayerInElevatorState extends PlayerBaseState {
             this.isBelowGround = true;
         }
 
-        if (currPlayer.centerPosition.y - this.initialPosition.y > 200) {
-            Game.getInstance().darkenBackground(0.0025);
+        if (currPlayer.centerPosition.y - this.initialPosition.y > 300) {
+            const { deltaTime } = Game.getInstance();
+            Game.getInstance().darkenBackground(0.0025 * deltaTime);
         }
     }
 

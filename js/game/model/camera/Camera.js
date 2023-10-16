@@ -3,6 +3,7 @@ import GameSettings from '../../constants.js';
 import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import CameraBox from './CameraBox.js';
 import CameraNormalState from './state/CameraNormalState.js';
+import CameraFollowState from './state/CameraFollowState.js';
 
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
@@ -16,10 +17,8 @@ export default class Camera {
         this.width = 0;
         this.height = 0;
         this.cameraBox = new CameraBox();
-        this.lowerBackground = null;
         this.lowerLayers = new Map();
         this.upperLayers = Game.getInstance().objects;
-        this.topBackground = null;
         this.shakeDuration = {
             x: 0,
             y: 0,
@@ -31,13 +30,18 @@ export default class Camera {
         };
         this.hasTranslated = false;
         this.snapBackToPlayer = false;
+        this.followTarget = null;
         this.normalState = new CameraNormalState();
+        this.followState = new CameraFollowState();
         this.currState = this.normalState;
     }
 
-    init({ lowerBackground, topBackground }) {
-        this.lowerBackground = [lowerBackground];
-        this.topBackground = topBackground;
+    init(lowerLayer) {
+        if (lowerLayer) {
+            this.lowerLayers = lowerLayer;
+        }
+        this.position.x = 0;
+        this.position.y = 0;
         this.width = GameSettings.GAME.SCREEN_WIDTH;
         this.height = GameSettings.GAME.SCREEN_HEIGHT;
     }
@@ -49,6 +53,12 @@ export default class Camera {
     }
 
     getCameraSides() {
+        console.log({
+            top: this.position.y,
+            bottom: this.position.y + this.height / 2,
+            left: this.position.x,
+            right: this.position.x + this.width / 2,
+        });
         return {
             top: this.position.y,
             bottom: this.position.y + this.height / 2,
@@ -81,11 +91,11 @@ export default class Camera {
     }
 
     moveCameraPosition({ direction }) {
-        const directionArr = this.cameraBox.getOverlap();
-        this.translateCamera({
-            direction: directionArr,
-            moveDirection: direction,
-        });
+        // const directionArr = this.cameraBox.getOverlap();
+        // this.translateCamera({
+        //     direction: directionArr,
+        //     moveDirection: direction,
+        // });
     }
 
     setSnapBackToPlayer() {
@@ -168,7 +178,6 @@ export default class Camera {
     translateCamera({ direction, moveDirection }) {
         const { player, ctx } = Game.getInstance();
 
-        // console.log(direction);
         if (direction.includes('d')) {
             const displacement = moveDirection?.x || Math.abs(player.velocity.x);
             ctx.translate(-displacement, 0);
@@ -196,10 +205,5 @@ export default class Camera {
         this.translateCamera({
             direction: this.cameraBox.getOverlap(this.getCameraSides()),
         });
-    }
-
-    drawCamera({ img, imageTopLeft, imageSelectSize, imagePosition, imageCanvasSize }) {
-        const { ctx } = Game.getInstance();
-        ctx.drawImage(img, imageTopLeft.x, imageTopLeft.y, imageSelectSize.x, imageSelectSize.y, imagePosition.x, imagePosition.y, imageCanvasSize.x, imageCanvasSize.y);
     }
 }

@@ -51,16 +51,10 @@ export default class GameStageTwoState extends GameBaseState {
             elevator?.update();
         }
 
-        game.enemySpawnHandler();
-
         firefliesSpawner();
 
-        enemyManager.update();
-
-        game.collideables.forEach((collideable) => collideable.update());
-
         if (!enemyManager.boss || enemyManager.boss.currState !== enemyManager.boss.deathState) {
-            player.updateState();
+            player.updateState([]);
         }
 
         // camera.renderTopBackground();
@@ -85,29 +79,22 @@ export default class GameStageTwoState extends GameBaseState {
         game.clicks = [];
         const mapGround = getImage('map_ground_second');
 
-        camera.init({
-            lowerBackground: mapGround,
-            topBackground: null,
-        });
-
-        camera.lowerBackground = mapGround;
-        camera.topBackground = null;
-
-        const colliders = [
-            { x: 100, y: 0, w: 370, h: 1000 },
-            { x: 470, y: 0, w: 995, h: 350 },
-            { x: 1465, y: 0, w: 300, h: 1000 },
-            { x: 100, y: 1000, w: 1664, h: 500 },
-        ];
-
-        camera.position.x = 0;
-        camera.position.y = 0;
+        camera.init(new Map().set('0,0', mapGround));
+        // const colliders = [
+        //     { x: 100, y: 0, w: 370, h: 1000 },
+        //     { x: 470, y: 0, w: 995, h: 350 },
+        //     { x: 1465, y: 0, w: 300, h: 1000 },
+        //     { x: 100, y: 1000, w: 1664, h: 500 },
+        // ];
 
         elevator.changeStage();
         const oldYPosition = player.centerPosition.y;
 
-        elevator.x += 22;
-        player.centerPosition.x += 22;
+        elevator.position.x = 970;
+        player.centerPosition.x = 960;
+
+        camera.followTarget = elevator;
+        camera.switchState(camera.followState);
 
         camera.setCameraPosition({
             position: {
@@ -116,8 +103,8 @@ export default class GameStageTwoState extends GameBaseState {
             },
         });
 
-        const yDiff = oldYPosition - elevator.y;
-        elevator.y = 0;
+        const yDiff = oldYPosition - elevator.position.y;
+        elevator.position.y = 0;
         player.centerPosition.y = yDiff;
     }
 }

@@ -12,6 +12,7 @@ const GameSettings = {
         SCREEN_HEIGHT: 1080,
         FOREST_STAGE: {
             FLOOR_WIDTH: 128,
+            GENERATE_DISTANCE: 7,
             SETPIECE_TREE_INITIAL_CHANCE: 0.5,
             SETPIECE_ENEMY_INITIAL_CHANCE: 0.2,
             SETPIECE_HEALTH_INITIAL_CHANCE: 0.2,
@@ -448,7 +449,7 @@ const GameSettings = {
                 amount: 8,
             },
             {
-                ref: 'boss/walk/judgement_move.png',
+                ref: 'boss/move/judgement_move.png',
                 name: 'judgement_move',
                 amount: 4,
             },
@@ -473,7 +474,7 @@ const GameSettings = {
                 amount: 4,
             },
             {
-                ref: 'boss/die/judgement_death.png',
+                ref: 'boss/death/judgement_death.png',
                 name: 'judgement_death',
                 amount: 21,
             },

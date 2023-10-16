@@ -104,7 +104,9 @@ export default class Player {
             });
         }
 
-        this.moveHandler(colliders);
+        if (this.currState !== this.inElevatorState) {
+            this.moveHandler(colliders);
+        }
 
         this.currState.drawImage(this);
 

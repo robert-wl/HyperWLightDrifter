@@ -3,6 +3,14 @@ import Game from '../../model/Game/Game.js';
 export default function playerCollision({ position, box, angle }) {
     const { player } = Game.getInstance();
 
+    if (player.currState === player.dashState) {
+        return false;
+    }
+
+    if (player.currState === player.inElevatorState) {
+        return false;
+    }
+
     if (position) {
         if (player.centerPosition.x + player.hitbox.x < position.x && player.centerPosition.x + player.width - player.hitbox.w > position.x && player.centerPosition.y + player.hitbox.y < position.y && player.centerPosition.y + player.height - player.hitbox.h > position.y) {
             player.damage({

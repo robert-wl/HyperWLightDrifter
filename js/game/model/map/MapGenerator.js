@@ -49,20 +49,21 @@ export default class MapGenerator {
 
     generateChunks() {
         const { camera, player } = Game.getInstance();
+        const { FLOOR_WIDTH, GENERATE_DISTANCE } = GameSettings.GAME.FOREST_STAGE;
 
         const pos1 = {
-            x: player.centerPosition.x - 128 * 5,
-            y: player.centerPosition.y - 128 * 5,
+            x: player.centerPosition.x - FLOOR_WIDTH * GENERATE_DISTANCE,
+            y: player.centerPosition.y - FLOOR_WIDTH * GENERATE_DISTANCE,
         };
         const pos2 = {
-            x: player.centerPosition.x + 128 * 5,
-            y: player.centerPosition.y + 128 * 5,
+            x: player.centerPosition.x + FLOOR_WIDTH * GENERATE_DISTANCE,
+            y: player.centerPosition.y + FLOOR_WIDTH * GENERATE_DISTANCE,
         };
         //
-        for (let i = pos1.x - 128; i <= pos2.x + 128; i += 128) {
-            for (let j = pos1.y - 128; j <= pos2.y + 128; j += 128) {
-                const x = Math.round(i / (128 * GameSettings.GAME.GAME_SCALE));
-                const y = Math.round(j / (128 * GameSettings.GAME.GAME_SCALE));
+        for (let i = pos1.x - FLOOR_WIDTH; i <= pos2.x + FLOOR_WIDTH; i += FLOOR_WIDTH) {
+            for (let j = pos1.y - FLOOR_WIDTH; j <= pos2.y + FLOOR_WIDTH; j += FLOOR_WIDTH) {
+                const x = Math.round(i / (FLOOR_WIDTH * GameSettings.GAME.GAME_SCALE));
+                const y = Math.round(j / (FLOOR_WIDTH * GameSettings.GAME.GAME_SCALE));
 
                 if (this.lowerLayers.has(`${x},${y}`)) {
                     continue;
@@ -80,7 +81,7 @@ export default class MapGenerator {
     generateElevatorFloor({ x, y }) {
         const { SETPIECE_ELEVATOR_INITIAL_CHANCE, SETPIECE_ELEVATOR_MAX_CHANCE } = GameSettings.GAME.FOREST_STAGE;
 
-        const chance = 0.5 || Math.min(SETPIECE_ELEVATOR_INITIAL_CHANCE + Game.getInstance().keyCount * 0.0005, SETPIECE_ELEVATOR_MAX_CHANCE);
+        const chance = 0.9 || Math.min(SETPIECE_ELEVATOR_INITIAL_CHANCE + Game.getInstance().keyCount * 0.0005, SETPIECE_ELEVATOR_MAX_CHANCE);
 
         if (getRandomBoolean(chance)) {
             this.lowerLayers.set(`${x},${y}`, this.getFloorImage(true));

@@ -35,6 +35,7 @@ export default class Game {
         this.objects = new Map();
         this.enemyList = [];
         this.elevators = [];
+        this.elevator = null;
         this.enemyManager = null;
         this.canvas = null;
         this.ctx = null;
@@ -58,8 +59,7 @@ export default class Game {
     }
 
     changeState() {
-        this.enemyManager.enemyList = [];
-        this.collideables = [];
+        this.objects.clear();
         this.ctx.fillStyle = '#000000';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height * 2);
     }
@@ -188,8 +188,6 @@ export default class Game {
 
         this.setTransparency(1);
     }
-
-    enemySpawnHandler() {}
 
     darkenBackground(darken = 0.05) {
         this.backgroundOpacity -= darken;
