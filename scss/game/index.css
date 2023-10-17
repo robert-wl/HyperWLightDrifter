@@ -52,14 +52,14 @@ body {
 }
 
 .video-top {
-  height: 5rem;
+  height: 10rem;
 }
 
 .video-container {
   position: relative;
 }
 .video-container > video {
-  height: 45rem;
+  height: 50rem;
   width: 100vw;
   object-fit: cover;
 }

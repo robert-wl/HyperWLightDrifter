@@ -103,7 +103,7 @@ body {
 }
 
 .video-top {
-  height: 5rem;
+  height: 10rem;
 }
 
 .video-container {
@@ -111,7 +111,7 @@ body {
 
 
   > video {
-    height: 45rem;
+    height: 50rem;
     width: 100vw;
     object-fit: cover;
 
@@ -120,7 +120,7 @@ body {
 
   .video-cover {
     @include absolute(0, 50%);
-    height: 90rem;
+    height: 100rem;
     width: 100vw;
     box-shadow: 0 0 1rem 1rem inset;
   }
