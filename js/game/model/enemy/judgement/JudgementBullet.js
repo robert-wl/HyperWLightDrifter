@@ -93,6 +93,9 @@ export default class JudgementBullet extends Enemy {
     render() {
         const judgementBullet = getNumberedImage('judgement_bullet', this.getAnimationNumber());
 
+        if (!judgementBullet) {
+            return;
+        }
         drawImage({
             img: judgementBullet,
             x: this.position.x,

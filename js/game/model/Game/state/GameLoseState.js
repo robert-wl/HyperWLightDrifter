@@ -26,21 +26,18 @@ export default class GameLoseState extends GameBaseState {
         game.setFilter('hue-rotate(90deg)');
         game.setTransparency(this.transparency);
         game.setTransparency(this.transparency, game.HUD);
-        ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+        ctx.clearRect(camera.position.x, camera.position.y, game.canvas.width, game.canvas.height);
 
         camera.renderLowerBackground();
 
-        enemyManager.update();
+        player.updateState([]);
 
-        player.updateState();
+        enemyManager?.updateBoss();
 
-        enemyManager.updateBoss();
-
-        enemyManager.updateBossEntities();
+        enemyManager?.updateBossEntities();
 
         camera.renderTopBackground();
         ParticlesManager.getInstance().update();
-
 
         game.drawHUD();
 

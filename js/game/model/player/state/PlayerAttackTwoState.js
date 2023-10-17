@@ -32,12 +32,13 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
             direction: this.direction,
         });
 
+        const { clicks, audio, enemyManager } = Game.getInstance();
+
         getEntityOnAttack({
             player: currPlayer,
-            entity: Game.getInstance().enemyList,
+            entity: enemyManager.enemyList,
         });
 
-        const { clicks, audio } = Game.getInstance();
         clicks.splice(clicks.indexOf('left'), 1);
         audio.playAudio('player/attack.wav', 2);
     }
@@ -99,12 +100,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
     drawDebug(currPlayer) {
         const { ctx } = Game.getInstance();
         ctx.fillStyle = 'red';
-        ctx.fillRect(
-            currPlayer.attackBox.x,
-            currPlayer.attackBox.y,
-            currPlayer.attackBox.w,
-            currPlayer.attackBox.h,
-        );
+        ctx.fillRect(currPlayer.attackBox.x, currPlayer.attackBox.y, currPlayer.attackBox.w, currPlayer.attackBox.h);
     }
 
     attackSideTiming(currPlayer) {

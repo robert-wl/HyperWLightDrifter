@@ -53,12 +53,6 @@ export default class Camera {
     }
 
     getCameraSides() {
-        console.log({
-            top: this.position.y,
-            bottom: this.position.y + this.height / 2,
-            left: this.position.x,
-            right: this.position.x + this.width / 2,
-        });
         return {
             top: this.position.y,
             bottom: this.position.y + this.height / 2,
@@ -186,7 +180,6 @@ export default class Camera {
         if (direction.includes('a')) {
             const displacement = moveDirection?.x || Math.abs(player.velocity.x);
             ctx.translate(displacement, 0);
-            // console.log(displacement);
             this.position.x -= displacement;
         }
         if (direction.includes('w')) {

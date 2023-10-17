@@ -30,22 +30,24 @@ export default class ElevatorMoveState extends ElevatorBaseState {
 
         this.handleVelocity(elevator);
 
+        const { movementDeltaTime, deltaTime } = Game.getInstance();
+
+        const velocity = this.velocity * movementDeltaTime;
         player.velocity.y = 0;
-        if (this.counter > 100) {
-            player.velocity.y = this.velocity;
+        if (this.counter > 140) {
+            player.velocity.y = velocity;
         }
 
-        player.centerPosition.y += this.velocity;
-        elevator.position.y += this.velocity;
-        elevator.travelDistance += this.velocity;
+        player.centerPosition.y += velocity;
+        elevator.position.y += velocity;
+        elevator.travelDistance += velocity;
 
         if (this.aboutToMount) {
-            elevator.bottomCrop += this.velocity * 0.415;
-            this.bottomCropAmount += this.velocity * 0.415;
+            elevator.bottomCrop += velocity * 0.415;
+            this.bottomCropAmount += velocity * 0.415;
         }
 
         if (elevator.stageLocation === 2) {
-            const { deltaTime } = Game.getInstance();
             this.counter += deltaTime;
         }
 
@@ -55,14 +57,11 @@ export default class ElevatorMoveState extends ElevatorBaseState {
     }
 
     handleVelocity(elevator) {
-        const { deltaTime } = Game.getInstance();
+        const { deltaTime, movementDeltaTime } = Game.getInstance();
         if (elevator.stageLocation === 2 && elevator.travelDistance > 650) {
-            this.velocity = this.velocity * (1 - this.frictionCoefficient * deltaTime);
-            if (this.bottomCropAmount < 2) {
-                this.velocity = 0.6;
-            }
+            this.velocity = this.velocity * (1 - this.frictionCoefficient * movementDeltaTime);
 
-            if (elevator.travelDistance > 681) {
+            if (elevator.travelDistance > 683) {
                 this.aboutToMount = true;
             }
 
@@ -70,10 +69,17 @@ export default class ElevatorMoveState extends ElevatorBaseState {
                 this.velocity = 0;
             }
 
+            if (this.bottomCropAmount < 10) {
+                this.velocity = 0.6 * movementDeltaTime;
+                return;
+            }
+
+            this.velocity = 0;
+
             return;
         }
 
-        this.velocity += 0.1 * deltaTime;
+        this.velocity += 0.1 * movementDeltaTime;
 
         this.velocity = Math.min(this.velocity, 3 * deltaTime);
     }

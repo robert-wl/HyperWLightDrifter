@@ -10,7 +10,6 @@ export default class EnemyManager {
         this.enemyList = [];
         this.boss = null;
         this.bossEntities = [];
-        this.difficulty = 8;
     }
 
     static getInstance() {
@@ -27,6 +26,10 @@ export default class EnemyManager {
         }
 
         CrystalBrute.generate(position);
+    }
+
+    clearEntities() {
+        this.enemyList = [];
     }
 
     updateBoss() {

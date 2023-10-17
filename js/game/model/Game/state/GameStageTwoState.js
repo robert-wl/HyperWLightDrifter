@@ -1,21 +1,31 @@
 import GameBaseState from './GameBaseState.js';
-import firefliesSpawner from '../../../helper/renderer/firefliesSpawner.js';
 import { getImage, imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import Judgement from '../../enemy/judgement/Judgement.js';
 import AudioPlayer from '../../../../audio/AudioPlayer.js';
+import Collider from '../../collideable/Collider.js';
 
+const colliders = [
+    { x: 100, y: 0, width: 370, height: 1000 },
+    { x: 470, y: 0, width: 995, height: 350 },
+    { x: 1465, y: 0, width: 300, height: 1000 },
+    { x: 100, y: 1000, width: 1664, height: 500 },
+];
 export default class GameStageTwoState extends GameBaseState {
-    hasBossSpawned = false;
-
     async enterState(game) {
+        this.hasInitialized = false;
+        this.colliders = [];
         AudioPlayer.getInstance().stopAll();
         game.stage = 2;
         await this.stageInitializer(game);
         this.hasBossSpawned = false;
+        this.hasInitialized = true;
     }
 
     updateState(game) {
+        if (!this.hasInitialized) {
+            return;
+        }
         game.pauseHandler();
 
         const { ctx, camera, player, enemyManager, backgroundOpacity, elevator } = game;
@@ -51,13 +61,9 @@ export default class GameStageTwoState extends GameBaseState {
             elevator?.update();
         }
 
-        firefliesSpawner();
-
         if (!enemyManager.boss || enemyManager.boss.currState !== enemyManager.boss.deathState) {
-            player.updateState([]);
+            player.updateState(this.colliders);
         }
-
-        // camera.renderTopBackground();
 
         game.drawHUD();
         enemyManager.updateBoss();
@@ -73,20 +79,19 @@ export default class GameStageTwoState extends GameBaseState {
         game.changeState();
         await imageLoader([GameSettings.IMAGES.STAGE_TWO, GameSettings.IMAGES.PLAYER]);
 
-        const { camera, player, elevator } = game;
+        const { camera, player, elevator, enemyManager } = game;
+
+        enemyManager.clearEntities();
 
         game.keys = [];
         game.clicks = [];
         const mapGround = getImage('map_ground_second');
 
         camera.init(new Map().set('0,0', mapGround));
-        // const colliders = [
-        //     { x: 100, y: 0, w: 370, h: 1000 },
-        //     { x: 470, y: 0, w: 995, h: 350 },
-        //     { x: 1465, y: 0, w: 300, h: 1000 },
-        //     { x: 100, y: 1000, w: 1664, h: 500 },
-        // ];
 
+        colliders.forEach((collider) => {
+            this.colliders.push(new Collider(collider));
+        });
         elevator.changeStage();
         const oldYPosition = player.centerPosition.y;
 

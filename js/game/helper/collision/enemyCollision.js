@@ -1,10 +1,8 @@
 import Game from '../../model/Game/Game.js';
 
 export default function enemyCollision({ position }) {
-    const { enemyList } = Game.getInstance();
+    const { enemyList, boss, bossEntities } = Game.getInstance().enemyManager;
 
-    let bossEntities = [];
-    let boss = null;
     for (const enemy of enemyList) {
         if (enemy.currState === enemy.dieState) {
             continue;

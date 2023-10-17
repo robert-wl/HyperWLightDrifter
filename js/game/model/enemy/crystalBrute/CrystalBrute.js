@@ -50,7 +50,7 @@ export default class CrystalBrute extends Enemy {
             height: 140,
         });
 
-        const { enemyList } = Game.getInstance();
+        const { enemyList } = Game.getInstance().enemyManager;
         enemyList.push(newCrystalBrute);
     }
 

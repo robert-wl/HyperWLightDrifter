@@ -84,10 +84,11 @@ export default class CameraBaseState {
     }
 
     getObjects(camera) {
-        const { player, enemyList } = Game.getInstance();
+        const { player, enemyManager } = Game.getInstance();
         const { GAME_SCALE, FOREST_STAGE } = GameSettings.GAME;
         const objects = [];
         const colliders = [];
+        const enemyList = enemyManager.enemyList;
 
         camera.upperLayers.forEach((object, positionStr) => {
             const position = {
