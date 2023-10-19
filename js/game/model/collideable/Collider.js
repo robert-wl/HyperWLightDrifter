@@ -17,7 +17,9 @@ export default class Collider {
     }
 
     checkCollision({ x, y, w, h }) {
-        // this.renderDebug();
+        if (Game.getInstance().debug) {
+            this.renderDebug();
+        }
         return !(this.x + this.width >= x && this.x <= x + w && this.y + this.height >= y && this.y <= y + h);
     }
 

@@ -306,6 +306,10 @@ const GameSettings = {
                 name: 'player_death',
                 amount: 6,
             },
+            {
+                ref: 'UI/damaged.png',
+                name: 'damaged_ui',
+            },
         ],
         STAGE_ONE: [
             {

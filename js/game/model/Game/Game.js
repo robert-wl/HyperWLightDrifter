@@ -1,6 +1,5 @@
 import Player from '../player/Player.js';
 import playerInput from '../../helper/player/playerInput.js';
-import { get_image } from '../../helper/fileReader.js';
 import Camera from '../camera/Camera.js';
 import hudHandler from '../../ui/hudHandler.js';
 import GameSettings from '../../constants.js';
@@ -13,6 +12,7 @@ import GameBaseState from './state/GameBaseState.js';
 import AudioPlayer from '../../../audio/AudioPlayer.js';
 import GameLoseState from './state/GameLoseState.js';
 import MapGenerator from '../map/MapGenerator.js';
+import { getImage } from '../../helper/imageLoader.js';
 
 export default class Game {
     static instance = null;
@@ -181,9 +181,8 @@ export default class Game {
 
         this.setTransparency(Math.sin(Math.abs(this.player.immunity - 30) / 30));
 
-        get_image('UI', 'damaged', null, (img) => {
-            Game.getInstance().HUD.drawImage(img, 0, 0, img.width * GameSettings.GAME.GAME_SCALE, img.height * GameSettings.GAME.GAME_SCALE);
-        });
+        const damageUI = getImage('damaged_ui');
+        this.ctx.drawImage(damageUI, this.camera.position.x, this.camera.position.y, damageUI.width * GameSettings.GAME.GAME_SCALE, damageUI.height * GameSettings.GAME.GAME_SCALE);
 
         this.setTransparency(1);
     }

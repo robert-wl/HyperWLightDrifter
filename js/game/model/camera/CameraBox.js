@@ -65,7 +65,6 @@ export default class CameraBox {
             directionArray.push('w');
         }
 
-        console.log(directionArray);
         return directionArray;
     }
 

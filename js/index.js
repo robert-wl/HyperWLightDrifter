@@ -1,11 +1,9 @@
 import Game from './game/model/Game/Game.js';
 
-
 $(document).ready(async () => {
     const game = Game.getInstance();
     game.debug = false;
     // game.enemyManager.enemySpawn = true;
-
 
     let lastTimestamp = 0;
     let isTabVisible = true;

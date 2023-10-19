@@ -68,7 +68,7 @@ body {
   top: 0;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 90rem;
+  height: 100rem;
   width: 100vw;
   box-shadow: 0 0 1rem 1rem inset;
 }
