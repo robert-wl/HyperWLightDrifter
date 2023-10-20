@@ -30,5 +30,19 @@ export default class ElevatorMountedTopState extends ElevatorBaseState {
             width: elevatorImage.width * GameSettings.GAME.GAME_SCALE,
             height: elevatorImage.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        if (Game.getInstance().keyCount >= 10) {
+            return;
+        }
+
+        const lock = getImage('lock');
+
+        drawImage({
+            img: lock,
+            x: elevator.position.x - elevatorImage.width + 15,
+            y: elevator.position.y - elevatorImage.height + 7,
+            width: lock.width * GameSettings.GAME.GAME_SCALE,
+            height: lock.height * GameSettings.GAME.GAME_SCALE,
+        });
     }
 }

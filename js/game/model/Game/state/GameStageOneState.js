@@ -5,7 +5,7 @@ import InteractionBar from '../../interactables/InteractionBar.js';
 import Game from '../Game.js';
 import { imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
-import PauseModal from '../../modal/PauseModal.js';
+import PauseModal from '../../htmlElements/PauseModal.js';
 
 export default class GameStageOneState extends GameBaseState {
     async enterState(game) {
@@ -45,7 +45,7 @@ export default class GameStageOneState extends GameBaseState {
         game.setTransparency(1);
 
         firefliesSpawner();
-        
+
         game.setTransparency(game.backgroundOpacity);
         camera.renderTopBackground();
         game.setTransparency(1);

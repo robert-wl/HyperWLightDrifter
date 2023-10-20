@@ -12,7 +12,7 @@ export default class JudgementDeathState extends JudgementBaseState {
 
         this.advanceAnimationStage(5);
 
-        const { deltaTime } = Game.getInstance();
+        const { deltaTime, currState, endState, backgroundOpacity } = Game.getInstance();
         if (this.animationStage >= 21) {
             this.deadTime += deltaTime;
 
@@ -27,6 +27,11 @@ export default class JudgementDeathState extends JudgementBaseState {
 
         if (this.deadTime > 100) {
             Game.getInstance().darkenBackground(0.005 * deltaTime);
+        }
+
+        if (backgroundOpacity <= 0.01 && currState !== endState) {
+            console.log('henlo');
+            Game.getInstance().switchState(endState);
         }
     }
 

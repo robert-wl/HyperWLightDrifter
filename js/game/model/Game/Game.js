@@ -13,6 +13,7 @@ import AudioPlayer from '../../../audio/AudioPlayer.js';
 import GameLoseState from './state/GameLoseState.js';
 import MapGenerator from '../map/MapGenerator.js';
 import { getImage } from '../../helper/imageLoader.js';
+import GameEndState from './state/GameEndState.js';
 
 export default class Game {
     static instance = null;
@@ -48,6 +49,7 @@ export default class Game {
         this.stageTwoState = new GameStageTwoState();
         this.pausedState = new GamePausedState();
         this.loseState = new GameLoseState();
+        this.endState = new GameEndState();
     }
 
     static getInstance() {

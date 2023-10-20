@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import "animations";
+@import "variables";
 
 $pink-color: rgb(254, 31, 136);
 
@@ -312,40 +314,12 @@ $pink-color: rgb(254, 31, 136);
     background-color: transparent;
     opacity: 0;
   }
-}
 
-@keyframes arrowMoveLeft {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-10%);
+
+  #ending-screen {
+    display: none;
+    z-index: 10;
   }
 }
 
-@keyframes arrowMoveRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(10%);
-  }
-}
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 100%;
-  }
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 100%;
-  }
-  100% {
-    opacity: 0;
-  }
-}

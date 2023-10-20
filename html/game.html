@@ -160,6 +160,11 @@
             src='../assets/ui/start.png'
             width='1920'
         />
+        <video
+            id='ending-screen'
+        >
+            <source src='../assets/ui/ending.mp4' type='video/mp4' />
+        </video>
         <canvas
             height='1080'
             id='HUD'
@@ -176,5 +181,14 @@
     src='../js/index.js'
     type='module'
 ></script>
+<script>
+    console.log(localStorage.getItem('finished'));
+    if (localStorage.getItem('finished') === 'true') {
+        console.log('nya');
+        $('#opening-screen').attr('src', '../assets/ui/start_end.png');
+    }
+
+    localStorage.setItem('finished', 'false');
+</script>
 </body>
 </html>

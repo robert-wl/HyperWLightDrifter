@@ -3,9 +3,9 @@ import ParticlesManager from '../../particles/ParticlesManager.js';
 import Fireflies from '../../particles/Fireflies.js';
 import menuHandler from '../../../ui/menuHandler.js';
 import Game from '../Game.js';
-import MenuModal from '../../modal/MenuModal.js';
-import SelectionModal from '../../modal/SelectionModal.js';
-import SettingsModal from '../../modal/SettingsModal.js';
+import MenuModal from '../../htmlElements/MenuModal.js';
+import SelectionModal from '../../htmlElements/SelectionModal.js';
+import SettingsModal from '../../htmlElements/SettingsModal.js';
 import { imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 
@@ -35,7 +35,7 @@ export default class GameStartState extends GameBaseState {
         audio.playAudio('menu/background.ogg', null, true);
 
         $('#opening-screen').css('opacity', '100%').css('display', 'block');
-    }               
+    }
 
     updateState(game) {
         super.updateState(game);
@@ -56,7 +56,7 @@ export default class GameStartState extends GameBaseState {
 
             this.resetCounter();
         }
-        
+
         ParticlesManager.getInstance().update();
     }
 

@@ -13,10 +13,25 @@
     />
 </head>
 <body>
-<div class='navbar'>
+<div class='navbar' id='navbar'>
     <div class='navbar-container'>
-        <div class='navbar-image-container'>
-            <img alt='' src='../assets/web/logo.png'>
+        <div class='navbar-container-left'>
+            <img alt='' src='../assets/web/title.png'>
+            <button>
+                HOME
+                <div class='underline'></div>
+            </button>
+            <button>
+                HOW TO PLAY
+                <div class='underline'></div>
+            </button>
+        </div>
+        <div class='navbar-container-right'>
+            <button>
+                <a href='game.html'>
+                    PLAY DEMO
+                </a>
+            </button>
         </div>
     </div>
 </div>
@@ -31,6 +46,15 @@
         <img src='../assets/web/title.png'>
         <a class='try-demo-button' href='game.html'>TRY DEMO</a>
     </div>
+</div>
+
+<div class='trailer'>
+    <h3>WATCH TRAILER</h3>
+    <iframe allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            allowfullscreen frameborder='0'
+            height='630' src='https://www.youtube.com/embed/nWufEJ1Ava0?si=XJZkwktmk2fYI12I'
+            title='YouTube video player'
+            width='1120'></iframe>
 </div>
 <div class='about-container'>
     <div class='about-content'>
@@ -108,5 +132,6 @@
     integrity='sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM='
     src='https://code.jquery.com/jquery-3.7.0.js'
 ></script>
+<script src='../js/web/web.js'></script>
 </body>
 </html>

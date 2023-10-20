@@ -32,7 +32,7 @@ const GameSettings = {
     },
     PLAYER: {
         DAMAGE: {
-            HIT: 1,
+            HIT: 100,
             BULLET: 2,
             GRENADE: 2,
         },
@@ -60,9 +60,6 @@ const GameSettings = {
             w: 15,
             h: 0,
         },
-        HIT_DAMAGE: 1,
-        BULLET_DAMAGE: 2,
-        GRENADE_DAMAGE: 3,
         LAST_DIRECTION: 's',
         DEBUG_COLOR: 'rgb(0, 255, 0, 0.5)',
         ATTACK_BOX: {
@@ -323,8 +320,12 @@ const GameSettings = {
                 amount: 4,
             },
             {
-                ref: 'world/elevator.png',
+                ref: 'world/elevator/elevator.png',
                 name: 'elevator',
+            },
+            {
+                ref: 'world/elevator/lock.png',
+                name: 'lock',
             },
             {
                 ref: 'enemy/crystal_brute/idle/idle.png',
@@ -386,10 +387,6 @@ const GameSettings = {
                 name: 'shadow',
             },
             {
-                ref: 'world/map_ground.png',
-                name: 'map_ground',
-            },
-            {
                 ref: 'world/forest/floor/floor.png',
                 name: 'forest_floor',
                 amount: 8,
@@ -412,14 +409,6 @@ const GameSettings = {
                 ref: 'world/forest/set_pieces/health/health.png',
                 name: 'set_pieces_health',
                 amount: 5,
-            },
-            {
-                ref: 'world/first_map_full.png',
-                name: 'map_top',
-            },
-            {
-                ref: 'world/first_map_full.png',
-                name: 'map_top',
             },
             {
                 ref: 'other/medkit/medkit.png',

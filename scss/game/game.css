@@ -1,4 +1,47 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@keyframes arrowMoveLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10%);
+  }
+}
+@keyframes arrowMoveRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10%);
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes buttonBorderBottom {
+  0% {
+    border-bottom: 0.2rem solid rgb(253, 27, 94);
+    border-bottom-width: 0;
+  }
+  100% {
+    border-bottom: 0.2rem solid rgb(253, 27, 94);
+    border-bottom-width: 100%;
+  }
+}
 * {
   margin: 0;
   padding: 0;
@@ -318,38 +361,9 @@
   background-color: transparent;
   opacity: 0;
 }
-
-@keyframes arrowMoveLeft {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-10%);
-  }
-}
-@keyframes arrowMoveRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(10%);
-  }
-}
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 100%;
-  }
-}
-@keyframes fadeOut {
-  0% {
-    opacity: 100%;
-  }
-  100% {
-    opacity: 0;
-  }
+.container #ending-screen {
+  display: none;
+  z-index: 10;
 }
 
 /*# sourceMappingURL=game.css.map */

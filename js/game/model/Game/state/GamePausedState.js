@@ -1,10 +1,8 @@
-import GameBaseState from "./GameBaseState.js";
-import PauseModal from "../../modal/PauseModal.js";
-import Game from "../Game.js";
-
+import GameBaseState from './GameBaseState.js';
+import PauseModal from '../../htmlElements/PauseModal.js';
+import Game from '../Game.js';
 
 export default class GamePausedState extends GameBaseState {
-
     enterState(game) {
         PauseModal.open();
 
@@ -16,7 +14,7 @@ export default class GamePausedState extends GameBaseState {
     updateState(game) {
         const { keys } = Game.getInstance();
 
-        if(keys.includes('escape')) {
+        if (keys.includes('escape')) {
             keys.splice(keys.indexOf('escape'), 1);
             game.unpauseGame();
         }
