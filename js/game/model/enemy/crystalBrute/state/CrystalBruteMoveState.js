@@ -14,8 +14,8 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         this.clockwise = getRandomBoolean(0.5);
         this.moveTime = 0;
         this.attackDelay = getRandomValue({
-            initialValue: 200,
-            randomValue: 200,
+            initialValue: 100,
+            randomValue: 100,
         });
 
         currBrute.speed = 0.5;

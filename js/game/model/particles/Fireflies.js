@@ -7,15 +7,14 @@ import { getNumberedImage } from '../../helper/imageLoader.js';
 import ParticlesManager from './ParticlesManager.js';
 
 export default class Fireflies extends Particles {
-    constructor({ position, speed, angle, lifeSpan, width, height, canvas }) {
+    constructor({ position, speed, angle, lifeSpan, size, canvas }) {
         super({
             position,
             speed,
             lifeSpan,
-            width,
-            height,
             canvas,
         });
+        this.size = size;
         this.angle = angle;
         this.rotation = 0;
     }
@@ -30,22 +29,18 @@ export default class Fireflies extends Particles {
                 initialValue: -1,
                 randomValue: 2,
             }) *
-            distanceConst;
+                distanceConst;
         const y =
             spawnPosition.y +
             getRandomValue({
                 initialValue: -1,
                 randomValue: 2,
             }) *
-            distanceConst;
+                distanceConst;
 
-        const width = getRandomValue({
-            initialValue: 5,
-            randomValue: 10,
-        });
-        const height = getRandomValue({
-            initialValue: 5,
-            randomValue: 10,
+        const size = getRandomValue({
+            initialValue: 1,
+            randomValue: 2,
         });
         const lifeSpanLength =
             lifespan ||
@@ -72,8 +67,7 @@ export default class Fireflies extends Particles {
             speed: updateSpeed,
             angle: angle,
             lifeSpan: lifeSpanLength,
-            width: width,
-            height: height,
+            size: size,
             canvas: canvas,
         });
 
@@ -131,6 +125,7 @@ export default class Fireflies extends Particles {
             img: firefly,
             angle: this.rotation * Math.PI,
             position: this.position,
+            size: this.size,
         });
 
         canvas.globalAlpha = 1;

@@ -1,6 +1,6 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import Game from '../../../Game/Game.js';
-import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
+import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
@@ -18,6 +18,18 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
             Key.generate(currSpider.position);
         }
         audio.playAudio('enemy/crystal_spider/death.wav');
+    }
+
+    updateState(currSpider) {
+        const { centerPosition } = Game.getInstance().player;
+        const distance = getManhattanDistance({
+            x: currSpider.position.x - centerPosition.x,
+            y: currSpider.position.y - centerPosition.y,
+        });
+
+        if (distance > 1000) {
+            currSpider.clear();
+        }
     }
 
     drawImage(currSpider) {

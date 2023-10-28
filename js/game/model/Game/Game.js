@@ -34,6 +34,8 @@ export default class Game {
         this.keys = [];
         this.clicks = [];
         this.objects = new Map();
+        this.lightMap = new Map();
+        this.coins = [];
         this.elevators = [];
         this.elevator = null;
         this.enemyManager = null;

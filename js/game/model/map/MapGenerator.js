@@ -33,7 +33,7 @@ export default class MapGenerator {
             return getImage('forest_floor_elevator');
         }
 
-        if (!getRandomBoolean(0.1)) {
+        if (getRandomBoolean(0.5)) {
             return getNumberedImage('forest_floor', 1);
         }
 
@@ -59,7 +59,6 @@ export default class MapGenerator {
             x: player.centerPosition.x + FLOOR_WIDTH * GENERATE_DISTANCE,
             y: player.centerPosition.y + FLOOR_WIDTH * GENERATE_DISTANCE,
         };
-        //
         for (let i = pos1.x - FLOOR_WIDTH; i <= pos2.x + FLOOR_WIDTH; i += FLOOR_WIDTH) {
             for (let j = pos1.y - FLOOR_WIDTH; j <= pos2.y + FLOOR_WIDTH; j += FLOOR_WIDTH) {
                 const x = Math.round(i / (FLOOR_WIDTH * GameSettings.GAME.GAME_SCALE));

@@ -91,4 +91,9 @@ export default class CrystalSpider extends Enemy {
             this.damaged -= deltaTime;
         }
     }
+
+    clear() {
+        const { enemyList } = Game.getInstance().enemyManager;
+        enemyList.splice(enemyList.indexOf(this), 1);
+    }
 }

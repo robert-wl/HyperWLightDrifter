@@ -4,7 +4,6 @@ import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
 import InteractionBar from './InteractionBar.js';
 import Game from '../Game/Game.js';
-import SetPiece from '../map/setPieces/SetPiece.js';
 
 export default class Key extends Animateable {
     constructor({ position, width, height, key }) {
@@ -28,14 +27,8 @@ export default class Key extends Animateable {
             key,
         });
 
-        const { objects } = Game.getInstance();
-
-        if (objects.has(key)) {
-            objects.get(key).pieces.push(keyObject);
-            console.log(objects.get(key).pieces);
-            return;
-        }
-        objects.set(key, new SetPiece([keyObject], 'key'));
+        const { coins } = Game.getInstance();
+        coins.push(keyObject);
     }
 
     update() {
@@ -71,11 +64,10 @@ export default class Key extends Animateable {
     }
 
     activate() {
-        const { interactables, audio } = Game.getInstance();
+        const { interactables, coins, audio } = Game.getInstance();
         // audio.playAudio('player/medkit/use.wav');
         interactables.splice(interactables.indexOf(this), 1);
-
-        const setPiece = Game.getInstance().objects.get(this.key);
-        setPiece.pieces.splice(setPiece.pieces.indexOf(this), 1);
+        
+        coins.splice(coins.indexOf(this), 1);
     }
 }

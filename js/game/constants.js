@@ -17,8 +17,10 @@ const GameSettings = {
             SETPIECE_ENEMY_INITIAL_CHANCE: 0.15,
             SETPIECE_HEALTH_INITIAL_CHANCE: 0.1,
             SETPIECE_ELEVATOR_INITIAL_CHANCE: 0.001,
+            SETPIECE_PLANTS_INITIAL_CHANCE: 0.15,
+            SETPIECE_STONES_INITIAL_CHANCE: 0.1,
             SETPIECE_ELEVATOR_MAX_CHANCE: 0.03,
-            SPIDER_SPAWN_CHANCE: 0.9,
+            SPIDER_SPAWN_CHANCE: 0.75,
         },
     },
     game: {
@@ -32,7 +34,7 @@ const GameSettings = {
     },
     PLAYER: {
         DAMAGE: {
-            HIT: 100,
+            HIT: 1,
             BULLET: 2,
             GRENADE: 2,
         },
@@ -283,16 +285,19 @@ const GameSettings = {
                 ref: 'player/grenade/throw/side/throw.png',
                 name: 'player_throw_side',
                 amount: 8,
+                outfit: true,
             },
             {
                 ref: 'player/grenade/throw/down/throw.png',
                 name: 'player_throw_down',
                 amount: 8,
+                outfit: true,
             },
             {
                 ref: 'player/grenade/throw/up/throw.png',
                 name: 'player_throw_up',
                 amount: 8,
+                outfit: true,
             },
             {
                 ref: 'player/aim/gun/projectile.png',
@@ -302,6 +307,7 @@ const GameSettings = {
                 ref: 'player/death/death.png',
                 name: 'player_death',
                 amount: 6,
+                outfit: true,
             },
             {
                 ref: 'UI/damaged.png',
@@ -326,6 +332,21 @@ const GameSettings = {
             {
                 ref: 'world/elevator/lock.png',
                 name: 'lock',
+            },
+            {
+                ref: 'world/forest/set_pieces/plant/plant.png',
+                name: 'set_pieces_plants',
+                amount: 5,
+            },
+            {
+                ref: 'world/forest/set_pieces/stone/big/stone.png',
+                name: 'set_pieces_stone_big',
+                amount: 4,
+            },
+            {
+                ref: 'world/forest/set_pieces/stone/small/stone.png',
+                name: 'set_pieces_stone_small',
+                amount: 5,
             },
             {
                 ref: 'enemy/crystal_brute/idle/idle.png',

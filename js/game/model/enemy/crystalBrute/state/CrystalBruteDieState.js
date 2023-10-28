@@ -1,6 +1,6 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
 import Game from '../../../Game/Game.js';
-import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
+import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
@@ -22,7 +22,7 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
     }
 
     updateState(currBrute) {
-        const { deltaTime, movementDeltaTime } = Game.getInstance();
+        const { deltaTime, movementDeltaTime, player } = Game.getInstance();
         currBrute.position.x += getHorizontalValue({
             magnitude: currBrute.speed * deltaTime,
             angle: currBrute.angle,
@@ -33,6 +33,16 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
         });
 
         currBrute.speed *= 1 - this.friction * movementDeltaTime;
+
+        const { centerPosition } = player;
+        const distance = getManhattanDistance({
+            x: currBrute.position.x - centerPosition.x,
+            y: currBrute.position.y - centerPosition.y,
+        });
+
+        if (distance > 1000) {
+            currBrute.clear();
+        }
     }
 
     drawImage(currBrute) {

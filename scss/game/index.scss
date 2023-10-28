@@ -8,6 +8,8 @@ body {
   margin: 0;
   padding: 0;
   background-color: black;
+  color: white;
+  font-family: 'omnes-pro', sans-serif;
 }
 
 @mixin flex-rules($direction, $justify, $align) {
@@ -231,43 +233,105 @@ body {
   }
 }
 
-.about-container {
+.latest-news-container {
   @include flex-rules(column, center, center);
+  margin-top: 2rem;
+
+  .title-container {
+    width: 80%;
+
+    > h3 {
+      width: fit-content;
+      font-size: 40px;
+      border-bottom: 0.2rem solid $pink-color;
+    }
+  }
+
+  .horizontal-news-container {
+    @include flex-rules(row, center, center);
+    gap: 1rem;
+    width: 80%;
+
+    .news-container {
+      @include flex-rules(column, center, center);
+      background-color: white;
+      width: 100%;
+      margin: 2rem 0;
+      transition: 0.25s linear;
+      cursor: pointer;
+
+      &:hover {
+        -webkit-transform: translateY(-50px);
+        transform: translateY(-30px);
+      }
+
+      > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .news-content {
+        @include flex-rules(column, start, center);
+        background-color: white;
+        width: 100%;
+        height: 12rem;
+        margin: 1rem;
+
+        .header {
+          @include flex-rules(row, center, center);
+          width: 100%;
+          justify-content: space-between;
+
+          > p {
+            color: black;
+            font-weight: bold;
+            font-family: Kanit, serif;
+            margin: 0 1rem;
+
+            &:nth-child(2) {
+              color: $pink-color;
+            }
+          }
+        }
+
+        .content {
+          margin: 0 1rem;
+          color: black;
+
+          > h3 {
+            margin: 2rem 0 0 0;
+          }
+
+          > p {
+            font-weight: lighter;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.about-container {
+  @include flex-rules(row, center, center);
   z-index: 10;
   margin-top: 2rem;
 
   .about-content {
-    @include flex-rules(row, center, none);
-    width: 60rem;
+    @include flex-rules(column, start, center);
+    margin: 0 2rem;
+    height: 40rem;
 
-    .about-image-container {
-      img {
-        width: 30rem;
-        height: 40rem;
-        margin: 0 2rem;
-        object-fit: cover;
-      }
-    }
+    .score-container {
+      @include flex-rules(column, center, center);
 
-    .about-text-container {
-      > h1 {
-        width: 100%;
-        font-family: 'Kanit', sans-serif;
-        color: white;
-        padding-bottom: 0.2rem;
-        border-bottom: 0.2rem solid white;
-      }
-
-      > p {
-        font-family: 'Kanit', sans-serif;
-        font-weight: lighter;
-        letter-spacing: 0.1rem;
-        font-size: 1.1rem;
-        text-align: start;
-        color: white;
+      .score {
+        border: 0.2rem solid white;
       }
     }
   }
+
 }
 
 

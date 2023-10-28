@@ -66,6 +66,7 @@ export default class CameraBaseState {
                 hasUpdatedPlayer = this.updatePlayer(position.y, colliders);
             }
 
+            // console.log(piece);
             drawImageFromBottom({
                 img: image,
                 x: position.x,
@@ -84,7 +85,7 @@ export default class CameraBaseState {
     }
 
     getObjects(camera) {
-        const { player, enemyManager } = Game.getInstance();
+        const { player, enemyManager, coins } = Game.getInstance();
         const { GAME_SCALE, FOREST_STAGE } = GameSettings.GAME;
         const objects = [];
         const colliders = [];
@@ -134,6 +135,7 @@ export default class CameraBaseState {
             return positionOne - positionTwo;
         });
 
+        objects.push(...coins);
         return { objects, colliders };
     }
 

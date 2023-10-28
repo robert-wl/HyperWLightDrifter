@@ -16,15 +16,21 @@ export default class SetPieceGenerator {
             return;
         }
 
-        const { SETPIECE_TREE_INITIAL_CHANCE, SETPIECE_ENEMY_INITIAL_CHANCE, SETPIECE_HEALTH_INITIAL_CHANCE } = GameSettings.GAME.FOREST_STAGE;
+        const { SETPIECE_STONES_INITIAL_CHANCE, SETPIECE_TREE_INITIAL_CHANCE, SETPIECE_ENEMY_INITIAL_CHANCE, SETPIECE_HEALTH_INITIAL_CHANCE, SETPIECE_PLANTS_INITIAL_CHANCE } = GameSettings.GAME.FOREST_STAGE;
         this.treeChance = SETPIECE_TREE_INITIAL_CHANCE;
         this.enemyChance = SETPIECE_ENEMY_INITIAL_CHANCE;
         this.healthChance = SETPIECE_HEALTH_INITIAL_CHANCE;
-
+        this.plantChance = SETPIECE_PLANTS_INITIAL_CHANCE;
+        this.stoneChance = SETPIECE_STONES_INITIAL_CHANCE;
         this.updateChance(position);
 
         if (getRandomBoolean(this.treeChance)) {
             this.generateTree(position);
+            return;
+        }
+
+        if (getRandomBoolean(this.stoneChance)) {
+            this.generateStone(position);
             return;
         }
 
@@ -35,7 +41,48 @@ export default class SetPieceGenerator {
 
         if (getRandomBoolean(this.healthChance)) {
             this.generateHealth(position);
+            return;
         }
+
+        if (getRandomBoolean(this.plantChance)) {
+            this.generatePlants(position);
+        }
+    }
+
+    static generatePlants({ x, y }) {
+        const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
+        const { FLOOR_WIDTH } = FOREST_STAGE;
+        const pieces = [];
+        const key = `${y},${x}`;
+
+        const random = getRandomValue({
+            initialValue: 1,
+            randomValue: 5,
+            rounded: true,
+        });
+
+        const generateAmount = getRandomValue({
+            initialValue: 1,
+            randomValue: 8,
+            rounded: true,
+        });
+
+        for (let i = 0; i < generateAmount; i++) {
+            const objectX = x * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
+            const objectY = y * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
+
+            pieces.push(
+                plants(
+                    {
+                        x: objectX,
+                        y: objectY,
+                    },
+                    random,
+                ),
+            );
+        }
+
+        Game.getInstance().objects.set(key, new SetPiece(pieces, 'plant'));
     }
 
     static generateElevator({ x, y }) {
@@ -76,33 +123,64 @@ export default class SetPieceGenerator {
             if (objects.get(key).type === 'tree') {
                 this.treeChance += 0.1;
                 this.healthChance += 0.05;
+                this.stoneChance += 0.05;
                 continue;
             }
             if (objects.get(key).type === 'enemy') {
                 this.enemyChance += 0.05;
                 this.treeChance -= 0.2;
+                this.stoneChance -= 0.01;
                 continue;
             }
             if (objects.get(key).type === 'health') {
                 this.treeChance = 0;
                 this.healthChance = 0;
+                this.stoneChance = 0;
             }
             if (objects.get(key).type === 'elevator') {
                 this.treeChance = 0;
                 this.enemyChance = 0;
                 this.healthChance = 0;
+                this.stoneChance = 0;
+            }
+            if (objects.get(key).type === 'stone') {
+                this.treeChance += 0.05;
+                this.healthChance += 0.05;
+                this.stoneChance += 0.2;
             }
         }
     }
 
+    static generateStone({ x, y }) {
+        const pieces = [];
+        const { objectX, objectY } = getRandomCoordinates({ x, y });
+
+        if (getRandomBoolean(0.4)) {
+            pieces.push(
+                largeStone({
+                    x: objectX,
+                    y: objectY,
+                }),
+            );
+
+            Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'stone'));
+            return;
+        }
+
+        for (let i = 0; i < Math.random() * 3; i++) {
+            const { objectX, objectY } = getRandomCoordinates({ x, y });
+
+            pieces.push(stone({ x: objectX, y: objectY }));
+        }
+
+        Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'stone'));
+    }
+
     static generateTree({ x, y }) {
-        const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
-        const { FLOOR_WIDTH } = FOREST_STAGE;
         const pieces = [];
 
         for (let i = 0; i < Math.random() * 5; i++) {
-            const objectX = x * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
-            const objectY = y * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
+            const { objectX, objectY } = getRandomCoordinates({ x, y });
 
             if (getRandomBoolean(0.4)) {
                 pieces.push(
@@ -112,20 +190,49 @@ export default class SetPieceGenerator {
                     }),
                 );
             }
+
             pieces.push(tree({ x: objectX, y: objectY }));
+        }
+
+        if (getRandomBoolean(0.85)) {
+            Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'tree'));
+            return;
+        }
+
+        const generateAmount = getRandomValue({
+            initialValue: 1,
+            randomValue: 8,
+            rounded: true,
+        });
+
+        for (let i = 0; i < generateAmount; i++) {
+            const { objectX, objectY } = getRandomCoordinates({ x, y });
+
+            const random = getRandomValue({
+                initialValue: 1,
+                randomValue: 5,
+                rounded: true,
+            });
+
+            pieces.push(
+                plants(
+                    {
+                        x: objectX,
+                        y: objectY,
+                    },
+                    random,
+                ),
+            );
         }
 
         Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'tree'));
     }
 
     static generateEnemy({ x, y }) {
-        const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
-        const { FLOOR_WIDTH } = FOREST_STAGE;
         const pieces = [];
 
         for (let i = 0; i < Math.random() * 5; i++) {
-            const objectX = x * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
-            const objectY = y * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
+            const { objectX, objectY } = getRandomCoordinates({ x, y });
 
             pieces.push(enemy({ x: objectX, y: objectY }));
 
@@ -157,8 +264,44 @@ export default class SetPieceGenerator {
             ),
         );
 
+        const random = getRandomValue({
+            initialValue: 1,
+            randomValue: 5,
+            rounded: true,
+        });
+
+        const generateAmount = getRandomValue({
+            initialValue: 1,
+            randomValue: 8,
+            rounded: true,
+        });
+
+        for (let i = 0; i < generateAmount; i++) {
+            const { objectX, objectY } = getRandomCoordinates({ x, y });
+            pieces.push(
+                plants(
+                    {
+                        x: objectX,
+                        y: objectY,
+                    },
+                    random,
+                ),
+            );
+        }
+
         Game.getInstance().objects.set(key, new SetPiece(pieces, 'health'));
     }
+}
+
+function getRandomCoordinates({ x, y }, distance = null) {
+    const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
+    const { FLOOR_WIDTH } = FOREST_STAGE;
+    distance = distance || FLOOR_WIDTH;
+
+    const objectX = x * FLOOR_WIDTH * GAME_SCALE + Math.random() * distance * 3;
+    const objectY = y * FLOOR_WIDTH * GAME_SCALE + Math.random() * distance * 3;
+
+    return { objectX, objectY };
 }
 
 function tree(position) {
@@ -184,6 +327,17 @@ function tree(position) {
     };
 }
 
+function plants(position, type) {
+    const image = getNumberedImage('set_pieces_plants', type);
+
+    return {
+        image: image,
+        position: position,
+        flipped: getRandomBoolean(0.5),
+        collider: null,
+    };
+}
+
 function largeTree(position) {
     const random = getRandomValue({
         initialValue: 1,
@@ -200,6 +354,52 @@ function largeTree(position) {
         height: image.height / 4,
     });
 
+    return {
+        image: image,
+        position: position,
+        flipped: getRandomBoolean(0.5),
+        collider: collider,
+    };
+}
+
+function stone(position) {
+    const random = getRandomValue({
+        initialValue: 1,
+        randomValue: 5,
+        rounded: true,
+    });
+
+    const image = getNumberedImage('set_pieces_stone_small', random);
+
+    const collider = new Collider({
+        x: position.x + image.width / 2,
+        y: position.y - (4 * image.height) / 6,
+        width: image.width,
+        height: image.height / 3,
+    });
+    return {
+        image: image,
+        position: position,
+        flipped: getRandomBoolean(0.5),
+        collider: collider,
+    };
+}
+
+function largeStone(position) {
+    const random = getRandomValue({
+        initialValue: 1,
+        randomValue: 4,
+        rounded: true,
+    });
+
+    const image = getNumberedImage('set_pieces_stone_big', random);
+
+    const collider = new Collider({
+        x: position.x + image.width / 2,
+        y: position.y - (4 * image.height) / 6,
+        width: image.width,
+        height: image.height / 3,
+    });
     return {
         image: image,
         position: position,

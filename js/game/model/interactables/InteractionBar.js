@@ -89,6 +89,10 @@ export default class InteractionBar {
 
         Game.getInstance().setTransparency(this.transparency);
 
+        if(interactionBar == null){
+            return;
+        }
+        
         drawImage({
             img: interactionBar,
             x: player.centerPosition.x + 50,

@@ -8,12 +8,12 @@ export function drawRotated({ canvas, img, angle, position, mirrored, size }) {
         ctx?.translate(position.x, position.y);
         ctx.rotate(angle);
         ctx.scale(-1, 1);
-        ctx?.translate(-img.width, -img.height);
+        ctx?.translate(-(img.width / 2) * scale, -(img.height / 2) * scale);
         ctx.drawImage(img, 0, 0, img.width * scale, img.height * scale);
     } else {
         ctx?.translate(position.x, position.y);
         ctx.rotate(angle + Math.PI);
-        ctx?.translate(-img.width, -img.height);
+        ctx?.translate(-(img.width / 2) * scale, -(img.width / 2) * scale);
         ctx.drawImage(img, 0, 0, img.width * scale, img.height * scale);
     }
     ctx.restore();
