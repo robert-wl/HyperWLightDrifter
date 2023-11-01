@@ -406,10 +406,7 @@
   border-bottom: 0.2rem solid rgb(253, 27, 94);
 }
 .world-container .inner-container .content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  display: none;
 }
 .world-container .inner-container .content .image-carousel {
   display: flex;
@@ -477,6 +474,63 @@
   font-weight: 600;
   font-size: 24px;
   margin: 0;
+}
+.world-container .inner-container .content.active {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 80rem;
+}
+.map-container > h1 {
+  font-family: "Kanit", sans-serif;
+  color: white;
+  border-bottom: 0.2rem solid white;
+}
+.map-container .image-container {
+  --value: 50%;
+  height: 80rem;
+}
+.map-container .image-container img {
+  position: absolute;
+  top: 200%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.map-container .image-container .map-bottom {
+  clip-path: polygon(0% 0%, var(--value) 0%, var(--value) 100%, 0% 100%);
+}
+.map-container .image-container .image-range {
+  position: absolute;
+  top: 140%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  box-sizing: border-box;
+  font-family: inherit;
+  height: 80rem;
+  margin: 0;
+  outline: none;
+  width: 101rem;
+}
+.map-container .image-container .image-range::-webkit-slider-thumb {
+  appearance: none;
+  background-color: transparent;
+  height: 72rem;
+  cursor: pointer;
+  width: 1rem;
+}
+.map-container .image-container .image-range, .map-container .image-container .image-range::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .latest-news-container {
@@ -676,56 +730,6 @@ html, body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.map-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  height: 30rem;
-}
-.map-container > h1 {
-  font-family: "Kanit", sans-serif;
-  color: white;
-  border-bottom: 0.2rem solid white;
-}
-.map-container .image-container {
-  --value: 50%;
-}
-.map-container .image-container img {
-  position: absolute;
-  top: 200%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.map-container .image-container .map-bottom {
-  clip-path: polygon(0% 0%, var(--value) 0%, var(--value) 100%, 0% 100%);
-}
-.map-container .image-container .image-range {
-  position: absolute;
-  top: 140%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: transparent;
-  box-sizing: border-box;
-  font-family: inherit;
-  height: 70rem;
-  margin: 0;
-  outline: none;
-  width: 101rem;
-}
-.map-container .image-container .image-range::-webkit-slider-thumb {
-  appearance: none;
-  background-color: transparent;
-  height: 72rem;
-  cursor: pointer;
-  width: 1rem;
-}
-.map-container .image-container .image-range, .map-container .image-container .image-range::-webkit-slider-runnable-track {
-  -webkit-appearance: none;
-  appearance: none;
 }
 
 /*# sourceMappingURL=index.css.map */
