@@ -1,3 +1,5 @@
+import AudioVisualizer from './AudioVisualizer.js';
+
 const navbar = $('#navbar');
 
 parallaxHandler();
@@ -7,6 +9,10 @@ window.addEventListener('scroll', () => {
     } else {
         navbar.removeClass('navbar-scrolled');
     }
+});
+
+new AudioVisualizer({
+    source: '../assets/web/audio/audio8.mp3',
 });
 
 function parallaxHandler() {

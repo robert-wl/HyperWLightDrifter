@@ -34,7 +34,7 @@ const GameSettings = {
     },
     PLAYER: {
         DAMAGE: {
-            HIT: 1,
+            HIT: 1000,
             BULLET: 2,
             GRENADE: 2,
         },

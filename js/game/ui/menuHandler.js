@@ -49,9 +49,11 @@ function selectScreenHandler() {
         openingScreen
             .css('opacity', '0')
             .css('animation', 'fadeOut 2s ease-in-out')
-            .on('animationend', () => {
+            .on('animationend', async () => {
                 openingScreen.css('display', 'none');
+                console.log(Game.getInstance(), selected);
                 Game.getInstance().playGame(selected);
+                console.log('haizzz');
                 removeMenuHandler();
             });
 
