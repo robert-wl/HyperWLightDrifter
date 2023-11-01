@@ -1,0 +1,88 @@
+@import "../mixins";
+
+.navbar {
+  @include flex-rules(row, center, center);
+  @include size(100vw, 4rem);
+  position: fixed;
+  transition: background-color 0.5s;
+  background: transparent;
+  z-index: 100;
+
+  .navbar-container {
+    @include flex-rules(row, space-between, center);
+    padding: 0 6rem;
+    width: 100vw;
+
+
+    .navbar-container-left {
+      @include flex-rules(row, start, center);
+      flex: 2;
+
+      > img {
+        height: auto;
+        width: 8rem;
+      }
+
+      > button {
+        background-color: transparent;
+        outline: none;
+        border: none;
+        height: 3rem;
+        color: white;
+        width: fit-content;
+        font-weight: normal;
+        font-size: 20px;
+        cursor: pointer;
+        margin-left: 2rem;
+        font-family: "Kanit", sans-serif;
+
+
+        .underline {
+          width: 0;
+          height: 0.125rem;
+          background-color: $pink-color;
+          transition: width 0.5s;
+        }
+
+        &:hover .underline {
+          width: 100%;
+        }
+      }
+    }
+
+    .navbar-container-right {
+      @include flex-rules(row, end, center);
+      flex: 1;
+
+      > button {
+        font-weight: 600;
+        font-size: 20px;
+        padding: 0.75rem 0.75rem 0.6rem;
+        background-color: transparent;
+        outline: none;
+        cursor: pointer;
+        transition: background-color 0.5s;
+        border: 0.1rem solid white;
+
+        > a {
+          color: white;
+          text-decoration: none;
+          text-underline: none;
+          transition: color 0.5s;
+        }
+
+        &:hover {
+          background-color: white;
+
+          > a {
+            color: $pink-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+.navbar-scrolled {
+  background-color: black;
+}

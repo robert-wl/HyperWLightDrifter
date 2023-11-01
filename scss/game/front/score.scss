@@ -1,0 +1,77 @@
+@import "../mixins";
+
+.score-container {
+  @include flex-rules(row, center, center);
+  z-index: 10;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+
+  .score-content {
+    @include flex-rules(column, center, center);
+    margin: 0 2rem;
+    height: auto;
+
+    > img {
+      width: 40vw;
+      height: 100%;
+    }
+
+    .score-container {
+      @include flex-rules(column, center, start);
+      overflow-y: hidden;
+      gap: 5vw;
+
+      .score {
+        @include flex-rules(column, center, center);
+        overflow-y: hidden;
+        position: relative;
+        border: 0.05rem solid white;
+        padding: 0.5rem;
+        width: 12vw;
+        aspect-ratio: 2;
+        color: white;
+        transition: width 0.5s, color 0.5s;
+
+
+        .score-fill {
+          overflow-y: hidden;
+          position: absolute;
+          background-color: white;
+          top: 0;
+          left: 0;
+          width: 0;
+          height: 100%;
+          transition: width 0.5s;
+          z-index: -2;
+        }
+
+        &:hover {
+          color: black;
+
+          .score-fill {
+            width: 100%;
+          }
+        }
+
+        > h3 {
+          font-family: 'Kanit', sans-serif;
+          font-weight: normal;
+          overflow-y: hidden;
+          font-size: 3vw;
+          text-align: center;
+          margin: 0;
+        }
+
+        > p {
+          font-family: 'Kanit', sans-serif;
+          overflow-y: hidden;
+          font-weight: normal;
+          letter-spacing: 0.1rem;
+          font-size: 1.25vw;
+          text-align: center;
+          margin: 0;
+        }
+      }
+    }
+  }
+}

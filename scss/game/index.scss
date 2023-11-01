@@ -1,8 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "animations";
+@import "front/about";
+@import "front/navbar";
+@import "front/score";
+@import "front/footer";
+@import "front/trailer";
+@import "front/mainCharacter";
+@import "front/world";
+@import "front/news";
+@import "mixins";
 
 
 $pink-color: rgb(253, 27, 94);
+
+
+section {
+  scroll-snap-align: center;
+}
+
 body {
   position: relative;
   margin: 0;
@@ -10,60 +25,14 @@ body {
   background-color: black;
   color: white;
   font-family: 'omnes-pro', sans-serif;
+  transform-style: preserve-3d;
+  perspective: 1px;
+  overflow: hidden;
 }
 
-@mixin flex-rules($direction, $justify, $align) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: $justify;
-  align-items: $align;
-}
-
-@mixin max-size($width, $height) {
-  max-width: $width;
-  max-height: $height;
-}
-
-@mixin size($width, $height) {
-  width: $width;
-  height: $height;
-}
-
-@mixin background-image-settings {
-  background-repeat: no-repeat;
-  background-size: cover;
-  image-rendering: pixelated;
-}
-
-@mixin text-config($config) {
-  color: white;
-  font-family: 'omnes-pro', sans-serif;
-  font-size: $config;
-}
-
-@mixin animationArrow($direction) {
-  @if ($direction == left) {
-    animation: arrowMoveLeft 0.5s steps(2) infinite;
-  }
-  @if ($direction == right) {
-    animation: arrowMoveRight 0.5s steps(2) infinite;
-  }
-}
-
-@mixin hoverable {
-  cursor: pointer;
-  background-color: transparent;
-
-  &:hover {
-    background-color: $pink-color;
-  }
-}
-
-@mixin absolute($top, $left) {
-  position: absolute;
-  top: $top;
-  left: $left;
-  transform: translate(-50%, -50%);
+*, html:focus-within {
+  overflow-x: hidden;
+  scroll-behavior: smooth !important;
 }
 
 
@@ -81,89 +50,13 @@ body {
 }
 
 
-.navbar {
-  @include flex-rules(row, center, center);
-  @include size(100vw, 5rem);
-  position: fixed;
-  transition: background-color 0.5s;
-  background: transparent;
-  z-index: 100;
-
-  .navbar-container {
-    @include flex-rules(row, space-between, center);
-    padding: 0 5rem;
-    width: 100%;
-
-
-    .navbar-container-left {
-      @include flex-rules(row, start, center);
-      flex: 2;
-
-      > img {
-        width: 10rem;
-      }
-
-      > button {
-        background-color: transparent;
-        outline: none;
-        border: none;
-        height: 3rem;
-        color: white;
-        width: fit-content;
-        font-weight: bold;
-        font-size: 20px;
-        cursor: pointer;
-        margin-left: 4rem;
-
-        .underline {
-          width: 0;
-          height: 0.25rem;
-          background-color: $pink-color;
-          transition: width 0.5s;
-        }
-
-        &:hover .underline {
-          width: 100%;
-        }
-      }
-    }
-
-    .navbar-container-right {
-      @include flex-rules(row, end, center);
-      flex: 1;
-
-      > button {
-        font-weight: bold;
-        font-size: 20px;
-        padding: 1rem;
-        background-color: transparent;
-        outline: none;
-        cursor: pointer;
-        transition: background-color 0.5s;
-        border: 0.1rem solid white;
-
-        > a {
-          color: white;
-          text-decoration: none;
-          text-underline: none;
-          transition: color 0.5s;
-        }
-
-        &:hover {
-          background-color: white;
-
-          > a {
-            color: $pink-color;
-          }
-        }
-      }
-    }
-  }
+html, body {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+  height: 100vh;
+  overflow-y: scroll;
 }
 
-.navbar-scrolled {
-  background-color: black;
-}
 
 .video-top {
   height: 10rem;
@@ -221,163 +114,10 @@ body {
   }
 }
 
-.trailer {
-  @include flex-rules(column, center, center);
-  height: 50rem;
-
-  > h3 {
-    font-family: 'Kanit', sans-serif;
-    color: white;
-    font-size: 3rem;
-    border-bottom: 0.2rem solid $pink-color;
-  }
-}
-
-.latest-news-container {
-  @include flex-rules(column, center, center);
-  margin-top: 2rem;
-
-  .title-container {
-    width: 80%;
-
-    > h3 {
-      width: fit-content;
-      font-size: 40px;
-      border-bottom: 0.2rem solid $pink-color;
-    }
-  }
-
-  .horizontal-news-container {
-    @include flex-rules(row, center, center);
-    gap: 1rem;
-    width: 80%;
-
-    .news-container {
-      @include flex-rules(column, center, center);
-      background-color: white;
-      width: 100%;
-      margin: 2rem 0;
-      transition: 0.25s linear;
-      cursor: pointer;
-
-      &:hover {
-        -webkit-transform: translateY(-50px);
-        transform: translateY(-30px);
-      }
-
-      > img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .news-content {
-        @include flex-rules(column, start, center);
-        background-color: white;
-        width: 100%;
-        height: 12rem;
-        margin: 1rem;
-
-        .header {
-          @include flex-rules(row, center, center);
-          width: 100%;
-          justify-content: space-between;
-
-          > p {
-            color: black;
-            font-weight: bold;
-            font-family: Kanit, serif;
-            margin: 0 1rem;
-
-            &:nth-child(2) {
-              color: $pink-color;
-            }
-          }
-        }
-
-        .content {
-          margin: 0 1rem;
-          color: black;
-
-          > h3 {
-            margin: 2rem 0 0 0;
-          }
-
-          > p {
-            font-weight: lighter;
-            font-size: 14px;
-          }
-        }
-      }
-    }
-  }
-}
 
 .about-container {
-  @include flex-rules(row, center, center);
-  z-index: 10;
-  margin-top: 2rem;
+  @include flex-rules(column, center, center);
 
-  .about-content {
-    @include flex-rules(column, start, center);
-    margin: 0 2rem;
-    height: 40rem;
-
-    .score-container {
-      @include flex-rules(column, center, center);
-
-      .score {
-        border: 0.2rem solid white;
-      }
-    }
-  }
-
-}
-
-
-.features-container {
-  width: 100vw;
-  overflow: hidden;
-  position: relative;
-
-  .image-cover {
-    @include absolute(50%, 50%);
-    height: 57vw;
-    width: 100vw;
-    box-shadow: 0 0 1rem 1rem inset;
-  }
-
-  > img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    transform: scale(1.5) translateX(10%);
-  }
-
-  .features-text-container {
-    position: absolute;
-    top: 25%;
-    left: 20%;
-    width: 25%;
-    font-family: 'Kanit', sans-serif;
-    color: white;
-
-    > h1 {
-      font-family: 'Kanit', sans-serif;
-      color: white;
-      padding-bottom: 0.2rem;
-      border-bottom: 0.2rem solid white;
-    }
-
-    > p {
-      font-family: 'Kanit', sans-serif;
-      font-weight: lighter;
-      letter-spacing: 0.1rem;
-      font-size: 1.1rem;
-      text-align: start;
-      color: white;
-    }
-  }
 }
 
 .map-container {

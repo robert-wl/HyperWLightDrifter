@@ -1,0 +1,62 @@
+.about-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.about-container .inner-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+}
+.about-container .inner-container .images-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex: 2;
+}
+.about-container .inner-container .images-container .image-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 15vw;
+  overflow-y: hidden;
+}
+.about-container .inner-container .images-container .image-box > img {
+  height: 100%;
+  object-fit: cover;
+}
+.about-container .inner-container .images-container .image-box-first {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 10vw;
+  overflow-y: hidden;
+}
+.about-container .inner-container .images-container .image-box-first > img {
+  height: 100%;
+  object-fit: cover;
+}
+.about-container .inner-container .about-content {
+  flex: 3;
+}
+.about-container .inner-container .about-content > h1 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+.about-container .inner-container .about-content .line {
+  background-color: rgb(253, 27, 94);
+  height: 0.1rem;
+}
+.about-container .inner-container .about-content > p {
+  font-family: "Kanit", sans-serif;
+}
+
+/*# sourceMappingURL=about.css.map */

@@ -1,0 +1,64 @@
+@import "../mixins";
+
+
+.about-container {
+  @include flex-rules(column, center, center);
+  padding-bottom: 10rem;
+  scroll-snap-align: start;
+
+  .inner-container {
+    @include flex-rules(row, center, center);
+    width: 75%;
+
+    .images-container {
+      @include flex-rules(row, center, center);
+      flex: 2;
+
+
+      .image-box {
+        @include flex-rules(column, center, center);
+        width: 100%;
+        height: 15vw;
+        overflow-y: hidden;
+
+        > img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .image-box-first {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 10vw;
+        overflow-y: hidden;
+
+        > img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .about-content {
+      flex: 3;
+
+      > h1 {
+        font-size: 48px;
+        font-weight: 600;
+      }
+
+      .line {
+        background-color: rgb(253, 27, 94);
+        height: 0.1rem;
+      }
+
+      > p {
+        font-family: 'Kanit', sans-serif;
+      }
+    }
+  }
+}

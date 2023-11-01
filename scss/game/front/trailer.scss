@@ -1,0 +1,18 @@
+@import "../mixins";
+
+
+.trailer {
+  @include flex-rules(column, center, center);
+  height: 60rem;
+  //scroll-snap-type: y mandatory;
+  scroll-snap-align: start;
+  //-ms-scroll-snap-points-y: repeat(100vh);
+
+  > h3 {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 600;
+    color: white;
+    font-size: 48px;
+    border-bottom: 0.3rem solid $pink-color;
+  }
+}

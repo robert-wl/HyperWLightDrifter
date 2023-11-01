@@ -1,0 +1,41 @@
+@import "../mixins";
+
+
+.footer {
+  @include flex-rules(row, center, center);
+  position: relative;
+  width: 100vw;
+  height: 12rem;
+  overflow-y: hidden;
+
+  > img {
+    position: absolute;
+    width: 100vw;
+    height: 15rem;
+    object-fit: cover;
+    filter: blur(2px);
+  }
+
+  .footer-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Kanit', sans-serif;
+    font-size: 1rem;
+
+
+    .footer-header {
+      @include flex-rules(row, center, center);
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      .icons {
+        @include flex-rules(row, center, center);
+        background-color: white;
+        width: 3rem;
+        aspect-ratio: 1;
+      }
+    }
+  }
+}

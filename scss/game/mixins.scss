@@ -1,0 +1,53 @@
+@mixin flex-rules($direction, $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin max-size($width, $height) {
+  max-width: $width;
+  max-height: $height;
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin background-image-settings {
+  background-repeat: no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+@mixin text-config($config) {
+  color: white;
+  font-family: 'omnes-pro', sans-serif;
+  font-size: $config;
+}
+
+@mixin animationArrow($direction) {
+  @if ($direction == left) {
+    animation: arrowMoveLeft 0.5s steps(2) infinite;
+  }
+  @if ($direction == right) {
+    animation: arrowMoveRight 0.5s steps(2) infinite;
+  }
+}
+
+@mixin hoverable {
+  cursor: pointer;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $pink-color;
+  }
+}
+
+@mixin absolute($top, $left) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  transform: translate(-50%, -50%);
+}

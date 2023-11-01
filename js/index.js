@@ -22,5 +22,6 @@ $(document).ready(async () => {
     });
 
     await game.switchState(game.startState);
+
     updateLoop();
 });

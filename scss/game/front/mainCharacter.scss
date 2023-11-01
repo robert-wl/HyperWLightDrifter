@@ -1,0 +1,63 @@
+.main-character-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  perspective: 2px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+
+  .image-cover {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    transform-style: preserve-3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    overflow: hidden;
+
+    &::after {
+      content: " ";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: url("../../../assets/web/campfire.png") center;
+      transform: scale(1);
+      z-index: -1;
+    }
+  }
+
+  .main-character-text-container {
+    position: absolute;
+    top: 30%;
+    left: 12.5%;
+    width: 40%;
+    font-family: 'Kanit', sans-serif;
+    color: white;
+
+    > h1 {
+      font-family: 'Kanit', sans-serif;
+      color: white;
+      padding-bottom: 0.2rem;
+      border-bottom: 0.2rem solid $pink-color;
+      overflow: hidden;
+      font-size: 48px;
+      font-weight: 600;
+    }
+
+    > p {
+      font-family: 'Kanit', sans-serif;
+      letter-spacing: 0.1rem;
+      font-size: 1.1rem;
+      text-align: start;
+      color: white;
+
+      .features-container {
+        position: absolute;
+      }
+    }
+  }
+}

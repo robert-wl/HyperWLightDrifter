@@ -1,0 +1,78 @@
+.score-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  margin-top: 5rem;
+}
+.score-container .score-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 2rem;
+  height: auto;
+}
+.score-container .score-content > img {
+  width: 40vw;
+  height: 100%;
+}
+.score-container .score-content .score-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  overflow-y: hidden;
+  gap: 5vw;
+}
+.score-container .score-content .score-container .score {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: hidden;
+  position: relative;
+  border: 0.05rem solid white;
+  padding: 0.5rem;
+  width: 12vw;
+  aspect-ratio: 2;
+  color: white;
+  transition: width 0.5s, color 0.5s;
+}
+.score-container .score-content .score-container .score .score-fill {
+  overflow-y: hidden;
+  position: absolute;
+  background-color: white;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  transition: width 0.5s;
+  z-index: -2;
+}
+.score-container .score-content .score-container .score:hover {
+  color: black;
+}
+.score-container .score-content .score-container .score:hover .score-fill {
+  width: 100%;
+}
+.score-container .score-content .score-container .score > h3 {
+  font-family: "Kanit", sans-serif;
+  font-weight: normal;
+  overflow-y: hidden;
+  font-size: 3vw;
+  text-align: center;
+  margin: 0;
+}
+.score-container .score-content .score-container .score > p {
+  font-family: "Kanit", sans-serif;
+  overflow-y: hidden;
+  font-weight: normal;
+  letter-spacing: 0.1rem;
+  font-size: 1.25vw;
+  text-align: center;
+  margin: 0;
+}
+
+/*# sourceMappingURL=score.css.map */

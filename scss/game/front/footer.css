@@ -1,0 +1,44 @@
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100vw;
+  height: 12rem;
+  overflow-y: hidden;
+}
+.footer > img {
+  position: absolute;
+  width: 100vw;
+  height: 15rem;
+  object-fit: cover;
+  filter: blur(2px);
+}
+.footer .footer-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Kanit", sans-serif;
+  font-size: 1rem;
+}
+.footer .footer-container .footer-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.footer .footer-container .footer-header .icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 3rem;
+  aspect-ratio: 1;
+}
+
+/*# sourceMappingURL=footer.css.map */
