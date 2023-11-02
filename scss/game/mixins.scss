@@ -51,3 +51,27 @@
   left: $left;
   transform: translate(-50%, -50%);
 }
+
+@mixin headerTitle {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 40px;
+  border-bottom: 0.3rem solid $pink-color;
+}
+
+@mixin headerTitleCenter {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 48px;
+  border-bottom: 0.3rem solid $pink-color;
+}
+
+@mixin contentText {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 400;
+  color: white;
+  font-size: 16px;
+  letter-spacing: 0.1rem;
+}

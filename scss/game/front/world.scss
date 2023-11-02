@@ -1,16 +1,19 @@
 @import "../mixins";
 
+
+.world-container * {
+  overflow: hidden;
+}
+
 .world-container {
   @include flex-rules(column, center, center);
 
-  .inner-container {
+  .inner-container-carousel {
     @include flex-rules(column, center, center);
     width: 90%;
 
     > h3 {
-      font-size: 48px;
-      font-weight: 600;
-      border-bottom: 0.2rem solid $pink-color;
+      @include headerTitleCenter;
     }
 
 
@@ -29,13 +32,19 @@
           position: relative;
           background-color: white;
           width: 90%;
-          height: 100%;
+          height: 30vw;
           overflow: hidden;
 
           > img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s;
+
+            &:hover {
+              transform-origin: 50% 50%; /* Set the zoom origin to the center of the image */
+              transform: scale(1.2);
+            }
           }
 
           .arrow {
@@ -46,6 +55,7 @@
             padding: 5rem 0.25rem;
             background-color: rgb(0, 0, 0, 0.5);
             cursor: pointer;
+            user-select: none;
           }
 
           .arrow-left {
@@ -56,20 +66,45 @@
             right: 0;
           }
         }
+
+        .image-list {
+          @include flex-rules(row, start, center);
+          gap: 1rem;
+          width: 90%;
+          height: 10rem;
+          overflow-x: scroll;
+          overflow-y: hidden;
+          margin-top: 1rem;
+
+          .image-list-box {
+            @include flex-rules(column, center, center);
+            background-color: white;
+            cursor: pointer;
+            border: 0.2rem solid black;
+
+            > img {
+              width: 10vw;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+
+          .image-list-box.bordered {
+            border: 0.2rem solid $pink-color;
+          }
+        }
       }
 
       .image-description {
         @include flex-rules(column, start, flex-start);
-        //align-items: start;
         flex: 1;
-        height: 30rem;
         font-family: 'Kanit', sans-serif;
 
 
         > h3 {
-          font-weight: 600;
-          font-size: 32px;
-          border-bottom: 0.2rem solid $pink-color;
+          @include headerTitle;
+          margin-top: 0;
+          height: fit-content;
         }
 
         > h5 {
@@ -79,12 +114,20 @@
           font-size: 24px;
           margin: 0;
         }
+
+        > p {
+          @include contentText;
+          letter-spacing: 0.1rem;
+          font-family: 'Kanit', sans-serif;
+          height: auto;
+        }
       }
     }
 
 
     .content.active {
-      @include flex-rules(row, center, center);
+      //@include flex-rules(column, start, flex-start);
+      @include flex-rules(row, start, flex-start);
     }
   }
 }
@@ -93,7 +136,7 @@
 .map-container {
   @include flex-rules(column, center, center);
   position: relative;
-  height: 80rem;
+  //height: 80rem;
 
   > h1 {
     font-family: 'Kanit', sans-serif;
@@ -103,10 +146,14 @@
 
   .image-container {
     --value: 50%;
-    height: 80rem;
+    height: 80vw;
+    width: 80vw;
 
     img {
-      @include absolute(200%, 50%);
+      @include absolute(50%, 50%);
+      transform: translate(-50%, -50%);
+      width: 95vw;
+      aspect-ratio: 1.4;
     }
 
     .map-bottom {
@@ -114,14 +161,16 @@
     }
 
     .image-range {
-      @include absolute(140%, 50%);
+      @include absolute(50%, 50%);
+      transform: translate(-50%, -50%);
       background-color: transparent;
       box-sizing: border-box;
       font-family: inherit;
-      height: 80rem;
+      height: 100%;
+      width: 95vw;
       margin: 0;
       outline: none;
-      width: 101rem;
+      overflow: hidden;
 
       &::-webkit-slider-thumb {
         appearance: none;

@@ -24,6 +24,7 @@
         > img {
           height: 100%;
           object-fit: cover;
+
         }
       }
 
@@ -47,16 +48,13 @@
       flex: 3;
 
       > h1 {
-        font-size: 48px;
-        font-weight: 600;
+        @include headerTitle;
       }
 
-      .line {
-        background-color: rgb(253, 27, 94);
-        height: 0.1rem;
-      }
 
       > p {
+        @include contentText;
+        letter-spacing: 0.1rem;
         font-family: 'Kanit', sans-serif;
       }
     }

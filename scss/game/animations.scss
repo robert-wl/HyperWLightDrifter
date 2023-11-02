@@ -47,3 +47,14 @@
     border-bottom-width: 100%;
   }
 }
+
+@keyframes onLoad {
+  from {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  to {
+    opacity: 100%;
+    transform: translateY(0);
+  }
+}

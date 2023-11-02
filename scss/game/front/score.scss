@@ -10,10 +10,16 @@
     @include flex-rules(column, center, center);
     margin: 0 2rem;
     height: auto;
+    overflow: hidden;
 
     > img {
       width: 40vw;
       height: 100%;
+      transition: transform 0.5s;
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
 
     .score-container {
@@ -26,7 +32,8 @@
         overflow-y: hidden;
         position: relative;
         border: 0.05rem solid white;
-        padding: 0.5rem;
+        padding: 0.5vw;
+        padding-bottom: 1.3wv;
         width: 12vw;
         aspect-ratio: 2;
         color: white;

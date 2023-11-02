@@ -9,13 +9,21 @@
 @import "front/world";
 @import "front/news";
 @import "mixins";
+@import "animations";
 
 
 $pink-color: rgb(253, 27, 94);
 
 
 section {
-  scroll-snap-align: center;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  transform: translateY(0%);
+}
+
+.visible {
+  opacity: 100%;
+  transform: translateY(-10%);
 }
 
 body {
@@ -25,8 +33,6 @@ body {
   background-color: black;
   color: white;
   font-family: 'omnes-pro', sans-serif;
-  transform-style: preserve-3d;
-  perspective: 1px;
   overflow: hidden;
 }
 
