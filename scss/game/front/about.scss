@@ -9,6 +9,7 @@
   .inner-container {
     @include flex-rules(row, center, center);
     width: 75%;
+    padding-bottom: 2vw;
 
     .images-container {
       @include flex-rules(row, center, center);
@@ -20,6 +21,10 @@
         width: 100%;
         height: 15vw;
         overflow-y: hidden;
+
+        .drifter-attack-image {
+          transform: scaleX(-1);
+        }
 
         > img {
           height: 100%;

@@ -17,14 +17,14 @@ export default class Collider {
     }
 
     checkCollision({ x, y, w, h }) {
-        if (Game.getInstance().debug) {
+        if (Game.getInstance().renderCollider) {
             this.renderDebug();
         }
         return !(this.x + this.width >= x && this.x <= x + w && this.y + this.height >= y && this.y <= y + h);
     }
 
     update() {
-        if (Game.getInstance().debug) {
+        if (Game.getInstance().renderCollider) {
             this.renderDebug();
         }
     }

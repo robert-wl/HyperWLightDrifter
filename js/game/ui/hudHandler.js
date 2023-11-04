@@ -1,4 +1,4 @@
-import { getImage } from '../helper/imageLoader.js';
+import { getImage } from '../helper/assets/assetGetter.js';
 
 export default function hudHandler({ HUD, player, keyCount }) {
     HUD.clearRect(0, 0, HUD.canvas.width, HUD.canvas.height);

@@ -1,7 +1,7 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getImage } from '../../../helper/imageLoader.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
+import { getImage } from '../../../helper/assets/assetGetter.js';
 
 const size = 1;
 export default class PlayerIdleState extends PlayerBaseState {

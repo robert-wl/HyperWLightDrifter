@@ -3,7 +3,7 @@ import Game from '../Game/Game.js';
 import { drawRotated } from '../../helper/renderer/drawer.js';
 import { getRandomValue } from '../../helper/randomHelper.js';
 import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
-import { getNumberedImage } from '../../helper/imageLoader.js';
+import { getNumberedImage } from '../../helper/assets/assetGetter.js';
 import ParticlesManager from './ParticlesManager.js';
 
 export default class Fireflies extends Particles {

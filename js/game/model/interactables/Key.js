@@ -1,5 +1,5 @@
 import Animateable from '../Animateable.js';
-import { getNumberedImage } from '../../helper/imageLoader.js';
+import { getNumberedImage } from '../../helper/assets/assetGetter.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
 import InteractionBar from './InteractionBar.js';
@@ -67,7 +67,7 @@ export default class Key extends Animateable {
         const { interactables, coins, audio } = Game.getInstance();
         // audio.playAudio('player/medkit/use.wav');
         interactables.splice(interactables.indexOf(this), 1);
-        
+
         coins.splice(coins.indexOf(this), 1);
     }
 }

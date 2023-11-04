@@ -1,9 +1,10 @@
 import GameBaseState from './GameBaseState.js';
-import { getImage, imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import Judgement from '../../enemy/judgement/Judgement.js';
 import AudioPlayer from '../../../../audio/AudioPlayer.js';
 import Collider from '../../collideable/Collider.js';
+import { getImage } from '../../../helper/assets/assetGetter.js';
+import { assetLoader } from '../../../helper/assets/assetLoader.js';
 
 const colliders = [
     { x: 100, y: 0, width: 370, height: 1000 },
@@ -77,7 +78,7 @@ export default class GameStageTwoState extends GameBaseState {
     async stageInitializer(game) {
         game.prepareCanvas();
         game.changeState();
-        await imageLoader([GameSettings.IMAGES.STAGE_TWO, GameSettings.IMAGES.PLAYER]);
+        await assetLoader([GameSettings.IMAGES.STAGE_TWO, GameSettings.ASSETS.PLAYER.IMAGE, GameSettings.ASSETS.PLAYER.AUDIO]);
 
         const { camera, player, elevator, enemyManager } = game;
 

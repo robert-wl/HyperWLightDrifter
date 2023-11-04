@@ -1,10 +1,10 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import Game from '../../../Game/Game.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
+import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 
 export default class JudgementDeathState extends JudgementBaseState {
     updateState(currJudgement) {

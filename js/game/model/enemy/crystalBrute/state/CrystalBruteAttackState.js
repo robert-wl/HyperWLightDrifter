@@ -1,7 +1,7 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
 import Game from '../../../Game/Game.js';
 import CrystalAttack from '../CrystalAttack.js';
-import { getNumberedImage } from '../../../../helper/imageLoader.js';
+import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';

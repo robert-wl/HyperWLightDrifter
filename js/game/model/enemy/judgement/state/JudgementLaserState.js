@@ -2,11 +2,11 @@ import JudgementBaseState from './JudgementBaseState.js';
 import Game from '../../../Game/Game.js';
 import JudgementLaser from '../JudgementLaser.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
-import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import GameSettings from '../../../../constants.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
+import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 
 export default class JudgementLaserState extends JudgementBaseState {
     async enterState(currJudgement) {

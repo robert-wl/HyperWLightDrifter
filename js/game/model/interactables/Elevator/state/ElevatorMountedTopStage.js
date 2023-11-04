@@ -1,5 +1,5 @@
 import ElevatorBaseState from './ElevatorBaseState.js';
-import { getImage } from '../../../../helper/imageLoader.js';
+import { getImage } from '../../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import InteractionBar from '../../InteractionBar.js';

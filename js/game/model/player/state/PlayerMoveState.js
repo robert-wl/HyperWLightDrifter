@@ -1,15 +1,13 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../Game/Game.js';
-import { getNumberedImage } from '../../../helper/imageLoader.js';
+import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
 
 export default class PlayerMoveState extends PlayerBaseState {
-    enterState(currPlayer) {
-
-    }
+    enterState(currPlayer) {}
 
     updateState(currPlayer) {
         super.updateState(currPlayer);

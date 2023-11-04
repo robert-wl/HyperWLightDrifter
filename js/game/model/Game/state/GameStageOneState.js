@@ -3,9 +3,9 @@ import firefliesSpawner from '../../../helper/renderer/firefliesSpawner.js';
 import ParticlesManager from '../../particles/ParticlesManager.js';
 import InteractionBar from '../../interactables/InteractionBar.js';
 import Game from '../Game.js';
-import { imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import PauseModal from '../../htmlElements/PauseModal.js';
+import { assetLoader } from '../../../helper/assets/assetLoader.js';
 
 export default class GameStageOneState extends GameBaseState {
     async enterState(game) {
@@ -78,7 +78,7 @@ export default class GameStageOneState extends GameBaseState {
         game.keys = [];
         game.clicks = [];
 
-        await imageLoader([GameSettings.IMAGES.STAGE_ONE, GameSettings.IMAGES.PLAYER]);
+        await assetLoader([GameSettings.IMAGES.STAGE_ONE, GameSettings.ASSETS.PLAYER.IMAGE, GameSettings.ASSETS.PLAYER.AUDIO]);
 
         const positions = [{ x: 100, y: 0 }];
         game.mapGenerator.init(positions);

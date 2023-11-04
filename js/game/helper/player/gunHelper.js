@@ -1,8 +1,8 @@
 import { getHorizontalValue, getVerticalValue } from '../distanceHelper.js';
 import Game from '../../model/Game/Game.js';
 import enemyCollision from '../collision/enemyCollision.js';
-import { getImage, getNumberedImage } from '../imageLoader.js';
 import { drawImage, drawRotated } from '../renderer/drawer.js';
+import { getImage } from '../assets/assetGetter.js';
 
 export function shootHandler({ currPlayer, clicks, angle, length, first }) {
     drawRay({

@@ -4,7 +4,7 @@ import Game from '../../Game/Game.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
-import { getNumberedImage } from '../../../helper/imageLoader.js';
+import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import GameSettings from '../../../constants.js';
 
 export default class PlayerAttackTwoState extends PlayerBaseState {

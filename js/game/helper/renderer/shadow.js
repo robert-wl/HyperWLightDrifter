@@ -1,4 +1,4 @@
-import { getImage } from '../imageLoader.js';
+import { getImage } from '../assets/assetGetter.js';
 import { drawImage } from './drawer.js';
 
 export default function renderShadow({ position, sizeMultiplier }) {

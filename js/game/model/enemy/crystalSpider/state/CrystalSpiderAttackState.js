@@ -1,7 +1,7 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import Game from '../../../Game/Game.js';
 import playerCollision from '../../../../helper/collision/playerCollision.js';
-import { getImage } from '../../../../helper/imageLoader.js';
+import { getImage } from '../../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import { getHorizontalValue, getVerticalValue } from '../../../../helper/distanceHelper.js';

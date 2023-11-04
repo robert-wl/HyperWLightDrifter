@@ -1,5 +1,5 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getNumberedImage } from '../../../helper/imageLoader.js';
+import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import Game from '../../Game/Game.js';

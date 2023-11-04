@@ -13,6 +13,14 @@
     />
 </head>
 <body id='scroll-body'>
+<img alt='' class='cursor' src='../assets/web/cursor/cursor_normal.png'>
+<img alt='' class='background-color one' src='../assets/web/color.png'>
+<img alt='' class='background-color two' src='../assets/web/color.png'>
+<img alt='' class='background-color three' src='../assets/web/color.png'>
+<img alt='' class='background-color four' src='../assets/web/color.png'>
+<img alt='' class='background-color five' src='../assets/web/color.png'>
+<img alt='' class='background-color six' src='../assets/web/color.png'>
+<img alt='' class='background-color seven' src='../assets/web/color.png'>
 <section class='navbar section' id='navbar'>
     <div class='navbar-container'>
         <div class='navbar-container-left'>
@@ -164,7 +172,7 @@
         </div>
     </div>
     <div class='score-content'>
-        <img alt='' src='../assets/web/about.png'>
+        <img alt='' src='../assets/web/score/score.png'>
     </div>
     <div class='score-content'>
         <div class='score-container'>
@@ -223,20 +231,20 @@
             </h1>
             <div class='line'></div>
             <p>
-                • From each character to subtle background elements, everything is lovingly hand-animated.
+                From each character to subtle background elements, everything is lovingly hand-animated.
             </p>
             <p>
-                • Easy to pick up, difficult to master; enemies are vicious and numerous, hazards will easily crush your
+                Easy to pick up, difficult to master; enemies are vicious and numerous, hazards will easily crush your
                 frail body, and friendly faces remain rare.
             </p>
             <p>
-                • Upgrade weapons, learn new skills, discover equipment and traverse a dark, detailed world with
+                Upgrade weapons, learn new skills, discover equipment and traverse a dark, detailed world with
                 branching paths and secrets abound.
             </p>
         </div>
         <div class='images-container'>
             <div class='image-box'>
-                <img alt='' src='../assets/web/about/gif_3.gif'>
+                <img alt='' class='drifter-attack-image' src='../assets/web/about/gif_3.gif'>
             </div>
         </div>
     </div>
@@ -348,7 +356,7 @@
                         <circle cx='12.5' cy='12.5' fill='white' r='10' />
                     </svg>
                     <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
-                        <circle cx='12.5' cy='12.5' r='10' stroke='white' />
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
                     </svg>
 
                 </h5>
@@ -410,13 +418,13 @@
                         <circle cx='12.5' cy='12.5' fill='white' r='10' />
                     </svg>
                     <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
-                        <circle cx='12.5' cy='12.5' r='10' stroke='white' />
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
                     </svg>
                     <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
-                        <circle cx='12.5' cy='12.5' r='10' stroke='white' />
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
                     </svg>
                     <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
-                        <circle cx='12.5' cy='12.5' r='10' stroke='white' />
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
                     </svg>
 
                 </h5>
@@ -482,10 +490,10 @@
                         <circle cx='12.5' cy='12.5' fill='white' r='10' />
                     </svg>
                     <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
-                        <circle cx='12.5' cy='12.5' r='10' stroke='white' />
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
                     </svg>
                     <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
-                        <circle cx='12.5' cy='12.5' r='10' stroke='white' />
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
                     </svg>
 
                 </h5>
@@ -571,19 +579,105 @@
         </div>
     </div>
 </section>
-<div class='map-container'>
+<section class='map-container'>
     <div class='image-container'>
-        <img alt='Color' class='map-top' src='../assets/web/map-upground.png' />
-        <img alt='B/W' class='map-bottom' src='../assets/web/map-underground.png' />
+        <img alt='Color' class='map-top' src='../assets/web/world/map_upground.png' />
+        <img alt='B/W' class='map-bottom' src='../assets/web/world/map_underground.png' />
         <input class='image-range' max='100' min='0'
                oninput="this.parentNode.style.setProperty('--value', `${this.value}%`)"
                step='0.001' type='range'
                value='50' />
+        <div class='boss-marker first'>
+            <div class='boss-image first hidden'>
+                <h3>
+                    The Mechanicals
+                </h3>
+                <img alt='' src='../assets/web/world/boss_south.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
+        <div class='boss-marker second'>
+            <div class='boss-image second hidden'>
+                <h3>
+                    The Hierophant
+                </h3>
+                <img alt='' src='../assets/web/world/boss_north.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
+        <div class='boss-marker third'>
+            <div class='boss-image third hidden'>
+                <h3>
+                    The Emperor
+                </h3>
+                <img alt='' src='../assets/web/world/boss_east.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
+        <div class='boss-marker fourth'>
+            <div class='boss-image fourth hidden'>
+                <h3>
+                    The Hanged Man
+                </h3>
+                <img alt='' src='../assets/web/world/boss_west.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
+        <div class='boss-marker fifth'>
+            <div class='boss-image fifth hidden'>
+                <h3>
+                    Judgement
+                </h3>
+                <img alt='' src='../assets/web/world/boss_center.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
     </div>
-</div>
+</section>
 <section class='ost-container section'>
-    <canvas height='1080' id='audio-visualizer' width='1920'>
-    </canvas>
+    <div class='inner-container-ost'>
+        <h3>
+            OST BLABLABAL
+        </h3>
+        <div class='ost-content'>
+            <div class='content-left'>
+                <img src='../assets/web/ost/ost.jpg'>
+            </div>
+            <div class='content-right'>
+                <div class='content-right-header'>
+                    <button class='audio-toggle-button'>
+                        <svg class='bi bi-play-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
+                             width='64' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z' />
+                        </svg>
+                    </button>
+                    <button class='audio-toggle-button disabled'>
+                        <svg class='bi bi-pause-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
+                             width='64' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z' />
+                        </svg>
+                    </button>
+                    <div class='audio-content'>
+                        <h3>
+                            Titan
+                        </h3>
+                        <p>
+                            By Disasterpiece
+                        </p>
+                    </div>
+                </div>
+                <div class='content-right-slider'>
+                    <input class='slider' max='100' min='0' step='0.0001' type='range' value='0'>
+                </div>
+                <div class='content-audio-visualizer'>
+                    <canvas height='1080' id='audio-visualizer' width='1920'>
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <section class='footer section'>
     <img alt='' src='../assets/web/footer.png'>
@@ -615,6 +709,9 @@
             Copyright © 2023 Yahkerobertkertasnya
         </div>
     </div>
+</section>
+<section class='ost-container section'>
+
 </section>
 <script
     crossorigin='anonymous'

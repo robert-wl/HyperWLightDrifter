@@ -34,7 +34,7 @@ const GameSettings = {
     },
     PLAYER: {
         DAMAGE: {
-            HIT: 1000,
+            HIT: 1,
             BULLET: 2,
             GRENADE: 2,
         },
@@ -43,8 +43,8 @@ const GameSettings = {
         MAX_IMMUNITY: 30,
         MAX_HEALTH: 6,
         MAX_HEALTHPACKS: 3,
-        MAX_STAMINA: 10000,
-        MAX_BOMBS: 3000,
+        MAX_STAMINA: 100,
+        MAX_BOMBS: 2,
         MAX_BULLETS: 3,
         FRICTION: 0.2,
         MAX_SPEED: 4,
@@ -118,200 +118,267 @@ const GameSettings = {
             Y: -5,
         },
     },
+    ASSETS: {
+        PLAYER: {
+            IMAGE: [
+                {
+                    ref: 'player/aim/gun/railgun.png',
+                    name: 'railgun',
+                },
+                {
+                    ref: 'player/aim/aim_top.png',
+                    name: 'aim_top',
+                    outfit: true,
+                },
+                {
+                    ref: 'player/aim/aim_bottom.png',
+                    name: 'aim_bottom',
+                    outfit: true,
+                },
+                {
+                    ref: 'player/move/move_up.png',
+                    name: 'move_up',
+                    amount: 12,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/move/move_down.png',
+                    name: 'move_down',
+                    amount: 12,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/move/move_left.png',
+                    name: 'move_left',
+                    amount: 12,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/move/move_right.png',
+                    name: 'move_right',
+                    amount: 12,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/idle/idle_up.png',
+                    name: 'idle_up',
+                    outfit: true,
+                },
+                {
+                    ref: 'player/idle/idle_left.png',
+                    name: 'idle_left',
+                    outfit: true,
+                },
+                {
+                    ref: 'player/idle/idle_right.png',
+                    name: 'idle_right',
+                    outfit: true,
+                },
+                {
+                    ref: 'player/idle/idle_down.png',
+                    name: 'idle_down',
+                    outfit: true,
+                },
+                {
+                    ref: 'player/hurt/player_hurt.png',
+                    name: 'player_hurt',
+                    amount: 3,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/dash/animation/dash_animation.png',
+                    name: 'dash_animation',
+                    amount: 4,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/dash/down/dash.png',
+                    name: 'dash_down',
+                    amount: 11,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/dash/side/dash.png',
+                    name: 'dash_side',
+                    amount: 11,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/dash/up/dash.png',
+                    name: 'dash_up',
+                    amount: 11,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/attack/up/attack.png',
+                    name: 'attack_up',
+                    amount: 11,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/attack/side/attack.png',
+                    name: 'attack_side',
+                    amount: 19,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/attack/down/attack.png',
+                    name: 'attack_down',
+                    amount: 11,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/attack_two/up/attack.png',
+                    name: 'attack_two_up',
+                    amount: 11,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/attack_two/side/attack.png',
+                    name: 'attack_two_side',
+                    amount: 19,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/attack_two/down/attack.png',
+                    name: 'attack_two_down',
+                    amount: 11,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/spawn/spawn.png',
+                    name: 'player_spawn',
+                    amount: 15,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/aim/aim_side.png',
+                    name: 'aim_side',
+                    outfit: true,
+                },
+                {
+                    ref: 'player/aim/gun/gun_effect.png',
+                    name: 'gun_effect',
+                },
+                {
+                    ref: 'player/aim/gun/ray.png',
+                    name: 'gun_ray',
+                },
+                {
+                    ref: 'player/aim/gun/impact.png',
+                    name: 'gun_impact',
+                    amount: 2,
+                },
+                {
+                    ref: 'player/grenade/grenade.png',
+                    name: 'grenade',
+                    amount: 11,
+                },
+                {
+                    ref: 'player/grenade/throw/side/throw.png',
+                    name: 'player_throw_side',
+                    amount: 8,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/grenade/throw/down/throw.png',
+                    name: 'player_throw_down',
+                    amount: 8,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/grenade/throw/up/throw.png',
+                    name: 'player_throw_up',
+                    amount: 8,
+                    outfit: true,
+                },
+                {
+                    ref: 'player/aim/gun/projectile.png',
+                    name: 'projectile',
+                },
+                {
+                    ref: 'player/death/death.png',
+                    name: 'player_death',
+                    amount: 6,
+                    outfit: true,
+                },
+                {
+                    ref: 'UI/damaged.png',
+                    name: 'damaged_ui',
+                },
+            ],
+            AUDIO: [
+                {
+                    ref: 'player/medkit/use.wav',
+                    name: 'player_medkit_use',
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/gun_fire.wav',
+                    name: 'player_gun_fire',
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/gun_aim.wav',
+                    name: 'player_gun_aim',
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/interact/interact.wav',
+                    name: 'player_interact',
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/grenade/explode.wav',
+                    name: 'player_grenade_explode',
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/grenade/throw.wav',
+                    name: 'player_grenade_throw',
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/dash.wav',
+                    name: 'player_dash',
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/attack.wav',
+                    name: 'player_attack',
+                    amount: 2,
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/death.wav',
+                    name: 'player_death',
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/footstep_forest.wav',
+                    name: 'player_footstep_forest',
+                    amount: 2,
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/teleport_arrive.wav',
+                    name: 'player_teleport_arrive',
+                    isAudio: true,
+                },
+                {
+                    ref: 'player/hurt.wav',
+                    name: 'player_hurt',
+                    isAudio: true,
+                },
+            ],
+        },
+    },
     IMAGES: {
         SPAWN: [
             {
                 ref: 'particles/firefly/fireflies.png',
                 name: 'fireflies',
                 amount: 4,
-            },
-        ],
-        PLAYER: [
-            {
-                //PLAYER ======================================
-                ref: 'player/aim/gun/railgun.png',
-                name: 'railgun',
-            },
-            {
-                ref: 'player/aim/aim_top.png',
-                name: 'aim_top',
-                outfit: true,
-            },
-            {
-                ref: 'player/aim/aim_bottom.png',
-                name: 'aim_bottom',
-                outfit: true,
-            },
-            {
-                ref: 'player/move/move_up.png',
-                name: 'move_up',
-                amount: 12,
-                outfit: true,
-            },
-            {
-                ref: 'player/move/move_down.png',
-                name: 'move_down',
-                amount: 12,
-                outfit: true,
-            },
-            {
-                ref: 'player/move/move_left.png',
-                name: 'move_left',
-                amount: 12,
-                outfit: true,
-            },
-            {
-                ref: 'player/move/move_right.png',
-                name: 'move_right',
-                amount: 12,
-                outfit: true,
-            },
-            {
-                ref: 'player/idle/idle_up.png',
-                name: 'idle_up',
-                outfit: true,
-            },
-            {
-                ref: 'player/idle/idle_left.png',
-                name: 'idle_left',
-                outfit: true,
-            },
-            {
-                ref: 'player/idle/idle_right.png',
-                name: 'idle_right',
-                outfit: true,
-            },
-            {
-                ref: 'player/idle/idle_down.png',
-                name: 'idle_down',
-                outfit: true,
-            },
-            {
-                ref: 'player/hurt/player_hurt.png',
-                name: 'player_hurt',
-                amount: 3,
-                outfit: true,
-            },
-            {
-                ref: 'player/dash/animation/dash_animation.png',
-                name: 'dash_animation',
-                amount: 4,
-                outfit: true,
-            },
-            {
-                ref: 'player/dash/down/dash.png',
-                name: 'dash_down',
-                amount: 11,
-                outfit: true,
-            },
-            {
-                ref: 'player/dash/side/dash.png',
-                name: 'dash_side',
-                amount: 11,
-                outfit: true,
-            },
-            {
-                ref: 'player/dash/up/dash.png',
-                name: 'dash_up',
-                amount: 11,
-                outfit: true,
-            },
-            {
-                ref: 'player/attack/up/attack.png',
-                name: 'attack_up',
-                amount: 11,
-                outfit: true,
-            },
-            {
-                ref: 'player/attack/side/attack.png',
-                name: 'attack_side',
-                amount: 19,
-                outfit: true,
-            },
-            {
-                ref: 'player/attack/down/attack.png',
-                name: 'attack_down',
-                amount: 11,
-                outfit: true,
-            },
-            {
-                ref: 'player/attack_two/up/attack.png',
-                name: 'attack_two_up',
-                amount: 11,
-                outfit: true,
-            },
-            {
-                ref: 'player/attack_two/side/attack.png',
-                name: 'attack_two_side',
-                amount: 19,
-                outfit: true,
-            },
-            {
-                ref: 'player/attack_two/down/attack.png',
-                name: 'attack_two_down',
-                amount: 11,
-                outfit: true,
-            },
-            {
-                ref: 'player/spawn/spawn.png',
-                name: 'player_spawn',
-                amount: 15,
-                outfit: true,
-            },
-            {
-                ref: 'player/aim/aim_side.png',
-                name: 'aim_side',
-                outfit: true,
-            },
-            {
-                ref: 'player/aim/gun/gun_effect.png',
-                name: 'gun_effect',
-            },
-            {
-                ref: 'player/aim/gun/ray.png',
-                name: 'gun_ray',
-            },
-            {
-                ref: 'player/aim/gun/impact.png',
-                name: 'gun_impact',
-                amount: 2,
-            },
-            {
-                ref: 'player/grenade/grenade.png',
-                name: 'grenade',
-                amount: 11,
-            },
-            {
-                ref: 'player/grenade/throw/side/throw.png',
-                name: 'player_throw_side',
-                amount: 8,
-                outfit: true,
-            },
-            {
-                ref: 'player/grenade/throw/down/throw.png',
-                name: 'player_throw_down',
-                amount: 8,
-                outfit: true,
-            },
-            {
-                ref: 'player/grenade/throw/up/throw.png',
-                name: 'player_throw_up',
-                amount: 8,
-                outfit: true,
-            },
-            {
-                ref: 'player/aim/gun/projectile.png',
-                name: 'projectile',
-            },
-            {
-                ref: 'player/death/death.png',
-                name: 'player_death',
-                amount: 6,
-                outfit: true,
-            },
-            {
-                ref: 'UI/damaged.png',
-                name: 'damaged_ui',
             },
         ],
         STAGE_ONE: [

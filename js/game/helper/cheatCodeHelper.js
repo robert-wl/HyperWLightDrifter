@@ -3,9 +3,10 @@ import Game from '../model/Game/Game.js';
 
 const cheatCodes = {
     erwin: 'erwinganteng',
-    felix: 'felixjanganmarahmarah',
+    felix: 'felixmarah',
     phoebus: 'lordpibus',
     hesoyam: 'hesoyam',
+    obert: 'oobacachat',
     njizz: 'njizz',
 };
 
@@ -46,7 +47,18 @@ function handleCheatCodes(cheatCodesKey) {
         Game.getInstance().player.health = 0;
     }
     if (cheatCodesKey === 'hesoyam') {
-        Game.getInstance().player.health = 100000;
+        const { player } = Game.getInstance();
+        GameSettings.player.MAX_STAMINA = 100000;
+        GameSettings.player.MAX_HEALTH = 100000;
+        GameSettings.player.MAX_BOMBS = 1000;
+        GameSettings.player.MAX_BULLETS = 1000;
+        player.health = 100000;
+        player.stamina = 100000;
+        player.bombs = 1000;
+        player.bullets = 1000;
+    }
+    if (cheatCodesKey === 'obert') {
+        Game.getInstance().renderCollider = !Game.getInstance().renderCollider;
     }
     if (cheatCodesKey === 'njizz') {
         document.body.innerHTML = '';

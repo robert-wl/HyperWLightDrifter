@@ -1,0 +1,88 @@
+@import "../mixins";
+
+.ost-container {
+  @include flex-rules(column, center, center);
+
+  .inner-container-ost {
+    @include flex-rules(column, center, center);
+
+    > h3 {
+      @include headerTitle;
+      margin-bottom: 2rem;
+    }
+
+    .ost-content {
+      @include flex-rules(row, start, flex-start);
+      gap: 2rem;
+
+      .content-left {
+        width: 30vw;
+
+        > img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .content-right {
+        @include flex-rules(column, start, flex-start);
+
+        .content-right-header {
+          @include flex-rules(row, center, center);
+
+          .audio-toggle-button {
+            @include flex-rules(row, center, center);
+            background-color: $pink-color;
+            outline: none;
+            border: none;
+            color: white;
+            padding: 0.1rem;
+
+            &.disabled {
+              display: none;
+            }
+          }
+
+          .audio-content {
+            @include flex-rules(column, start, flex-start);
+            margin-left: 1rem;
+
+            > h3 {
+              font-family: Kanit, sans-serif;
+              font-size: 32px;
+              padding: 0;
+              margin: 0;
+            }
+
+            > p {
+              font-family: Kanit, sans-serif;
+              font-size: 18px;
+              padding: 0;
+              margin: 0;
+            }
+          }
+        }
+
+        .content-right-slider {
+          width: 60vw;
+
+          .slider {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .content-audio-visualizer {
+          width: 60vw;
+          height: 30vw;
+          overflow: hidden;
+
+          > canvas {
+            width: 60vw;
+            height: 30vw;
+          }
+        }
+      }
+    }
+  }
+}

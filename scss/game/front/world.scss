@@ -7,6 +7,7 @@
 
 .world-container {
   @include flex-rules(column, center, center);
+  height: 100vh;
 
   .inner-container-carousel {
     @include flex-rules(column, center, center);
@@ -145,15 +146,18 @@
   }
 
   .image-container {
+    position: relative;
     --value: 50%;
     height: 80vw;
-    width: 80vw;
+    width: 100vw;
+    overflow: hidden;
 
     img {
       @include absolute(50%, 50%);
       transform: translate(-50%, -50%);
       width: 95vw;
       aspect-ratio: 1.4;
+      z-index: 0;
     }
 
     .map-bottom {
@@ -171,6 +175,7 @@
       margin: 0;
       outline: none;
       overflow: hidden;
+      z-index: 0;
 
       &::-webkit-slider-thumb {
         appearance: none;
@@ -185,6 +190,109 @@
       &::-webkit-slider-runnable-track {
         -webkit-appearance: none;
         appearance: none;
+      }
+    }
+
+    .boss-marker {
+      aspect-ratio: 0.812;
+      width: 25rem;
+      overflow: hidden;
+      pointer-events: none;
+
+      .boss-image {
+        @include flex-rules(column, flex-start, center);
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        width: 15rem;
+        aspect-ratio: 1.3;
+        transition: all 0.5s;
+        user-select: none;
+        overflow: hidden;
+
+        > h3 {
+          @include flex-rules(row, center, center);
+          font-family: Kanit, sans-serif;
+          font-weight: 500;
+          font-size: 1rem;
+          margin: 0;
+          color: white;
+          text-shadow: 0 0 0.5rem black;
+        }
+
+        > img {
+          @include flex-rules(row, center, center);
+          width: 90%;
+          height: 70%;
+          object-fit: cover;
+          border: 0.2rem solid $pink-color;
+        }
+
+        &.hidden {
+          opacity: 0;
+        }
+
+        &.first {
+          @include absolute(25%, 50%);
+
+          > img {
+            margin-top: 0;
+          }
+        }
+
+        &.second {
+          @include absolute(75%, 50%);
+          @include flex-rules(row, center, flex-end);
+
+          > img {
+            margin-bottom: 3rem;
+          }
+        }
+
+        &.third {
+          @include absolute(75%, 50%);
+        }
+
+        &.fourth {
+          @include absolute(75%, 50%);
+        }
+
+        &.fifth {
+          @include absolute(40%, 50%);
+
+          > img {
+            object-position: center 0rem;
+          }
+        }
+      }
+
+      > img {
+        aspect-ratio: 0.812;
+        width: 2rem;
+        pointer-events: auto;
+      }
+
+      &.first {
+        @include absolute(80%, 50%);
+        transform: translate(-50%, -50%);
+        z-index: 10;
+      }
+
+      &.second {
+        @include absolute(15%, 50%);
+        transform: translate(-50%, -50%);
+        z-index: 10;
+      }
+
+      &.third {
+        @include absolute(50%, 80%);
+        transform: translate(-50%, -50%);
+        z-index: 10;
+      }
+
+      &.fourth {
+        @include absolute(50%, 20%);
+        transform: translate(-50%, -50%);
+        z-index: 10;
       }
     }
   }

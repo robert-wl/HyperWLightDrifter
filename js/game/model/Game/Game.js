@@ -12,8 +12,8 @@ import GameBaseState from './state/GameBaseState.js';
 import AudioPlayer from '../../../audio/AudioPlayer.js';
 import GameLoseState from './state/GameLoseState.js';
 import MapGenerator from '../map/MapGenerator.js';
-import { getImage } from '../../helper/imageLoader.js';
 import GameEndState from './state/GameEndState.js';
+import { getImage } from '../../helper/assets/assetGetter.js';
 
 export default class Game {
     static instance = null;
@@ -52,6 +52,7 @@ export default class Game {
         this.pausedState = new GamePausedState();
         this.loseState = new GameLoseState();
         this.endState = new GameEndState();
+        this.renderCollider = false;
     }
 
     static getInstance() {
@@ -136,7 +137,7 @@ export default class Game {
 
     pauseHandler() {
         if (this.keys.includes('escape')) {
-            this.switchState(this.pausedState);
+            this.switchState(this.pausedState).then();
         }
     }
 

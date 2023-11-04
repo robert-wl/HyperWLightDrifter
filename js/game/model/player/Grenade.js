@@ -2,12 +2,12 @@ import Game from '../Game/Game.js';
 import { drawRotated } from '../../helper/renderer/drawer.js';
 import { getRandomValue } from '../../helper/randomHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';
-import { getNumberedImage } from '../../helper/imageLoader.js';
 import { getAngle } from '../../helper/angleHelper.js';
 import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
 import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 import Animateable from '../Animateable.js';
 import GameSettings from '../../constants.js';
+import { getNumberedImage } from '../../helper/assets/assetGetter.js';
 
 export default class Grenade extends Animateable {
     constructor({ x, y, w, h, angle, velocity }) {

@@ -2,7 +2,7 @@ import Game from '../../Game/Game.js';
 import Enemy from '../Enemy.js';
 import HealthBar from '../healthBar/HealthBar.js';
 import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../../helper/distanceHelper.js';
-import { getNumberedImage } from '../../../helper/imageLoader.js';
+import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
@@ -113,7 +113,6 @@ export default class JudgementBomb extends Enemy {
             this.position = { ...this.positionFollow };
         }
 
-
         this.handleExplosion();
 
         if (this.spawning) {
@@ -178,7 +177,6 @@ export default class JudgementBomb extends Enemy {
 
     handleExplosion() {
         const { player, deltaTime } = Game.getInstance();
-
 
         if (this.exploding) {
             this.drawExplosion();

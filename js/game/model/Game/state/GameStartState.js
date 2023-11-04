@@ -6,8 +6,8 @@ import Game from '../Game.js';
 import MenuModal from '../../htmlElements/MenuModal.js';
 import SelectionModal from '../../htmlElements/SelectionModal.js';
 import SettingsModal from '../../htmlElements/SettingsModal.js';
-import { imageLoader } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
+import { assetLoader } from '../../../helper/assets/assetLoader.js';
 
 export default class GameStartState extends GameBaseState {
     async enterState(game) {
@@ -22,7 +22,7 @@ export default class GameStartState extends GameBaseState {
 
         game.prepareCanvas();
         game.changeState();
-        await imageLoader([GameSettings.IMAGES.SPAWN]);
+        await assetLoader([GameSettings.IMAGES.SPAWN]);
         MenuModal.handleInteraction();
         SelectionModal.handleInteraction();
         SettingsModal.handleInteraction();

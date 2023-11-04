@@ -1,6 +1,6 @@
 import Game from '../../Game/Game.js';
 import { getRandomBoolean, getRandomValue } from '../../../helper/randomHelper.js';
-import { getNumberedImage } from '../../../helper/imageLoader.js';
+import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import Collider from '../../collideable/Collider.js';
 import SetPiece from './SetPiece.js';
 import GameSettings from '../../../constants.js';
@@ -307,7 +307,7 @@ function getRandomCoordinates({ x, y }, distance = null) {
 function tree(position) {
     const random = getRandomValue({
         initialValue: 1,
-        randomValue: 8,
+        randomValue: 6,
         rounded: true,
     });
 

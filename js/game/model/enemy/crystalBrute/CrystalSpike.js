@@ -2,9 +2,9 @@ import Game from '../../Game/Game.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import playerCollision from '../../../helper/collision/playerCollision.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
-import { getNumberedImage } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import Animateable from '../../Animateable.js';
+import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 
 export default class CrystalSpike extends Animateable {
     constructor({ position }) {

@@ -8,6 +8,7 @@
 @import "front/mainCharacter";
 @import "front/world";
 @import "front/news";
+@import "front/ost";
 @import "mixins";
 @import "animations";
 
@@ -18,12 +19,12 @@ $pink-color: rgb(253, 27, 94);
 section {
   opacity: 0;
   transition: all 0.5s ease-in-out;
-  transform: translateY(0%);
+  transform: translateY(10%);
 }
 
 .visible {
   opacity: 100%;
-  transform: translateY(-10%);
+  transform: translateY(0%);
 }
 
 body {
@@ -57,12 +58,83 @@ body {
 
 
 html, body {
-  scroll-snap-type: y proximity;
+  //scroll-snap-type: y proximity;
   scroll-behavior: smooth;
   height: 100vh;
   overflow-y: scroll;
+  margin: 0;
+  padding: 0;
+  cursor: none !important;
 }
 
+.cursor {
+  position: absolute;
+  width: 3rem;
+  height: 3rem;
+  z-index: 1000;
+  pointer-events: none;
+  animation: cursorAnimation 1s ease-in-out infinite;
+}
+
+@keyframes cursorAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.background-color {
+  position: absolute;
+  width: 50vw;
+  height: 100vh;
+  z-index: -100;
+  transform: scale(1.5);
+
+  &.one {
+    top: 50rem;
+    left: -40%;
+  }
+
+  &.two {
+    top: 70rem;
+    left: 50%;
+  }
+
+  &.three {
+    top: 130rem;
+    left: -30%;
+    transform: rotate(90deg);
+  }
+
+  &.four {
+    top: 150rem;
+    left: 40%;
+    transform: rotate(210deg);
+  }
+
+  &.five {
+    top: 220rem;
+    left: 0%;
+    transform: rotate(20deg);
+  }
+
+  &.six {
+    top: 330rem;
+    left: -40%;
+    transform: rotate(90deg);
+  }
+
+  &.seven {
+    top: 350rem;
+    left: 50%;
+    transform: rotate(210deg);
+  }
+}
 
 .video-top {
   height: 10rem;
@@ -83,7 +155,7 @@ html, body {
     @include absolute(0, 50%);
     height: 100rem;
     width: 100vw;
-    box-shadow: 0 0 1rem 1rem inset;
+    box-shadow: 0 0 1rem 1rem inset black;
   }
 
   .video-text {

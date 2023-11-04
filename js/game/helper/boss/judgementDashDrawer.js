@@ -1,5 +1,5 @@
 import { drawImage, drawMirroredY } from '../renderer/drawer.js';
-import { getNumberedImage } from '../imageLoader.js';
+import { getNumberedImage } from '../assets/assetGetter.js';
 import { getFaceDirection } from '../collision/directionHandler.js';
 
 export default function judgementDashDrawer({ moveNumber, angle, lastPosition }) {

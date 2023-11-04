@@ -1,10 +1,10 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getNumberedImage } from '../../../helper/imageLoader.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
 import Game from '../../Game/Game.js';
+import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 
 const scale = 2;
 export default class PlayerHurtState extends PlayerBaseState {

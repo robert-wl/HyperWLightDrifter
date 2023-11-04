@@ -3,10 +3,10 @@ import Game from '../../../Game/Game.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
-import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import GameSettings from '../../../../constants.js';
 import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 
 export default class JudgementMoveState extends JudgementBaseState {
     enterState() {

@@ -1,7 +1,6 @@
 import JudgementBaseState from './JudgementBaseState.js';
 import { drawMirroredY } from '../../../../helper/renderer/drawer.js';
 import JudgementBullet from '../JudgementBullet.js';
-import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import GameSettings from '../../../../constants.js';
@@ -74,7 +73,6 @@ export default class JudgementAttackState extends JudgementBaseState {
                 initialValue: (2 / 30) * Math.PI,
                 randomValue: (1 / 45) * Math.PI,
             });
-
 
             JudgementBullet.generate({
                 x: currJudgement.position.x + this.getAttackOffset(currJudgement),

@@ -25,7 +25,7 @@
     .score-container {
       @include flex-rules(column, center, start);
       overflow-y: hidden;
-      gap: 5vw;
+      gap: 4.5vw;
 
       .score {
         @include flex-rules(column, center, center);

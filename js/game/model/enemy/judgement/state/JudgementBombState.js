@@ -2,11 +2,11 @@ import JudgementBaseState from './JudgementBaseState.js';
 import Game from '../../../Game/Game.js';
 import JudgementBomb from '../JudgementBomb.js';
 import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js';
-import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import GameSettings from '../../../../constants.js';
 import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
+import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 
 export default class JudgementBombState extends JudgementBaseState {
     enterState(currJudgement) {
@@ -42,9 +42,7 @@ export default class JudgementBombState extends JudgementBaseState {
 
         const { backgroundOpacity, enemyManager, player } = Game.getInstance();
 
-
         this.backgroundHandler();
-
 
         if (backgroundOpacity < 0.05 && this.checkCounter(25) && this.attackCount < this.maxAttackCount) {
             JudgementBomb.generate({
@@ -74,16 +72,13 @@ export default class JudgementBombState extends JudgementBaseState {
             this.attackCount += 1;
         }
 
-
         if (backgroundOpacity <= 0.05 && this.attackCount >= this.maxAttackCount + 1) {
             this.finished = true;
 
             this.attackCount++;
         }
 
-
         if (backgroundOpacity === 1 && this.finished && this.checkCounter(7)) {
-
             if (this.animationStage === 2 && !this.playedSpawnAudio) {
                 AudioPlayer.getInstance().playAudio('boss/spawn.wav');
                 this.playedSpawnAudio = true;

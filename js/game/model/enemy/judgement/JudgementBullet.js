@@ -1,10 +1,10 @@
 import Game from '../../Game/Game.js';
 import Enemy from '../Enemy.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
-import { getNumberedImage } from '../../../helper/imageLoader.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
 import playerCollision from '../../../helper/collision/playerCollision.js';
+import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 
 export default class JudgementBullet extends Enemy {
     constructor({ x, y, velocity, lifetime }) {

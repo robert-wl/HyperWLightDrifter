@@ -1,5 +1,5 @@
 import { drawImage, drawRotated } from './drawer.js';
-import { getNumberedImage } from '../imageLoader.js';
+import { getNumberedImage } from '../assets/assetGetter.js';
 import Game from '../../model/Game/Game.js';
 import GameSettings from '../../constants.js';
 

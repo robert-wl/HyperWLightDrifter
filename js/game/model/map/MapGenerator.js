@@ -1,4 +1,4 @@
-import { getImage, getNumberedImage } from '../../helper/imageLoader.js';
+import { getImage, getNumberedImage } from '../../helper/assets/assetGetter.js';
 import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
 import Game from '../Game/Game.js';
 import GameSettings from '../../constants.js';

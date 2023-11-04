@@ -1,8 +1,8 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getImage } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import Game from '../../Game/Game.js';
+import { getImage } from '../../../helper/assets/assetGetter.js';
 
 export default class PlayerInElevatorState extends PlayerBaseState {
     isBelowGround = false;

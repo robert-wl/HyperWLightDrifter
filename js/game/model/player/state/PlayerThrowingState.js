@@ -2,9 +2,9 @@ import PlayerBaseState from './PlayerBaseState.js';
 import Grenade from '../Grenade.js';
 import Game from '../../Game/Game.js';
 import { getFaceDirection, getMouseDirection } from '../../../helper/collision/directionHandler.js';
-import { getNumberedImage } from '../../../helper/imageLoader.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
+import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 
 export default class PlayerThrowingState extends PlayerBaseState {
     enterState(currPlayer) {

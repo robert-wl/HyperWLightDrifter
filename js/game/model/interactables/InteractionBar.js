@@ -1,4 +1,4 @@
-import { getNumberedImage } from '../../helper/imageLoader.js';
+import { getNumberedImage } from '../../helper/assets/assetGetter.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
 import Game from '../Game/Game.js';
@@ -89,10 +89,10 @@ export default class InteractionBar {
 
         Game.getInstance().setTransparency(this.transparency);
 
-        if(interactionBar == null){
+        if (interactionBar == null) {
             return;
         }
-        
+
         drawImage({
             img: interactionBar,
             x: player.centerPosition.x + 50,

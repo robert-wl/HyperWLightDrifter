@@ -13,7 +13,40 @@
     />
 </head>
 <body>
+<section class='navbar section' id='navbar'>
+    <div class='navbar-container'>
+        <div class='navbar-container-left'>
+            <img alt='' src='../assets/web/title.png'>
+            <a href='index.html'>
+                HOME
+                <div class='underline'></div>
+            </a>
+            <a>
+                HOW TO PLAY
+                <div class='underline'></div>
+            </a>
+        </div>
+        <div class='navbar-container-right'>
+            <button>
+                <a href='game.html'>
+                    PLAY DEMO
+                </a>
+            </button>
+        </div>
+    </div>
+</section>
 <div class='container'>
+    <div id='loading-modal'>
+        <h3>
+            Fetching Assets...
+        </h3>
+        <p id='loading-asset'>
+            .
+        </p>
+        <p id='loading-number'>
+            .
+        </p>
+    </div>
     <canvas
         height='1080'
         id='game'

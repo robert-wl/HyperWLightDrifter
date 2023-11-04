@@ -1,6 +1,6 @@
 import ElevatorBaseState from './ElevatorBaseState.js';
 import Game from '../../../Game/Game.js';
-import { getImage } from '../../../../helper/imageLoader.js';
+import { getImage } from '../../../../helper/assets/assetGetter.js';
 import GameSettings from '../../../../constants.js';
 import { drawImageCropped } from '../../../../helper/renderer/drawer.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';

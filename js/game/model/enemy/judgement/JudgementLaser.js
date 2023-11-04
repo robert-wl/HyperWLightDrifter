@@ -1,7 +1,7 @@
 import Game from '../../Game/Game.js';
 import Enemy from '../Enemy.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
-import { getImage } from '../../../helper/imageLoader.js';
+import { getImage } from '../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import playerCollision from '../../../helper/collision/playerCollision.js';
 
@@ -41,8 +41,7 @@ export default class JudgementLaser extends Enemy {
         bossEntities.push(newJudgementLaser);
     }
 
-    damage(_) {
-    }
+    damage(_) {}
 
     knockback() {
         this.velocity.value *= 3;

@@ -3,9 +3,9 @@ import Game from '../../../Game/Game.js';
 import { getRandomBoolean, getRandomValue } from '../../../../helper/randomHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getAngle } from '../../../../helper/angleHelper.js';
-import { getNumberedImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
+import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 
 export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
     enterState(currSpider) {

@@ -2,10 +2,10 @@ import PlayerBaseState from './PlayerBaseState.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import { drawImage, drawRotated } from '../../../helper/renderer/drawer.js';
 import Game from '../../Game/Game.js';
-import { getImage } from '../../../helper/imageLoader.js';
 import GameSettings from '../../../constants.js';
 import { drawExplosion, drawShootLine, shootHandler } from '../../../helper/player/gunHelper.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
+import { getImage } from '../../../helper/assets/assetGetter.js';
 
 const scale = 2;
 export default class PlayerAimingState extends PlayerBaseState {

@@ -1,11 +1,11 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import Game from '../../../Game/Game.js';
 import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../../../helper/distanceHelper.js';
-import { getImage } from '../../../../helper/imageLoader.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import Key from '../../../interactables/Key.js';
 import { getRandomBoolean } from '../../../../helper/randomHelper.js';
+import { getImage } from '../../../../helper/assets/assetGetter.js';
 
 export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
     enterState(currSpider) {
