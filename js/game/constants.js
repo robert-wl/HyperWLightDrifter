@@ -119,266 +119,260 @@ const GameSettings = {
         },
     },
     ASSETS: {
-        PLAYER: {
-            IMAGE: [
-                {
-                    ref: 'player/aim/gun/railgun.png',
-                    name: 'railgun',
-                },
-                {
-                    ref: 'player/aim/aim_top.png',
-                    name: 'aim_top',
-                    outfit: true,
-                },
-                {
-                    ref: 'player/aim/aim_bottom.png',
-                    name: 'aim_bottom',
-                    outfit: true,
-                },
-                {
-                    ref: 'player/move/move_up.png',
-                    name: 'move_up',
-                    amount: 12,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/move/move_down.png',
-                    name: 'move_down',
-                    amount: 12,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/move/move_left.png',
-                    name: 'move_left',
-                    amount: 12,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/move/move_right.png',
-                    name: 'move_right',
-                    amount: 12,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/idle/idle_up.png',
-                    name: 'idle_up',
-                    outfit: true,
-                },
-                {
-                    ref: 'player/idle/idle_left.png',
-                    name: 'idle_left',
-                    outfit: true,
-                },
-                {
-                    ref: 'player/idle/idle_right.png',
-                    name: 'idle_right',
-                    outfit: true,
-                },
-                {
-                    ref: 'player/idle/idle_down.png',
-                    name: 'idle_down',
-                    outfit: true,
-                },
-                {
-                    ref: 'player/hurt/player_hurt.png',
-                    name: 'player_hurt',
-                    amount: 3,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/dash/animation/dash_animation.png',
-                    name: 'dash_animation',
-                    amount: 4,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/dash/down/dash.png',
-                    name: 'dash_down',
-                    amount: 11,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/dash/side/dash.png',
-                    name: 'dash_side',
-                    amount: 11,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/dash/up/dash.png',
-                    name: 'dash_up',
-                    amount: 11,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/attack/up/attack.png',
-                    name: 'attack_up',
-                    amount: 11,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/attack/side/attack.png',
-                    name: 'attack_side',
-                    amount: 19,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/attack/down/attack.png',
-                    name: 'attack_down',
-                    amount: 11,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/attack_two/up/attack.png',
-                    name: 'attack_two_up',
-                    amount: 11,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/attack_two/side/attack.png',
-                    name: 'attack_two_side',
-                    amount: 19,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/attack_two/down/attack.png',
-                    name: 'attack_two_down',
-                    amount: 11,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/spawn/spawn.png',
-                    name: 'player_spawn',
-                    amount: 15,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/aim/aim_side.png',
-                    name: 'aim_side',
-                    outfit: true,
-                },
-                {
-                    ref: 'player/aim/gun/gun_effect.png',
-                    name: 'gun_effect',
-                },
-                {
-                    ref: 'player/aim/gun/ray.png',
-                    name: 'gun_ray',
-                },
-                {
-                    ref: 'player/aim/gun/impact.png',
-                    name: 'gun_impact',
-                    amount: 2,
-                },
-                {
-                    ref: 'player/grenade/grenade.png',
-                    name: 'grenade',
-                    amount: 11,
-                },
-                {
-                    ref: 'player/grenade/throw/side/throw.png',
-                    name: 'player_throw_side',
-                    amount: 8,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/grenade/throw/down/throw.png',
-                    name: 'player_throw_down',
-                    amount: 8,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/grenade/throw/up/throw.png',
-                    name: 'player_throw_up',
-                    amount: 8,
-                    outfit: true,
-                },
-                {
-                    ref: 'player/aim/gun/projectile.png',
-                    name: 'projectile',
-                },
-                {
-                    ref: 'player/death/death.png',
-                    name: 'player_death',
-                    amount: 6,
-                    outfit: true,
-                },
-                {
-                    ref: 'UI/damaged.png',
-                    name: 'damaged_ui',
-                },
-            ],
-            AUDIO: [
-                {
-                    ref: 'player/medkit/use.wav',
-                    name: 'player_medkit_use',
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/gun_fire.wav',
-                    name: 'player_gun_fire',
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/gun_aim.wav',
-                    name: 'player_gun_aim',
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/interact/interact.wav',
-                    name: 'player_interact',
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/grenade/explode.wav',
-                    name: 'player_grenade_explode',
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/grenade/throw.wav',
-                    name: 'player_grenade_throw',
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/dash.wav',
-                    name: 'player_dash',
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/attack.wav',
-                    name: 'player_attack',
-                    amount: 2,
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/death.wav',
-                    name: 'player_death',
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/footstep_forest.wav',
-                    name: 'player_footstep_forest',
-                    amount: 2,
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/teleport_arrive.wav',
-                    name: 'player_teleport_arrive',
-                    isAudio: true,
-                },
-                {
-                    ref: 'player/hurt.wav',
-                    name: 'player_hurt',
-                    isAudio: true,
-                },
-            ],
-        },
-    },
-    IMAGES: {
         SPAWN: [
             {
                 ref: 'particles/firefly/fireflies.png',
                 name: 'fireflies',
                 amount: 4,
+            },
+        ],
+        PLAYER: [
+            {
+                ref: 'player/aim/gun/railgun.png',
+                name: 'railgun',
+            },
+            {
+                ref: 'player/aim/aim_top.png',
+                name: 'aim_top',
+                outfit: true,
+            },
+            {
+                ref: 'player/aim/aim_bottom.png',
+                name: 'aim_bottom',
+                outfit: true,
+            },
+            {
+                ref: 'player/move/move_up.png',
+                name: 'move_up',
+                amount: 12,
+                outfit: true,
+            },
+            {
+                ref: 'player/move/move_down.png',
+                name: 'move_down',
+                amount: 12,
+                outfit: true,
+            },
+            {
+                ref: 'player/move/move_left.png',
+                name: 'move_left',
+                amount: 12,
+                outfit: true,
+            },
+            {
+                ref: 'player/move/move_right.png',
+                name: 'move_right',
+                amount: 12,
+                outfit: true,
+            },
+            {
+                ref: 'player/idle/idle_up.png',
+                name: 'idle_up',
+                outfit: true,
+            },
+            {
+                ref: 'player/idle/idle_left.png',
+                name: 'idle_left',
+                outfit: true,
+            },
+            {
+                ref: 'player/idle/idle_right.png',
+                name: 'idle_right',
+                outfit: true,
+            },
+            {
+                ref: 'player/idle/idle_down.png',
+                name: 'idle_down',
+                outfit: true,
+            },
+            {
+                ref: 'player/hurt/player_hurt.png',
+                name: 'player_hurt',
+                amount: 3,
+                outfit: true,
+            },
+            {
+                ref: 'player/dash/animation/dash_animation.png',
+                name: 'dash_animation',
+                amount: 4,
+                outfit: true,
+            },
+            {
+                ref: 'player/dash/down/dash.png',
+                name: 'dash_down',
+                amount: 11,
+                outfit: true,
+            },
+            {
+                ref: 'player/dash/side/dash.png',
+                name: 'dash_side',
+                amount: 11,
+                outfit: true,
+            },
+            {
+                ref: 'player/dash/up/dash.png',
+                name: 'dash_up',
+                amount: 11,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack/up/attack.png',
+                name: 'attack_up',
+                amount: 11,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack/side/attack.png',
+                name: 'attack_side',
+                amount: 19,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack/down/attack.png',
+                name: 'attack_down',
+                amount: 11,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack_two/up/attack.png',
+                name: 'attack_two_up',
+                amount: 11,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack_two/side/attack.png',
+                name: 'attack_two_side',
+                amount: 19,
+                outfit: true,
+            },
+            {
+                ref: 'player/attack_two/down/attack.png',
+                name: 'attack_two_down',
+                amount: 11,
+                outfit: true,
+            },
+            {
+                ref: 'player/spawn/spawn.png',
+                name: 'player_spawn',
+                amount: 15,
+                outfit: true,
+            },
+            {
+                ref: 'player/aim/aim_side.png',
+                name: 'aim_side',
+                outfit: true,
+            },
+            {
+                ref: 'player/aim/gun/gun_effect.png',
+                name: 'gun_effect',
+            },
+            {
+                ref: 'player/aim/gun/ray.png',
+                name: 'gun_ray',
+            },
+            {
+                ref: 'player/aim/gun/impact.png',
+                name: 'gun_impact',
+                amount: 2,
+            },
+            {
+                ref: 'player/grenade/grenade.png',
+                name: 'grenade',
+                amount: 11,
+            },
+            {
+                ref: 'player/grenade/throw/side/throw.png',
+                name: 'player_throw_side',
+                amount: 8,
+                outfit: true,
+            },
+            {
+                ref: 'player/grenade/throw/down/throw.png',
+                name: 'player_throw_down',
+                amount: 8,
+                outfit: true,
+            },
+            {
+                ref: 'player/grenade/throw/up/throw.png',
+                name: 'player_throw_up',
+                amount: 8,
+                outfit: true,
+            },
+            {
+                ref: 'player/aim/gun/projectile.png',
+                name: 'projectile',
+            },
+            {
+                ref: 'player/death/death.png',
+                name: 'player_death',
+                amount: 6,
+                outfit: true,
+            },
+            {
+                ref: 'UI/damaged.png',
+                name: 'damaged_ui',
+            },
+            {
+                ref: 'player/medkit/use.wav',
+                name: 'player_medkit_use_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/gun_fire.wav',
+                name: 'player_gun_fire_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/gun_aim.wav',
+                name: 'player_gun_aim_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/interact/interact.wav',
+                name: 'player_interact_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/grenade/explode.wav',
+                name: 'player_grenade_explode_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/grenade/throw.wav',
+                name: 'player_grenade_throw_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/dash.wav',
+                name: 'player_dash_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/attack.wav',
+                name: 'player_attack_audio',
+                amount: 2,
+                isAudio: true,
+            },
+            {
+                ref: 'player/death.wav',
+                name: 'player_death_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/footstep_forest.wav',
+                name: 'player_footstep_forest_audio',
+                amount: 2,
+                isAudio: true,
+            },
+            {
+                ref: 'player/teleport_arrive.wav',
+                name: 'player_teleport_arrive_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/hurt.wav',
+                name: 'player_hurt_audio',
+                isAudio: true,
             },
         ],
         STAGE_ONE: [
@@ -455,21 +449,6 @@ const GameSettings = {
                 ref: 'enemy/crystal_spider/die/die.png',
                 name: 'crystal_spider_die',
             },
-
-            {
-                ref: 'enemy/crystal_wolf/walk/walk.png',
-                name: 'crystal_wolf_walk',
-                amount: 8,
-            },
-            {
-                ref: 'enemy/crystal_wolf/attack/attack.png',
-                name: 'crystal_wolf_attack',
-                amount: 4,
-            },
-            {
-                ref: 'enemy/crystal_wolf/die/die.png',
-                name: 'crystal_wolf_die',
-            },
             {
                 ref: 'other/shadow.png',
                 name: 'shadow',
@@ -516,6 +495,56 @@ const GameSettings = {
             {
                 ref: 'UI/HUD.png',
                 name: 'HUD',
+            },
+            {
+                ref: 'enemy/crystal_spider/attack.wav',
+                name: 'crystal_spider_attack_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'enemy/crystal_spider/death.wav',
+                name: 'crystal_spider_death_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'enemy/crystal_spider/hurt.wav',
+                name: 'crystal_spider_hurt_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'enemy/crystal_spider/walk.wav',
+                name: 'crystal_spider_walk_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'enemy/crystal_brute/spike_spawn.wav',
+                name: 'crystal_brute_spike_spawn_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'enemy/crystal_brute/hurt.wav',
+                name: 'crystal_brute_hurt_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'enemy/crystal_brute/death.wav',
+                name: 'crystal_brute_death_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'forest_stage/background.ogg',
+                name: 'forest_stage_background_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'elevator/move.wav',
+                name: 'elevator_move_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'elevator/mount.wav',
+                name: 'elevator_mount_audio',
+                isAudio: true,
             },
         ],
         STAGE_TWO: [
@@ -575,6 +604,56 @@ const GameSettings = {
             {
                 ref: 'other/shadow.png',
                 name: 'shadow',
+            },
+            {
+                ref: 'elevator/move.wav',
+                name: 'elevator_move_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'elevator/mount.wav',
+                name: 'elevator_mount_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'boss/scream.wav',
+                name: 'judgement_scream_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'boss/bullet.wav',
+                name: 'judgement_bullet_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'boss/laser.wav',
+                name: 'judgement_laser_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'boss/bomb_summon.wav',
+                name: 'judgement_bomb_summon_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'boss/spawn.wav',
+                name: 'judgement_spawn_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'boss/smash_ground.wav',
+                name: 'judgement_smash_ground_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'boss/death.wav',
+                name: 'judgement_death_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'boss/spawn.wav',
+                name: 'judgement_spawn_audio',
+                isAudio: true,
             },
         ],
     },

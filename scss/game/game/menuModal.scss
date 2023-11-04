@@ -1,0 +1,14 @@
+@import "../mixins";
+
+
+#menu-modal {
+  @include flex-rules(column, center, center);
+  display: none;
+
+  > div {
+    @include text-config(button);
+    @include hoverable;
+    text-align: center;
+    width: 91%;
+  }
+}

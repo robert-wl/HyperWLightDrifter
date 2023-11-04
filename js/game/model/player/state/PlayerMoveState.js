@@ -7,7 +7,7 @@ import GameSettings from '../../../constants.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
 
 export default class PlayerMoveState extends PlayerBaseState {
-    enterState(currPlayer) {}
+    enterState(_currPlayer) {}
 
     updateState(currPlayer) {
         super.updateState(currPlayer);

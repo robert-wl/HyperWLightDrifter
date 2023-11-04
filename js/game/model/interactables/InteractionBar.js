@@ -19,10 +19,6 @@ export default class InteractionBar {
         this.transparency = transparency;
     }
 
-    static setInteractionStage(stage) {
-        this.interactionStage = stage;
-    }
-
     static handler(object) {
         const { player, keys, audio, deltaTime } = Game.getInstance();
 

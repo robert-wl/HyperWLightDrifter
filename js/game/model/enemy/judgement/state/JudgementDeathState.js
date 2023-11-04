@@ -7,7 +7,7 @@ import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 
 export default class JudgementDeathState extends JudgementBaseState {
-    updateState(currJudgement) {
+    updateState(_currJudgement) {
         super.updateState();
 
         this.advanceAnimationStage(5);
@@ -30,7 +30,6 @@ export default class JudgementDeathState extends JudgementBaseState {
         }
 
         if (backgroundOpacity <= 0.01 && currState !== endState) {
-            console.log('henlo');
             Game.getInstance().switchState(endState);
         }
     }
@@ -55,15 +54,8 @@ export default class JudgementDeathState extends JudgementBaseState {
         this.mirrored = getFaceDirection(currJudgement.angle) === 'left';
         this.deadTime = 0;
 
-        const { camera, player } = Game.getInstance();
-        const x = currJudgement.position.x - player.centerPosition.x;
-        const y = currJudgement.position.y - player.centerPosition.y;
-
-        camera.moveCameraPosition({
-            direction: {
-                x: -x * 0.05,
-                y: -y * 0.05,
-            },
-        });
+        // const { camera, player } = Game.getInstance();
+        // const x = currJudgement.position.x - player.centerPosition.x;
+        // const y = currJudgement.position.y - player.centerPosition.y;
     }
 }

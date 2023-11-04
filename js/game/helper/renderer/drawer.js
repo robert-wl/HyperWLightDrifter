@@ -78,7 +78,7 @@ function drawLeft(img, x, y, width, height) {
 }
 
 function drawLeftBottom(img, x, y, width, height) {
-    const { ctx, canvas } = Game.getInstance();
+    const { ctx } = Game.getInstance();
     ctx.translate(0, -height);
     ctx.translate(width, 0);
     ctx.scale(-1, 1);

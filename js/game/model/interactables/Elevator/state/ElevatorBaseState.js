@@ -1,20 +1,15 @@
 import Animateable from '../../../Animateable.js';
 
-
 export default class ElevatorBaseState extends Animateable {
-    enterState(elevator) {
+    enterState(_elevator) {
         this.number = 0;
     }
 
-    updateState(elevator) {
+    exitState(_elevator) {}
+
+    drawImage(_elevator) {}
+
+    updateState(_elevator) {
         this.updateNumberCounter();
-    }
-
-    drawImage(elevator) {
-
-    }
-
-    exitState(elevator) {
-
     }
 }

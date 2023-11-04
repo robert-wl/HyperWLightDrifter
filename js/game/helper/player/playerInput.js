@@ -4,7 +4,7 @@ import GameSettings from '../../constants.js';
 import detectCheatCode from '../cheatCodeHelper.js';
 
 export default function playerInput() {
-    $(document).keydown((e) => {
+    $(document).on('keydown', (e) => {
         const { keys } = Game.getInstance();
         const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'A', 'W', 'D', 'S', 'E', 'C', 'Q'];
 
@@ -35,7 +35,7 @@ export default function playerInput() {
         }
     });
 
-    $(document).keyup((e) => {
+    $(document).on('keyup', (e) => {
         const { keys } = Game.getInstance();
         const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'A', 'W', 'D', 'S', 'E', 'C', 'Q'];
 
@@ -61,7 +61,7 @@ export default function playerInput() {
         }
     });
 
-    $(document).mousedown((e) => {
+    $(document).on('mousedown', (e) => {
         const { clicks } = Game.getInstance();
         if (e.which === 1) {
             if (clicks.includes('left')) {
@@ -77,7 +77,7 @@ export default function playerInput() {
         }
     });
 
-    $(document).mouseup((e) => {
+    $(document).on('mouseup', (e) => {
         const { clicks } = Game.getInstance();
         if (e.which === 3) {
             const index = clicks.indexOf('right');
@@ -91,7 +91,7 @@ export default function playerInput() {
         e.preventDefault();
     });
 
-    $(document).mousemove((e) => {
+    $(document).on('mousemove', (e) => {
         const { player, camera, canvas } = Game.getInstance();
 
         const rect = canvas.getBoundingClientRect();

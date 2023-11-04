@@ -1,18 +1,16 @@
 import Animateable from '../../Animateable.js';
 
 export default class PlayerBaseState extends Animateable {
-    updateState(currPlayer) {
+    updateState(_currPlayer) {
         this.updateNumberCounter();
     }
 
-    drawImage(currPlayer) {
-    }
+    drawImage(_currPlayer) {}
 
-    enterState(currPlayer) {
+    enterState(_currPlayer) {
         this.number = 0;
         this.animationStage = 1;
     }
 
-    exitState(currPlayer) {
-    }
+    exitState(_currPlayer) {}
 }

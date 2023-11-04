@@ -1,7 +1,7 @@
 export default class GameBaseState {
     number = 0;
 
-    enterState(game) {
+    enterState(_game) {
         this.number = 0;
     }
 
@@ -12,8 +12,7 @@ export default class GameBaseState {
         }
     }
 
-    exitState(game) {
-    }
+    exitState(_game) {}
 
     checkCounter(number) {
         return this.number >= number;

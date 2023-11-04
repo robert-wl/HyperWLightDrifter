@@ -6,10 +6,9 @@ import { drawImageCropped } from '../../../../helper/renderer/drawer.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 
 export default class ElevatorMountedDownState extends ElevatorBaseState {
-    enterState(elevator) {
+    enterState(_elevator) {
         const { player, camera } = Game.getInstance();
         player.switchState(player.idleState);
-        camera.followTarget = null;
         camera.switchState(camera.normalState);
 
         AudioPlayer.getInstance().playAudio('elevator/mount.wav');

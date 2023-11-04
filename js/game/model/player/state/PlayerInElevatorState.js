@@ -37,8 +37,4 @@ export default class PlayerInElevatorState extends PlayerBaseState {
             translate: true,
         });
     }
-
-    exitState(currPlayer) {
-        this.isBelowGround = false;
-    }
 }

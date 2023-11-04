@@ -25,7 +25,7 @@ export default function playerDashDrawer(data) {
     drawDirectionalDash(data);
 }
 
-function drawDirectionalDash({ canvas, currPosition, animationStage, direction }) {
+function drawDirectionalDash({ currPosition, animationStage, direction }) {
     if (direction === 'w') {
         const dashUp = getNumberedImage('dash_up', animationStage);
 

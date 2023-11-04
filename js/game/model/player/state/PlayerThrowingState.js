@@ -60,6 +60,10 @@ export default class PlayerThrowingState extends PlayerBaseState {
             playerThrow = getNumberedImage('player_throw_down', this.animationStage);
         }
 
+        if (!playerThrow) {
+            return;
+        }
+
         drawImage({
             img: playerThrow,
             x: centerPosition.x,

@@ -6,8 +6,6 @@ import InteractionBar from '../../InteractionBar.js';
 import Game from '../../../Game/Game.js';
 
 export default class ElevatorMountedTopState extends ElevatorBaseState {
-    enterState(elevator) {}
-
     updateState(elevator) {
         const { keyCount } = Game.getInstance();
 

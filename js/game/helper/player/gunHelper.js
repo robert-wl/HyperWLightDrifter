@@ -2,7 +2,7 @@ import { getHorizontalValue, getVerticalValue } from '../distanceHelper.js';
 import Game from '../../model/Game/Game.js';
 import enemyCollision from '../collision/enemyCollision.js';
 import { drawImage, drawRotated } from '../renderer/drawer.js';
-import { getImage } from '../assets/assetGetter.js';
+import { getImage, getNumberedImage } from '../assets/assetGetter.js';
 
 export function shootHandler({ currPlayer, clicks, angle, length, first }) {
     drawRay({
@@ -118,27 +118,5 @@ export function drawExplosion({ distance, currPlayer, angle, number }) {
         width: effect.width * 2,
         height: effect.height * 2,
         translate: true,
-    });
-}
-
-export function drawEffect({ explosionDistance, currPlayer, angle }) {
-    //TODO FIX THIS
-    const effect = getImage('gun_effect');
-
-    drawRotated({
-        img: effect,
-        position: {
-            x: getHorizontalValue({
-                initial: currPlayer.centerPosition.x,
-                magnitude: explosionDistance,
-                angle: angle,
-            }),
-            y: getVerticalValue({
-                initial: currPlayer.centerPosition.y,
-                magnitude: explosionDistance,
-                angle: angle,
-            }),
-        },
-        angle: angle + Math.PI / 2,
     });
 }

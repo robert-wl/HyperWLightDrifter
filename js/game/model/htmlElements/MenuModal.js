@@ -5,10 +5,9 @@ export default class MenuModal extends Modal {
     static modal = $('#menu-modal');
     static newGameButton = $('.new-game');
     static settingsButton = $('.settings');
-    static exitButton = $('.exit');
 
     static handleInteraction() {
-        $('#HUD').mousedown(() => {
+        $('#HUD').on('mousedown', () => {
             console.log('hai');
             if (SelectionModal.modal.css('display') === 'flex') {
                 return;
@@ -21,12 +20,12 @@ export default class MenuModal extends Modal {
             this.close();
         });
 
-        this.newGameButton.mousedown(() => {
+        this.newGameButton.on('mousedown', () => {
             this.close();
             SelectionModal.open();
         });
 
-        this.settingsButton.mousedown(() => {
+        this.settingsButton.on('mousedown', () => {
             this.close();
         });
     }

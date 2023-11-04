@@ -164,10 +164,6 @@ export default class CameraBaseState {
         return object instanceof Elevator;
     }
 
-    enterState(camera) {}
-
-    exitState(camera) {}
-
     updatePlayer(yAbsPosition, colliders) {
         const { player } = Game.getInstance();
 
@@ -186,4 +182,8 @@ export default class CameraBaseState {
         player.updateState(colliders);
         return true;
     }
+
+    enterState(_camera) {}
+
+    exitState(_camera) {}
 }

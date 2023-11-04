@@ -78,7 +78,7 @@ export default class GameStageTwoState extends GameBaseState {
     async stageInitializer(game) {
         game.prepareCanvas();
         game.changeState();
-        await assetLoader([GameSettings.IMAGES.STAGE_TWO, GameSettings.ASSETS.PLAYER.IMAGE, GameSettings.ASSETS.PLAYER.AUDIO]);
+        await assetLoader([GameSettings.ASSETS.STAGE_TWO, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER]);
 
         const { camera, player, elevator, enemyManager } = game;
 
@@ -99,7 +99,6 @@ export default class GameStageTwoState extends GameBaseState {
         elevator.position.x = 970;
         player.centerPosition.x = 960;
 
-        camera.followTarget = elevator;
         camera.switchState(camera.followState);
 
         camera.setCameraPosition({

@@ -1,0 +1,8 @@
+@import "../mixins";
+
+
+#pause-modal {
+  .modal {
+    @include flex-rules(column, center, center);
+  }
+}

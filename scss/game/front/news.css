@@ -1,17 +1,146 @@
-/* Error: Undefined variable.
- *    ,
- * 18 |       border-bottom: 0.3rem solid $pink-color;
- *    |                                   ^^^^^^^^^^^
- *    '
- *   news.scss 18:35  root stylesheet */
-
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Undefined variable.\a    \2577 \a 18 \2502        border-bottom: 0.3rem solid $pink-color;\d\a    \2502                                    ^^^^^^^^^^^\a    \2575 \a   news.scss 18:35  root stylesheet";
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@keyframes arrowMoveLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10%);
+  }
 }
+@keyframes arrowMoveRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10%);
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes onLoad {
+  from {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  to {
+    opacity: 100%;
+    transform: translateY(0);
+  }
+}
+.latest-news-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 2rem;
+  overflow-y: hidden;
+}
+.latest-news-container .title-container {
+  width: 90%;
+  height: 10rem;
+  overflow-y: hidden;
+}
+.latest-news-container .title-container > h3 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 48px;
+  border-bottom: 0.3rem solid rgb(253, 27, 94);
+  width: fit-content;
+}
+.latest-news-container .horizontal-news-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 90%;
+}
+.latest-news-container .horizontal-news-container .news-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+  margin: 2rem 0;
+  transition: 0.25s linear;
+  cursor: pointer;
+  overflow-y: hidden;
+  border: 5px solid black;
+}
+.latest-news-container .horizontal-news-container .news-container:hover {
+  -webkit-transform: translateY(-10px);
+  transform: translateY(-10px);
+  box-shadow: 0 0 1rem 1rem inset;
+  border: 5px solid rgb(253, 27, 94);
+}
+.latest-news-container .horizontal-news-container .news-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.latest-news-container .horizontal-news-container .news-container .news-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+  height: 14rem;
+  margin: 1rem;
+  overflow-y: hidden;
+}
+.latest-news-container .horizontal-news-container .news-container .news-content .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-family: Kanit, serif;
+  justify-content: space-between;
+  overflow-y: hidden;
+}
+.latest-news-container .horizontal-news-container .news-container .news-content .header > p {
+  color: black;
+  font-weight: bold;
+  font-family: Kanit, serif;
+  margin: 1vw 1.5vw 0;
+}
+.latest-news-container .horizontal-news-container .news-container .news-content .header > p:nth-child(2) {
+  color: rgb(253, 27, 94);
+}
+.latest-news-container .horizontal-news-container .news-container .news-content .content {
+  margin: 0 1vw;
+  color: black;
+  overflow-y: hidden;
+}
+.latest-news-container .horizontal-news-container .news-container .news-content .content > h3 {
+  margin: 1vw 0 0 0.5vw;
+  font-family: Kanit, serif;
+  font-size: 24px;
+  font-weight: 500;
+}
+.latest-news-container .horizontal-news-container .news-container .news-content .content > p {
+  font-weight: normal;
+  font-family: Kanit, serif;
+  line-height: 20px;
+  font-size: 14px;
+  margin: 0.5vw 0.5vw 0;
+}
+
+/*# sourceMappingURL=news.css.map */

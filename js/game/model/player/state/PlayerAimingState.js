@@ -7,7 +7,6 @@ import { drawExplosion, drawShootLine, shootHandler } from '../../../helper/play
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
 import { getImage } from '../../../helper/assets/assetGetter.js';
 
-const scale = 2;
 export default class PlayerAimingState extends PlayerBaseState {
     updateState(currPlayer) {
         const { clicks, deltaTime } = Game.getInstance();
@@ -101,7 +100,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         });
     }
 
-    enterState(currPlayer) {
+    enterState(_currPlayer) {
         this.exploding = 0;
         this.shooting = 0;
         this.canAim = true;

@@ -43,7 +43,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         audio.playAudio('player/attack.wav', 2);
     }
 
-    exitState(currPlayer) {
+    exitState(_currPlayer) {
         this.direction = '';
         this.animationStage = 1;
     }

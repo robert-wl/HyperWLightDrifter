@@ -5,9 +5,6 @@ import CameraBox from './CameraBox.js';
 import CameraNormalState from './state/CameraNormalState.js';
 import CameraFollowState from './state/CameraFollowState.js';
 
-const SCREEN_WIDTH = 1920;
-const SCREEN_HEIGHT = 1080;
-
 export default class Camera {
     constructor() {
         this.position = {
@@ -29,8 +26,6 @@ export default class Camera {
             y: 0,
         };
         this.hasTranslated = false;
-        this.snapBackToPlayer = false;
-        this.followTarget = null;
         this.normalState = new CameraNormalState();
         this.followState = new CameraFollowState();
         this.currState = this.normalState;
@@ -82,18 +77,6 @@ export default class Camera {
 
         this.position.x += translateX;
         this.position.y += translateY;
-    }
-
-    moveCameraPosition({ direction }) {
-        // const directionArr = this.cameraBox.getOverlap();
-        // this.translateCamera({
-        //     direction: directionArr,
-        //     moveDirection: direction,
-        // });
-    }
-
-    setSnapBackToPlayer() {
-        this.snapBackToPlayer = true;
     }
 
     setShakeCamera({ duration, angle = Math.PI / 2, strength = 3 }) {

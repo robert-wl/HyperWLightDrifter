@@ -64,7 +64,7 @@ export default class Key extends Animateable {
     }
 
     activate() {
-        const { interactables, coins, audio } = Game.getInstance();
+        const { interactables, coins } = Game.getInstance();
         // audio.playAudio('player/medkit/use.wav');
         interactables.splice(interactables.indexOf(this), 1);
 

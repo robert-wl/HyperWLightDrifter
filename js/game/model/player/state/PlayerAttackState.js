@@ -8,7 +8,6 @@ import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import GameSettings from '../../../constants.js';
 
 export default class PlayerAttackState extends PlayerBaseState {
-    reversed = false;
     number = 1;
     animationStage = 1;
 

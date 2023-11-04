@@ -26,7 +26,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
 
             this.number = 0;
         }
-        const { player, camera, currState, stageTwoState } = Game.getInstance();
+        const { player } = Game.getInstance();
 
         this.handleVelocity(elevator);
 

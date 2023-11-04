@@ -1,3 +1,9 @@
+#navbar {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
+
 .navbar {
   display: flex;
   flex-direction: row;
@@ -5,7 +11,6 @@
   align-items: center;
   width: 100vw;
   height: 4rem;
-  position: fixed;
   transition: background-color 0.5s;
   background: transparent;
   z-index: 100;
@@ -29,7 +34,7 @@
   height: auto;
   width: 8rem;
 }
-.navbar .navbar-container .navbar-container-left > button {
+.navbar .navbar-container .navbar-container-left > a {
   background-color: transparent;
   outline: none;
   border: none;
@@ -41,14 +46,15 @@
   cursor: pointer;
   margin-left: 2rem;
   font-family: "Kanit", sans-serif;
+  text-decoration: none;
 }
-.navbar .navbar-container .navbar-container-left > button .underline {
+.navbar .navbar-container .navbar-container-left > a .underline {
   width: 0;
   height: 0.125rem;
   background-color: rgb(253, 27, 94);
   transition: width 0.5s;
 }
-.navbar .navbar-container .navbar-container-left > button:hover .underline {
+.navbar .navbar-container .navbar-container-left > a:hover .underline {
   width: 100%;
 }
 .navbar .navbar-container .navbar-container-right {

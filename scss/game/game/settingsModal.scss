@@ -1,0 +1,99 @@
+@import "../mixins";
+
+
+#settings-modal {
+  @include flex-rules(column, center, center);
+  display: none;
+
+  .title {
+    @include text-config(title);
+    @include absolute(10%, 50%);
+    background-color: transparent;
+    text-align: center;
+  }
+
+  .settings-container {
+    @include flex-rules(column, center, center);
+    @include text-config(button);
+    width: 100%;
+    text-align: center;
+    background-color: transparent;
+
+    .settings-content {
+      @include flex-rules(row, center, center);
+      @include hoverable;
+      background-color: transparent;
+      width: 91%;
+      padding: 1.5vw 0;
+
+      .settings-content-title {
+        width: 20rem;
+      }
+
+      > div {
+        @include flex-rules(row, space-between, center);
+        width: 91%;
+        background-color: transparent;
+
+        > span {
+          background-color: transparent;
+        }
+
+        .volume-bar {
+          @include flex-rules(row, center, center);
+
+          .volume-meter {
+            width: 1.5vw;
+            height: 2vw;
+            margin: 0 0.1rem;
+          }
+
+          .on {
+            background-color: rgb(255, 255, 255, 0.8);
+          }
+
+          .off {
+            background-color: rgb(100, 100, 100, 0.5);
+          }
+        }
+      }
+
+      .arrow-left {
+        @include animationArrow(left);
+        opacity: 0;
+        background-color: transparent;
+        width: 3rem;
+        cursor: pointer;
+      }
+
+      .arrow-right {
+        @include animationArrow(right);
+        opacity: 0;
+        background-color: transparent;
+        width: 3rem;
+        cursor: pointer;
+      }
+
+      &:hover * .arrow-left {
+        opacity: 100% !important;
+      }
+
+      &:hover .arrow-right {
+        opacity: 100% !important;
+      }
+    }
+  }
+
+  .exit-button {
+    @include text-config(button);
+    @include absolute(80%, 50%);
+    @include hoverable;
+    width: 91%;
+    background-color: transparent;
+    text-align: center;
+
+    > div {
+      background-color: transparent;
+    }
+  }
+}

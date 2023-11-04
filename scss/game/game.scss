@@ -3,104 +3,16 @@
 @import "animations";
 @import "variables";
 @import "mixins";
-
+@import "./game/navbar";
+@import "./game/loadingModal";
+@import "./game/menuModal";
+@import "./game/selectionModal";
+@import "./game/settingsModal";
+@import "./game/pauseModal";
+@import "../game/modal";
 
 $pink-color: rgb(254, 31, 136);
 
-
-#navbar {
-  margin: 0;
-  padding: 0;
-  background-color: black;
-}
-
-.navbar {
-  @include flex-rules(row, center, center);
-  @include size(100vw, 4rem);
-  //position: fixed;
-  transition: background-color 0.5s;
-  background: transparent;
-  z-index: 100;
-
-  .navbar-container {
-    @include flex-rules(row, space-between, center);
-    padding: 0 6rem;
-    width: 100vw;
-
-
-    .navbar-container-left {
-      @include flex-rules(row, start, center);
-      flex: 2;
-
-      > img {
-        height: auto;
-        width: 8rem;
-      }
-
-      > a {
-        background-color: transparent;
-        outline: none;
-        border: none;
-        height: 3rem;
-        color: white;
-        width: fit-content;
-        font-weight: normal;
-        font-size: 20px;
-        cursor: pointer;
-        margin-left: 2rem;
-        font-family: "Kanit", sans-serif;
-        text-decoration: none;
-
-
-        .underline {
-          width: 0;
-          height: 0.125rem;
-          background-color: $pink-color;
-          transition: width 0.5s;
-        }
-
-        &:hover .underline {
-          width: 100%;
-        }
-      }
-    }
-
-    .navbar-container-right {
-      @include flex-rules(row, end, center);
-      flex: 1;
-
-      > button {
-        font-weight: 600;
-        font-size: 20px;
-        padding: 0.75rem 0.75rem 0.6rem;
-        background-color: transparent;
-        outline: none;
-        cursor: pointer;
-        transition: background-color 0.5s;
-        border: 0.1rem solid white;
-
-        > a {
-          color: white;
-          text-decoration: none;
-          text-underline: none;
-          transition: color 0.5s;
-        }
-
-        &:hover {
-          background-color: white;
-
-          > a {
-            color: $pink-color;
-          }
-        }
-      }
-    }
-  }
-}
-
-.navbar-scrolled {
-  background-color: black;
-}
 
 body {
   height: calc(100vh + 4rem);
@@ -114,7 +26,6 @@ body {
   background-color: black;
   user-select: none;
 }
-
 
 @mixin flex-rules($direction, $justify, $align) {
   display: flex;
@@ -180,32 +91,9 @@ body {
   @include flex-rules(row, center, center);
   @include size(100vw, 100vh);
   //@include max-size(1920px, 1080vh);
+  overflow: hidden;
   position: relative;
 
-  #loading-modal {
-    opacity: 0;
-    @include flex-rules(column, center, center);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000000;
-    color: white;
-    font-family: 'Press Start 2P', cursive;
-    background-color: transparent;
-    user-select: none;
-
-    > h3 {
-      margin-bottom: 1rem;
-      background-color: transparent;
-      font-size: 24px;
-    }
-
-    > p {
-      margin-bottom: 1rem;
-      background-color: transparent;
-    }
-  }
 
   #game {
     @include size(fit-content, fit-content);
@@ -222,19 +110,6 @@ body {
     position: absolute;
     background-color: transparent;
 
-    .modal {
-      @include size(55vw, auto);
-      @include max-size(960px, 1000px);
-      @include flex-rules(column, center, none);
-      @include background-image-settings;
-      aspect-ratio: 18/15;
-      background-color: transparent;
-      background-image: url('/assets/ui/menu_modal.png');
-      opacity: 100%;
-      position: absolute;
-      display: none;
-      z-index: 100;
-    }
 
     #menu-modal {
       @include flex-rules(column, center, center);
@@ -396,33 +271,6 @@ body {
       }
     }
 
-    .modal-background {
-      @include absolute(50%, 50%);
-      @include max-size(1920px, 1080px);
-      @include size(100vw, 100vh);
-      display: none;
-      background-color: rgb(0, 0, 0, 0.5);
-      z-index: 100;
-
-      .modal {
-        @include absolute(50%, 50%);
-        display: flex;
-
-        .title {
-          @include text-config(title);
-          @include absolute(10%, 50%);
-          background-color: transparent;
-          text-align: center;
-        }
-
-        .button {
-          @include hoverable;
-          @include text-config(button);
-          width: 91%;
-          text-align: center;
-        }
-      }
-    }
 
     #HUD {
       @include max-size(1920px, 1080px);
@@ -451,4 +299,39 @@ body {
   }
 }
 
+@keyframes arrowMoveLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10%);
+  }
+}
+
+@keyframes arrowMoveRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10%);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 

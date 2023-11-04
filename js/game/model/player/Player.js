@@ -34,7 +34,6 @@ export default class Player {
             x: 0,
             y: 0,
         };
-        this.theta = 0;
         this.lookAngle = 0;
         this.width = playerDefault.WIDTH;
         this.height = playerDefault.HEIGHT;

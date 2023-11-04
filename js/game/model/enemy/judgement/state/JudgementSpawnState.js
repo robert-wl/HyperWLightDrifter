@@ -10,7 +10,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
 
     updateState(currJudgement) {
         super.updateState();
-        const { camera, deltaTime } = Game.getInstance();
+        const { camera } = Game.getInstance();
 
         this.advanceAnimationStage(7);
 
@@ -53,10 +53,6 @@ export default class JudgementSpawnState extends JudgementBaseState {
 
     exitState() {
         if (this.firstSpawn) {
-            const { camera } = Game.getInstance();
-
-            camera.setSnapBackToPlayer();
-
             AudioPlayer.getInstance().playAudio('boss/music.wav', null, true);
         }
 

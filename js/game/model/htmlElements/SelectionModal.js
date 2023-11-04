@@ -14,17 +14,17 @@ export default class SelectionModal extends Modal {
     static imagePreview = $('#player-preview');
 
     static handleInteraction() {
-        this.cancelButton.mousedown(() => {
+        this.cancelButton.on('mousedown', () => {
             this.close();
             MenuModal.open();
         });
 
-        this.playButton.mousedown(() => {
+        this.playButton.on('mousedown', () => {
             MenuModal.removeInteraction();
             this.close();
         });
 
-        this.arrowLeft.mousedown(() => {
+        this.arrowLeft.on('mousedown', () => {
             this.selectedImage -= 1;
 
             if (this.selectedImage === -1) {
@@ -36,7 +36,7 @@ export default class SelectionModal extends Modal {
             Game.getInstance().player.outfit = this.outfit[this.selectedImage];
         });
 
-        this.arrowRight.mousedown(() => {
+        this.arrowRight.on('mousedown', () => {
             this.selectedImage += 1;
 
             if (this.selectedImage === 3) {

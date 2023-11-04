@@ -6,10 +6,12 @@ const playerSelectImages = ['../assets/ui/player_select/player-red.png', '../ass
 
 let selected = 0;
 export default function menuHandler() {
-    $('.settings').mousedown(() => {
-        AudioPlayer.getInstance().playSound({
-            sound: 'menu/action.wav',
-        });
+    $('.settings').on('mousedown', () => {
+        AudioPlayer.getInstance()
+            .playSound({
+                sound: 'menu/action.wav',
+            })
+            .then();
 
         $('#menu-modal').css('display', 'none');
         $('#settings-modal').css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '100%');
@@ -20,16 +22,20 @@ export default function menuHandler() {
 }
 
 function audioHandler() {
-    $('.hoverable').mouseenter(() => {
-        AudioPlayer.getInstance().playSound({
-            sound: 'menu/move.wav',
-        });
+    $('.hoverable').on('mouseenter', () => {
+        AudioPlayer.getInstance()
+            .playSound({
+                sound: 'menu/move.wav',
+            })
+            .then();
     });
 
-    $('.clickable').mousedown(() => {
-        AudioPlayer.getInstance().playSound({
-            sound: 'menu/move.wav',
-        });
+    $('.clickable').on('mousedown', () => {
+        AudioPlayer.getInstance()
+            .playSound({
+                sound: 'menu/move.wav',
+            })
+            .then();
     });
 }
 
@@ -40,10 +46,12 @@ function selectScreenHandler() {
     const openingScreen = $('#opening-screen');
     const selectionModal = $('#selection-modal');
 
-    playButton.mousedown(() => {
-        AudioPlayer.getInstance().playSound({
-            sound: 'menu/action.wav',
-        });
+    playButton.on('mousedown', () => {
+        AudioPlayer.getInstance()
+            .playSound({
+                sound: 'menu/action.wav',
+            })
+            .then();
 
         selectionModal.css('display', 'none');
         openingScreen
@@ -51,9 +59,7 @@ function selectScreenHandler() {
             .css('animation', 'fadeOut 2s ease-in-out')
             .on('animationend', async () => {
                 openingScreen.css('display', 'none');
-                console.log(Game.getInstance(), selected);
-                Game.getInstance().playGame(selected);
-                console.log('haizzz');
+                Game.getInstance().playGame(selected).then();
                 removeMenuHandler();
             });
 
@@ -62,7 +68,7 @@ function selectScreenHandler() {
 }
 
 function arrowKeysHandler() {
-    $('#arrow-left').mousedown(() => {
+    $('#arrow-left').on('mousedown', () => {
         if (selected === 0) {
             selected = 2;
         } else {
@@ -71,7 +77,7 @@ function arrowKeysHandler() {
         $('#player-preview').attr('src', playerSelectImages[selected]);
     });
 
-    $('#arrow-right').mousedown(() => {
+    $('#arrow-right').on('mousedown', () => {
         if (selected === 2) {
             selected = 0;
         } else {

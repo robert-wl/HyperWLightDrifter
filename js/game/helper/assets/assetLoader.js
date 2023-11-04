@@ -106,12 +106,10 @@ async function loadAudio({ ref, name }) {
         audio.src = '../assets/audio/' + ref;
         audio.oncanplaythrough = () => {
             resolve(audio);
-            console.log('dah ke loaddd woioiii');
         };
         audio.onerror = () => {
             reject();
         };
-        console.log('waduh');
     });
 }
 

@@ -7,7 +7,6 @@ const cheatCodes = {
     phoebus: 'lordpibus',
     hesoyam: 'hesoyam',
     obert: 'oobacachat',
-    njizz: 'njizz',
 };
 
 const tempKeyStorage = [];
@@ -59,8 +58,5 @@ function handleCheatCodes(cheatCodesKey) {
     }
     if (cheatCodesKey === 'obert') {
         Game.getInstance().renderCollider = !Game.getInstance().renderCollider;
-    }
-    if (cheatCodesKey === 'njizz') {
-        document.body.innerHTML = '';
     }
 }

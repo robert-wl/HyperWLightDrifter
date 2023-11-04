@@ -6,7 +6,6 @@ import { getRandomBoolean } from '../../../helper/randomHelper.js';
 import Game from '../../Game/Game.js';
 import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 
-const scale = 2;
 export default class PlayerHurtState extends PlayerBaseState {
     enterState(currPlayer) {
         super.enterState(currPlayer);

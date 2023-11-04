@@ -8,15 +8,15 @@ export default class PauseModal extends Modal {
     static exitButton = $('#exit-button');
 
     static handleInteraction() {
-        this.continueButton.mousedown(() => {
+        this.continueButton.on('mousedown', () => {
             Game.getInstance().unpauseGame();
         });
 
-        this.settingsButton.mousedown(() => {
+        this.settingsButton.on('mousedown', () => {
             this.close();
         });
 
-        this.exitButton.mousedown(() => {
+        this.exitButton.on('mousedown', () => {
             this.close();
         });
     }

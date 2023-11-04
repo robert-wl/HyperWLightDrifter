@@ -15,7 +15,7 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
         currSpider.attackSpeed = 20;
 
         const { audio } = Game.getInstance();
-        audio.playAudio('enemy/crystal_wolf/attack.wav');
+        audio.playAudio('enemy/crystal_spider/attack.wav');
     }
 
     updateState(currSpider) {
@@ -54,6 +54,7 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
     drawImage(currSpider) {
         const spiderAttack = getImage('crystal_spider_attack');
 
+        // console.log(spiderAttack);
         drawImage({
             img: spiderAttack,
             x: currSpider.position.x,

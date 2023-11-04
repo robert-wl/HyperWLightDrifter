@@ -44,7 +44,7 @@ export default class GameLoseState extends GameBaseState {
         camera.updateCamera();
     }
 
-    exitState(game) {
+    exitState(_game) {
         $('#opening-screen').css('animation', 'fadeIn 0.5s ease-in-out');
     }
 }

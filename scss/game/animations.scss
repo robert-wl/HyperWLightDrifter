@@ -37,16 +37,6 @@
   }
 }
 
-@keyframes buttonBorderBottom {
-  0% {
-    border-bottom: 0.2rem solid $pink-color;
-    border-bottom-width: 0;
-  }
-  100% {
-    border-bottom: 0.2rem solid $pink-color;
-    border-bottom-width: 100%;
-  }
-}
 
 @keyframes onLoad {
   from {

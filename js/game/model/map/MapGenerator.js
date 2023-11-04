@@ -48,7 +48,7 @@ export default class MapGenerator {
     }
 
     generateChunks() {
-        const { camera, player } = Game.getInstance();
+        const { player } = Game.getInstance();
         const { FLOOR_WIDTH, GENERATE_DISTANCE } = GameSettings.GAME.FOREST_STAGE;
 
         const pos1 = {

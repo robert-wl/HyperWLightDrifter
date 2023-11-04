@@ -63,26 +63,26 @@ export default class SettingsModal extends Modal {
     }
 
     static handleInteraction() {
-        this.volumeLowerButton.mousedown(() => {
+        this.volumeLowerButton.on('mousedown', () => {
             this.handleVolumeInteraction('lower');
         });
 
-        this.volumeHigherButton.mousedown(() => {
+        this.volumeHigherButton.on('mousedown', () => {
             this.handleVolumeInteraction('higher');
         });
-        this.fullscreenLeftButton.mousedown(() => {
+        this.fullscreenLeftButton.on('mousedown', () => {
             this.handleFullscreenInteraction();
         });
-        this.fullscreenRightButton.mousedown(() => {
+        this.fullscreenRightButton.on('mousedown', () => {
             this.handleFullscreenInteraction();
         });
-        this.fpsCounterLeftButton.mousedown(() => {
+        this.fpsCounterLeftButton.on('mousedown', () => {
             this.handleFPSCounterInteraction();
         });
-        this.fpsCounterRightButton.mousedown(() => {
+        this.fpsCounterRightButton.on('mousedown', () => {
             this.handleFPSCounterInteraction();
         });
-        this.exitButton.mousedown(() => {
+        this.exitButton.on('mousedown', () => {
             this.close();
             MenuModal.open();
         });

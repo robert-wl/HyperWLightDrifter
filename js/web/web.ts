@@ -1,7 +1,7 @@
 let audioVisualizer: AudioVisualizer;
 let audioSlider: HTMLInputElement;
 
-$(document).ready(() => {
+$(() => {
     navbarHandler();
     parallaxHandler();
     carouselHandler();
@@ -105,7 +105,7 @@ function parallaxHandler() {
             return;
         }
 
-        const constant = 4200 * (window.innerWidth / 1920);
+        // const constant = 4200 * (window.innerWidth / 1920);
         const parallaxVal = (scrollY - 4700) * 0.5;
 
         $('.image-cover')[0].style.transform = `translateY(${parallaxVal}px)`;
@@ -142,8 +142,8 @@ function cursorHandler() {
         xPos = e.clientX - 10;
         cursor!.setAttribute('style', `top: ${yPos}px; left: ${xPos}px;`);
     });
-    //
-    document.querySelector('body')!.addEventListener('scroll', (e) => {
+    //TODO
+    document.querySelector('body')!.addEventListener('scroll', () => {
         cursor!.setAttribute('style', `top: ${yPos - (bodyPos - body.scrollTop()!)}px; left: ${xPos}px;`);
     });
 
@@ -157,7 +157,7 @@ function cursorHandler() {
         cursor!.setAttribute('style', `top: ${yPos}px; left: ${xPos}px;`);
     });
     //
-    iframe.contentWindow!.addEventListener('scroll', (e) => {
+    iframe.contentWindow!.addEventListener('scroll', () => {
         cursor!.setAttribute('style', `top: ${yPos - (bodyPos - body.scrollTop()!)}px; left: ${xPos}px;`);
     });
 }
@@ -240,7 +240,7 @@ class AudioVisualizer {
         for (let i = 0; i < this.bufferLength; i++) {
             barHeight = Math.pow(this.dataArray[i], 3) / 210 ** 2;
 
-            const { red, green, blue } = this.getColor(barHeight, i);
+            const { green, blue } = this.getColor(barHeight, i);
 
             // this.ctx.fillStyle = `hsl(${(barHeight / 256) * 360}, 50%, 50%)`;
             this.ctx.fillStyle = `rgb(253, ${green}, ${blue})`;

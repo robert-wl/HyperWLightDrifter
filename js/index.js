@@ -1,6 +1,6 @@
 import Game from './game/model/Game/Game.js';
 
-$(document).ready(async () => {
+$(async () => {
     const game = Game.getInstance();
     game.debug = false;
     // game.enemyManager.enemySpawn = true;

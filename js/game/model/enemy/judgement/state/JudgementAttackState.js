@@ -6,6 +6,7 @@ import { getFaceDirection } from '../../../../helper/collision/directionHandler.
 import GameSettings from '../../../../constants.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 import Game from '../../../Game/Game.js';
+import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 
 export default class JudgementAttackState extends JudgementBaseState {
     enterState() {
@@ -64,8 +65,6 @@ export default class JudgementAttackState extends JudgementBaseState {
     }
 
     attack(currJudgement) {
-        const { deltaTime } = Game.getInstance();
-
         if (this.attacking && this.attackNumber >= 2) {
             this.playedAudio = false;
 

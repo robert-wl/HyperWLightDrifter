@@ -1,0 +1,46 @@
+@import "../mixins";
+
+#selection-modal {
+  align-items: center;
+
+  .title {
+    @include text-config(title);
+    background-color: transparent;
+    text-align: center;
+  }
+
+  .image-container {
+    @include flex-rules(row, center, center);
+    @include text-config(button);
+    background-color: transparent;
+    width: 35rem;
+    margin-top: 2rem;
+    text-align: center;
+
+    .arrow-left {
+      @include animationArrow(left);
+      background-color: transparent;
+      width: 20rem;
+      cursor: pointer;
+    }
+
+    img {
+      @include size(30rem, fit-content);
+      aspect-ratio: 92/140;
+    }
+
+    .arrow-right {
+      @include animationArrow(right);
+      background-color: transparent;
+      width: 20rem;
+      cursor: pointer;
+    }
+  }
+
+  .button {
+    @include hoverable;
+    @include text-config(button);
+    width: 91%;
+    text-align: center;
+  }
+}
