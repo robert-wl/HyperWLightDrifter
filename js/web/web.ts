@@ -13,8 +13,6 @@ $(() => {
     audioHandler();
 });
 
-//test
-
 function carouselHandler() {
     $('.arrow-right').on('click', () => {
         const carousel = $('.inner-container-carousel');

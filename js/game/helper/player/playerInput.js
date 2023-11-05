@@ -5,59 +5,48 @@ import detectCheatCode from '../cheatCodeHelper.js';
 
 export default function playerInput() {
     $(document).on('keydown', (e) => {
+        // e.preventDefault();
         const { keys } = Game.getInstance();
-        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'A', 'W', 'D', 'S', 'E', 'C', 'Q'];
+        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'p'];
 
-        detectCheatCode(e.key);
-        if (e.key === 'f') {
+        const key = e.key.toLowerCase();
+        detectCheatCode(key);
+        if (key === 'f') {
             Game.getInstance().keyCount += 10;
         }
-        if (keyList.includes(e.key)) {
-            if (keys.includes(e.key)) {
+        if (keyList.includes(key)) {
+            if (keys.includes(key)) {
                 return;
             }
 
-            keys.push(e.key);
+            keys.push(key);
         }
-        if (e.key === ' ') {
+        if (key === ' ') {
             if (keys.includes('space')) {
                 return;
             }
 
             keys.push('space');
         }
-        if (e.key === 'escape') {
-            if (keys.includes('escape')) {
-                return;
-            }
-
-            keys.push('escape');
-        }
     });
 
     $(document).on('keyup', (e) => {
         const { keys } = Game.getInstance();
-        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'A', 'W', 'D', 'S', 'E', 'C', 'Q'];
+        const keyList = ['a', 'w', 'd', 's', 'e', 'c', 'q', 'p'];
 
-        if (keyList.includes(e.key)) {
-            const index = keys.indexOf(e.key);
+        const key = e.key.toLowerCase();
+        if (keyList.includes(key)) {
+            const index = keys.indexOf(key);
             if (index > -1) {
                 keys.splice(index, 1);
             }
-            Game.getInstance().lastDirection = e.key;
+            Game.getInstance().lastDirection = key;
         }
-        if (e.key === ' ') {
+        if (key === ' ') {
             const index = keys.indexOf('space');
             if (index > -1) {
                 keys.splice(index, 1);
             }
-        }
-        if (e.key === 'Escape') {
-            if (keys.includes('escape')) {
-                return;
-            }
-
-            keys.push('escape');
         }
     });
 

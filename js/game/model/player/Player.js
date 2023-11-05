@@ -154,7 +154,7 @@ export default class Player {
         }
 
         this.healthPack -= 1;
-        this.health += 5;
+        this.health = 6;
         this.healing = 6;
     }
 

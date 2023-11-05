@@ -1,7 +1,7 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../Game/Game.js';
-import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
+import { getImage, getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
@@ -64,7 +64,7 @@ export default class PlayerMoveState extends PlayerBaseState {
         }
 
         if (moveImage === null) {
-            return;
+            moveImage = this.getIdleImages(currPlayer);
         }
 
         drawImage({
@@ -75,5 +75,23 @@ export default class PlayerMoveState extends PlayerBaseState {
             height: moveImage.height * GameSettings.GAME.GAME_SCALE,
             translate: true,
         });
+    }
+
+    getIdleImages(currPlayer) {
+        let idleImage = null;
+        if (currPlayer.lastDirection === 'd') {
+            idleImage = getImage('idle_right');
+        }
+        if (currPlayer.lastDirection === 'a') {
+            idleImage = getImage('idle_left');
+        }
+        if (currPlayer.lastDirection === 's') {
+            idleImage = getImage('idle_down');
+        }
+        if (currPlayer.lastDirection === 'w') {
+            idleImage = getImage('idle_up');
+        }
+
+        return idleImage;
     }
 }

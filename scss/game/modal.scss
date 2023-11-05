@@ -1,10 +1,8 @@
 @import "mixins";
 
 
-
-
 .modal {
-  @include size(55vw, auto);
+  @include size(45vw, auto);
   @include max-size(960px, 1000px);
   @include flex-rules(column, center, none);
   @include background-image-settings;

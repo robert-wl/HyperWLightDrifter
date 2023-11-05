@@ -313,7 +313,6 @@ function tree(position) {
 
     const image = getNumberedImage('set_pieces_tree', random);
 
-    console.log(image, random);
     const collider = new Collider({
         x: position.x + image.width / 2,
         y: position.y - (4 * image.height) / 6,
@@ -394,8 +393,7 @@ function largeStone(position) {
     });
 
     const image = getNumberedImage('set_pieces_stone_big', random);
-
-    console.log(image);
+    
     const collider = new Collider({
         x: position.x + image.width / 2,
         y: position.y - (4 * image.height) / 6,

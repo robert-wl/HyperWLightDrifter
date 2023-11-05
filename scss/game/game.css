@@ -43,12 +43,6 @@
     transform: translateY(0);
   }
 }
-#navbar {
-  margin: 0;
-  padding: 0;
-  background-color: black;
-}
-
 .navbar {
   display: flex;
   flex-direction: row;
@@ -56,8 +50,9 @@
   align-items: center;
   width: 100vw;
   height: 4rem;
+  position: fixed;
   transition: background-color 0.5s;
-  background: transparent;
+  background: black;
   z-index: 100;
 }
 .navbar .navbar-container {
@@ -79,7 +74,7 @@
   height: auto;
   width: 8rem;
 }
-.navbar .navbar-container .navbar-container-left > a {
+.navbar .navbar-container .navbar-container-left > button {
   background-color: transparent;
   outline: none;
   border: none;
@@ -91,15 +86,20 @@
   cursor: pointer;
   margin-left: 2rem;
   font-family: "Kanit", sans-serif;
-  text-decoration: none;
 }
-.navbar .navbar-container .navbar-container-left > a .underline {
+.navbar .navbar-container .navbar-container-left > button > a {
+  color: white;
+  text-decoration: none;
+  text-underline: none;
+  transition: color 0.5s;
+}
+.navbar .navbar-container .navbar-container-left > button .underline {
   width: 0;
   height: 0.125rem;
   background-color: rgb(253, 27, 94);
   transition: width 0.5s;
 }
-.navbar .navbar-container .navbar-container-left > a:hover .underline {
+.navbar .navbar-container .navbar-container-left > button:hover .underline {
   width: 100%;
 }
 .navbar .navbar-container .navbar-container-right {
@@ -123,13 +123,14 @@
   color: white;
   text-decoration: none;
   text-underline: none;
-  transition: color 0.5s;
+  transition: color 0.5s, background-color 0.5s;
 }
 .navbar .navbar-container .navbar-container-right > button:hover {
   background-color: white;
 }
 .navbar .navbar-container .navbar-container-right > button:hover > a {
   color: rgb(253, 27, 94);
+  background-color: white;
 }
 
 .navbar-scrolled {
@@ -171,8 +172,9 @@
 }
 #menu-modal > div {
   color: white;
-  font-family: "omnes-pro", sans-serif;
-  font-size: button;
+  font-family: "Press Start 2P", cursive;
+  font-size: 1.5vw;
+  padding: 1vw 0;
   cursor: pointer;
   background-color: transparent;
   text-align: center;
@@ -187,8 +189,9 @@
 }
 #selection-modal .title {
   color: white;
-  font-family: "omnes-pro", sans-serif;
-  font-size: title;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2vw;
+  font-size: 2vw;
   background-color: transparent;
   text-align: center;
 }
@@ -198,36 +201,38 @@
   justify-content: center;
   align-items: center;
   color: white;
-  font-family: "omnes-pro", sans-serif;
-  font-size: button;
+  font-family: "Press Start 2P", cursive;
+  font-size: 1.5vw;
+  padding: 1vw 0;
   background-color: transparent;
-  width: 35rem;
-  margin-top: 2rem;
+  width: 35vw;
+  margin-top: 1vw;
   text-align: center;
 }
 #selection-modal .image-container .arrow-left {
   animation: arrowMoveLeft 0.5s steps(2) infinite;
   background-color: transparent;
-  width: 20rem;
+  width: 20vw;
   cursor: pointer;
 }
 #selection-modal .image-container img {
-  width: 30rem;
+  width: 30vw;
   height: fit-content;
   aspect-ratio: 92/140;
 }
 #selection-modal .image-container .arrow-right {
   animation: arrowMoveRight 0.5s steps(2) infinite;
   background-color: transparent;
-  width: 20rem;
+  width: 20vw;
   cursor: pointer;
 }
 #selection-modal .button {
   cursor: pointer;
   background-color: transparent;
   color: white;
-  font-family: "omnes-pro", sans-serif;
-  font-size: button;
+  font-family: "Press Start 2P", cursive;
+  font-size: 1.5vw;
+  padding: 1vw 0;
   width: 91%;
   text-align: center;
 }
@@ -244,8 +249,8 @@
 }
 #settings-modal .title {
   color: white;
-  font-family: "omnes-pro", sans-serif;
-  font-size: title;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2vw;
   position: absolute;
   top: 10%;
   left: 50%;
@@ -259,8 +264,9 @@
   justify-content: center;
   align-items: center;
   color: white;
-  font-family: "omnes-pro", sans-serif;
-  font-size: button;
+  font-family: "Press Start 2P", cursive;
+  font-size: 1.5vw;
+  padding: 1vw 0;
   width: 100%;
   text-align: center;
   background-color: transparent;
@@ -280,7 +286,7 @@
   background-color: rgb(253, 27, 94);
 }
 #settings-modal .settings-container .settings-content .settings-content-title {
-  width: 20rem;
+  width: 20vw;
 }
 #settings-modal .settings-container .settings-content > div {
   display: flex;
@@ -302,7 +308,7 @@
 #settings-modal .settings-container .settings-content > div .volume-bar .volume-meter {
   width: 1.5vw;
   height: 2vw;
-  margin: 0 0.1rem;
+  margin: 0 0.1vw;
 }
 #settings-modal .settings-container .settings-content > div .volume-bar .on {
   background-color: rgba(255, 255, 255, 0.8);
@@ -314,14 +320,14 @@
   animation: arrowMoveLeft 0.5s steps(2) infinite;
   opacity: 0;
   background-color: transparent;
-  width: 3rem;
+  width: 3vw;
   cursor: pointer;
 }
 #settings-modal .settings-container .settings-content .arrow-right {
   animation: arrowMoveRight 0.5s steps(2) infinite;
   opacity: 0;
   background-color: transparent;
-  width: 3rem;
+  width: 3vw;
   cursor: pointer;
 }
 #settings-modal .settings-container .settings-content:hover * .arrow-left {
@@ -332,8 +338,9 @@
 }
 #settings-modal .exit-button {
   color: white;
-  font-family: "omnes-pro", sans-serif;
-  font-size: button;
+  font-family: "Press Start 2P", cursive;
+  font-size: 1.5vw;
+  padding: 1vw 0;
   position: absolute;
   top: 80%;
   left: 50%;
@@ -351,15 +358,52 @@
   background-color: transparent;
 }
 
+#pause-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vw;
+  transform: translate(-50%, -50%);
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
 #pause-modal .modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+}
+#pause-modal .modal .title {
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2vw;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  text-align: center;
+}
+#pause-modal .modal .button {
+  cursor: pointer;
+  background-color: transparent;
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 1.5vw;
+  padding: 1vw 0;
+  width: 91%;
+  text-align: center;
+}
+#pause-modal .modal .button:hover {
+  background-color: rgb(253, 27, 94);
 }
 
 .modal {
-  width: 55vw;
+  width: 45vw;
   height: auto;
   max-width: 960px;
   max-height: 1000px;
@@ -442,219 +486,44 @@ body {
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh + 4rem);
   overflow: hidden;
   position: relative;
 }
 .container #game {
-  width: fit-content;
-  height: fit-content;
+  position: absolute;
+  top: 47.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: auto;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 16/9;
   touch-action: none;
   overflow: hidden;
   background-color: black;
+}
+.container #HUD {
+  position: absolute;
+  width: 100vw;
+  height: auto;
+  aspect-ratio: 16/9;
+  touch-action: none;
+  overflow: hidden;
+  background-color: transparent;
+  top: 1%;
 }
 .container .ui {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: fit-content;
+  width: auto;
+  height: 61vw;
   max-width: 1920px;
   max-height: 1080vh;
   aspect-ratio: 16/9;
-  position: absolute;
-  background-color: transparent;
-}
-.container .ui #menu-modal {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  display: none;
-}
-.container .ui #menu-modal > div {
-  color: white;
-  font-family: "Press Start 2P", cursive;
-  font-size: 1.5vw;
-  padding: 1vw 0;
-  cursor: pointer;
-  background-color: transparent;
-  text-align: center;
-  width: 91%;
-}
-.container .ui #menu-modal > div:hover {
-  background-color: rgb(254, 31, 136);
-}
-.container .ui #selection-modal {
-  align-items: center;
-}
-.container .ui #selection-modal .title {
-  color: white;
-  font-family: "Press Start 2P", cursive;
-  font-size: 2vw;
-  background-color: transparent;
-  text-align: center;
-}
-.container .ui #selection-modal .image-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-family: "Press Start 2P", cursive;
-  font-size: 1.5vw;
-  padding: 1vw 0;
-  background-color: transparent;
-  width: 35rem;
-  margin-top: 2rem;
-  text-align: center;
-}
-.container .ui #selection-modal .image-container .arrow-left {
-  animation: arrowMoveLeft 0.5s steps(2) infinite;
-  background-color: transparent;
-  width: 20rem;
-  cursor: pointer;
-}
-.container .ui #selection-modal .image-container img {
-  width: 30rem;
-  height: fit-content;
-  aspect-ratio: 92/140;
-}
-.container .ui #selection-modal .image-container .arrow-right {
-  animation: arrowMoveRight 0.5s steps(2) infinite;
-  background-color: transparent;
-  width: 20rem;
-  cursor: pointer;
-}
-.container .ui #selection-modal .button {
-  cursor: pointer;
-  background-color: transparent;
-  color: white;
-  font-family: "Press Start 2P", cursive;
-  font-size: 1.5vw;
-  padding: 1vw 0;
-  width: 91%;
-  text-align: center;
-}
-.container .ui #selection-modal .button:hover {
-  background-color: rgb(254, 31, 136);
-}
-.container .ui #settings-modal {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  display: none;
-}
-.container .ui #settings-modal .title {
-  color: white;
-  font-family: "Press Start 2P", cursive;
-  font-size: 2vw;
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: transparent;
-  text-align: center;
-}
-.container .ui #settings-modal .settings-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-family: "Press Start 2P", cursive;
-  font-size: 1.5vw;
-  padding: 1vw 0;
-  width: 100%;
-  text-align: center;
-  background-color: transparent;
-}
-.container .ui #settings-modal .settings-container .settings-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background-color: transparent;
-  background-color: transparent;
-  width: 91%;
-  padding: 1.5vw 0;
-}
-.container .ui #settings-modal .settings-container .settings-content:hover {
-  background-color: rgb(254, 31, 136);
-}
-.container .ui #settings-modal .settings-container .settings-content .settings-content-title {
-  width: 20rem;
-}
-.container .ui #settings-modal .settings-container .settings-content > div {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 91%;
-  background-color: transparent;
-}
-.container .ui #settings-modal .settings-container .settings-content > div > span {
-  background-color: transparent;
-}
-.container .ui #settings-modal .settings-container .settings-content > div .volume-bar {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-.container .ui #settings-modal .settings-container .settings-content > div .volume-bar .volume-meter {
-  width: 1.5vw;
-  height: 2vw;
-  margin: 0 0.1rem;
-}
-.container .ui #settings-modal .settings-container .settings-content > div .volume-bar .on {
-  background-color: rgba(255, 255, 255, 0.8);
-}
-.container .ui #settings-modal .settings-container .settings-content > div .volume-bar .off {
-  background-color: rgba(100, 100, 100, 0.5);
-}
-.container .ui #settings-modal .settings-container .settings-content .arrow-left {
-  animation: arrowMoveLeft 0.5s steps(2) infinite;
-  opacity: 0;
-  background-color: transparent;
-  width: 3rem;
-  cursor: pointer;
-}
-.container .ui #settings-modal .settings-container .settings-content .arrow-right {
-  animation: arrowMoveRight 0.5s steps(2) infinite;
-  opacity: 0;
-  background-color: transparent;
-  width: 3rem;
-  cursor: pointer;
-}
-.container .ui #settings-modal .settings-container .settings-content:hover * .arrow-left {
-  opacity: 100% !important;
-}
-.container .ui #settings-modal .settings-container .settings-content:hover .arrow-right {
-  opacity: 100% !important;
-}
-.container .ui #settings-modal .exit-button {
-  color: white;
-  font-family: "Press Start 2P", cursive;
-  font-size: 1.5vw;
-  padding: 1vw 0;
-  position: absolute;
-  top: 80%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  background-color: transparent;
-  width: 91%;
-  background-color: transparent;
-  text-align: center;
-}
-.container .ui #settings-modal .exit-button:hover {
-  background-color: rgb(254, 31, 136);
-}
-.container .ui #settings-modal .exit-button > div {
+  position: relative;
   background-color: transparent;
 }
 .container .ui #pause-modal .modal {
@@ -662,16 +531,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-.container .ui #HUD {
-  max-width: 1920px;
-  max-height: 1080px;
-  width: 100vw;
-  height: fit-content;
-  margin-top: 1.5rem;
-  position: absolute;
-  top: 0;
-  background-color: transparent;
 }
 .container #opening-screen {
   max-width: 1920px;

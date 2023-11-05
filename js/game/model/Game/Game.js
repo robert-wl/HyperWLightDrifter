@@ -25,8 +25,6 @@ export default class Game {
         this.showFPS = false;
         this.fpsShowCounter = 0;
         this.fps = 60;
-        this.fullscreenData = {};
-        this.fullscreen = false;
         this.loading = false;
         this.player = null;
         this.width = GameSettings.game.SCREEN_WIDTH;
@@ -74,6 +72,7 @@ export default class Game {
         this.enemyManager = new EnemyManager();
         this.player = new Player();
         this.mapGenerator = new MapGenerator(this.camera);
+        this.keyCount = 0;
     }
 
     async playGame(outfitNumber) {
@@ -126,17 +125,24 @@ export default class Game {
         this.fpsHandler();
     }
 
-    toggleFullscreen() {
-        // this.fullscreen = !this.fullscreen;
-        if (this.fullscreen) {
+    toggleFullscreen(state) {
+        if (state) {
             document.documentElement.requestFullscreen().then();
         } else {
-            document.exitFullscreen().then();
+            if (document.exitFullscreen) {
+                document.exitFullscreen(); // Standard
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen(); // Safari
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen(); // Firefox
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen(); // IE/Edge
+            }
         }
     }
 
     pauseHandler() {
-        if (this.keys.includes('escape')) {
+        if (this.keys.includes('p')) {
             this.switchState(this.pausedState).then();
         }
     }

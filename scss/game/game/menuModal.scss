@@ -6,7 +6,7 @@
   display: none;
 
   > div {
-    @include text-config(button);
+    @include text-config-game(button);
     @include hoverable;
     text-align: center;
     width: 91%;

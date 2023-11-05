@@ -7,10 +7,11 @@ import JudgementAttackState from './state/JudgementAttackState.js';
 import JudgementLaserState from './state/JudgementLaserState.js';
 import JudgementDashState from './state/JudgementDashState.js';
 import JudgementBombState from './state/JudgementBombState.js';
-import { getRandomValue } from '../../../helper/randomHelper.js';
 import HealthBar from '../healthBar/HealthBar.js';
 import AudioPlayer from '../../../../audio/AudioPlayer.js';
 import JudgementDeathState from './state/JudgementDeathState.js';
+import { getManhattanDistance } from '../../../helper/distanceHelper.js';
+import { getRandomBoolean } from '../../../helper/randomHelper.js';
 
 export default class Judgement extends Enemy {
     constructor({ x, y, moveSpeed, attackPosition, width, height }) {
@@ -84,46 +85,59 @@ export default class Judgement extends Enemy {
 
     handleSwitchState() {
         AudioPlayer.getInstance().playAudio('boss/scream.wav');
-        
-        const random = getRandomValue({
-            randomValue: 10,
-        });
 
-        if (this.currState === this.dashState) {
-            if (random < 5) {
-                this.switchState(this.attackState);
-                return;
-            }
-            if (random < 8) {
-                this.switchState(this.laserState);
-                return;
-            }
-            this.switchState(this.bombState);
-            return;
-        }
+        const { dashChance, attackChance, laserChance, bombChance } = this.getStateProbability();
 
-        if (this.currState === this.moveState) {
-            if (random < 4) {
-                this.switchState(this.dashState);
-                return;
-            }
-            if (random < 6) {
-                this.switchState(this.attackState);
-                return;
-            }
-            if (random < 8) {
-                this.switchState(this.laserState);
-                return;
-            }
-            this.switchState(this.bombState);
-            return;
-        }
-
-        if (random <= 5) {
+        if (getRandomBoolean(dashChance)) {
             this.switchState(this.dashState);
             return;
         }
+        if (getRandomBoolean(attackChance)) {
+            this.switchState(this.attackState);
+            return;
+        }
+        if (getRandomBoolean(laserChance)) {
+            this.switchState(this.laserState);
+            return;
+        }
+        if (getRandomBoolean(bombChance)) {
+            this.switchState(this.bombState);
+            return;
+        }
         this.switchState(this.moveState);
+    }
+
+    getStateProbability() {
+        let dashChance;
+        let attackChance;
+        let laserChance;
+        let bombChance;
+
+        const { player } = Game.getInstance();
+
+        const distance = getManhattanDistance({
+            x: this.position.x - player.centerPosition.x,
+            y: this.position.y - player.centerPosition.y,
+        });
+
+        if (distance < 400) {
+            dashChance = 0.25;
+            attackChance = 0.35;
+            laserChance = 0.05;
+            bombChance = 0.35;
+        } else if (distance < 750) {
+            dashChance = 0.25;
+            attackChance = 0.35;
+            laserChance = 0.15;
+            bombChance = 0.35;
+        } else {
+            dashChance = 0.25;
+            attackChance = 0.05;
+            laserChance = 0.35;
+            bombChance = 0.35;
+        }
+
+        return { dashChance, attackChance, laserChance, bombChance };
     }
 
     update() {

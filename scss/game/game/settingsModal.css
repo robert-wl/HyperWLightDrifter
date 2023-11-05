@@ -1,0 +1,117 @@
+#settings-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+#settings-modal .title {
+  color: white;
+  font-family: "omnes-pro", sans-serif;
+  font-size: title;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  text-align: center;
+}
+#settings-modal .settings-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: "omnes-pro", sans-serif;
+  font-size: button;
+  width: 100%;
+  text-align: center;
+  background-color: transparent;
+}
+#settings-modal .settings-container .settings-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  background-color: transparent;
+  width: 91%;
+  padding: 1.5vw 0;
+}
+#settings-modal .settings-container .settings-content:hover {
+  background-color: rgb(253, 27, 94);
+}
+#settings-modal .settings-container .settings-content .settings-content-title {
+  width: 20rem;
+}
+#settings-modal .settings-container .settings-content > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 91%;
+  background-color: transparent;
+}
+#settings-modal .settings-container .settings-content > div > span {
+  background-color: transparent;
+}
+#settings-modal .settings-container .settings-content > div .volume-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#settings-modal .settings-container .settings-content > div .volume-bar .volume-meter {
+  width: 1.5vw;
+  height: 2vw;
+  margin: 0 0.1rem;
+}
+#settings-modal .settings-container .settings-content > div .volume-bar .on {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+#settings-modal .settings-container .settings-content > div .volume-bar .off {
+  background-color: rgba(100, 100, 100, 0.5);
+}
+#settings-modal .settings-container .settings-content .arrow-left {
+  animation: arrowMoveLeft 0.5s steps(2) infinite;
+  opacity: 0;
+  background-color: transparent;
+  width: 3rem;
+  cursor: pointer;
+}
+#settings-modal .settings-container .settings-content .arrow-right {
+  animation: arrowMoveRight 0.5s steps(2) infinite;
+  opacity: 0;
+  background-color: transparent;
+  width: 3rem;
+  cursor: pointer;
+}
+#settings-modal .settings-container .settings-content:hover * .arrow-left {
+  opacity: 100% !important;
+}
+#settings-modal .settings-container .settings-content:hover .arrow-right {
+  opacity: 100% !important;
+}
+#settings-modal .exit-button {
+  color: white;
+  font-family: "omnes-pro", sans-serif;
+  font-size: button;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  background-color: transparent;
+  width: 91%;
+  background-color: transparent;
+  text-align: center;
+}
+#settings-modal .exit-button:hover {
+  background-color: rgb(253, 27, 94);
+}
+#settings-modal .exit-button > div {
+  background-color: transparent;
+}
+
+/*# sourceMappingURL=settingsModal.css.map */

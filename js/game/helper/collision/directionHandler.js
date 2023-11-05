@@ -1,13 +1,13 @@
 import Game from '../../model/Game/Game.js';
 
 export function getMouseDirection({ angle }) {
-    if (angle <= (Math.PI * 5) / 6 && angle > (Math.PI) / 6) {
+    if (angle <= (Math.PI * 5) / 6 && angle > Math.PI / 6) {
         return 's';
     }
-    if (angle <= (-Math.PI) / 6 && angle > (-Math.PI * 5) / 6) {
+    if (angle <= -Math.PI / 6 && angle > (-Math.PI * 5) / 6) {
         return 'w';
     }
-    if (angle <= (Math.PI) / 4 && angle > (-Math.PI) / 4) {
+    if (angle <= Math.PI / 4 && angle > -Math.PI / 4) {
         return 'd';
     }
     if (angle <= (-Math.PI * 3) / 4 || angle >= (Math.PI * 3) / 4) {
@@ -19,25 +19,25 @@ export function getMouseDirection({ angle }) {
 export function getMoveDirection({ currPlayer }) {
     const { keys, deltaTime } = Game.getInstance();
     let direction = '';
-    if (keys.includes('a')) {
+    if (keys.includes('a') && !keys.includes('d')) {
         if (currPlayer.velocity.x > -currPlayer.maxSpeed * deltaTime) {
             currPlayer.velocity.x += -deltaTime;
         }
         direction = 'a';
     }
-    if (keys.includes('w')) {
+    if (keys.includes('w') && !keys.includes('s')) {
         if (currPlayer.velocity.y > -currPlayer.maxSpeed * deltaTime) {
             currPlayer.velocity.y += -deltaTime;
         }
         direction = 'w';
     }
-    if (keys.includes('d')) {
+    if (keys.includes('d') && !keys.includes('a')) {
         if (currPlayer.velocity.x < currPlayer.maxSpeed * deltaTime) {
             currPlayer.velocity.x += deltaTime;
         }
         direction = 'd';
     }
-    if (keys.includes('s')) {
+    if (keys.includes('s') && !keys.includes('w')) {
         if (currPlayer.velocity.y < currPlayer.maxSpeed * deltaTime) {
             currPlayer.velocity.y += deltaTime;
         }

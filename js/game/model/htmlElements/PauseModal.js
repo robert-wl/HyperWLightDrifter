@@ -4,7 +4,6 @@ import Modal from './Modal.js';
 export default class PauseModal extends Modal {
     static modal = $('#pause-modal');
     static continueButton = $('#continue-button');
-    static settingsButton = $('#settings-button');
     static exitButton = $('#exit-button');
 
     static handleInteraction() {
@@ -12,11 +11,9 @@ export default class PauseModal extends Modal {
             Game.getInstance().unpauseGame();
         });
 
-        this.settingsButton.on('mousedown', () => {
-            this.close();
-        });
-
         this.exitButton.on('mousedown', () => {
+            Game.getInstance().switchState(Game.getInstance().startState).then();
+            $('#opening-screen').css('animation', 'fadeIn 0.5s ease-in-out');
             this.close();
         });
     }

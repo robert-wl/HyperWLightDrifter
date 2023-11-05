@@ -1,7 +1,6 @@
 import Game from '../../model/Game/Game.js';
 import AudioPlayer from '../../../audio/AudioPlayer.js';
 
-
 export default function playerEffectsHandler({ currPlayer, clear }) {
     if (clear) {
         clearFilter(currPlayer);
@@ -32,7 +31,6 @@ function healingHandler(currPlayer) {
     }
 
     if (currPlayer.healing > 0) {
-
         const { ctx } = Game.getInstance();
 
         Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%)');
@@ -42,13 +40,8 @@ function healingHandler(currPlayer) {
         ctx.save();
         ctx.translate(currPlayer.centerPosition.x - 15, currPlayer.centerPosition.y - 30);
         ctx.rotate(Math.PI / 4);
-        // ctx.translate((this.width - this.hitbox.x) / 2, (this.width - this.hitbox.x) / 2);
-        ctx.strokeRect(
-            10,
-            -15,
-            currPlayer.width - currPlayer.hitbox.x,
-            currPlayer.width - currPlayer.hitbox.x,
-        );
+
+        ctx.strokeRect(10, -15, currPlayer.width - currPlayer.hitbox.x, currPlayer.width - currPlayer.hitbox.x);
         ctx.restore();
     }
 }

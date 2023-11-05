@@ -39,7 +39,7 @@ export default class JudgementBullet extends Enemy {
                 angle: angle,
             },
             lifetime: getRandomValue({
-                initialValue: 100,
+                initialValue: 200,
                 randomValue: 200,
             }),
         });

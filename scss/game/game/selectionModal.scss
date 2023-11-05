@@ -1,45 +1,47 @@
 @import "../mixins";
 
+
 #selection-modal {
   align-items: center;
 
   .title {
-    @include text-config(title);
+    @include text-config-game(title);
+    font-size: 2vw;
     background-color: transparent;
     text-align: center;
   }
 
   .image-container {
     @include flex-rules(row, center, center);
-    @include text-config(button);
+    @include text-config-game(button);
     background-color: transparent;
-    width: 35rem;
-    margin-top: 2rem;
+    width: 35vw;
+    margin-top: 1vw;
     text-align: center;
 
     .arrow-left {
       @include animationArrow(left);
       background-color: transparent;
-      width: 20rem;
+      width: 20vw;
       cursor: pointer;
     }
 
     img {
-      @include size(30rem, fit-content);
+      @include size(30vw, fit-content);
       aspect-ratio: 92/140;
     }
 
     .arrow-right {
       @include animationArrow(right);
       background-color: transparent;
-      width: 20rem;
+      width: 20vw;
       cursor: pointer;
     }
   }
 
   .button {
     @include hoverable;
-    @include text-config(button);
+    @include text-config-game(button);
     width: 91%;
     text-align: center;
   }

@@ -6,9 +6,12 @@ import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
 import PauseModal from '../../htmlElements/PauseModal.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
+import Navbar from '../../htmlElements/Navbar.js';
 
 export default class GameStageOneState extends GameBaseState {
     async enterState(game) {
+        Navbar.close();
+        game.toggleFullscreen(true);
         game.stage = 1;
         await this.stageInitializer(game);
         const { audio, player } = game;

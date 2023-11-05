@@ -27,259 +27,46 @@ body {
   user-select: none;
 }
 
-@mixin flex-rules($direction, $justify, $align) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: $justify;
-  align-items: $align;
-}
-
-@mixin max-size($width, $height) {
-  max-width: $width;
-  max-height: $height;
-}
-
-@mixin size($width, $height) {
-  width: $width;
-  height: $height;
-}
-
-@mixin background-image-settings {
-  background-repeat: no-repeat;
-  background-size: cover;
-  image-rendering: pixelated;
-}
-
-@mixin text-config($place) {
-  color: white;
-  font-family: 'Press Start 2P', cursive;
-  @if ($place == title) {
-    font-size: 2vw;
-  }
-  @if ($place == button) {
-    font-size: 1.5vw;
-    padding: 1vw 0;
-  }
-}
-
-@mixin animationArrow($direction) {
-  @if ($direction == left) {
-    animation: arrowMoveLeft 0.5s steps(2) infinite;
-  }
-  @if ($direction == right) {
-    animation: arrowMoveRight 0.5s steps(2) infinite;
-  }
-}
-
-@mixin hoverable {
-  cursor: pointer;
-  background-color: transparent;
-
-  &:hover {
-    background-color: $pink-color;
-  }
-}
-
-@mixin absolute($top, $left) {
-  position: absolute;
-  top: $top;
-  left: $left;
-  transform: translate(-50%, -50%);
-}
-
 .container {
   @include flex-rules(row, center, center);
-  @include size(100vw, 100vh);
+  @include size(100vw, calc(100vh + 4rem));
   //@include max-size(1920px, 1080vh);
   overflow: hidden;
   position: relative;
 
 
   #game {
-    @include size(fit-content, fit-content);
+    @include absolute(47.5%, 50%);
+    @include size(100vw, auto);
+    transform: translate(-50%, -50%);
+    aspect-ratio: 16/9;
     touch-action: none;
     overflow: hidden;
     background-color: black;
   }
 
+  #HUD {
+    position: absolute;
+    @include size(100vw, auto);
+    aspect-ratio: 16/9;
+    touch-action: none;
+    overflow: hidden;
+    background-color: transparent;
+    top: 1%;
+  }
+
   .ui {
     @include flex-rules(row, center, center);
-    @include size(100vw, fit-content);
+    @include size(auto, 61vw);
     @include max-size(1920px, 1080vh);
     aspect-ratio: 16/9;
-    position: absolute;
+    position: relative;
     background-color: transparent;
-
-
-    #menu-modal {
-      @include flex-rules(column, center, center);
-      display: none;
-
-      > div {
-        @include text-config(button);
-        @include hoverable;
-        text-align: center;
-        width: 91%;
-      }
-    }
-
-    #selection-modal {
-      align-items: center;
-
-      .title {
-        @include text-config(title);
-        background-color: transparent;
-        text-align: center;
-      }
-
-      .image-container {
-        @include flex-rules(row, center, center);
-        @include text-config(button);
-        background-color: transparent;
-        width: 35rem;
-        margin-top: 2rem;
-        text-align: center;
-
-        .arrow-left {
-          @include animationArrow(left);
-          background-color: transparent;
-          width: 20rem;
-          cursor: pointer;
-        }
-
-        img {
-          @include size(30rem, fit-content);
-          aspect-ratio: 92/140;
-        }
-
-        .arrow-right {
-          @include animationArrow(right);
-          background-color: transparent;
-          width: 20rem;
-          cursor: pointer;
-        }
-      }
-
-      .button {
-        @include hoverable;
-        @include text-config(button);
-        width: 91%;
-        text-align: center;
-      }
-    }
-
-    #settings-modal {
-      @include flex-rules(column, center, center);
-      display: none;
-
-      .title {
-        @include text-config(title);
-        @include absolute(10%, 50%);
-        background-color: transparent;
-        text-align: center;
-      }
-
-      .settings-container {
-        @include flex-rules(column, center, center);
-        @include text-config(button);
-        width: 100%;
-        text-align: center;
-        background-color: transparent;
-
-        .settings-content {
-          @include flex-rules(row, center, center);
-          @include hoverable;
-          background-color: transparent;
-          width: 91%;
-          padding: 1.5vw 0;
-
-          .settings-content-title {
-            width: 20rem;
-          }
-
-          > div {
-            @include flex-rules(row, space-between, center);
-            width: 91%;
-            background-color: transparent;
-
-            > span {
-              background-color: transparent;
-            }
-
-            .volume-bar {
-              @include flex-rules(row, center, center);
-
-              .volume-meter {
-                width: 1.5vw;
-                height: 2vw;
-                margin: 0 0.1rem;
-              }
-
-              .on {
-                background-color: rgb(255, 255, 255, 0.8);
-              }
-
-              .off {
-                background-color: rgb(100, 100, 100, 0.5);
-              }
-            }
-          }
-
-          .arrow-left {
-            @include animationArrow(left);
-            opacity: 0;
-            background-color: transparent;
-            width: 3rem;
-            cursor: pointer;
-          }
-
-          .arrow-right {
-            @include animationArrow(right);
-            opacity: 0;
-            background-color: transparent;
-            width: 3rem;
-            cursor: pointer;
-          }
-
-          &:hover * .arrow-left {
-            opacity: 100% !important;
-          }
-
-          &:hover .arrow-right {
-            opacity: 100% !important;
-          }
-        }
-      }
-
-      .exit-button {
-        @include text-config(button);
-        @include absolute(80%, 50%);
-        @include hoverable;
-        width: 91%;
-        background-color: transparent;
-        text-align: center;
-
-        > div {
-          background-color: transparent;
-        }
-      }
-    }
 
     #pause-modal {
       .modal {
         @include flex-rules(column, center, center);
       }
-    }
-
-
-    #HUD {
-      @include max-size(1920px, 1080px);
-      @include size(100vw, fit-content);
-      margin-top: 1.5rem;
-      position: absolute;
-      top: 0;
-      background-color: transparent;
-      //margin-top: 4rem;
     }
   }
 
@@ -335,3 +122,51 @@ body {
   }
 }
 
+
+@mixin flex-rules($direction, $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin max-size($width, $height) {
+  max-width: $width;
+  max-height: $height;
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin background-image-settings {
+  background-repeat: no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+@mixin animationArrow($direction) {
+  @if ($direction == left) {
+    animation: arrowMoveLeft 0.5s steps(2) infinite;
+  }
+  @if ($direction == right) {
+    animation: arrowMoveRight 0.5s steps(2) infinite;
+  }
+}
+
+@mixin hoverable {
+  cursor: pointer;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $pink-color;
+  }
+}
+
+@mixin absolute($top, $left) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  transform: translate(-50%, -50%);
+}

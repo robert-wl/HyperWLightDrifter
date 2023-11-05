@@ -29,6 +29,18 @@
   font-size: $config;
 }
 
+@mixin text-config-game($place) {
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  @if ($place == title) {
+    font-size: 2vw;
+  }
+  @if ($place == button) {
+    font-size: 1.5vw;
+    padding: 1vw 0;
+  }
+}
+
 @mixin animationArrow($direction) {
   @if ($direction == left) {
     animation: arrowMoveLeft 0.5s steps(2) infinite;

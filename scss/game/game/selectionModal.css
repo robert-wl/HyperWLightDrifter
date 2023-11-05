@@ -1,0 +1,61 @@
+#selection-modal {
+    align-items: center;
+}
+
+#selection-modal .title {
+    color: white;
+    font-family: "omnes-pro", sans-serif;
+    font-size: title;
+    background-color: transparent;
+    text-align: center;
+}
+
+#selection-modal .image-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: "omnes-pro", sans-serif;
+    font-size: button;
+    background-color: transparent;
+    width: 35rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+#selection-modal .image-container .arrow-left {
+    animation: arrowMoveLeft 0.5s steps(2) infinite;
+    background-color: transparent;
+    width: 20rem;
+    cursor: pointer;
+}
+
+#selection-modal .image-container img {
+    width: 30rem;
+    height: fit-content;
+    aspect-ratio: 92/140;
+}
+
+#selection-modal .image-container .arrow-right {
+    animation: arrowMoveRight 0.5s steps(2) infinite;
+    background-color: transparent;
+    width: 20rem;
+    cursor: pointer;
+}
+
+#selection-modal .button {
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    font-family: "omnes-pro", sans-serif;
+    font-size: button;
+    width: 91%;
+    text-align: center;
+}
+
+#selection-modal .button:hover {
+    background-color: rgb(253, 27, 94);
+}
+
+/*# sourceMappingURL=selectionModal.css.map */

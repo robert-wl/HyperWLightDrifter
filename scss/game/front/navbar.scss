@@ -36,6 +36,13 @@
         margin-left: 2rem;
         font-family: "Kanit", sans-serif;
 
+        > a {
+          color: white;
+          text-decoration: none;
+          text-underline: none;
+          transition: color 0.5s;
+        }
+
 
         .underline {
           width: 0;

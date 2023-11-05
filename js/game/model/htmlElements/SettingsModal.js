@@ -8,9 +8,6 @@ export default class SettingsModal extends Modal {
     static volumeLowerButton = $('#volume-down');
     static volumeHigherButton = $('#volume-up');
     static volumeMeter = $('.volume-meter');
-    static fullscreenText = $('#fullscreen-text');
-    static fullscreenLeftButton = $('#fullscreen-toggle-left');
-    static fullscreenRightButton = $('#fullscreen-toggle-right');
     static fpsCounterText = $('#fps-counter-text');
     static fpsCounterLeftButton = $('#fps-counter-toggle-left');
     static fpsCounterRightButton = $('#fps-counter-toggle-right');
@@ -36,20 +33,6 @@ export default class SettingsModal extends Modal {
         }
     }
 
-    static handleFullscreenInteraction() {
-        const { fullscreen } = Game.getInstance();
-        console.log(fullscreen);
-        if (fullscreen) {
-            this.fullscreenText.text('Off');
-            Game.getInstance().fullscreen = false;
-        }
-        if (!fullscreen) {
-            this.fullscreenText.text('On');
-            Game.getInstance().fullscreen = true;
-        }
-        Game.getInstance().toggleFullscreen();
-    }
-
     static handleFPSCounterInteraction() {
         const { showFPS } = Game.getInstance();
         if (showFPS) {
@@ -69,12 +52,6 @@ export default class SettingsModal extends Modal {
 
         this.volumeHigherButton.on('mousedown', () => {
             this.handleVolumeInteraction('higher');
-        });
-        this.fullscreenLeftButton.on('mousedown', () => {
-            this.handleFullscreenInteraction();
-        });
-        this.fullscreenRightButton.on('mousedown', () => {
-            this.handleFullscreenInteraction();
         });
         this.fpsCounterLeftButton.on('mousedown', () => {
             this.handleFPSCounterInteraction();

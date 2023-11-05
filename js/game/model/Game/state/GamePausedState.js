@@ -8,14 +8,14 @@ export default class GamePausedState extends GameBaseState {
 
         const { keys } = Game.getInstance();
 
-        keys.splice(keys.indexOf('escape'), 1);
+        keys.splice(keys.indexOf('p'), 1);
     }
 
     updateState(game) {
         const { keys } = Game.getInstance();
 
-        if (keys.includes('escape')) {
-            keys.splice(keys.indexOf('escape'), 1);
+        if (keys.includes('p')) {
+            keys.splice(keys.indexOf('p'), 1);
             game.unpauseGame();
         }
     }

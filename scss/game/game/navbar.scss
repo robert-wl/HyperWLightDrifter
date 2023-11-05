@@ -1,17 +1,11 @@
 @import "../mixins";
 
-#navbar {
-  margin: 0;
-  padding: 0;
-  background-color: black;
-}
-
 .navbar {
   @include flex-rules(row, center, center);
   @include size(100vw, 4rem);
-  //position: fixed;
+  position: fixed;
   transition: background-color 0.5s;
-  background: transparent;
+  background: black;
   z-index: 100;
 
   .navbar-container {
@@ -29,7 +23,7 @@
         width: 8rem;
       }
 
-      > a {
+      > button {
         background-color: transparent;
         outline: none;
         border: none;
@@ -41,7 +35,13 @@
         cursor: pointer;
         margin-left: 2rem;
         font-family: "Kanit", sans-serif;
-        text-decoration: none;
+
+        > a {
+          color: white;
+          text-decoration: none;
+          text-underline: none;
+          transition: color 0.5s;
+        }
 
 
         .underline {
@@ -75,7 +75,7 @@
           color: white;
           text-decoration: none;
           text-underline: none;
-          transition: color 0.5s;
+          transition: color 0.5s, background-color 0.5s;
         }
 
         &:hover {
@@ -83,6 +83,7 @@
 
           > a {
             color: $pink-color;
+            background-color: white;
           }
         }
       }

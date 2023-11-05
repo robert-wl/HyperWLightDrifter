@@ -6,7 +6,7 @@
   display: none;
 
   .title {
-    @include text-config(title);
+    @include text-config-game(title);
     @include absolute(10%, 50%);
     background-color: transparent;
     text-align: center;
@@ -14,7 +14,7 @@
 
   .settings-container {
     @include flex-rules(column, center, center);
-    @include text-config(button);
+    @include text-config-game(button);
     width: 100%;
     text-align: center;
     background-color: transparent;
@@ -27,7 +27,7 @@
       padding: 1.5vw 0;
 
       .settings-content-title {
-        width: 20rem;
+        width: 20vw;
       }
 
       > div {
@@ -45,7 +45,7 @@
           .volume-meter {
             width: 1.5vw;
             height: 2vw;
-            margin: 0 0.1rem;
+            margin: 0 0.1vw;
           }
 
           .on {
@@ -62,7 +62,7 @@
         @include animationArrow(left);
         opacity: 0;
         background-color: transparent;
-        width: 3rem;
+        width: 3vw;
         cursor: pointer;
       }
 
@@ -70,7 +70,7 @@
         @include animationArrow(right);
         opacity: 0;
         background-color: transparent;
-        width: 3rem;
+        width: 3vw;
         cursor: pointer;
       }
 
@@ -85,7 +85,7 @@
   }
 
   .exit-button {
-    @include text-config(button);
+    @include text-config-game(button);
     @include absolute(80%, 50%);
     @include hoverable;
     width: 91%;

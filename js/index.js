@@ -3,7 +3,6 @@ import Game from './game/model/Game/Game.js';
 $(async () => {
     const game = Game.getInstance();
     game.debug = false;
-    // game.enemyManager.enemySpawn = true;
 
     let lastTimestamp = 0;
     let isTabVisible = true;
@@ -17,7 +16,7 @@ $(async () => {
         requestAnimationFrame(updateLoop);
     };
 
-    document.addEventListener('visibilitychange', () => {
+    $(document).on('visibilitychange', () => {
         isTabVisible = document.visibilityState === 'visible';
     });
 

@@ -1,0 +1,21 @@
+#menu-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+#menu-modal > div {
+  color: white;
+  font-family: "omnes-pro", sans-serif;
+  font-size: button;
+  cursor: pointer;
+  background-color: transparent;
+  text-align: center;
+  width: 91%;
+}
+#menu-modal > div:hover {
+  background-color: rgb(253, 27, 94);
+}
+
+/*# sourceMappingURL=menuModal.css.map */

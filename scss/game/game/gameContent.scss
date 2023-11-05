@@ -1,0 +1,6 @@
+@import "../mixins";
+
+.game {
+  @include flex-rules(row, center, center);
+  @include size(100vw, 4rem);
+}

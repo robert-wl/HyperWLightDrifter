@@ -8,10 +8,13 @@ import SelectionModal from '../../htmlElements/SelectionModal.js';
 import SettingsModal from '../../htmlElements/SettingsModal.js';
 import GameSettings from '../../../constants.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
+import Navbar from '../../htmlElements/Navbar.js';
 
 export default class GameStartState extends GameBaseState {
     async enterState(game) {
         super.enterState(game);
+        Navbar.open();
+        game.toggleFullscreen(false);
         this.spawnParticles = true;
 
         game.instance = null;
