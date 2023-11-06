@@ -1,21 +1,24 @@
 @import "../mixins";
 
 .ost-container {
-  @include flex-rules(column, center, center);
+  @include flex-rules(column, start, center);
+  height: 100vh;
 
   .inner-container-ost {
-    @include flex-rules(column, center, center);
+    @include flex-rules(column, start, center);
 
     > h3 {
       @include headerTitle;
-      margin-bottom: 5vw;
+      margin-bottom: 3vw;
     }
 
     .ost-content {
       @include flex-rules(row, start, flex-start);
       gap: 2rem;
+      padding: 0 8vw;
 
       .content-left {
+        position: relative;
         width: 30vw;
 
         > img {
@@ -31,41 +34,72 @@
 
         .content-right-header {
           @include flex-rules(row, center, center);
+          width: 100%;
+          justify-content: space-between;
 
-          .audio-toggle-button {
+          .left-content {
             @include flex-rules(row, center, center);
-            background-color: $pink-color;
-            outline: none;
-            border: none;
-            color: white;
-            padding: 0.1rem;
-            transition: background-color 0.1s;
 
-            &.disabled {
-              display: none;
+            .audio-toggle-button {
+              @include flex-rules(row, center, center);
+              background-color: $pink-color;
+              outline: none;
+              border: none;
+              color: white;
+              padding: 0.1rem;
+              transition: background-color 0.1s;
+
+              &.disabled {
+                display: none;
+              }
+
+              &:hover {
+                background-color: rgb(255, 0, 0, 0.8);
+              }
             }
 
-            &:hover {
-              background-color: rgb(255, 0, 0, 0.8);
+            .audio-content {
+              @include flex-rules(column, start, flex-start);
+              margin-left: 1rem;
+
+              > h3 {
+                font-family: Kanit, sans-serif;
+                font-size: 24px;
+                padding: 0;
+                margin: 0;
+              }
+
+              > p {
+                font-family: Kanit, sans-serif;
+                font-size: 18px;
+                padding: 0;
+                margin: 0;
+              }
             }
           }
 
-          .audio-content {
+          .right-content {
             @include flex-rules(column, start, flex-start);
-            margin-left: 1rem;
+            align-self: end;
 
-            > h3 {
-              font-family: Kanit, sans-serif;
-              font-size: 24px;
-              padding: 0;
-              margin: 0;
-            }
 
-            > p {
+            .download-button {
+              @include flex-rules(row, center, center);
               font-family: Kanit, sans-serif;
-              font-size: 18px;
-              padding: 0;
-              margin: 0;
+              font-size: 16px;
+              font-weight: 500;
+              background-color: transparent;
+              outline: none;
+              border: none;
+              color: white;
+              margin-bottom: 0.3vw;
+              transition: background-color 0.1s;
+
+              &:hover {
+                svg path {
+                  stroke: $pink-color;
+                }
+              }
             }
           }
         }
@@ -111,7 +145,7 @@
 
         .content-audio-visualizer {
           width: 60vw;
-          height: 30vw;
+          height: 20vw;
           overflow: hidden;
 
           > canvas {

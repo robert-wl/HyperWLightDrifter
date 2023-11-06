@@ -738,7 +738,7 @@ body {
   border-radius: 0.5rem;
 }
 
-html, body {
+html {
   scroll-behavior: smooth;
   height: 100vh;
   overflow-y: scroll;
@@ -770,9 +770,10 @@ html, body {
 .background-color {
   position: absolute;
   width: 50vw;
-  height: 100vh;
+  height: 50vw;
   z-index: -100;
   transform: scale(1.5);
+  overflow: hidden;
 }
 .background-color.one {
   top: 50rem;
@@ -806,6 +807,16 @@ html, body {
   top: 340rem;
   left: 50%;
   transform: rotate(210deg);
+}
+.background-color.eight {
+  top: 450rem;
+  left: 60%;
+  transform: rotate(139deg);
+}
+.background-color.nine {
+  top: 430rem;
+  left: -5%;
+  transform: rotate(227deg);
 }
 
 .video-top {

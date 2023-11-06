@@ -21,6 +21,8 @@
 <img alt='' class='background-color five' src='../assets/web/color.png'>
 <img alt='' class='background-color six' src='../assets/web/color.png'>
 <img alt='' class='background-color seven' src='../assets/web/color.png'>
+<img alt='' class='background-color eight' src='../assets/web/color.png'>
+<img alt='' class='background-color nine' src='../assets/web/color.png'>
 <section class='navbar section' id='navbar'>
     <div class='navbar-container'>
         <div class='navbar-container-left'>
@@ -646,36 +648,49 @@
                 <img alt='' src='../assets/web/ost/ost.png'>
             </div>
             <div class='content-right'>
+                <div class='content-audio-visualizer'>
+                    <canvas height='1080' id='audio-visualizer' width='1920'>
+                    </canvas>
+                </div>
                 <div class='content-right-header'>
-                    <button class='audio-toggle-button'>
-                        <svg class='bi bi-play-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
-                             width='64' xmlns='http://www.w3.org/2000/svg'>
-                            <path
-                                d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z' />
-                        </svg>
-                    </button>
-                    <button class='audio-toggle-button disabled'>
-                        <svg class='bi bi-pause-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
-                             width='64' xmlns='http://www.w3.org/2000/svg'>
-                            <path
-                                d='M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z' />
-                        </svg>
-                    </button>
-                    <div class='audio-content'>
-                        <h3>
-                            Cult of the Zealous
-                        </h3>
-                        <p>
-                            By Disasterpiece
-                        </p>
+                    <div class='left-content'>
+                        <button class='audio-toggle-button'>
+                            <svg class='bi bi-play-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
+                                 width='64' xmlns='http://www.w3.org/2000/svg'>
+                                <path
+                                    d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z' />
+                            </svg>
+                        </button>
+                        <button class='audio-toggle-button disabled'>
+                            <svg class='bi bi-pause-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
+                                 width='64' xmlns='http://www.w3.org/2000/svg'>
+                                <path
+                                    d='M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z' />
+                            </svg>
+                        </button>
+                        <div class='audio-content'>
+                            <h3>
+                                Cult of the Zealous
+                            </h3>
+                            <p>
+                                By Disasterpiece
+                            </p>
+                        </div>
+                    </div>
+                    <div class='right-content'>
+                        <a class='download-button' download='ost.mp3' href='../assets/web/ost/audio.mp3'>
+                            <svg fill='none' height='32' viewBox='0 0 24 24' width='32'
+                                 xmlns='http://www.w3.org/2000/svg'>
+                                <path
+                                    d='M20 15V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18L4 15M8 11L12 15M12 15L16 11M12 15V3'
+                                    stroke='white' stroke-linecap='round' stroke-linejoin='round'
+                                    stroke-width='1.5' />
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <div class='content-right-slider'>
                     <input class='slider' max='100' min='0' step='0.0001' type='range' value='0'>
-                </div>
-                <div class='content-audio-visualizer'>
-                    <canvas height='1080' id='audio-visualizer' width='1920'>
-                    </canvas>
                 </div>
             </div>
         </div>
@@ -685,6 +700,8 @@
         <!--            </div>-->
         <!--        </div>-->
     </div>
+</section>
+<section class='footer-container-box'>
 </section>
 <section class='footer section'>
     <img alt='' src='../assets/web/footer.png'>
@@ -716,9 +733,6 @@
             Copyright © 2023 Yahkerobertkertasnya
         </div>
     </div>
-</section>
-<section class='ost-container section'>
-
 </section>
 <script
     crossorigin='anonymous'

@@ -1,9 +1,14 @@
+.footer-container-box {
+  height: 20vw;
+}
+
 .footer {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: absolute;
+  bottom: 0%;
   width: 100vw;
   height: 12rem;
   overflow-y: hidden;

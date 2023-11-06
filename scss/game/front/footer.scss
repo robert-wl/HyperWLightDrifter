@@ -1,9 +1,14 @@
 @import "../mixins";
 
 
+.footer-container-box {
+  height: 20vw;
+}
+
 .footer {
   @include flex-rules(row, center, center);
-  position: relative;
+  position: absolute;
+  bottom: 0%;
   width: 100vw;
   height: 12rem;
   overflow-y: hidden;

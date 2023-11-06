@@ -57,7 +57,7 @@ body {
 }
 
 
-html, body {
+html {
   //scroll-snap-type: y proximity;
   scroll-behavior: smooth;
   height: 100vh;
@@ -91,9 +91,10 @@ html, body {
 .background-color {
   position: absolute;
   width: 50vw;
-  height: 100vh;
+  height: 50vw;
   z-index: -100;
   transform: scale(1.5);
+  overflow: hidden;
 
   &.one {
     top: 50rem;
@@ -133,6 +134,18 @@ html, body {
     top: 340rem;
     left: 50%;
     transform: rotate(210deg);
+  }
+
+  &.eight {
+    top: 450rem;
+    left: 60%;
+    transform: rotate(139deg);
+  }
+
+  &.nine {
+    top: 430rem;
+    left: -5%;
+    transform: rotate(227deg);
   }
 }
 
