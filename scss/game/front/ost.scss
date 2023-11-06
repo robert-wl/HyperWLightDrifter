@@ -8,7 +8,7 @@
 
     > h3 {
       @include headerTitle;
-      margin-bottom: 2rem;
+      margin-bottom: 5vw;
     }
 
     .ost-content {
@@ -21,6 +21,8 @@
         > img {
           width: 100%;
           height: 100%;
+          object-fit: cover;
+          aspect-ratio: 1;
         }
       }
 
@@ -37,9 +39,14 @@
             border: none;
             color: white;
             padding: 0.1rem;
+            transition: background-color 0.1s;
 
             &.disabled {
               display: none;
+            }
+
+            &:hover {
+              background-color: rgb(255, 0, 0, 0.8);
             }
           }
 
@@ -49,7 +56,7 @@
 
             > h3 {
               font-family: Kanit, sans-serif;
-              font-size: 32px;
+              font-size: 24px;
               padding: 0;
               margin: 0;
             }
@@ -65,10 +72,40 @@
 
         .content-right-slider {
           width: 60vw;
+          margin-top: 1vw;
+          position: relative;
 
           .slider {
+            -webkit-appearance: none;
             width: 100%;
             height: 100%;
+            padding: 0.5rem 0;
+            background-color: transparent;
+
+            &::-webkit-slider-runnable-track {
+              -webkit-appearance: none;
+              appearance: none;
+              //padding-bottom: 5px;
+              height: 5px;
+              background-color: $pink-color;
+              border-radius: 1.5rem;
+              transition: background-color 0.1s;
+
+              &:hover {
+                background-color: rgb(255, 0, 0, 0.8);
+              }
+            }
+
+            &::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 1rem;
+              height: 1rem;
+              background-color: white;
+              border-radius: 50%;
+              cursor: pointer;
+              transform: translateY(-30%);
+            }
           }
         }
 
@@ -79,7 +116,7 @@
 
           > canvas {
             width: 60vw;
-            height: 30vw;
+            height: 20vw;
           }
         }
       }

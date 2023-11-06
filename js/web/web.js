@@ -1,7 +1,7 @@
 "use strict";
 let audioVisualizer;
 let audioSlider;
-$(document).ready(() => {
+$(() => {
     navbarHandler();
     parallaxHandler();
     carouselHandler();
@@ -9,10 +9,9 @@ $(document).ready(() => {
     cursorHandler();
     mapBossHandler();
     audioSlider = $('.slider')[0];
-    // audioVisualizer = new AudioVisualizer('../assets/web/audio/audio8.mp3', audioSlider);
+    audioVisualizer = new AudioVisualizer('../assets/web/audio/audio.mp3', audioSlider);
     audioHandler();
 });
-//test
 function carouselHandler() {
     $('.arrow-right').on('click', () => {
         const carousel = $('.inner-container-carousel');
@@ -86,7 +85,7 @@ function parallaxHandler() {
         if (scrollY < 3000) {
             return;
         }
-        const constant = 4200 * (window.innerWidth / 1920);
+        // const constant = 4200 * (window.innerWidth / 1920);
         const parallaxVal = (scrollY - 4700) * 0.5;
         $('.image-cover')[0].style.transform = `translateY(${parallaxVal}px)`;
     });
@@ -115,11 +114,11 @@ function cursorHandler() {
         // console.log(e.clientY + body.scrollTop()!, e.clientX);
         bodyPos = body.scrollTop();
         yPos = e.clientY + bodyPos;
-        xPos = e.clientX - 20;
+        xPos = e.clientX - 10;
         cursor.setAttribute('style', `top: ${yPos}px; left: ${xPos}px;`);
     });
-    //
-    document.querySelector('body').addEventListener('scroll', (e) => {
+    //TODO
+    document.querySelector('body').addEventListener('scroll', () => {
         cursor.setAttribute('style', `top: ${yPos - (bodyPos - body.scrollTop())}px; left: ${xPos}px;`);
     });
     const iframe = document.querySelector('iframe');
@@ -127,11 +126,11 @@ function cursorHandler() {
         // console.log(e.clientY + body.scrollTop()!, e.clientX);
         bodyPos = body.scrollTop();
         yPos = e.clientY + bodyPos;
-        xPos = e.clientX - 100;
+        xPos = e.clientX - 10;
         cursor.setAttribute('style', `top: ${yPos}px; left: ${xPos}px;`);
     });
     //
-    iframe.contentWindow.addEventListener('scroll', (e) => {
+    iframe.contentWindow.addEventListener('scroll', () => {
         cursor.setAttribute('style', `top: ${yPos - (bodyPos - body.scrollTop())}px; left: ${xPos}px;`);
     });
 }
@@ -164,14 +163,14 @@ class AudioVisualizer {
         this.analyser.fftSize = Math.pow(2, 9);
         this.bufferLength = this.analyser.frequencyBinCount;
         this.dataArray = new Uint8Array(this.bufferLength);
-        this.barWidth = this.canvas.width / (this.bufferLength * 2);
+        this.barWidth = this.canvas.width / this.bufferLength;
         this.audio.addEventListener('timeupdate', () => {
             const newPosition = (this.audio.currentTime / this.audio.duration) * 100;
             slider.value = String(newPosition);
         });
         slider.addEventListener('input', () => {
             this.audio.currentTime = (Number(slider.value) / 100) * this.audio.duration;
-            isPlaying = true;
+            audioToggle(true);
             this.playAudio();
         });
         this.animate();
@@ -189,7 +188,7 @@ class AudioVisualizer {
         this.analyser.getByteFrequencyData(this.dataArray);
         for (let i = 0; i < this.bufferLength; i++) {
             barHeight = Math.pow(this.dataArray[i], 3) / 210 ** 2;
-            const { red, green, blue } = this.getColor(barHeight, i);
+            const { green, blue } = this.getColor(barHeight, i);
             // this.ctx.fillStyle = `hsl(${(barHeight / 256) * 360}, 50%, 50%)`;
             this.ctx.fillStyle = `rgb(253, ${green}, ${blue})`;
             this.ctx.fillRect(x, this.canvas.height / 2 - barHeight, this.barWidth, barHeight);
@@ -210,14 +209,19 @@ class AudioVisualizer {
 let isPlaying = false;
 function audioHandler() {
     $('.audio-toggle-button').on('click', () => {
+        audioToggle();
+    });
+}
+function audioToggle(state) {
+    if (!state || state !== isPlaying) {
         for (const button of $('.audio-toggle-button')) {
             button.classList.toggle('disabled');
         }
-        isPlaying = !isPlaying;
-        if (isPlaying) {
-            audioVisualizer.playAudio();
-            return;
-        }
-        audioVisualizer.pauseAudio();
-    });
+    }
+    isPlaying = state || !isPlaying;
+    if (isPlaying) {
+        audioVisualizer.playAudio();
+        return;
+    }
+    audioVisualizer.pauseAudio();
 }

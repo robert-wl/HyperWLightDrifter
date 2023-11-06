@@ -9,7 +9,7 @@ $(() => {
     cursorHandler();
     mapBossHandler();
     audioSlider = $('.slider')[0] as HTMLInputElement;
-    // audioVisualizer = new AudioVisualizer('../assets/web/audio/audio8.mp3', audioSlider);
+    audioVisualizer = new AudioVisualizer('../assets/web/audio/audio.mp3', audioSlider);
     audioHandler();
 });
 
@@ -205,7 +205,7 @@ class AudioVisualizer {
         this.analyser.fftSize = Math.pow(2, 9);
         this.bufferLength = this.analyser.frequencyBinCount;
         this.dataArray = new Uint8Array(this.bufferLength);
-        this.barWidth = this.canvas.width / (this.bufferLength * 2);
+        this.barWidth = this.canvas.width / this.bufferLength;
 
         this.audio.addEventListener('timeupdate', () => {
             const newPosition = (this.audio.currentTime / this.audio.duration) * 100;
@@ -214,7 +214,7 @@ class AudioVisualizer {
 
         slider.addEventListener('input', () => {
             this.audio.currentTime = (Number(slider.value) / 100) * this.audio.duration;
-            isPlaying = true;
+            audioToggle(true);
             this.playAudio();
         });
 
@@ -267,15 +267,22 @@ let isPlaying = false;
 
 function audioHandler() {
     $('.audio-toggle-button').on('click', () => {
+        audioToggle();
+    });
+}
+
+function audioToggle(state?: boolean) {
+    if (!state || state !== isPlaying) {
         for (const button of $('.audio-toggle-button')) {
             button.classList.toggle('disabled');
         }
-        isPlaying = !isPlaying;
+    }
 
-        if (isPlaying) {
-            audioVisualizer.playAudio();
-            return;
-        }
-        audioVisualizer.pauseAudio();
-    });
+    isPlaying = state || !isPlaying;
+
+    if (isPlaying) {
+        audioVisualizer.playAudio();
+        return;
+    }
+    audioVisualizer.pauseAudio();
 }
