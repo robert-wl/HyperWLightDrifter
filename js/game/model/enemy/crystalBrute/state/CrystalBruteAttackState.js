@@ -1,5 +1,5 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 import CrystalAttack from '../CrystalAttack.js';
 import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';

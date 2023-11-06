@@ -1,6 +1,6 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import Grenade from '../Grenade.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import { getFaceDirection, getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';

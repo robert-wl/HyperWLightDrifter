@@ -4,7 +4,6 @@ import ParticlesManager from '../../particles/ParticlesManager.js';
 import InteractionBar from '../../interactables/InteractionBar.js';
 import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
-import PauseModal from '../../htmlElements/PauseModal.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
 
@@ -17,8 +16,6 @@ export default class GameStageOneState extends GameBaseState {
         const { audio, player } = game;
 
         player.switchState(player.spawnState);
-
-        PauseModal.handleInteraction();
 
         audio.playAudio('forest_stage/background.ogg', null, true);
     }
@@ -76,12 +73,12 @@ export default class GameStageOneState extends GameBaseState {
 
     async stageInitializer(game) {
         $('#menu-modal').css('display', 'none');
-        const { camera, player } = game;
+        const { camera, player, htmlHandlers } = game;
 
         game.keys = [];
         game.clicks = [];
 
-        await assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER]);
+        await assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], htmlHandlers.loadingModal);
 
         const positions = [{ x: 100, y: 0 }];
         game.mapGenerator.init(positions);

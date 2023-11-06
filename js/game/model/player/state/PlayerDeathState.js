@@ -3,7 +3,7 @@ import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../helper/collision/directionHandler.js';
 import GameSettings from '../../../constants.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 
 export default class PlayerDeathState extends PlayerBaseState {
     enterState(currPlayer) {

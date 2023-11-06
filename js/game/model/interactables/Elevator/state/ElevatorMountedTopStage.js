@@ -3,7 +3,7 @@ import { getImage } from '../../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import InteractionBar from '../../InteractionBar.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 
 export default class ElevatorMountedTopState extends ElevatorBaseState {
     updateState(elevator) {

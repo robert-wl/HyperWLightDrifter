@@ -1,5 +1,5 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 import JudgementLaser from '../JudgementLaser.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';

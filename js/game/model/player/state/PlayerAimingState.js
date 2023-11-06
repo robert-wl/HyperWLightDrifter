@@ -1,7 +1,7 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import { drawImage, drawRotated } from '../../../helper/renderer/drawer.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import GameSettings from '../../../constants.js';
 import { drawExplosion, drawShootLine, shootHandler } from '../../../helper/player/gunHelper.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';

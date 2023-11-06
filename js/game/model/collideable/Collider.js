@@ -1,4 +1,4 @@
-import Game from '../Game/Game.js';
+import Game from '../game/Game.js';
 
 export default class Collider {
     constructor({ x, y, width, height }) {

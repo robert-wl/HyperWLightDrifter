@@ -1,4 +1,4 @@
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 
 export function drawRotated({ canvas, img, angle, position, mirrored, size }) {
     const ctx = canvas || Game.getInstance().ctx;

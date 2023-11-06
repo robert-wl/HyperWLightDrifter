@@ -1,7 +1,7 @@
 import { getNumberedImage } from '../../helper/assets/assetGetter.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
-import Game from '../Game/Game.js';
+import Game from '../game/Game.js';
 import { getMagnitudeValue } from '../../helper/distanceHelper.js';
 import Medkit from './Medkit.js';
 import Key from './Key.js';

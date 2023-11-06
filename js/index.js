@@ -1,4 +1,4 @@
-import Game from './game/model/Game/Game.js';
+import Game from './game/model/game/Game.js';
 
 $(async () => {
     const game = Game.getInstance();

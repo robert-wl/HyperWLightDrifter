@@ -1,4 +1,4 @@
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 import CrystalBrute from '../../model/enemy/crystalBrute/CrystalBrute.js';
 import CrystalSpider from '../../model/enemy/crystalSpider/CrystalSpider.js';
 import GameSettings from '../../constants.js';

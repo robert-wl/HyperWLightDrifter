@@ -1,5 +1,5 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import judgementDashDrawer from '../../../../helper/boss/judgementDashDrawer.js';
 import { getAngle } from '../../../../helper/angleHelper.js';

@@ -1,6 +1,6 @@
 import CrystalSpike from './CrystalSpike.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 
 export default class CrystalAttack {
     constructor({ position, angle, playAudio }) {
@@ -51,11 +51,9 @@ export default class CrystalAttack {
             this.number = 0;
         }
 
-
         if (this.lifetime >= 200) {
             return true;
         }
-
 
         this.spikes.forEach((spike) => {
             if (spike.update()) {

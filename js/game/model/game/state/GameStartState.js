@@ -3,9 +3,6 @@ import ParticlesManager from '../../particles/ParticlesManager.js';
 import Fireflies from '../../particles/Fireflies.js';
 import menuHandler from '../../../ui/menuHandler.js';
 import Game from '../Game.js';
-import MenuModal from '../../htmlElements/MenuModal.js';
-import SelectionModal from '../../htmlElements/SelectionModal.js';
-import SettingsModal from '../../htmlElements/SettingsModal.js';
 import GameSettings from '../../../constants.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
@@ -25,10 +22,7 @@ export default class GameStartState extends GameBaseState {
 
         game.prepareCanvas();
         game.changeState();
-        await assetLoader([GameSettings.ASSETS.SPAWN]);
-        MenuModal.handleInteraction();
-        SelectionModal.handleInteraction();
-        SettingsModal.handleInteraction();
+        await assetLoader([GameSettings.ASSETS.SPAWN], game.htmlHandlers.loadingModal);
 
         menuHandler();
 

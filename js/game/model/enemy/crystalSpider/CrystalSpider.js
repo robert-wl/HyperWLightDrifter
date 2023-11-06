@@ -1,5 +1,5 @@
 import Enemy from '../Enemy.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import CrystalSpiderBaseState from './state/CrystalSpiderBaseState.js';
 import CrystalSpiderMoveState from './state/CrystalSpiderMoveState.js';
 import CrystalSpiderAttackState from './state/CrystalSpiderAttackState.js';

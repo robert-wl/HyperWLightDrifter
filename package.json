@@ -1,4 +1,7 @@
 {
+  "type": "module",
+  "name": "hyper-wlight-drifter",
+  "version": "1.0.0",
   "devDependencies": {
     "@types/jquery": "^3.5.25",
     "typescript": "^5.2.2"

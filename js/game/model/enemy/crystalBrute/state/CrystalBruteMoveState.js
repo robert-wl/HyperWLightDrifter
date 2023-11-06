@@ -1,5 +1,5 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 import { getRandomBoolean, getRandomValue } from '../../../../helper/randomHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { getAngle } from '../../../../helper/angleHelper.js';

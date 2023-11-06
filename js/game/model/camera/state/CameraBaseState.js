@@ -1,6 +1,6 @@
 import { drawImage, drawImageFromBottom } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import { getManhattanDistance } from '../../../helper/distanceHelper.js';
 import Medkit from '../../interactables/Medkit.js';
 import CrystalSpider from '../../enemy/crystalSpider/CrystalSpider.js';

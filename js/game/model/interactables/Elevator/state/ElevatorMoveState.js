@@ -1,5 +1,5 @@
 import ElevatorBaseState from './ElevatorBaseState.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 import { getImage } from '../../../../helper/assets/assetGetter.js';
 import GameSettings from '../../../../constants.js';
 import { drawImageCropped } from '../../../../helper/renderer/drawer.js';

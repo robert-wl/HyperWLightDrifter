@@ -1,4 +1,4 @@
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import playerCollision from '../../../helper/collision/playerCollision.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';

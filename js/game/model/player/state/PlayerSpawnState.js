@@ -2,7 +2,7 @@ import PlayerBaseState from './PlayerBaseState.js';
 import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 
 export default class PlayerSpawnState extends PlayerBaseState {
     enterState(currPlayer) {

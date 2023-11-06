@@ -22,6 +22,12 @@ const GameSettings = {
             SETPIECE_ELEVATOR_MAX_CHANCE: 0.03,
             SPIDER_SPAWN_CHANCE: 0.75,
         },
+        MAIN_MENU: {
+            SELECTION: {
+                IMAGE_OUTFIT_REF: ['../assets/ui/player_select/player-red.png', '../assets/ui/player_select/player-dark.png', '../assets/ui/player_select/player-yellow.png'],
+                OUTFIT: ['default', 'dark', 'yellow'],
+            },
+        },
     },
     game: {
         GAME_SCALE: 2,
@@ -663,5 +669,4 @@ const GameSettings = {
         },
     },
 };
-
 export default GameSettings;

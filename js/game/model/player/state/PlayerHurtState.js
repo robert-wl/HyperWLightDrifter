@@ -3,7 +3,7 @@ import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 
 export default class PlayerHurtState extends PlayerBaseState {

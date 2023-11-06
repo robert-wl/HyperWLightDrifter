@@ -1,5 +1,5 @@
 import GameSettings from '../constants.js';
-import Game from '../model/Game/Game.js';
+import Game from '../model/game/Game.js';
 
 const cheatCodes = {
     erwin: 'erwinganteng',

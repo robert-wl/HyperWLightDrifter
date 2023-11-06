@@ -1,11 +1,10 @@
-export default class Navbar {
-    static navbar = $('#navbar');
-
+class Navbar {
     static open() {
         this.navbar.css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '100%');
     }
-
     static close() {
         this.navbar.css('display', 'none');
     }
 }
+Navbar.navbar = $('#navbar');
+export default Navbar;

@@ -4,7 +4,7 @@ import PlayerMoveState from './state/PlayerMoveState.js';
 import PlayerAttackState from './state/PlayerAttackState.js';
 import PlayerAttackTwoState from './state/PlayerAttackTwoState.js';
 import PlayerDashState from './state/PlayerDashState.js';
-import Game from '../Game/Game.js';
+import Game from '../game/Game.js';
 import renderShadow from '../../helper/renderer/shadow.js';
 import PlayerAimingState from './state/PlayerAimingState.js';
 import PlayerHurtState from './state/PlayerHurtState.js';
@@ -168,11 +168,11 @@ export default class Player {
     }
 
     renderDebugBox() {
-        Game.getInstance().ctx.fillStyle = this.playerDefault.DEBUG_COLOR;
-
-        const { x, y, w, h } = this.getHitboxCoordinates();
-
-        Game.getInstance().ctx.fillRect(x, y, w, h);
+        // Game.getInstance().ctx.fillStyle = this.playerDefault.DEBUG_COLOR;
+        //
+        // const { x, y, w, h } = this.getHitboxCoordinates();
+        //
+        // Game.getInstance().ctx.fillRect(x, y, w, h);
     }
 
     damage({ angle }) {

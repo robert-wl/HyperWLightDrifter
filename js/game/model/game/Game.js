@@ -14,6 +14,7 @@ import GameLoseState from './state/GameLoseState.js';
 import MapGenerator from '../map/MapGenerator.js';
 import GameEndState from './state/GameEndState.js';
 import { getImage } from '../../helper/assets/assetGetter.js';
+import HTMLHandlers from '../htmlElements/HTMLHandlers.js';
 
 export default class Game {
     static instance = null;
@@ -51,6 +52,7 @@ export default class Game {
         this.loseState = new GameLoseState();
         this.endState = new GameEndState();
         this.renderCollider = false;
+        this.htmlHandlers = new HTMLHandlers(this);
     }
 
     static getInstance() {

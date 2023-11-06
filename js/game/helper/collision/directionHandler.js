@@ -1,4 +1,4 @@
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 
 export function getMouseDirection({ angle }) {
     if (angle <= (Math.PI * 5) / 6 && angle > Math.PI / 6) {

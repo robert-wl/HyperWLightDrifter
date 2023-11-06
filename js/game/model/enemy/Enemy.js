@@ -1,4 +1,4 @@
-import Game from '../Game/Game.js';
+import Game from '../game/Game.js';
 import Animateable from '../Animateable.js';
 
 export default class Enemy extends Animateable {

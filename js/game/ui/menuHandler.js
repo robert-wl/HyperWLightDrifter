@@ -1,6 +1,6 @@
 import AudioPlayer from '../../audio/AudioPlayer.js';
 import ParticlesManager from '../model/particles/ParticlesManager.js';
-import Game from '../model/Game/Game.js';
+import Game from '../model/game/Game.js';
 
 const playerSelectImages = ['../assets/ui/player_select/player-red.png', '../assets/ui/player_select/player-dark.png', '../assets/ui/player_select/player-yellow.png'];
 

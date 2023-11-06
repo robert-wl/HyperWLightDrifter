@@ -1,5 +1,5 @@
 import Enemy from '../Enemy.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import renderShadow from '../../../helper/renderer/shadow.js';
 import CrystalBruteBaseState from './state/CrystalBruteBaseState.js';
 import CrystalBruteAttackState from './state/CrystalBruteAttackState.js';

@@ -1,6 +1,6 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';

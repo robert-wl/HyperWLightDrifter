@@ -1,38 +1,35 @@
-import SelectionModal from './SelectionModal.js';
 import Modal from './Modal.js';
-
 export default class MenuModal extends Modal {
-    static modal = $('#menu-modal');
-    static newGameButton = $('.new-game');
-    static settingsButton = $('.settings');
-
-    static handleInteraction() {
-        $('#HUD').on('mousedown', () => {
-            console.log('hai');
-            if (SelectionModal.modal.css('display') === 'flex') {
-                return;
-            }
-
-            if (this.modal.css('display') === 'none') {
+    constructor(eventEmitter) {
+        super($('#menu-modal'), eventEmitter);
+        this.newGameButton = $('.new-game');
+        this.settingsButton = $('.settings');
+        this.handleInteraction();
+        this.handleEvent();
+    }
+    removeInteraction() {
+        this.newGameButton.off('mousedown');
+        this.settingsButton.off('mousedown');
+    }
+    handleEvent() {
+        this.eventEmitter.subscribe(({ event }) => {
+            if (event === 'menuModal:open') {
                 this.open();
                 return;
             }
-            this.close();
-        });
-
-        this.newGameButton.on('mousedown', () => {
-            this.close();
-            SelectionModal.open();
-        });
-
-        this.settingsButton.on('mousedown', () => {
-            this.close();
+            if (event === 'menuModal:toggle') {
+                this.toggle();
+            }
         });
     }
-
-    static removeInteraction() {
-        $('#HUD').off('mousedown');
-        this.newGameButton.off('mousedown');
-        this.settingsButton.off('mousedown');
+    handleInteraction() {
+        this.newGameButton.on('mousedown', () => {
+            this.eventEmitter.notify('selectionModal:open');
+            this.close();
+        });
+        this.settingsButton.on('mousedown', () => {
+            this.eventEmitter.notify('settingsModal:open');
+            this.close();
+        });
     }
 }

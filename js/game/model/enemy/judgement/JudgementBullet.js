@@ -1,4 +1,4 @@
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import Enemy from '../Enemy.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';

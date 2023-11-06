@@ -1,4 +1,4 @@
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import { getRandomBoolean, getRandomValue } from '../../../helper/randomHelper.js';
 import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import Collider from '../../collideable/Collider.js';
@@ -393,7 +393,7 @@ function largeStone(position) {
     });
 
     const image = getNumberedImage('set_pieces_stone_big', random);
-    
+
     const collider = new Collider({
         x: position.x + image.width / 2,
         y: position.y - (4 * image.height) / 6,

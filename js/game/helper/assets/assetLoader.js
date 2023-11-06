@@ -1,5 +1,4 @@
-import LoadingModal from '../../model/htmlElements/LoadingModal.js';
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 
 export const assetList = {};
 
@@ -27,12 +26,12 @@ const colors = {
     ],
 };
 
-export async function assetLoader(assetData) {
+export async function assetLoader(assetData, loadingModal) {
     let assets = [];
     let assetAmount = 0;
     let counter = 0;
 
-    LoadingModal.open();
+    loadingModal.open();
     assetData.forEach((assetD) => {
         assets = [...assets, ...assetD];
     });
@@ -61,19 +60,19 @@ export async function assetLoader(assetData) {
                 for (let i = 1; i <= amount; i++) {
                     const refNumbered = `${ref.split('.')[0]}_${i}.${ref.split('.')[1]}`;
                     const nameNumbered = `${name}_${i}`;
-                    LoadingModal.editText(nameNumbered);
+                    loadingModal.editText(nameNumbered);
                     await loadAudio({
                         ref: refNumbered,
                         name: nameNumbered,
                     });
-                    LoadingModal.editCounter(++counter + '/' + assetAmount);
+                    loadingModal.editCounter(++counter + '/' + assetAmount);
                 }
                 continue;
             }
 
-            LoadingModal.editText(name);
+            loadingModal.editText(name);
             await loadAudio({ ref, name });
-            LoadingModal.editCounter(++counter + '/' + assetAmount);
+            loadingModal.editCounter(++counter + '/' + assetAmount);
 
             continue;
         }
@@ -81,23 +80,23 @@ export async function assetLoader(assetData) {
             for (let i = 1; i <= amount; i++) {
                 const refNumbered = `${ref.split('.')[0]}_${i}.png`;
                 const nameNumbered = `${name}_${i}`;
-                LoadingModal.editText(nameNumbered);
+                loadingModal.editText(nameNumbered);
                 await loadImage({
                     ref: refNumbered,
                     name: nameNumbered,
                     outfit: outfit,
                 });
-                LoadingModal.editCounter(++counter + '/' + assetAmount);
+                loadingModal.editCounter(++counter + '/' + assetAmount);
             }
             continue;
         }
 
-        LoadingModal.editText(name);
+        loadingModal.editText(name);
         await loadImage({ ref, name, outfit });
-        LoadingModal.editCounter(++counter + '/' + assetAmount);
+        loadingModal.editCounter(++counter + '/' + assetAmount);
     }
 
-    LoadingModal.close();
+    loadingModal.close();
 }
 
 async function loadAudio({ ref, name }) {

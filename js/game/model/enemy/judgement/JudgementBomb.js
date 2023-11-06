@@ -1,4 +1,4 @@
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import Enemy from '../Enemy.js';
 import HealthBar from '../healthBar/HealthBar.js';
 import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../../helper/distanceHelper.js';

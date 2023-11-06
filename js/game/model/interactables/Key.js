@@ -3,7 +3,7 @@ import { getNumberedImage } from '../../helper/assets/assetGetter.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
 import InteractionBar from './InteractionBar.js';
-import Game from '../Game/Game.js';
+import Game from '../game/Game.js';
 
 export default class Key extends Animateable {
     constructor({ position, width, height, key }) {

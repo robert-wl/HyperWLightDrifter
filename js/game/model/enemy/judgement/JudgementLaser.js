@@ -1,4 +1,4 @@
-import Game from '../../Game/Game.js';
+import Game from '../../game/Game.js';
 import Enemy from '../Enemy.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
 import { getImage } from '../../../helper/assets/assetGetter.js';

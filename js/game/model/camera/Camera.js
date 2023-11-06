@@ -1,4 +1,4 @@
-import Game from '../Game/Game.js';
+import Game from '../game/Game.js';
 import GameSettings from '../../constants.js';
 import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
 import CameraBox from './CameraBox.js';

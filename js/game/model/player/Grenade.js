@@ -1,4 +1,4 @@
-import Game from '../Game/Game.js';
+import Game from '../game/Game.js';
 import { drawRotated } from '../../helper/renderer/drawer.js';
 import { getRandomValue } from '../../helper/randomHelper.js';
 import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../helper/distanceHelper.js';

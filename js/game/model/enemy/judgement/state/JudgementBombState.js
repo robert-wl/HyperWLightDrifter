@@ -1,5 +1,5 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 import JudgementBomb from '../JudgementBomb.js';
 import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';

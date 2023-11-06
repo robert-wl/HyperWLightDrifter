@@ -1,4 +1,4 @@
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 
 export default function enemyCollision({ position }) {
     const { enemyList, boss, bossEntities } = Game.getInstance().enemyManager;

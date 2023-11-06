@@ -2,7 +2,7 @@ import JudgementBaseState from './JudgementBaseState.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 
@@ -54,7 +54,7 @@ export default class JudgementDeathState extends JudgementBaseState {
         this.mirrored = getFaceDirection(currJudgement.angle) === 'left';
         this.deadTime = 0;
 
-        // const { camera, player } = Game.getInstance();
+        // const { camera, player } = game.getInstance();
         // const x = currJudgement.position.x - player.centerPosition.x;
         // const y = currJudgement.position.y - player.centerPosition.y;
     }

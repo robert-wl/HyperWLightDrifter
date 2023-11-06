@@ -1,4 +1,4 @@
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 import AudioPlayer from '../../../audio/AudioPlayer.js';
 
 export default function playerEffectsHandler({ currPlayer, clear }) {

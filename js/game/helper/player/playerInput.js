@@ -1,4 +1,4 @@
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 import { getAngle } from '../angleHelper.js';
 import GameSettings from '../../constants.js';
 import detectCheatCode from '../cheatCodeHelper.js';

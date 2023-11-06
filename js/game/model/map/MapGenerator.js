@@ -1,6 +1,6 @@
 import { getImage, getNumberedImage } from '../../helper/assets/assetGetter.js';
 import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
-import Game from '../Game/Game.js';
+import Game from '../game/Game.js';
 import GameSettings from '../../constants.js';
 import SetPieceGenerator from './setPieces/SetPieceGenerator.js';
 

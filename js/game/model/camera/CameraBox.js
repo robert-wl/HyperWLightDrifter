@@ -1,4 +1,4 @@
-import Game from '../Game/Game.js';
+import Game from '../game/Game.js';
 import GameSettings from '../../constants.js';
 
 const CAMERA_X_CONSTANT = -45;

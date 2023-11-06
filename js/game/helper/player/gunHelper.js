@@ -1,5 +1,5 @@
 import { getHorizontalValue, getVerticalValue } from '../distanceHelper.js';
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 import enemyCollision from '../collision/enemyCollision.js';
 import { drawImage, drawRotated } from '../renderer/drawer.js';
 import { getImage, getNumberedImage } from '../assets/assetGetter.js';

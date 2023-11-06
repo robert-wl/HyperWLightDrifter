@@ -5,7 +5,7 @@ import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import GameSettings from '../../../../constants.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 
 export default class JudgementAttackState extends JudgementBaseState {

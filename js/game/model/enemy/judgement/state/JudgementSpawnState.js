@@ -1,7 +1,7 @@
 import JudgementBaseState from './JudgementBaseState.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
-import Game from '../../../Game/Game.js';
+import Game from '../../../game/Game.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
 

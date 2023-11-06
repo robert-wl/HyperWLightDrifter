@@ -1,4 +1,4 @@
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 
 export default function playerCollision({ position, box, angle }) {
     const { player } = Game.getInstance();

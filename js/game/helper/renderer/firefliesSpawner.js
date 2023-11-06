@@ -1,5 +1,5 @@
 import Fireflies from '../../model/particles/Fireflies.js';
-import Game from '../../model/Game/Game.js';
+import Game from '../../model/game/Game.js';
 
 let number = 0;
 
