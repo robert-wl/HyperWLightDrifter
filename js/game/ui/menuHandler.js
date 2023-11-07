@@ -1,6 +1,4 @@
 import AudioPlayer from '../../audio/AudioPlayer.js';
-import ParticlesManager from '../model/particles/ParticlesManager.js';
-import Game from '../model/game/Game.js';
 
 const playerSelectImages = ['../assets/ui/player_select/player-red.png', '../assets/ui/player_select/player-dark.png', '../assets/ui/player_select/player-yellow.png'];
 
@@ -54,16 +52,14 @@ function selectScreenHandler() {
             .then();
 
         selectionModal.css('display', 'none');
-        openingScreen
-            .css('opacity', '0')
-            .css('animation', 'fadeOut 2s ease-in-out')
-            .on('animationend', async () => {
-                openingScreen.css('display', 'none');
-                Game.getInstance().playGame(selected).then();
-                removeMenuHandler();
-            });
-
-        ParticlesManager.getInstance().clear();
+        // openingScreen
+        //     .css('opacity', '0')
+        //     .css('animation', 'fadeOut 2s ease-in-out')
+        //     .on('animationend', async () => {
+        //         openingScreen.css('display', 'none');
+        //         Game.getInstance().playGame(selected).then();
+        //         removeMenuHandler();
+        //     });
     });
 }
 
@@ -88,13 +84,13 @@ function arrowKeysHandler() {
 }
 
 function removeMenuHandler() {
-    $('#HUD').off('mousedown');
-    $('.new-game').off('mousedown');
-    $('#cancel-button').off('mousedown');
-    $('.hoverable').off('mouseenter');
-    $('.clickable').off('mousedown');
-    $('#play-button').off('mousedown');
-    $('#arrow-left').off('mousedown');
-    $('#arrow-right').off('mousedown');
-    $('#opening-screen').off('animationend');
+    // $('#HUD').off('mousedown');
+    // $('.new-game').off('mousedown');
+    // $('#cancel-button').off('mousedown');
+    // $('.hoverable').off('mouseenter');
+    // $('.clickable').off('mousedown');
+    // $('#play-button').off('mousedown');
+    // $('#arrow-left').off('mousedown');
+    // $('#arrow-right').off('mousedown');
+    // $('#opening-screen').off('animationend');
 }

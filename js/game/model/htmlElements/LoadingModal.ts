@@ -9,6 +9,9 @@ export default class LoadingModal extends Modal {
         super($('#loading-modal'), eventEmitter);
         this.loadingAsset = $('#loading-asset');
         this.loadingNumber = $('#loading-number');
+
+        this.close();
+        this.handleEvent();
     }
 
     public editText(text: string) {
@@ -19,9 +22,24 @@ export default class LoadingModal extends Modal {
         this.loadingNumber.text(text);
     }
 
-    public open() {
-        super.open();
+    protected handleEvent(): void {
+        this.eventEmitter.subscribe(({ event, data }) => {
+            if (event === 'loadingModal:open') {
+                this.open();
+                return;
+            }
+            if (event === 'loadingModal:close') {
+                this.close();
+                return;
+            }
+            if (event === 'loadingModal:editText') {
+                this.editText(data);
+                return;
+            }
+            if (event === 'loadingModal:editCounter') {
+                this.editCounter(data);
+                return;
+            }
+        });
     }
-
-    protected handleEvent(): void {}
 }

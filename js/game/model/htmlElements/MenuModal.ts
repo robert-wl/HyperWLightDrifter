@@ -14,11 +14,6 @@ export default class MenuModal extends Modal {
         this.handleEvent();
     }
 
-    public removeInteraction() {
-        this.newGameButton.off('mousedown');
-        this.settingsButton.off('mousedown');
-    }
-
     protected handleEvent() {
         this.eventEmitter.subscribe(({ event }) => {
             if (event === 'menuModal:open') {

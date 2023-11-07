@@ -1,7 +1,6 @@
 import GameBaseState from './GameBaseState.js';
 import ParticlesManager from '../../particles/ParticlesManager.js';
 import Fireflies from '../../particles/Fireflies.js';
-import menuHandler from '../../../ui/menuHandler.js';
 import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
@@ -22,9 +21,9 @@ export default class GameStartState extends GameBaseState {
 
         game.prepareCanvas();
         game.changeState();
-        await assetLoader([GameSettings.ASSETS.SPAWN], game.htmlHandlers.loadingModal);
+        await assetLoader([GameSettings.ASSETS.SPAWN], game.htmlHandlers);
 
-        menuHandler();
+        // menuHandler();
 
         const { audio } = game;
 
@@ -58,6 +57,7 @@ export default class GameStartState extends GameBaseState {
     }
 
     exitState(game) {
+        console.log('waduh');
         const { audio } = game;
         audio.stopAll();
     }

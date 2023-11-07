@@ -15,6 +15,7 @@ import MapGenerator from '../map/MapGenerator.js';
 import GameEndState from './state/GameEndState.js';
 import { getImage } from '../../helper/assets/assetGetter.js';
 import HTMLHandlers from '../htmlElements/HTMLHandlers.js';
+import ParticlesManager from '../particles/ParticlesManager.js';
 
 export default class Game {
     static instance = null;
@@ -77,15 +78,10 @@ export default class Game {
         this.keyCount = 0;
     }
 
-    async playGame(outfitNumber) {
-        if (outfitNumber === 1) {
-            this.player.outfit = 'dark';
-        }
-        if (outfitNumber === 2) {
-            this.player.outfit = 'yellow';
-        }
-
+    async playGame() {
         this.loading = true;
+        ParticlesManager.getInstance().clear();
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         await this.switchState(this.stageOneState);
         this.loading = false;
     }
@@ -119,7 +115,6 @@ export default class Game {
     update(deltaTime) {
         this.deltaTime = deltaTime * GameSettings.GAME.GAME_SPEED;
         this.movementDeltaTime = Math.cbrt(deltaTime * GameSettings.GAME.GAME_SPEED);
-
         if (this.loading) {
             return;
         }
@@ -152,6 +147,7 @@ export default class Game {
     unpauseGame() {
         this.keys = [];
         this.clicks = [];
+        console.log('kleunpause');
         if (this.stage === 1) {
             this.currState.exitState(this);
             this.currState = this.stageOneState;

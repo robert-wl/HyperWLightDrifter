@@ -78,7 +78,7 @@ export default class GameStageOneState extends GameBaseState {
         game.keys = [];
         game.clicks = [];
 
-        await assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], htmlHandlers.loadingModal);
+        await assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], htmlHandlers);
 
         const positions = [{ x: 100, y: 0 }];
         game.mapGenerator.init(positions);

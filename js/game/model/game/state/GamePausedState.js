@@ -1,10 +1,9 @@
 import GameBaseState from './GameBaseState.js';
-import PauseModal from '../../htmlElements/PauseModal.js';
 import Game from '../Game.js';
 
 export default class GamePausedState extends GameBaseState {
-    enterState(_game) {
-        PauseModal.open();
+    enterState(game) {
+        game.htmlHandlers.notify('pauseModal:open');
 
         const { keys } = Game.getInstance();
 
@@ -20,7 +19,7 @@ export default class GamePausedState extends GameBaseState {
         }
     }
 
-    exitState(_game) {
-        PauseModal.close();
+    exitState(game) {
+        game.htmlHandlers.notify('pauseModal:close');
     }
 }

@@ -16,7 +16,6 @@ export default class SelectionModal extends Modal {
     }
     handleEvent() {
         this.eventEmitter.subscribe(({ event }) => {
-            console.log(event);
             if (event === 'selectionModal:open') {
                 this.open();
             }
