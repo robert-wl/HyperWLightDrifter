@@ -28,6 +28,22 @@ const GameSettings = {
                 OUTFIT: ['default', 'dark', 'yellow'],
             },
         },
+        ENEMY: {
+            CRYSTAL_SPIDER: {
+                WIDTH: 66,
+                HEIGHT: 50,
+                MAX_HEALTH: 1,
+            },
+            CRYSTAL_BRUTE: {
+                CRYSTAL_SPIKE: {
+                    WIDTH: 27,
+                    HEIGHT: 45,
+                },
+                WIDTH: 136,
+                HEIGHT: 140,
+                MAX_HEALTH: 10,
+            },
+        },
     },
     game: {
         GAME_SCALE: 2,

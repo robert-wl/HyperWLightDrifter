@@ -28,6 +28,30 @@ const GameSettings = {
                 OUTFIT: ['default', 'dark', 'yellow'],
             },
         },
+        ENEMY: {
+            CRYSTAL_SPIDER: {
+                WIDTH: 66,
+                HEIGHT: 50,
+                MAX_HEALTH: 1,
+            },
+            CRYSTAL_BRUTE: {
+                CRYSTAL_SPIKE: {
+                    WIDTH: 27,
+                    HEIGHT: 45,
+                },
+                WIDTH: 136,
+                HEIGHT: 140,
+                MAX_HEALTH: 10,
+            },
+        },
+        CHEAT_CODES: {
+            erwin: 'erwinganteng',
+            felix: 'felixmarah',
+            phoebus: 'lordpibus',
+            hesoyam: 'hesoyam',
+            obert: 'oobacachat',
+        },
+        INPUT: ['a', 'w', 'd', 's', 'e', 'c', 'q', 'p'],
     },
     game: {
         GAME_SCALE: 2,

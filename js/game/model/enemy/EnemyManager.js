@@ -1,44 +1,34 @@
-import { getRandomBoolean } from '../../helper/randomHelper.js';
-import GameSettings from '../../constants.js';
-import CrystalBrute from './crystalBrute/CrystalBrute.js';
-import CrystalSpider from './crystalSpider/CrystalSpider.js';
-
+import Observable from '../utility/Observable.js';
+import EnemyFactory from './EnemyFactory.js';
 export default class EnemyManager {
-    static instance = null;
-
     constructor() {
+        this.eventEmitter = new Observable();
+        this._enemyFactory = new EnemyFactory(this.eventEmitter);
         this.enemyList = [];
         this.boss = null;
         this.bossEntities = [];
+        this.eventHandler();
     }
-
-    static getInstance() {
-        if (this.instance == null) {
-            this.instance = new EnemyManager();
-        }
-        return this.instance;
+    get enemyFactory() {
+        return this._enemyFactory;
     }
-
-    static spawnEnemy(position) {
-        if (getRandomBoolean(GameSettings.GAME.FOREST_STAGE.SPIDER_SPAWN_CHANCE)) {
-            CrystalSpider.generate(position);
-            return;
-        }
-
-        CrystalBrute.generate(position);
-    }
-
     clearEntities() {
         this.enemyList = [];
     }
-
     updateBoss() {
-        this.boss?.update();
+        var _a;
+        (_a = this.boss) === null || _a === void 0 ? void 0 : _a.update();
     }
-
     updateBossEntities() {
         this.bossEntities.forEach((entity) => {
             entity.update();
+        });
+    }
+    eventHandler() {
+        this.eventEmitter.subscribe(({ event, data }) => {
+            if (event === 'spawnEnemy') {
+                this.enemyList.push(data);
+            }
         });
     }
 }

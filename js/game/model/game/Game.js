@@ -1,5 +1,4 @@
 import Player from '../player/Player.js';
-import playerInput from '../../helper/player/playerInput.js';
 import Camera from '../camera/Camera.js';
 import hudHandler from '../../ui/hudHandler.js';
 import GameSettings from '../../constants.js';
@@ -16,11 +15,14 @@ import GameEndState from './state/GameEndState.js';
 import { getImage } from '../../helper/assets/assetGetter.js';
 import HTMLHandlers from '../htmlElements/HTMLHandlers.js';
 import ParticlesManager from '../particles/ParticlesManager.js';
+import InteractablesFactory from '../interactables/InteractablesFactory.js';
+import CheatCodeManager from '../utility/CheatCodeManager.js';
+import InputManager from '../utility/InputManager.js';
 
 export default class Game {
     static instance = null;
 
-    constructor() {
+    constructor(eventEmitter) {
         this.stage = 1;
         this.deltaTime = 0;
         this.movementDeltaTime = 0;
@@ -53,7 +55,10 @@ export default class Game {
         this.loseState = new GameLoseState();
         this.endState = new GameEndState();
         this.renderCollider = false;
+        this.interactablesFactory = new InteractablesFactory(this);
         this.htmlHandlers = new HTMLHandlers(this);
+        this.cheatCodeManager = new CheatCodeManager(this);
+        this.eventEmitter = eventEmitter;
     }
 
     static getInstance() {
@@ -70,11 +75,11 @@ export default class Game {
     }
 
     async init() {
-        playerInput();
         this.camera = new Camera();
         this.enemyManager = new EnemyManager();
-        this.player = new Player();
-        this.mapGenerator = new MapGenerator(this.camera);
+        this.inputManager = new InputManager(this);
+        this.player = new Player(this.inputManager.eventEmitter);
+        this.mapGenerator = new MapGenerator(this);
         this.keyCount = 0;
     }
 

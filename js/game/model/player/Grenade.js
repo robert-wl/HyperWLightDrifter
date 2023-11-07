@@ -5,7 +5,7 @@ import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../h
 import { getAngle } from '../../helper/angleHelper.js';
 import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
 import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
-import Animateable from '../Animateable.js';
+import Animateable from '../utility/Animateable.js';
 import GameSettings from '../../constants.js';
 import { getNumberedImage } from '../../helper/assets/assetGetter.js';
 

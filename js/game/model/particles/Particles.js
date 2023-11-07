@@ -1,5 +1,5 @@
 import Game from '../game/Game.js';
-import Animateable from '../Animateable.js';
+import Animateable from '../utility/Animateable.js';
 
 export default class Particles extends Animateable {
     constructor({ position, speed, lifeSpan, canvas }) {

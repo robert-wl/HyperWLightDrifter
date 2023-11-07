@@ -1,50 +1,92 @@
 import Game from '../game/Game.js';
-import Animateable from '../Animateable.js';
-
+import Animateable from '../utility/Animateable.js';
+import DistanceHelper from '../utility/DistanceHelper.js';
 export default class Enemy extends Animateable {
-    constructor({ x, y, hitbox, w, h, health, maxHealth }) {
+    constructor(position, width, height, hitbox, maxHealth) {
         super();
-        this.hitbox = hitbox;
-        this.health = health;
-        this.maxHealth = maxHealth;
-        this.width = w;
-        this.height = h;
-        this.position = {
-            x: x + w / 2,
-            y: y + h / 2,
-        };
-        this.damaged = -1;
-        this.velocity = {
+        this._hitbox = hitbox;
+        this._health = maxHealth;
+        this._maxHealth = maxHealth;
+        this._width = width;
+        this._height = height;
+        this._position = position;
+        this._damaged = -1;
+        this._velocity = {
             value: 0,
             angle: 0,
         };
     }
-
+    get hitbox() {
+        return this._hitbox;
+    }
+    set hitbox(value) {
+        this._hitbox = value;
+    }
+    get health() {
+        return this._health;
+    }
+    set health(value) {
+        this._health = value;
+    }
+    get maxHealth() {
+        return this._maxHealth;
+    }
+    set maxHealth(value) {
+        this._maxHealth = value;
+    }
+    get width() {
+        return this._width;
+    }
+    set width(value) {
+        this._width = value;
+    }
+    get height() {
+        return this._height;
+    }
+    set height(value) {
+        this._height = value;
+    }
+    get position() {
+        return this._position;
+    }
+    set position(value) {
+        this._position = value;
+    }
+    get damaged() {
+        return this._damaged;
+    }
+    set damaged(value) {
+        this._damaged = value;
+    }
+    get velocity() {
+        return this._velocity;
+    }
+    set velocity(value) {
+        this._velocity = value;
+    }
     damage({ amount, angle }) {
-        if (this.health <= 0) {
+        if (this._health <= 0) {
             return;
         }
-        this.health -= amount;
-        this.damaged = 5;
-        if (this.health <= 0) {
-            this.health = 0;
+        this._health -= amount;
+        this._damaged = 5;
+        if (this._health <= 0) {
+            this._health = 0;
         }
-        this.velocity = {
+        this._velocity = {
             value: 1,
             angle: angle,
         };
     }
-
     knockback() {
-        // TODO
-        this.position.x += Math.cos(this.velocity.angle) * this.velocity.value;
-        this.position.y += Math.sin(this.velocity.angle) * this.velocity.value;
-        this.velocity.value *= 0.9;
+        this._position.x += DistanceHelper.getHorizontalValue(this._velocity);
+        this._position.y += DistanceHelper.getVerticalValue(this._velocity);
+        this._velocity.value *= 0.9;
     }
-
     debugMode() {
         const { ctx } = Game.getInstance();
         ctx.fillStyle = 'rgb(255, 255, 0, 0.5)';
-        ctx.fillRect(this.position.x + this.hitbox.x, this.position.y + this.hitbox.y, this.width - this.hitbox.w, this.height - this.hitbox.h);
+        const { x, y, w, h } = this._hitbox.getPoints(this._position, this._width, this._height);
+        ctx.fillRect(x, y, w, h);
     }
 }

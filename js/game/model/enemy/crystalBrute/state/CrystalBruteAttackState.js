@@ -84,14 +84,14 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
 
         constant[type].forEach((num, index) => {
             currBrute.attack.push(
-                CrystalAttack.generate({
-                    position: {
+                new CrystalAttack(
+                    {
                         x: currBrute.position.x,
                         y: currBrute.position.y,
                     },
-                    angle: angle + Math.PI * num,
-                    playAudio: index === 0,
-                }),
+                    angle + Math.PI * num,
+                    index === 0,
+                ),
             );
         });
     }

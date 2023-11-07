@@ -4,24 +4,19 @@ import { getMagnitudeValue } from '../../../../helper/distanceHelper.js';
 import { getImage } from '../../../../helper/assets/assetGetter.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
-
 export default class CrystalSpiderIdleState extends CrystalSpiderBaseState {
     updateState(currSpider) {
         const { player } = Game.getInstance();
-
         const distance = getMagnitudeValue({
             x: player.centerPosition.x - currSpider.position.x,
             y: player.centerPosition.y - currSpider.position.y,
         });
-
         if (distance < 250) {
             currSpider.switchState(currSpider.moveState);
         }
     }
-
     drawImage(currSpider) {
         const spiderIdle = getImage('crystal_spider_idle');
-
         drawImage({
             img: spiderIdle,
             x: currSpider.position.x,

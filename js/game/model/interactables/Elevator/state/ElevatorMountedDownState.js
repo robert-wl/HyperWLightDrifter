@@ -4,22 +4,17 @@ import GameSettings from '../../../../constants.js';
 import Game from '../../../game/Game.js';
 import { drawImageCropped } from '../../../../helper/renderer/drawer.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
-
 export default class ElevatorMountedDownState extends ElevatorBaseState {
-    enterState(_elevator) {
+    enterState(elevator) {
         const { player, camera } = Game.getInstance();
         player.switchState(player.idleState);
         camera.switchState(camera.normalState);
-
         AudioPlayer.getInstance().playAudio('elevator/mount.wav');
     }
-
     drawImage(elevator) {
         const elevatorImage = getImage('elevator');
-
         elevator.width = -0.5 * elevatorImage.width;
         elevator.height = -2 * elevatorImage.height;
-
         drawImageCropped({
             img: elevatorImage,
             imgX: 0,

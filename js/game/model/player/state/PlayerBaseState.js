@@ -1,4 +1,4 @@
-import Animateable from '../../Animateable.js';
+import Animateable from '../../utility/Animateable.js';
 
 export default class PlayerBaseState extends Animateable {
     updateState(_currPlayer) {

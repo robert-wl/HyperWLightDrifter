@@ -1,4 +1,5 @@
 import Game from './game/model/game/Game.js';
+// import HitBoxComponent from './game/model/utility/HitBoxComponent.js';
 
 $(async () => {
     const game = Game.getInstance();
