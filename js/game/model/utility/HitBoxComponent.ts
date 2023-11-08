@@ -1,3 +1,5 @@
+import { Vector } from './enums/Vector.js';
+
 export default class HitBoxComponent {
     private readonly xOffset: number;
     private readonly yOffset: number;
@@ -11,7 +13,7 @@ export default class HitBoxComponent {
         this.hOffset = hOffset;
     }
 
-    public getPoints(position: Position, width: number, height: number) {
+    public getPoints(position: Vector, width: number, height: number) {
         return {
             x: position.x + this.xOffset,
             y: position.y + this.yOffset,

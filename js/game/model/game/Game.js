@@ -18,11 +18,12 @@ import ParticlesManager from '../particles/ParticlesManager.js';
 import InteractablesFactory from '../interactables/InteractablesFactory.js';
 import CheatCodeManager from '../utility/CheatCodeManager.js';
 import InputManager from '../utility/InputManager.js';
+import AssetManager from '../utility/AssetManager.js';
 
 export default class Game {
     static instance = null;
 
-    constructor(eventEmitter) {
+    constructor() {
         this.stage = 1;
         this.deltaTime = 0;
         this.movementDeltaTime = 0;
@@ -57,8 +58,6 @@ export default class Game {
         this.renderCollider = false;
         this.interactablesFactory = new InteractablesFactory(this);
         this.htmlHandlers = new HTMLHandlers(this);
-        this.cheatCodeManager = new CheatCodeManager(this);
-        this.eventEmitter = eventEmitter;
     }
 
     static getInstance() {
@@ -79,7 +78,9 @@ export default class Game {
         this.enemyManager = new EnemyManager();
         this.inputManager = new InputManager(this);
         this.player = new Player(this.inputManager.eventEmitter);
+        this.cheatCodeManager = new CheatCodeManager(this, this.inputManager.eventEmitter);
         this.mapGenerator = new MapGenerator(this);
+        AssetManager.setHTMLHandler(this.htmlHandlers);
         this.keyCount = 0;
     }
 

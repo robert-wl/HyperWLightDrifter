@@ -51,7 +51,30 @@ const GameSettings = {
             hesoyam: 'hesoyam',
             obert: 'oobacachat',
         },
-        INPUT: ['a', 'w', 'd', 's', 'e', 'c', 'q', 'p'],
+        INPUT: ['a', 'w', 'd', 's', 'e', 'c', 'q', 'p', ' '],
+        COLOR: {
+            default: [
+                [197, 60, 84],
+                [213, 108, 98],
+                [187, 0, 41],
+                [101, 14, 57],
+                [166, 212, 52],
+            ],
+            dark: [
+                [26, 8, 32], // 1
+                [61, 20, 69],
+                [105, 30, 116], //3
+                [35, 35, 35],
+                [213, 85, 24],
+            ],
+            yellow: [
+                [249, 171, 9],
+                [247, 199, 10],
+                [21, 21, 21],
+                [68, 23, 9],
+                [70, 85, 255],
+            ],
+        },
     },
     game: {
         GAME_SCALE: 2,
@@ -67,6 +90,27 @@ const GameSettings = {
             HIT: 1,
             BULLET: 2,
             GRENADE: 2,
+        },
+        GUN: {
+            RECOIL: 3,
+            OFFSET: {
+                UP: {
+                    X: 35,
+                    Y: 20,
+                },
+                LEFT: {
+                    X: 25,
+                    Y: 30,
+                },
+                RIGHT: {
+                    X: 45,
+                    Y: 30,
+                },
+                BOTTOM: {
+                    X: 35,
+                    Y: 32.5,
+                },
+            },
         },
     },
     player: {
@@ -121,27 +165,6 @@ const GameSettings = {
             },
         },
         PROJECTILE_OFFSET: 45,
-        GUN: {
-            RECOIL: 3,
-            OFFSET: {
-                UP: {
-                    X: 35,
-                    Y: 20,
-                },
-                LEFT: {
-                    X: 25,
-                    Y: 30,
-                },
-                RIGHT: {
-                    X: 45,
-                    Y: 30,
-                },
-                BOTTOM: {
-                    X: 35,
-                    Y: 32.5,
-                },
-            },
-        },
         EFFECT_DISTANCE: 40,
         SHADOW_OFFSET: {
             X: -24.5,

@@ -5,6 +5,7 @@ import AudioPlayer from '../../../../audio/AudioPlayer.js';
 import Collider from '../../collideable/Collider.js';
 import { getImage } from '../../../helper/assets/assetGetter.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
+import AssetManager from '../../utility/AssetManager.js';
 
 const colliders = [
     { x: 100, y: 0, width: 370, height: 1000 },
@@ -78,6 +79,8 @@ export default class GameStageTwoState extends GameBaseState {
     async stageInitializer(game) {
         game.prepareCanvas();
         game.changeState();
+
+        await AssetManager.assetLoader([GameSettings.ASSETS.STAGE_TWO, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER]);
         await assetLoader([GameSettings.ASSETS.STAGE_TWO, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], game.htmlHandlers);
 
         const { camera, player, elevator, enemyManager } = game;

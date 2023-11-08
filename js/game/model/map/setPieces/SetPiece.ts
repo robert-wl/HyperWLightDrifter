@@ -1,12 +1,30 @@
-export default class SetPiece {
-    private readonly pieces: any[];
-    private readonly type: any;
+import { CombinedPiece } from '../../utility/enums/Piece';
 
-    constructor(pieces, type) {
+export default class SetPiece {
+    private _pieces: CombinedPiece[];
+    private _type: any;
+
+    constructor(pieces: CombinedPiece[], type: string) {
         pieces = pieces.sort((pieceOne, pieceTwo) => {
             return pieceOne.position.y - pieceTwo.position.y;
         });
-        this.pieces = pieces;
-        this.type = type;
+        this._pieces = pieces;
+        this._type = type;
+    }
+
+    get pieces(): CombinedPiece[] {
+        return this._pieces;
+    }
+
+    set pieces(value: CombinedPiece[]) {
+        this._pieces = value;
+    }
+
+    get type(): any {
+        return this._type;
+    }
+
+    set type(value: any) {
+        this._type = value;
     }
 }

@@ -8,10 +8,10 @@ import Collider from '../collideable/Collider.js';
 export default class Medkit extends Animateable {
     constructor(position, width, height, key) {
         super();
-        this.position = position;
+        this._position = position;
         this.width = width;
         this.height = height;
-        this.collider = new Collider({
+        this._collider = new Collider({
             x: position.x,
             y: position.y,
             width,
@@ -19,6 +19,18 @@ export default class Medkit extends Animateable {
         });
         this.key = key;
         this.interactionStage = 1;
+    }
+    get collider() {
+        return this._collider;
+    }
+    set collider(value) {
+        this._collider = value;
+    }
+    get position() {
+        return this._position;
+    }
+    set position(value) {
+        this._position = value;
     }
     static generate(position, key) { }
     update() {
@@ -30,8 +42,8 @@ export default class Medkit extends Animateable {
         const medKit = getNumberedImage('medkit', this.animationStage);
         drawImage({
             img: medKit,
-            x: this.position.x,
-            y: this.position.y,
+            x: this._position.x,
+            y: this._position.y,
             width: medKit.width * GameSettings.GAME.GAME_SCALE,
             height: medKit.height * GameSettings.GAME.GAME_SCALE,
         });

@@ -4,26 +4,25 @@ import Game from '../../game/Game.js';
 import { getFaceDirection, getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
-import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
-
+import AssetManager from '../../utility/AssetManager.js';
 export default class PlayerThrowingState extends PlayerBaseState {
+    constructor() {
+        super();
+        this.hasThrown = false;
+        this.direction = '';
+    }
     enterState(currPlayer) {
         super.enterState(currPlayer);
-
         this.hasThrown = false;
         this.direction = getMouseDirection({
             angle: currPlayer.lookAngle,
         });
         const { audio } = Game.getInstance();
-
         audio.playAudio('player/grenade/throw.wav');
     }
-
     updateState(currPlayer) {
         super.updateState(currPlayer);
-
         this.advanceAnimationStage(5);
-
         if (this.animationStage >= 4 && !this.hasThrown) {
             Grenade.generate({
                 x: currPlayer.centerPosition.x,
@@ -32,11 +31,9 @@ export default class PlayerThrowingState extends PlayerBaseState {
             });
             this.hasThrown = true;
         }
-
         if (this.animationStage < 8) {
             return;
         }
-
         currPlayer.handleSwitchState({
             move: true,
             attackOne: true,
@@ -45,25 +42,21 @@ export default class PlayerThrowingState extends PlayerBaseState {
             throws: true,
         });
     }
-
     drawImage(currPlayer) {
         let playerThrow = null;
-
         const { centerPosition, lookAngle } = currPlayer;
         if (this.direction === 'a' || this.direction === 'd') {
-            playerThrow = getNumberedImage('player_throw_side', this.animationStage);
+            playerThrow = AssetManager.getNumberedImage('player_throw_side', this.animationStage);
         }
         if (this.direction === 'w') {
-            playerThrow = getNumberedImage('player_throw_up', this.animationStage);
+            playerThrow = AssetManager.getNumberedImage('player_throw_up', this.animationStage);
         }
         if (this.direction === 's') {
-            playerThrow = getNumberedImage('player_throw_down', this.animationStage);
+            playerThrow = AssetManager.getNumberedImage('player_throw_down', this.animationStage);
         }
-
         if (!playerThrow) {
             return;
         }
-
         drawImage({
             img: playerThrow,
             x: centerPosition.x,

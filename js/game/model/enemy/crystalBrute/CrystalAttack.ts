@@ -1,9 +1,10 @@
 import CrystalSpike from './CrystalSpike.js';
 import Game from '../../game/Game.js';
 import DistanceHelper from '../../utility/DistanceHelper.js';
+import { Vector } from '../../utility/enums/Vector.js';
 
 export default class CrystalAttack {
-    private position: Position;
+    private position: Vector;
     private angle: number;
     private spikes: CrystalSpike[];
     private speed: number;
@@ -11,7 +12,7 @@ export default class CrystalAttack {
     private lifetime: number;
     private playAudio: boolean;
 
-    constructor(position: Position, angle: number, playAudio: boolean) {
+    constructor(position: Vector, angle: number, playAudio: boolean) {
         this.position = position;
         this.angle = angle;
         this.spikes = [];
@@ -29,7 +30,7 @@ export default class CrystalAttack {
         const vector = {
             value: this.speed * deltaTime,
             angle: this.angle,
-        } as Vector;
+        } as PolarVector;
 
         this.position.x += DistanceHelper.getHorizontalValue(vector);
         this.position.y += DistanceHelper.getVerticalValue(vector);

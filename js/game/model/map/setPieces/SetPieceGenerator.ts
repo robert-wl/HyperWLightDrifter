@@ -6,7 +6,8 @@ import Elevator from '../../interactables/Elevator/Elevator.js';
 import PieceFactory from './PieceFactory.js';
 import { CombinedPiece } from '../../utility/enums/Piece.js';
 import InteractablesFactory from '../../interactables/InteractablesFactory.js';
-import EnemyFactory from '../../enemy/EnemyFactory';
+import EnemyFactory from '../../enemy/EnemyFactory.js';
+import { Vector } from '../../utility/enums/Vector.js';
 
 const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
@@ -31,7 +32,7 @@ export default class SetPieceGenerator {
         this.enemyFactory = enemyFactory;
     }
 
-    public generate(position: Position, forceEmpty = false) {
+    public generate(position: Vector, forceEmpty = false) {
         if (forceEmpty) {
             return;
         }
@@ -111,8 +112,8 @@ export default class SetPieceGenerator {
         pieces.push(
             this.interactablesFactory.generateMedkit(
                 {
-                    x: objectX + healthPiece.collider.width / 2,
-                    y: objectY - healthPiece.collider.height / 2,
+                    x: objectX + healthPiece.collider!.width / 2,
+                    y: objectY - healthPiece.collider!.height / 2,
                 },
                 key,
             ),
@@ -211,7 +212,7 @@ export default class SetPieceGenerator {
         Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'stone'));
     }
 
-    private updateChance(position: Position) {
+    private updateChance(position: Vector) {
         const { objects } = Game.getInstance();
         for (let i = 0; i < 8; i++) {
             const key = `${position.y + directionY[i]},${position.x + directionX[i]}`;
@@ -250,7 +251,7 @@ export default class SetPieceGenerator {
         }
     }
 
-    private generatePlants(position: Position) {
+    private generatePlants(position: Vector) {
         const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
         const { FLOOR_WIDTH } = FOREST_STAGE;
         const pieces: CombinedPiece[] = [];

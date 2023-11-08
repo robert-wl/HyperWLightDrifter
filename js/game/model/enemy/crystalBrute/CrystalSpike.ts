@@ -6,16 +6,17 @@ import { getRandomBoolean } from '../../../helper/randomHelper.js';
 import GameSettings from '../../../constants.js';
 import Animateable from '../../utility/Animateable.js';
 import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
+import { Vector } from '../../utility/enums/Vector.js';
 
 export default class CrystalSpike extends Animateable {
-    private position: Position;
+    private position: Vector;
     private width: number;
     private height: number;
     private hitbox: HitBoxComponent;
     private isLeft: boolean;
     private damaged: boolean;
 
-    public constructor(position: Position) {
+    public constructor(position: Vector) {
         super();
         this.position = { ...position };
         this.isLeft = getRandomBoolean(0.5);

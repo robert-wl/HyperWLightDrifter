@@ -1,28 +1,48 @@
 import Game from '../game/Game.js';
-
 export default class Collider {
     constructor({ x, y, width, height }) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this._x = x;
+        this._y = y;
+        this._width = width;
+        this._height = height;
         this.number = 0;
         this.animationStage = 1;
     }
-
+    get x() {
+        return this._x;
+    }
+    set x(value) {
+        this._x = value;
+    }
+    get y() {
+        return this._y;
+    }
+    set y(value) {
+        this._y = value;
+    }
+    get width() {
+        return this._width;
+    }
+    set width(value) {
+        this._width = value;
+    }
+    get height() {
+        return this._height;
+    }
+    set height(value) {
+        this._height = value;
+    }
     renderDebug() {
         const ctx = Game.getInstance().ctx;
         ctx.fillStyle = 'rgb(0, 255, 0, 0.2)';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fillRect(this._x, this._y, this._width, this._height);
     }
-
     checkCollision({ x, y, w, h }) {
         if (Game.getInstance().renderCollider) {
             this.renderDebug();
         }
-        return !(this.x + this.width >= x && this.x <= x + w && this.y + this.height >= y && this.y <= y + h);
+        return !(this._x + this._width >= x && this._x <= x + w && this._y + this._height >= y && this._y <= y + h);
     }
-
     update() {
         if (Game.getInstance().renderCollider) {
             this.renderDebug();

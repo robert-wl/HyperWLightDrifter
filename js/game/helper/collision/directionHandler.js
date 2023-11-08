@@ -17,27 +17,27 @@ export function getMouseDirection({ angle }) {
 }
 
 export function getMoveDirection({ currPlayer }) {
-    const { keys, deltaTime } = Game.getInstance();
+    const { deltaTime } = Game.getInstance();
     let direction = '';
-    if (keys.includes('a') && !keys.includes('d')) {
+    if (currPlayer.keys.includes('a') && !currPlayer.keys.includes('d')) {
         if (currPlayer.velocity.x > -currPlayer.maxSpeed * deltaTime) {
             currPlayer.velocity.x += -deltaTime;
         }
         direction = 'a';
     }
-    if (keys.includes('w') && !keys.includes('s')) {
+    if (currPlayer.keys.includes('w') && !currPlayer.keys.includes('s')) {
         if (currPlayer.velocity.y > -currPlayer.maxSpeed * deltaTime) {
             currPlayer.velocity.y += -deltaTime;
         }
         direction = 'w';
     }
-    if (keys.includes('d') && !keys.includes('a')) {
+    if (currPlayer.keys.includes('d') && !currPlayer.keys.includes('a')) {
         if (currPlayer.velocity.x < currPlayer.maxSpeed * deltaTime) {
             currPlayer.velocity.x += deltaTime;
         }
         direction = 'd';
     }
-    if (keys.includes('s') && !keys.includes('w')) {
+    if (currPlayer.keys.includes('s') && !currPlayer.keys.includes('w')) {
         if (currPlayer.velocity.y < currPlayer.maxSpeed * deltaTime) {
             currPlayer.velocity.y += deltaTime;
         }

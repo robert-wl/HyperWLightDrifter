@@ -7,11 +7,17 @@ import Game from '../game/Game.js';
 export default class Key extends Animateable {
     constructor(position, width, height, key) {
         super();
-        this.position = position;
+        this._position = position;
         this.width = width;
         this.height = height;
         this.key = key;
         this.interactionStage = 1;
+    }
+    get position() {
+        return this._position;
+    }
+    set position(value) {
+        this._position = value;
     }
     static generate(position) {
         const x = Math.round(position.x / 256);
@@ -38,8 +44,8 @@ export default class Key extends Animateable {
         const medKit = getNumberedImage('keys', this.animationStage);
         drawImage({
             img: medKit,
-            x: this.position.x,
-            y: this.position.y,
+            x: this._position.x,
+            y: this._position.y,
             width: medKit.width * GameSettings.GAME.GAME_SCALE,
             height: medKit.height * GameSettings.GAME.GAME_SCALE,
         });

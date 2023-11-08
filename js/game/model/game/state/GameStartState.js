@@ -5,6 +5,7 @@ import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
+import AssetManager from '../../utility/AssetManager.js';
 
 export default class GameStartState extends GameBaseState {
     async enterState(game) {
@@ -21,6 +22,7 @@ export default class GameStartState extends GameBaseState {
 
         game.prepareCanvas();
         game.changeState();
+        await AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
         await assetLoader([GameSettings.ASSETS.SPAWN], game.htmlHandlers);
 
         // menuHandler();

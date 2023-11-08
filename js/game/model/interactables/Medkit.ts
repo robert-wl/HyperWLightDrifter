@@ -5,21 +5,22 @@ import GameSettings from '../../constants.js';
 import InteractionBar from './InteractionBar.js';
 import Animateable from '../utility/Animateable.js';
 import Collider from '../collideable/Collider.js';
+import { Vector } from '../utility/enums/Vector.js';
 
 export default class Medkit extends Animateable {
-    private position: Position;
+    private _position: Vector;
     private width: number;
     private height: number;
-    private collider: Collider;
+    private _collider: Collider;
     private key: string;
     private interactionStage: number;
 
-    constructor(position: Position, width: number, height: number, key: string) {
+    constructor(position: Vector, width: number, height: number, key: string) {
         super();
-        this.position = position;
+        this._position = position;
         this.width = width;
         this.height = height;
-        this.collider = new Collider({
+        this._collider = new Collider({
             x: position.x,
             y: position.y,
             width,
@@ -27,6 +28,22 @@ export default class Medkit extends Animateable {
         });
         this.key = key;
         this.interactionStage = 1;
+    }
+
+    get collider(): Collider {
+        return this._collider;
+    }
+
+    set collider(value: Collider) {
+        this._collider = value;
+    }
+
+    get position(): Vector {
+        return this._position;
+    }
+
+    set position(value: Vector) {
+        this._position = value;
     }
 
     static generate(position, key) {}
@@ -44,8 +61,8 @@ export default class Medkit extends Animateable {
 
         drawImage({
             img: medKit,
-            x: this.position.x,
-            y: this.position.y,
+            x: this._position.x,
+            y: this._position.y,
             width: medKit.width * GameSettings.GAME.GAME_SCALE,
             height: medKit.height * GameSettings.GAME.GAME_SCALE,
         });

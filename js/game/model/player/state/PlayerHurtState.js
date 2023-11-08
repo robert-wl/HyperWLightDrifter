@@ -4,27 +4,24 @@ import GameSettings from '../../../constants.js';
 import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
 import Game from '../../game/Game.js';
-import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
-
+import AssetManager from '../../utility/AssetManager.js';
 export default class PlayerHurtState extends PlayerBaseState {
+    constructor() {
+        super();
+        this.mirrored = false;
+    }
     enterState(currPlayer) {
         super.enterState(currPlayer);
-
         this.mirrored = this.mirroredHandler(currPlayer);
-
         const { audio } = Game.getInstance();
         audio.playAudio('player/hurt.wav');
     }
-
     updateState(currPlayer) {
         super.updateState(currPlayer);
-
         this.advanceAnimationStage(10);
-
         if (this.animationStage >= 4) {
             currPlayer.handleSwitchState({
                 move: true,
-                idle: true,
                 attackOne: true,
                 dash: true,
                 aim: true,
@@ -32,10 +29,8 @@ export default class PlayerHurtState extends PlayerBaseState {
             });
         }
     }
-
     drawImage(currPlayer) {
-        const playerHurt = getNumberedImage('player_hurt', this.animationStage);
-
+        const playerHurt = AssetManager.getNumberedImage('player_hurt', this.animationStage);
         drawImage({
             img: playerHurt,
             x: currPlayer.centerPosition.x,
@@ -46,10 +41,8 @@ export default class PlayerHurtState extends PlayerBaseState {
             mirrored: this.mirrored,
         });
     }
-
     mirroredHandler(currPlayer) {
         const { direction } = getMoveDirection({ currPlayer });
-
         if (direction === 'w' || direction === 's' || direction === '') {
             return getRandomBoolean(0.5);
         }

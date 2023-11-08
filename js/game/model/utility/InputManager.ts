@@ -1,7 +1,8 @@
-import Game from '../game/Game';
-import detectCheatCode from '../../helper/cheatCodeHelper';
-import GameSettings from '../../constants';
-import Observable from './Observable';
+import Game from '../game/Game.js';
+import detectCheatCode from '../../helper/cheatCodeHelper.js';
+import GameSettings from '../../constants.js';
+import Observable from './Observable.js';
+import { Vector } from './enums/Vector.js';
 
 export default class InputManager {
     private readonly game: Game;
@@ -60,12 +61,12 @@ export default class InputManager {
         });
 
         $(document).on('mousemove', (e) => {
-            const { canvas } = this.game;
+            const { canvas, camera } = this.game;
             const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const x = e.clientX - rect.left + camera.position.x;
+            const y = e.clientY - rect.top + camera.position.y;
 
-            this._eventEmitter.notify('mousemove', { x, y } as Position);
+            this._eventEmitter.notify('mousemove', { x, y } as Vector);
         });
     }
 

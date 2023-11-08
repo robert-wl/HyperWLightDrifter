@@ -9,6 +9,7 @@ import HealthBar from '../healthBar/HealthBar.js';
 import CrystalBruteIdleState from './state/CrystalBruteIdleState.js';
 import HitBoxComponent from '../../utility/HitBoxComponent';
 import CrystalAttack from './CrystalAttack.js';
+import { Vector } from '../../utility/enums/Vector.js';
 
 export default class CrystalBrute extends Enemy {
     public speed: number;
@@ -20,7 +21,7 @@ export default class CrystalBrute extends Enemy {
     public dieState: CrystalBruteDieState;
     public idleState: CrystalBruteIdleState;
 
-    constructor(position: Position, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number) {
+    constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number) {
         super(position, width, height, hitbox, maxHealth);
         this.speed = 3;
         this.attack = [];

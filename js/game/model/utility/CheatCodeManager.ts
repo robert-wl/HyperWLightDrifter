@@ -1,17 +1,30 @@
-import GameSettings from '../../constants';
-import Game from '../game/Game';
+import GameSettings from '../../constants.js';
+import Game from '../game/Game.js';
+import Observable from './Observable';
 
 export default class CheatCodeManager {
     private readonly game: Game;
+    private readonly eventEmitter: Observable;
     private readonly cheatCodes: CheatCodes;
     private tempKeyStorage: string[] = [];
 
-    constructor(game: Game) {
+    constructor(game: Game, eventEmitter: Observable) {
         this.game = game;
+        this.eventEmitter = eventEmitter;
         this.cheatCodes = GameSettings.GAME.CHEAT_CODES;
+
+        this.eventHandler();
     }
 
-    public detectCheatCode(key?: string) {
+    private eventHandler() {
+        this.eventEmitter.subscribe(({ event, data }) => {
+            if (event === 'keydown') {
+                this.detectCheatCode(data);
+            }
+        });
+    }
+
+    private detectCheatCode(key?: string) {
         if (!key) {
             return;
         }
@@ -42,6 +55,7 @@ export default class CheatCodeManager {
         }
         if (cheatCodesKey === 'phoebus') {
             this.game.player.health = 0;
+            return;
         }
         if (cheatCodesKey === 'hesoyam') {
             const { player } = this.game;
@@ -53,9 +67,11 @@ export default class CheatCodeManager {
             player.stamina = 100000;
             player.bombs = 1000;
             player.bullets = 1000;
+            return;
         }
         if (cheatCodesKey === 'obert') {
             this.game.renderCollider = !this.game.renderCollider;
+            return;
         }
     }
 }

@@ -6,6 +6,7 @@ import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
+import AssetManager from '../../utility/AssetManager.js';
 
 export default class GameStageOneState extends GameBaseState {
     async enterState(game) {
@@ -78,6 +79,7 @@ export default class GameStageOneState extends GameBaseState {
         game.keys = [];
         game.clicks = [];
 
+        await AssetManager.assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER]);
         await assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], htmlHandlers);
 
         const positions = [{ x: 100, y: 0 }];

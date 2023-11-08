@@ -1,12 +1,10 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
-import { getImage } from '../../../helper/assets/assetGetter.js';
-
+import AssetManager from '../../utility/AssetManager.js';
 export default class PlayerIdleState extends PlayerBaseState {
     updateState(currPlayer) {
         currPlayer.regenerateStamina();
-
         currPlayer.handleSwitchState({
             move: true,
             attackOne: true,
@@ -15,26 +13,23 @@ export default class PlayerIdleState extends PlayerBaseState {
             throws: true,
         });
     }
-
     drawImage(currPlayer) {
         let idleImage = null;
         if (currPlayer.lastDirection === 'd') {
-            idleImage = getImage('idle_right');
+            idleImage = AssetManager.getImage('idle_right');
         }
         if (currPlayer.lastDirection === 'a') {
-            idleImage = getImage('idle_left');
+            idleImage = AssetManager.getImage('idle_left');
         }
         if (currPlayer.lastDirection === 's') {
-            idleImage = getImage('idle_down');
+            idleImage = AssetManager.getImage('idle_down');
         }
         if (currPlayer.lastDirection === 'w') {
-            idleImage = getImage('idle_up');
+            idleImage = AssetManager.getImage('idle_up');
         }
-
         if (idleImage === null) {
             return;
         }
-
         drawImage({
             img: idleImage,
             x: currPlayer.centerPosition.x,

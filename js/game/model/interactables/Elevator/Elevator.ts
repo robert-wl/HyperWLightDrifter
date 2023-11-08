@@ -2,13 +2,14 @@ import ElevatorBaseState from './state/ElevatorBaseState.js';
 import ElevatorMountedTopState from './state/ElevatorMountedTopState.js';
 import ElevatorMoveState from './state/ElevatorMoveState.js';
 import ElevatorMountedDownState from './state/ElevatorMountedDownState.js';
+import { Vector } from '../../utility/enums/Vector.js';
 
 export default class Elevator {
     public currState: ElevatorBaseState;
     public mountedDownState: ElevatorMountedDownState;
     public mountedTopState: ElevatorMountedTopState;
     public moveState: ElevatorMoveState;
-    private _position: Position;
+    private _position: Vector;
     private _width: number;
     private _height: number;
     private interactionStage: number;
@@ -16,7 +17,7 @@ export default class Elevator {
     private _stageLocation: number;
     private _bottomCrop: number;
 
-    public constructor(position: Position) {
+    public constructor(position: Vector) {
         this._position = position;
         this._width = 0;
         this._height = 0;
@@ -39,7 +40,7 @@ export default class Elevator {
         this._travelDistance = value;
     }
 
-    get position(): Position {
+    get position(): Vector {
         return this._position;
     }
 

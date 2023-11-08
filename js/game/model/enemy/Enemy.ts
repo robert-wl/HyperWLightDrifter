@@ -2,6 +2,7 @@ import Game from '../game/Game.js';
 import Animateable from '../utility/Animateable.js';
 import DistanceHelper from '../utility/DistanceHelper.js';
 import HitBoxComponent from '../utility/HitBoxComponent';
+import { Vector } from '../utility/enums/Vector.js';
 
 export default abstract class Enemy extends Animateable {
     private _hitbox: HitBoxComponent;
@@ -9,11 +10,11 @@ export default abstract class Enemy extends Animateable {
     private _maxHealth: number;
     private _width: number;
     private _height: number;
-    private _position: Position;
+    private _position: Vector;
     private _damaged: number;
-    private _velocity: Vector;
+    private _velocity: PolarVector;
 
-    protected constructor(position: Position, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number) {
+    protected constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number) {
         super();
         this._hitbox = hitbox;
         this._health = maxHealth;
@@ -68,11 +69,11 @@ export default abstract class Enemy extends Animateable {
         this._height = value;
     }
 
-    get position(): Position {
+    get position(): Vector {
         return this._position;
     }
 
-    set position(value: Position) {
+    set position(value: Vector) {
         this._position = value;
     }
 
@@ -84,11 +85,11 @@ export default abstract class Enemy extends Animateable {
         this._damaged = value;
     }
 
-    get velocity(): Vector {
+    get velocity(): PolarVector {
         return this._velocity;
     }
 
-    set velocity(value: Vector) {
+    set velocity(value: PolarVector) {
         this._velocity = value;
     }
 

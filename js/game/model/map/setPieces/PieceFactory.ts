@@ -2,13 +2,14 @@ import { getRandomBoolean, getRandomValue } from '../../../helper/randomHelper.j
 import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import Collider from '../../collideable/Collider.js';
 import { Piece } from '../../utility/enums/Piece.js';
+import { Vector } from '../../utility/enums/Vector.js';
 
 export default class PieceFactory {
     public constructor() {
         //
     }
 
-    public generateTreePiece(position: Position) {
+    public generateTreePiece(position: Vector) {
         const random = getRandomValue({
             initialValue: 1,
             randomValue: 6,
@@ -32,7 +33,7 @@ export default class PieceFactory {
         } as Piece;
     }
 
-    public generatePlantsPiece(position: Position, type: number) {
+    public generatePlantsPiece(position: Vector, type: number) {
         const image = getNumberedImage('set_pieces_plants', type);
 
         return {
@@ -43,7 +44,7 @@ export default class PieceFactory {
         } as Piece;
     }
 
-    public generateLargeTreePiece(position: Position) {
+    public generateLargeTreePiece(position: Vector) {
         const random = getRandomValue({
             initialValue: 1,
             randomValue: 2,
@@ -67,7 +68,7 @@ export default class PieceFactory {
         } as Piece;
     }
 
-    public generateStonePiece(position: Position) {
+    public generateStonePiece(position: Vector) {
         const random = getRandomValue({
             initialValue: 1,
             randomValue: 5,
@@ -90,7 +91,7 @@ export default class PieceFactory {
         } as Piece;
     }
 
-    public generateLargeStonePiece(position: Position) {
+    public generateLargeStonePiece(position: Vector) {
         const random = getRandomValue({
             initialValue: 1,
             randomValue: 4,
@@ -113,7 +114,7 @@ export default class PieceFactory {
         } as Piece;
     }
 
-    public generateEnemyPiece(position: Position) {
+    public generateEnemyPiece(position: Vector) {
         const random = getRandomValue({
             initialValue: 1,
             randomValue: 7,
@@ -137,7 +138,7 @@ export default class PieceFactory {
         } as Piece;
     }
 
-    public generateHealthPiece(position: Position) {
+    public generateHealthPiece(position: Vector) {
         const random = getRandomValue({
             initialValue: 1,
             randomValue: 5,
