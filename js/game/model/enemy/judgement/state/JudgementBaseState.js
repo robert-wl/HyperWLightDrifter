@@ -1,16 +1,12 @@
 import Animateable from '../../../utility/Animateable.js';
-
 export default class JudgementBaseState extends Animateable {
-    updateState() {
+    updateState(currJudgement) {
         this.updateNumberCounter();
     }
-
-    drawImage() {}
-
-    enterState() {
+    drawImage(currJudgement) { }
+    enterState(currJudgement) {
         this.number = 0;
         this.animationStage = 1;
     }
-
-    exitState() {}
+    exitState(currJudgement) { }
 }

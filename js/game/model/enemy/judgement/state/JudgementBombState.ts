@@ -7,7 +7,18 @@ import { getRandomValue } from '../../../../helper/randomHelper.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
+import Judgement from '../Judgement';
+
 export default class JudgementBombState extends JudgementBaseState {
+    private attackCount: number;
+    private maxAttackCount: number;
+    private attacking: number;
+    private attackAngle: number;
+    private finished: boolean;
+    private playedSpawnAudio: boolean;
+    private playedSmashAudio: boolean;
+    private startAngle: number;
+
     constructor() {
         super();
         this.attackCount = 0;
@@ -19,7 +30,8 @@ export default class JudgementBombState extends JudgementBaseState {
         this.playedSmashAudio = false;
         this.startAngle = 0;
     }
-    enterState(currJudgement) {
+
+    enterState(currJudgement: Judgement) {
         super.enterState(currJudgement);
         this.maxAttackCount = 6;
         this.attackCount = 0;
@@ -32,30 +44,40 @@ export default class JudgementBombState extends JudgementBaseState {
             randomValue: Math.PI * 2,
         });
     }
-    drawImage(currJudgement) {
+
+    drawImage(currJudgement: Judgement) {
         if (!this.finished) {
             this.drawNormal(currJudgement);
             return; //TODO ADA INI
         }
+
         if (!this.isEnemyAboutToExplode()) {
             this.animationStage = 1;
             return;
         }
+
         this.drawSpawn(currJudgement);
     }
-    updateState(currJudgement) {
+
+    updateState(currJudgement: Judgement) {
         super.updateState(currJudgement);
+
         const { backgroundOpacity, enemyManager, player } = Game.getInstance();
+
         this.backgroundHandler();
+
         if (backgroundOpacity < 0.05 && this.checkCounter(25) && this.attackCount < this.maxAttackCount) {
             currJudgement.enemyObserver.notify('spawnBossBomb', {
                 position: player.centerPosition,
                 angle: this.startAngle + (this.attackCount * Math.PI) / 3,
             });
+
             AudioPlayer.getInstance().playAudio('boss/bomb_summon.wav');
+
             this.number = 0;
             this.attackCount += 1;
         }
+
         if (this.checkCounter(25) && this.attackCount === this.maxAttackCount) {
             const { bossEntities } = enemyManager;
             bossEntities.forEach((enemy) => {
@@ -63,36 +85,47 @@ export default class JudgementBombState extends JudgementBaseState {
                     enemy.spawning = false;
                 }
             });
+
             currJudgement.position = {
                 x: 1000,
                 y: 600,
             };
+
             this.attackCount += 1;
         }
+
         if (backgroundOpacity <= 0.05 && this.attackCount >= this.maxAttackCount + 1) {
             this.finished = true;
+
             this.attackCount++;
         }
+
         if (backgroundOpacity === 1 && this.finished && this.checkCounter(7)) {
             if (this.animationStage === 2 && !this.playedSpawnAudio) {
                 AudioPlayer.getInstance().playAudio('boss/spawn.wav');
                 this.playedSpawnAudio = true;
             }
+
             this.animationStage += 1;
             this.number = 0;
         }
+
         if (this.animationStage === 14 && !this.playedSmashAudio) {
             AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
             this.playedSmashAudio = true;
         }
+
         if (this.animationStage === 21 && this.finished) {
             currJudgement.switchState(currJudgement.moveState);
         }
     }
-    drawNormal(currJudgement) {
+
+    drawNormal(currJudgement: Judgement) {
         const judgementMove = getNumberedImage('judgement_move', 1);
         const { backgroundOpacity } = Game.getInstance();
+
         Game.getInstance().setTransparency(backgroundOpacity);
+
         drawMirroredY({
             img: judgementMove,
             position: {
@@ -104,11 +137,14 @@ export default class JudgementBombState extends JudgementBaseState {
             translate: true,
             mirrored: getFaceDirection(currJudgement.angle) === 'left',
         });
+
         Game.getInstance().setTransparency(1);
     }
-    drawSpawn(currJudgement) {
+
+    drawSpawn(currJudgement: Judgement) {
         console.log(this.animationStage);
         const judgementSpawn = getNumberedImage('judgement_spawn', this.animationStage);
+
         drawImage({
             img: judgementSpawn,
             x: currJudgement.position.x,
@@ -118,20 +154,25 @@ export default class JudgementBombState extends JudgementBaseState {
             translate: true,
         });
     }
+
     isEnemyAboutToExplode() {
         const { bossEntities } = Game.getInstance().enemyManager;
+
         return bossEntities.some((enemy) => {
             if (enemy instanceof JudgementBomb) {
                 return enemy.isAboutToExplode();
             }
         });
     }
+
     backgroundHandler() {
         const { deltaTime } = Game.getInstance();
+
         if (this.finished) {
             Game.getInstance().brightenBackground(0.05 * deltaTime);
             return;
         }
+
         Game.getInstance().darkenBackground(0.05 * deltaTime);
     }
 }

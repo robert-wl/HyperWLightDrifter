@@ -13,7 +13,6 @@ import { Vector } from '../../utility/enums/Vector.js';
 import Observable from '../../utility/Observable';
 
 export default class CrystalBrute extends Enemy {
-    public speed: number;
     public attack: CrystalAttack[];
     public healthBar: HealthBar;
     public currState: CrystalBruteBaseState;
@@ -21,10 +20,13 @@ export default class CrystalBrute extends Enemy {
     public moveState: CrystalBruteMoveState;
     public dieState: CrystalBruteDieState;
     public idleState: CrystalBruteIdleState;
+    private _speed: number;
+    private _angle: number;
 
-    constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, attackObserver: Observable) {
-        super(position, width, height, hitbox, maxHealth, attackObserver);
-        this.speed = 3;
+    constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, enemyObserver: Observable, attackObserver: Observable) {
+        super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
+        this._speed = 3;
+        this._angle = 0;
         this.attack = [];
         this.healthBar = HealthBar.generate({
             position: this.position,
@@ -39,6 +41,22 @@ export default class CrystalBrute extends Enemy {
         this.dieState = new CrystalBruteDieState();
         this.idleState = new CrystalBruteIdleState();
         this.switchState(this.idleState);
+    }
+
+    get speed(): number {
+        return this._speed;
+    }
+
+    set speed(value: number) {
+        this._speed = value;
+    }
+
+    get angle(): number {
+        return this._angle;
+    }
+
+    set angle(value: number) {
+        this._angle = value;
     }
 
     switchState(newState: CrystalBruteBaseState) {
@@ -94,10 +112,5 @@ export default class CrystalBrute extends Enemy {
             Game.getInstance().setFilter('none');
             this.damaged -= deltaTime;
         }
-    }
-
-    clear() {
-        const { enemyList } = Game.getInstance().enemyManager;
-        enemyList.splice(enemyList.indexOf(this), 1);
     }
 }

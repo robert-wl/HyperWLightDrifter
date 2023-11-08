@@ -42,6 +42,10 @@ export default class Elevator {
         return this._stageLocation;
     }
 
+    get travelDistance(): number {
+        return this._travelDistance;
+    }
+
     set travelDistance(value: number) {
         this._travelDistance = value;
     }
@@ -100,6 +104,7 @@ export default class Elevator {
     }
 
     public activate() {
+        this.interactableEventEmitter.notify('elevator:move', this);
         this.switchState(this.moveState);
     }
 }

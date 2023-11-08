@@ -110,7 +110,7 @@ export default class Grenade extends Animateable {
             if (enemy instanceof CrystalBrute) {
                 audio.playAudio('enemy/crystal_brute/hurt.wav');
             }
-            enemy.damage({
+            enemy.handleDamage({
                 amount: GameSettings.PLAYER.DAMAGE.GRENADE,
                 angle: -angle,
             });
@@ -135,7 +135,7 @@ export default class Grenade extends Animateable {
         if (distance >= 250) {
             return;
         }
-        boss.damage({
+        boss.handleDamage({
             amount: GameSettings.PLAYER.DAMAGE.GRENADE,
         });
     }

@@ -5,6 +5,7 @@ import Game from '../game/Game.js';
 import { getMagnitudeValue } from '../../helper/distanceHelper.js';
 import Medkit from './Medkit.js';
 import Key from './Key.js';
+import Elevator from './Elevator/Elevator.js';
 export default class InteractionBar {
     constructor(player, inputEventEmitter) {
         this.eventHandler = () => this.inputEventEmitter.subscribe(({ event, data }) => {
@@ -104,7 +105,10 @@ export default class InteractionBar {
                 }
                 if (object instanceof Key) {
                     object.activate();
-                    Game.getInstance().keyCount += 1;
+                }
+                if (object instanceof Elevator) {
+                    object.activate();
+                    this.isInteracting = false;
                 }
                 return true;
             }

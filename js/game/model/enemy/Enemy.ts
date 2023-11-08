@@ -14,9 +14,10 @@ export default abstract class Enemy extends Animateable {
     private _position: Vector;
     private _damaged: number;
     private _velocity: PolarVector;
+    private _enemyObserver: Observable;
     private _attackObserver: Observable;
 
-    protected constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, attackObserver: Observable) {
+    protected constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, enemyObserver: Observable, attackObserver: Observable) {
         super();
         this._hitbox = hitbox;
         this._health = maxHealth;
@@ -24,12 +25,21 @@ export default abstract class Enemy extends Animateable {
         this._width = width;
         this._height = height;
         this._position = position;
+        this._enemyObserver = enemyObserver;
         this._attackObserver = attackObserver;
         this._damaged = -1;
         this._velocity = {
             value: 0,
             angle: 0,
         };
+    }
+
+    get enemyObserver(): Observable {
+        return this._enemyObserver;
+    }
+
+    set enemyObserver(value: Observable) {
+        this._enemyObserver = value;
     }
 
     get attackObserver(): Observable {
@@ -104,7 +114,7 @@ export default abstract class Enemy extends Animateable {
         this._velocity = value;
     }
 
-    public damage({ amount, angle }) {
+    public handleDamage({ amount, angle }) {
         if (this._health <= 0) {
             return;
         }

@@ -67,7 +67,14 @@ export default class Player {
         this._keys = [];
         this._clicks = [];
         this._attackObserver = new Observable();
+        this._isBelowGround = false;
         this.eventHandler();
+    }
+    get isBelowGround() {
+        return this._isBelowGround;
+    }
+    set isBelowGround(value) {
+        this._isBelowGround = value;
     }
     get attackObserver() {
         return this._attackObserver;
@@ -280,7 +287,7 @@ export default class Player {
         //
         // Game.getInstance().ctx.fillRect(x, y, w, h);
     }
-    damage({ angle }) {
+    damage({ amount, angle }) {
         if (this.currState === this.deathState) {
             return;
         }
@@ -288,7 +295,7 @@ export default class Player {
             return;
         }
         this._immunity = 0;
-        this._health -= 1;
+        this._health -= amount;
         if (this.currState !== this.hurtState) {
             this.switchState(this.hurtState);
         }
@@ -455,11 +462,31 @@ export default class Player {
         this.attackObserver.subscribe(({ event, data }) => {
             if (event === 'attack') {
                 this.playerAttackCollision(data.position);
-                this.damage({ angle: 0 });
+                return;
+            }
+            if (event === 'attackArea') {
+                this.playerAttackCollision(data);
+                return;
             }
         });
     }
-    playerAttackCollision(position, angle) {
+    playerAttackCollisionArea(box) {
+        if (this.currState === this.dashState) {
+            return false;
+        }
+        if (this.currState === this.inElevatorState) {
+            return false;
+        }
+        if (this.detectCollisionBox(box)) {
+            this.damage({
+                amount: 1,
+                angle: Math.PI,
+            });
+            return true;
+        }
+        return false;
+    }
+    playerAttackCollision(position) {
         if (this.currState === this.dashState) {
             return false;
         }
@@ -468,6 +495,7 @@ export default class Player {
         }
         if (this.detectCollision(position)) {
             this.damage({
+                amount: 1,
                 angle: Math.PI,
             });
             return true;
@@ -476,5 +504,16 @@ export default class Player {
     }
     detectCollision(position) {
         return this.centerPosition.x + this.hitbox.xOffset < position.x && this.centerPosition.x + this.width - this.hitbox.wOffset > position.x && this.centerPosition.y + this.hitbox.yOffset < position.y && this.centerPosition.y + this.height - this.hitbox.hOffset > position.y;
+    }
+    detectCollisionBox(box) {
+        const enemyX1 = box.x;
+        const enemyX2 = box.x + box.w;
+        const enemyY1 = box.y;
+        const enemyY2 = box.y + box.h;
+        const playerX1 = this.centerPosition.x + this.hitbox.xOffset;
+        const playerX2 = this.centerPosition.x + this.hitbox.xOffset + this.width - this.hitbox.wOffset;
+        const playerY1 = this.centerPosition.y + this.hitbox.yOffset;
+        const playerY2 = this.centerPosition.y + this.hitbox.yOffset + this.height - this.hitbox.hOffset;
+        return enemyX1 < playerX2 && enemyX2 > playerX1 && enemyY1 < playerY2 && enemyY2 > playerY1;
     }
 }

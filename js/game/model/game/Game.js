@@ -30,6 +30,13 @@ import AssetManager from '../utility/AssetManager.js';
 import InteractablesManager from '../interactables/InteractablesManager.js';
 class Game {
     constructor() {
+        this.eventHandler = () => this.inputManager.inputObservable.subscribe(({ event, data }) => {
+            if (event === 'keydown') {
+                if (data === 'p') {
+                    this.switchState(this.pausedState).then();
+                }
+            }
+        });
         this.stage = 1;
         this.deltaTime = 0;
         this.movementDeltaTime = 0;
@@ -57,7 +64,6 @@ class Game {
         this.loseState = new GameLoseState();
         this.endState = new GameEndState();
         this.renderCollider = false;
-        this.htmlHandlers = new HTMLHandlers(this);
     }
     static getInstance() {
         if (Game.instance == null) {
@@ -75,15 +81,17 @@ class Game {
             this.keyCount = 0;
             this.camera = new Camera();
             this.inputManager = new InputManager(this);
-            this.player = new Player(this.inputManager.eventEmitter);
-            this.enemyManager = new EnemyManager(this.player.attackObserver);
+            this.player = new Player(this.inputManager.inputObservable);
+            this.enemyManager = new EnemyManager(this);
             this.interactablesManager = new InteractablesManager(this);
             this.interactablesFactory = this.interactablesManager.interactablesFactory;
-            this.cheatCodeManager = new CheatCodeManager(this, this.inputManager.eventEmitter);
+            this.cheatCodeManager = new CheatCodeManager(this, this.inputManager.inputObservable);
             this.mapGenerator = new MapGenerator(this);
             this.particlesManager = new ParticlesManager();
             this.particlesFactory = this.particlesManager.particleFactory;
+            this.htmlHandlers = new HTMLHandlers(this);
             AssetManager.setHTMLHandler(this.htmlHandlers);
+            this.eventHandler();
         });
     }
     playGame() {

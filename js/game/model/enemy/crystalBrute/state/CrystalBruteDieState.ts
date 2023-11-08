@@ -6,19 +6,27 @@ import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import { getRandomBoolean } from '../../../../helper/randomHelper.js';
+import CrystalBrute from '../CrystalBrute';
+
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
-    constructor() {
+    private friction: number;
+
+    public constructor() {
         super();
         this.friction = 0.1;
     }
-    enterState(currBrute) {
+
+    public enterState(currBrute: CrystalBrute) {
         const { audio, enemyManager } = Game.getInstance();
+
         if (getRandomBoolean(0.5)) {
             currBrute.enemyObserver.notify('spawnKey', currBrute.position);
         }
+
         audio.playAudio('enemy/crystal_brute/death.wav');
     }
-    updateState(currBrute) {
+
+    public updateState(currBrute: CrystalBrute) {
         const { deltaTime, movementDeltaTime, player } = Game.getInstance();
         currBrute.position.x += getHorizontalValue({
             magnitude: currBrute.speed * deltaTime,
@@ -28,18 +36,23 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
             magnitude: currBrute.speed * deltaTime,
             angle: currBrute.angle,
         });
+
         currBrute.speed *= 1 - this.friction * movementDeltaTime;
+
         const { centerPosition } = player;
         const distance = getManhattanDistance({
             x: currBrute.position.x - centerPosition.x,
             y: currBrute.position.y - centerPosition.y,
         });
+
         if (distance > 1000) {
             currBrute.enemyObserver.notify('clearEnemy', currBrute);
         }
     }
-    drawImage(currBrute) {
+
+    public drawImage(currBrute: CrystalBrute) {
         const bruteDie = getImage('crystal_brute_die');
+
         drawImage({
             img: bruteDie,
             x: currBrute.position.x,

@@ -42,6 +42,27 @@ const GameSettings = {
                 WIDTH: 136,
                 HEIGHT: 140,
                 MAX_HEALTH: 10,
+                ATTACK_PATTERN: [[0], [0, -1 / 6, 1 / 6], [1 / 10, -1 / 10, 2 / 10, -2 / 10]],
+            },
+            JUDGEMENT: {
+                MOVE_SPEED: 1,
+                WIDTH: 260,
+                HEIGHT: 358,
+                MAX_HEALTH: 100,
+                ATTACK_POSITION: [
+                    { x: 700, y: 550 },
+                    { x: 700, y: 1050 },
+                    { x: 1500, y: 550 },
+                    { x: 1500, y: 1050 },
+                    { x: 1100, y: 800 },
+                ],
+            },
+            JUDGEMENT_BOMB: {
+                WIDTH: 40,
+                HEIGHT: 40,
+                MAX_HEALTH: 5,
+                LIFETIME: 300,
+                OFFSET: 120,
             },
         },
         CHEAT_CODES: {
@@ -80,10 +101,6 @@ const GameSettings = {
         GAME_SCALE: 2,
         SCREEN_WIDTH: 1920,
         SCREEN_HEIGHT: 1080,
-    },
-    enemy: {
-        SPAWN_RADIUS: 1500,
-        SPAWN_RANDOM_RADIUS: 500,
     },
     PLAYER: {
         INTERACTION_MAX_DISTANCE: 200,

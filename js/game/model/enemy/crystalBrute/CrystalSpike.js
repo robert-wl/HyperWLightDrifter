@@ -1,15 +1,15 @@
 import Game from '../../game/Game.js';
 import HitBoxComponent from '../../utility/HitBoxComponent.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
-import playerCollision from '../../../helper/collision/playerCollision.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
 import GameSettings from '../../../constants.js';
 import Animateable from '../../utility/Animateable.js';
 import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 export default class CrystalSpike extends Animateable {
-    constructor(position) {
+    constructor(position, attackObserver) {
         super();
         this.position = Object.assign({}, position);
+        this.attackObserver = attackObserver;
         this.isLeft = getRandomBoolean(0.5);
         this.damaged = false;
         const { WIDTH, HEIGHT } = GameSettings.GAME.ENEMY.CRYSTAL_BRUTE.CRYSTAL_SPIKE;
@@ -21,7 +21,13 @@ export default class CrystalSpike extends Animateable {
         const { deltaTime } = Game.getInstance();
         this.number += deltaTime;
         if (!this.damaged) {
-            this.damaged = this.handlePlayerCollision();
+            const box = {
+                x: this.position.x - this.width / 2,
+                y: this.position.y - this.height / 2,
+                w: this.width,
+                h: this.height,
+            };
+            this.attackObserver.notify('attackArea', box);
         }
         if (this.animationStage >= 12) {
             return;
@@ -43,11 +49,6 @@ export default class CrystalSpike extends Animateable {
             height: crystalSpike.height * GameSettings.GAME.GAME_SCALE,
             translate: true,
             mirrored: this.isLeft,
-        });
-    }
-    handlePlayerCollision() {
-        return !!playerCollision({
-            box: this.hitbox.getPoints(this.position, this.width, this.height),
         });
     }
     handleDebug() {

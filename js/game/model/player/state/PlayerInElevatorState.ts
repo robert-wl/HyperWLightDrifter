@@ -7,12 +7,10 @@ import Player from '../Player.js';
 import { Vector } from '../../utility/enums/Vector.js';
 
 export default class PlayerInElevatorState extends PlayerBaseState {
-    private isBelowGround: boolean;
     private initialPosition: Vector;
 
     constructor() {
         super();
-        this.isBelowGround = false;
         this.initialPosition = Vector.Zero();
     }
 
@@ -24,7 +22,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
 
     updateState(currPlayer: Player) {
         if (currPlayer.centerPosition.y - this.initialPosition.y > 10) {
-            this.isBelowGround = true;
+            currPlayer.isBelowGround = true;
         }
 
         if (currPlayer.centerPosition.y - this.initialPosition.y > 300) {

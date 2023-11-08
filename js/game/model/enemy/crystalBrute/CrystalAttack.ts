@@ -2,6 +2,7 @@ import CrystalSpike from './CrystalSpike.js';
 import Game from '../../game/Game.js';
 import DistanceHelper from '../../utility/DistanceHelper.js';
 import { Vector } from '../../utility/enums/Vector.js';
+import Observable from '../../utility/Observable';
 
 export default class CrystalAttack {
     private position: Vector;
@@ -11,8 +12,9 @@ export default class CrystalAttack {
     private number: number;
     private lifetime: number;
     private playAudio: boolean;
+    private attackObserver: Observable;
 
-    constructor(position: Vector, angle: number, playAudio: boolean) {
+    constructor(position: Vector, angle: number, playAudio: boolean, attackObserver: Observable) {
         this.position = position;
         this.angle = angle;
         this.spikes = [];
@@ -20,6 +22,7 @@ export default class CrystalAttack {
         this.number = 0;
         this.lifetime = 0;
         this.playAudio = playAudio;
+        this.attackObserver = attackObserver;
     }
 
     update() {
@@ -36,7 +39,7 @@ export default class CrystalAttack {
         this.position.y += DistanceHelper.getVerticalValue(vector);
 
         if (this.number >= 10) {
-            const spike = new CrystalSpike(this.position);
+            const spike = new CrystalSpike(this.position, this.attackObserver);
             this.spikes.push(spike);
 
             if (this.playAudio) {

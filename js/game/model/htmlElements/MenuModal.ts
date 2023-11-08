@@ -14,7 +14,7 @@ export default class MenuModal extends Modal {
         this.handleEvent();
     }
 
-    protected handleEvent() {
+    protected handleEvent = () =>
         this.eventEmitter.subscribe(({ event }) => {
             if (event === 'menuModal:open') {
                 this.open();
@@ -24,7 +24,6 @@ export default class MenuModal extends Modal {
                 this.toggle();
             }
         });
-    }
 
     private handleInteraction() {
         this.newGameButton.on('mousedown', () => {

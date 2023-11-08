@@ -28,10 +28,10 @@ export default class GameStartState extends GameBaseState {
             Navbar.open();
             game.toggleFullscreen(false);
             this.spawnParticles = true;
-            game.htmlHandlers.notify('startScreen');
             // game.instance = null;
             Game.getInstance();
             yield game.init();
+            game.htmlHandlers.notify('startScreen');
             game.prepareCanvas();
             game.changeState();
             yield AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
@@ -54,6 +54,7 @@ export default class GameStartState extends GameBaseState {
         game.particlesManager.update();
     }
     exitState(game) {
+        game.htmlHandlers.eventRemover();
         const { audio } = game;
         audio.stopAll();
     }

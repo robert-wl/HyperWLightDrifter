@@ -15,8 +15,11 @@ export default class ElevatorMoveState extends ElevatorBaseState {
     }
     enterState(elevator) {
         Game.getInstance().elevator = elevator;
+        elevator.travelDistance = 0;
+        console.log('start:' + elevator.travelDistance);
         const { player } = Game.getInstance();
         player.switchState(player.inElevatorState);
+        console.log('start:' + elevator.travelDistance);
         this.setDefaultValues();
     }
     updateState(elevator) {
@@ -29,13 +32,14 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         this.handleVelocity(elevator);
         const { movementDeltaTime, deltaTime } = Game.getInstance();
         const velocity = this.velocity * movementDeltaTime;
+        console.log(velocity, elevator.travelDistance);
         player.velocity.y = 0;
         if (this.counter > 140) {
             player.velocity.y = velocity;
         }
         player.centerPosition.y += velocity;
         elevator.position.y += velocity;
-        elevator.travelDistance += velocity;
+        elevator.travelDistance += velocity !== null && velocity !== void 0 ? velocity : 0;
         if (this.aboutToMount) {
             elevator.bottomCrop += velocity * 0.415;
             this.bottomCropAmount += velocity * 0.415;

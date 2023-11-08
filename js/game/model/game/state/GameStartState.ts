@@ -20,12 +20,13 @@ export default class GameStartState extends GameBaseState {
         game.toggleFullscreen(false);
         this.spawnParticles = true;
 
-        game.htmlHandlers.notify('startScreen');
         // game.instance = null;
 
         Game.getInstance();
 
         await game.init();
+
+        game.htmlHandlers.notify('startScreen');
 
         game.prepareCanvas();
         game.changeState();
@@ -57,6 +58,7 @@ export default class GameStartState extends GameBaseState {
     }
 
     exitState(game: Game) {
+        game.htmlHandlers.eventRemover();
         const { audio } = game;
         audio.stopAll();
     }

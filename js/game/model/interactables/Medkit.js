@@ -68,6 +68,6 @@ export default class Medkit extends Animateable {
         player.healthPack += 1;
         player.healthPack = Math.min(player.healthPack, 3);
         audio.playAudio('player/medkit/use.wav');
-        this.interactableEventEmitter.notify('medkitCollected', this);
+        this.interactableEventEmitter.notify('medkit:collected', this);
     }
 }

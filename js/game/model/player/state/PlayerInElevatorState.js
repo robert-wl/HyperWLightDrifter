@@ -7,7 +7,6 @@ import { Vector } from '../../utility/enums/Vector.js';
 export default class PlayerInElevatorState extends PlayerBaseState {
     constructor() {
         super();
-        this.isBelowGround = false;
         this.initialPosition = Vector.Zero();
     }
     enterState(currPlayer) {
@@ -17,7 +16,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
     }
     updateState(currPlayer) {
         if (currPlayer.centerPosition.y - this.initialPosition.y > 10) {
-            this.isBelowGround = true;
+            currPlayer.isBelowGround = true;
         }
         if (currPlayer.centerPosition.y - this.initialPosition.y > 300) {
             const { deltaTime } = Game.getInstance();

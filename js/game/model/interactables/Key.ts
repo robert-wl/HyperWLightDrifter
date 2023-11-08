@@ -70,6 +70,6 @@ export default class Key extends Animateable {
     }
 
     activate() {
-        this.interactableEventEmitter.notify('keyCollected', this.key);
+        this.interactableEventEmitter.notify('key:collected', this.key);
     }
 }

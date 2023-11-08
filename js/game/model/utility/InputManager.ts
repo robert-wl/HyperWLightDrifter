@@ -6,19 +6,19 @@ import { Vector } from './enums/Vector.js';
 
 export default class InputManager {
     private readonly game: Game;
-    private readonly _eventEmitter: Observable;
+    private readonly _inputObservable: Observable;
     private readonly validInputs: string[] = [];
 
     public constructor(game: Game) {
         this.game = game;
-        this._eventEmitter = new Observable();
+        this._inputObservable = new Observable();
         this.validInputs = GameSettings.GAME.INPUT;
 
         this.eventHandler();
     }
 
-    get eventEmitter(): Observable {
-        return this._eventEmitter;
+    get inputObservable(): Observable {
+        return this._inputObservable;
     }
 
     private eventHandler() {
@@ -31,7 +31,7 @@ export default class InputManager {
             detectCheatCode(key);
 
             if (this.validInputs.includes(key)) {
-                this._eventEmitter.notify('keydown', key);
+                this._inputObservable.notify('keydown', key);
             }
         });
 
@@ -39,7 +39,7 @@ export default class InputManager {
             const key = e.key.toLowerCase();
 
             if (this.validInputs.includes(key)) {
-                this._eventEmitter.notify('keyup', key);
+                this._inputObservable.notify('keyup', key);
             }
         });
 
@@ -47,7 +47,7 @@ export default class InputManager {
             const click = this.convertClicksToKeys(e.which);
 
             if (click) {
-                this._eventEmitter.notify('mousedown', click);
+                this._inputObservable.notify('mousedown', click);
             }
         });
 
@@ -55,7 +55,7 @@ export default class InputManager {
             const click = this.convertClicksToKeys(e.which);
 
             if (click) {
-                this._eventEmitter.notify('mouseup', click);
+                this._inputObservable.notify('mouseup', click);
             }
         });
 
@@ -69,7 +69,7 @@ export default class InputManager {
             const x = e.clientX - rect.left + camera.position.x * GameSettings.GAME.GAME_SCALE;
             const y = e.clientY - rect.top + camera.position.y * GameSettings.GAME.GAME_SCALE + 200;
 
-            this._eventEmitter.notify('mousemove', { x, y } as Vector);
+            this._inputObservable.notify('mousemove', { x, y } as Vector);
         });
     }
 

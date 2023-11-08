@@ -68,10 +68,10 @@ export default class GameStageOneState extends GameBaseState {
     }
 
     handleStageChange(game: Game) {
-        const { player, backgroundOpacity } = Game.getInstance();
-        // if (player.currState?.isBelowGround && backgroundOpacity === 0) {
-        //     game.switchState(game.stageTwoState);
-        // }
+        const { player, backgroundOpacity } = game;
+        if (player.isBelowGround && backgroundOpacity === 0) {
+            game.switchState(game.stageTwoState);
+        }
     }
 
     async stageInitializer(game: Game) {

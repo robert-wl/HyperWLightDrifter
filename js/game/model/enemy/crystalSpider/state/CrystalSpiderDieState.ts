@@ -22,7 +22,7 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
         const { audio } = Game.getInstance();
 
         if (getRandomBoolean(0.05)) {
-            // Key.generate(currSpider.position);
+            currSpider.enemyObserver.notify('spawnKey', currSpider.position);
         }
         audio.playAudio('enemy/crystal_spider/death.wav');
     }
@@ -35,7 +35,7 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
         });
 
         if (distance > 1000) {
-            currSpider.clear();
+            currSpider.enemyObserver.notify('clearEnemy', currSpider);
         }
     }
 

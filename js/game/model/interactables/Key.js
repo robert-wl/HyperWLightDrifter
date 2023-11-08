@@ -50,6 +50,6 @@ export default class Key extends Animateable {
         return distance < this.interactionDistance;
     }
     activate() {
-        this.interactableEventEmitter.notify('keyCollected', this.key);
+        this.interactableEventEmitter.notify('key:collected', this.key);
     }
 }

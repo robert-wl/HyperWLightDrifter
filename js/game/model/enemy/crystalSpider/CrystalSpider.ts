@@ -21,8 +21,8 @@ export default class CrystalSpider extends Enemy {
     private _angle: number;
     private _attackSpeed: number;
 
-    constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, attackObserver: Observable) {
-        super(position, width, height, hitbox, maxHealth, attackObserver);
+    constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, enemyObserver: Observable, attackObserver: Observable) {
+        super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
         this.currState = new CrystalSpiderBaseState();
         this.attackState = new CrystalSpiderAttackState();
         this.moveState = new CrystalSpiderMoveState();
@@ -59,16 +59,6 @@ export default class CrystalSpider extends Enemy {
 
     set attackSpeed(value: number) {
         this._attackSpeed = value;
-    }
-
-    static generate({ x, y }) {
-        // const newCrystalSpider = new CrystalSpider({
-        //     x,
-        //     y,
-        // });
-        //
-        // const { enemyList } = Game.getInstance().enemyManager;
-        // enemyList.push(newCrystalSpider);
     }
 
     debugMode() {
@@ -118,10 +108,5 @@ export default class CrystalSpider extends Enemy {
             Game.getInstance().setFilter('none');
             this.damaged -= deltaTime;
         }
-    }
-
-    clear() {
-        const { enemyList } = Game.getInstance().enemyManager;
-        enemyList.splice(enemyList.indexOf(this), 1);
     }
 }

@@ -58,7 +58,7 @@ export default class Game {
     public renderCollider: boolean;
     public interactablesManager!: InteractablesManager;
     public interactablesFactory!: InteractablesFactory;
-    public htmlHandlers: HTMLHandlers;
+    public htmlHandlers!: HTMLHandlers;
     public mapGenerator!: MapGenerator;
     public cheatCodeManager!: CheatCodeManager;
     public inputManager!: InputManager;
@@ -95,7 +95,6 @@ export default class Game {
         this.loseState = new GameLoseState();
         this.endState = new GameEndState();
         this.renderCollider = false;
-        this.htmlHandlers = new HTMLHandlers(this);
     }
 
     static getInstance() {
@@ -115,15 +114,18 @@ export default class Game {
         this.keyCount = 0;
         this.camera = new Camera();
         this.inputManager = new InputManager(this);
-        this.player = new Player(this.inputManager.eventEmitter);
-        this.enemyManager = new EnemyManager(this.player.attackObserver);
+        this.player = new Player(this.inputManager.inputObservable);
+        this.enemyManager = new EnemyManager(this);
         this.interactablesManager = new InteractablesManager(this);
         this.interactablesFactory = this.interactablesManager.interactablesFactory;
-        this.cheatCodeManager = new CheatCodeManager(this, this.inputManager.eventEmitter);
+        this.cheatCodeManager = new CheatCodeManager(this, this.inputManager.inputObservable);
         this.mapGenerator = new MapGenerator(this);
         this.particlesManager = new ParticlesManager();
         this.particlesFactory = this.particlesManager.particleFactory;
+        this.htmlHandlers = new HTMLHandlers(this);
         AssetManager.setHTMLHandler(this.htmlHandlers!);
+
+        this.eventHandler();
     }
 
     async playGame() {
@@ -259,4 +261,13 @@ export default class Game {
     setFilter(filter: string) {
         this.ctx!.filter = filter;
     }
+
+    private eventHandler = () =>
+        this.inputManager.inputObservable.subscribe(({ event, data }) => {
+            if (event === 'keydown') {
+                if (data === 'p') {
+                    this.switchState(this.pausedState).then();
+                }
+            }
+        });
 }

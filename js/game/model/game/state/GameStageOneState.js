@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import GameBaseState from './GameBaseState.js';
-import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
@@ -60,10 +59,10 @@ export default class GameStageOneState extends GameBaseState {
         this.handleStageChange(game);
     }
     handleStageChange(game) {
-        const { player, backgroundOpacity } = Game.getInstance();
-        // if (player.currState?.isBelowGround && backgroundOpacity === 0) {
-        //     game.switchState(game.stageTwoState);
-        // }
+        const { player, backgroundOpacity } = game;
+        if (player.isBelowGround && backgroundOpacity === 0) {
+            game.switchState(game.stageTwoState);
+        }
     }
     stageInitializer(game) {
         return __awaiter(this, void 0, void 0, function* () {

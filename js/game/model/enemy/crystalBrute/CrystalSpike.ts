@@ -1,24 +1,26 @@
 import Game from '../../game/Game.js';
 import HitBoxComponent from '../../utility/HitBoxComponent.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
-import playerCollision from '../../../helper/collision/playerCollision.js';
 import { getRandomBoolean } from '../../../helper/randomHelper.js';
 import GameSettings from '../../../constants.js';
 import Animateable from '../../utility/Animateable.js';
 import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import { Vector } from '../../utility/enums/Vector.js';
+import Observable from '../../utility/Observable';
 
 export default class CrystalSpike extends Animateable {
     private position: Vector;
+    private attackObserver: Observable;
     private width: number;
     private height: number;
     private hitbox: HitBoxComponent;
     private isLeft: boolean;
     private damaged: boolean;
 
-    public constructor(position: Vector) {
+    public constructor(position: Vector, attackObserver: Observable) {
         super();
         this.position = { ...position };
+        this.attackObserver = attackObserver;
         this.isLeft = getRandomBoolean(0.5);
         this.damaged = false;
 
@@ -33,7 +35,13 @@ export default class CrystalSpike extends Animateable {
         this.number += deltaTime;
 
         if (!this.damaged) {
-            this.damaged = this.handlePlayerCollision();
+            const box = {
+                x: this.position.x - this.width / 2,
+                y: this.position.y - this.height / 2,
+                w: this.width,
+                h: this.height,
+            };
+            this.attackObserver.notify('attackArea', box);
         }
 
         if (this.animationStage >= 12) {
@@ -61,12 +69,6 @@ export default class CrystalSpike extends Animateable {
             height: crystalSpike.height * GameSettings.GAME.GAME_SCALE,
             translate: true,
             mirrored: this.isLeft,
-        });
-    }
-
-    private handlePlayerCollision() {
-        return !!playerCollision({
-            box: this.hitbox.getPoints(this.position, this.width, this.height),
         });
     }
 

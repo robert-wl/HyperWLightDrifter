@@ -7,7 +7,7 @@ import LoadingModal from './LoadingModal.js';
 import PauseModal from './PauseModal.js';
 
 export default class HTMLHandlers {
-    private readonly eventEmitter: Observable;
+    private readonly modalObservable: Observable;
     private isInMenu: boolean;
     private game: Game;
     private HUD: JQuery;
@@ -19,26 +19,30 @@ export default class HTMLHandlers {
     private pauseModal: PauseModal;
 
     public constructor(game: Game) {
-        this.eventEmitter = new Observable();
+        this.modalObservable = new Observable();
         this.isInMenu = true;
         this.game = game;
         this.HUD = $('#HUD');
         this.openingScreen = $('#opening-screen');
-        this.menuModal = new MenuModal(this.eventEmitter);
-        this.selectionModal = new SelectionModal(this.eventEmitter);
-        this.settingsModal = new SettingsModal(this.eventEmitter);
-        this._loadingModal = new LoadingModal(this.eventEmitter);
-        this.pauseModal = new PauseModal(this.eventEmitter);
+        this.menuModal = new MenuModal(this.modalObservable);
+        this.selectionModal = new SelectionModal(this.modalObservable);
+        this.settingsModal = new SettingsModal(this.modalObservable);
+        this._loadingModal = new LoadingModal(this.modalObservable);
+        this.pauseModal = new PauseModal(this.modalObservable);
 
         this.HUDHandler();
         this.eventHandler();
     }
 
-    public notify(event: any, data?: any) {
-        this.eventEmitter.notify(event, data);
+    public eventRemover() {
+        this.HUD.off();
     }
 
-    private HUDHandler() {
+    public notify(event: any, data?: any) {
+        this.modalObservable.notify(event, data);
+    }
+
+    private HUDHandler = () =>
         this.HUD.on('mousedown', () => {
             if (this.selectionModal.isOpen()) {
                 return;
@@ -49,12 +53,11 @@ export default class HTMLHandlers {
             if (!this.isInMenu) {
                 return;
             }
-            this.eventEmitter.notify('menuModal:toggle');
+            this.modalObservable.notify('menuModal:toggle');
         });
-    }
 
     private eventHandler() {
-        this.eventEmitter.subscribe(async ({ event, data }) => {
+        this.modalObservable.subscribe(async ({ event, data }) => {
             if (event === 'playGame') {
                 this.isInMenu = false;
                 this.openingScreen.css('opacity', '0').css('animation', 'fadeOut 2s ease-in-out');
@@ -67,16 +70,23 @@ export default class HTMLHandlers {
             }
             if (event === 'backToStartScreen') {
                 this.game.switchState(this.game.startState).then();
-                this.isInMenu = true;
 
                 this.openingScreen.css('animation', 'fadeIn 0.5s ease-in-out');
+                this.isInMenu = true;
+                return;
+            }
+            if (event === 'loseGameFinished') {
+                this.openingScreen.css('animation', 'fadeIn 0.5s ease-in-out');
+                this.isInMenu = true;
                 return;
             }
             if (event === 'startScreen') {
                 this.openingScreen.css('opacity', '100%').css('display', 'block');
+                return;
             }
             if (event === 'changeOutfit') {
                 this.game.player.outfit = data;
+                return;
             }
             if (event === 'toggleFPS') {
                 this.game.showFPS = data;

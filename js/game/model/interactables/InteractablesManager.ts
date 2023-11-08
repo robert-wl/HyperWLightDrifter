@@ -50,14 +50,21 @@ export default class InteractablesManager {
         this.eventEmitter.subscribe(({ event, data }) => {
             if (event === 'addInteractable') {
                 this._interactablesList.push(data);
+                return;
             }
-            if (event === 'keyCollected') {
-                //todo
+            if (event === 'key:collected') {
+                Game.getInstance().keyCount += 1;
+                return;
             }
-            if (event === 'medkitCollected') {
+            if (event === 'medkit:collected') {
                 this._interactablesList.splice(this._interactablesList.indexOf(data), 1);
                 const pieces = this.game.objects.get(data.key)?.pieces;
                 pieces && pieces.splice(pieces.indexOf(data), 1);
+                return;
+            }
+            if (event === 'elevator:move') {
+                this._interactablesList.splice(this._interactablesList.indexOf(data), 1);
+                return;
             }
         });
 }

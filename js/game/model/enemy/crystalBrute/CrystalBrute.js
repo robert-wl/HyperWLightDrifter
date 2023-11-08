@@ -8,9 +8,10 @@ import CrystalBruteMoveState from './state/CrystalBruteMoveState.js';
 import HealthBar from '../healthBar/HealthBar.js';
 import CrystalBruteIdleState from './state/CrystalBruteIdleState.js';
 export default class CrystalBrute extends Enemy {
-    constructor(position, width, height, hitbox, maxHealth, attackObserver) {
-        super(position, width, height, hitbox, maxHealth, attackObserver);
-        this.speed = 3;
+    constructor(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver) {
+        super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
+        this._speed = 3;
+        this._angle = 0;
         this.attack = [];
         this.healthBar = HealthBar.generate({
             position: this.position,
@@ -25,6 +26,18 @@ export default class CrystalBrute extends Enemy {
         this.dieState = new CrystalBruteDieState();
         this.idleState = new CrystalBruteIdleState();
         this.switchState(this.idleState);
+    }
+    get speed() {
+        return this._speed;
+    }
+    set speed(value) {
+        this._speed = value;
+    }
+    get angle() {
+        return this._angle;
+    }
+    set angle(value) {
+        this._angle = value;
     }
     switchState(newState) {
         this.currState.exitState(this);
@@ -69,9 +82,5 @@ export default class CrystalBrute extends Enemy {
             Game.getInstance().setFilter('none');
             this.damaged -= deltaTime;
         }
-    }
-    clear() {
-        const { enemyList } = Game.getInstance().enemyManager;
-        enemyList.splice(enemyList.indexOf(this), 1);
     }
 }

@@ -2,13 +2,7 @@ import Modal from './Modal.js';
 export default class MenuModal extends Modal {
     constructor(eventEmitter) {
         super($('#menu-modal'), eventEmitter);
-        this.newGameButton = $('.new-game');
-        this.settingsButton = $('.settings');
-        this.handleInteraction();
-        this.handleEvent();
-    }
-    handleEvent() {
-        this.eventEmitter.subscribe(({ event }) => {
+        this.handleEvent = () => this.eventEmitter.subscribe(({ event }) => {
             if (event === 'menuModal:open') {
                 this.open();
                 return;
@@ -17,6 +11,10 @@ export default class MenuModal extends Modal {
                 this.toggle();
             }
         });
+        this.newGameButton = $('.new-game');
+        this.settingsButton = $('.settings');
+        this.handleInteraction();
+        this.handleEvent();
     }
     handleInteraction() {
         this.newGameButton.on('mousedown', () => {

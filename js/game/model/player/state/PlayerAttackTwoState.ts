@@ -2,7 +2,6 @@ import PlayerBaseState from './PlayerBaseState.js';
 import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../game/Game.js';
 import { drawImage } from '../../../helper/renderer/drawer.js';
-import getEntityOnAttack from '../../../helper/player/getEntityOnAttack.js';
 import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
 import GameSettings from '../../../constants.js';
 import Player from '../Player.js';
@@ -39,12 +38,9 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
             direction: this.direction,
         });
 
-        const { clicks, audio, enemyManager } = Game.getInstance();
+        currPlayer.attackObserver.notify('playerAttack');
 
-        getEntityOnAttack({
-            player: currPlayer,
-            entity: enemyManager.enemyList,
-        });
+        const { clicks, audio, enemyManager } = Game.getInstance();
 
         clicks.splice(clicks.indexOf('left'), 1);
         audio.playAudio('player/attack.wav', 2);

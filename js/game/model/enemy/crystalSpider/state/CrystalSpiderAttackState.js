@@ -40,7 +40,6 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
     }
     drawImage(currSpider) {
         const spiderAttack = getImage('crystal_spider_attack');
-        // console.log(spiderAttack);
         drawImage({
             img: spiderAttack,
             x: currSpider.position.x,

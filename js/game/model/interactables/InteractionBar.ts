@@ -8,6 +8,7 @@ import Key from './Key.js';
 import Player from '../player/Player';
 import Observable from '../utility/Observable';
 import { Interactables } from '../utility/enums/Interactables';
+import Elevator from './Elevator/Elevator.js';
 
 export default class InteractionBar {
     private player: Player;
@@ -144,7 +145,10 @@ export default class InteractionBar {
                 }
                 if (object instanceof Key) {
                     object.activate();
-                    Game.getInstance().keyCount += 1;
+                }
+                if (object instanceof Elevator) {
+                    object.activate();
+                    this.isInteracting = false;
                 }
                 return true;
             }

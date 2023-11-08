@@ -8,8 +8,8 @@ import renderShadow from '../../../helper/renderer/shadow.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
 import CrystalSpiderIdleState from './state/CrystalSpiderIdleState.js';
 export default class CrystalSpider extends Enemy {
-    constructor(position, width, height, hitbox, maxHealth, attackObserver) {
-        super(position, width, height, hitbox, maxHealth, attackObserver);
+    constructor(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver) {
+        super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
         this.currState = new CrystalSpiderBaseState();
         this.attackState = new CrystalSpiderAttackState();
         this.moveState = new CrystalSpiderMoveState();
@@ -40,15 +40,6 @@ export default class CrystalSpider extends Enemy {
     }
     set attackSpeed(value) {
         this._attackSpeed = value;
-    }
-    static generate({ x, y }) {
-        // const newCrystalSpider = new CrystalSpider({
-        //     x,
-        //     y,
-        // });
-        //
-        // const { enemyList } = Game.getInstance().enemyManager;
-        // enemyList.push(newCrystalSpider);
     }
     debugMode() {
         const { ctx } = Game.getInstance();
@@ -87,9 +78,5 @@ export default class CrystalSpider extends Enemy {
             Game.getInstance().setFilter('none');
             this.damaged -= deltaTime;
         }
-    }
-    clear() {
-        const { enemyList } = Game.getInstance().enemyManager;
-        enemyList.splice(enemyList.indexOf(this), 1);
     }
 }
