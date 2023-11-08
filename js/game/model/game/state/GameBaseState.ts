@@ -1,21 +1,26 @@
+import Game from '../Game';
+
 export default class GameBaseState {
-    constructor() {
+    protected number = 0;
+
+    public enterState(game: Game) {
         this.number = 0;
     }
-    enterState(game) {
-        this.number = 0;
-    }
-    updateState(game) {
+
+    public updateState(game: Game) {
         const { deltaTime } = game;
         if (deltaTime) {
             this.number += deltaTime;
         }
     }
-    exitState(game) { }
-    checkCounter(number) {
+
+    public exitState(game: Game) {}
+
+    protected checkCounter(number: number) {
         return this.number >= number;
     }
-    resetCounter() {
+
+    protected resetCounter() {
         this.number = 0;
     }
 }

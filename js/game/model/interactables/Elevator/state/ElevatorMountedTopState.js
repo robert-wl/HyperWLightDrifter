@@ -2,7 +2,6 @@ import ElevatorBaseState from './ElevatorBaseState.js';
 import { getImage } from '../../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
-import InteractionBar from '../../InteractionBar.js';
 import Game from '../../../game/Game.js';
 export default class ElevatorMountedTopState extends ElevatorBaseState {
     updateState(elevator) {
@@ -10,7 +9,7 @@ export default class ElevatorMountedTopState extends ElevatorBaseState {
         if (keyCount < 10) {
             return;
         }
-        InteractionBar.detectPlayerInteraction(elevator, 50);
+        // InteractionBar.detectPlayerInteraction(elevator, 50);
     }
     drawImage(elevator) {
         const elevatorImage = getImage('elevator');

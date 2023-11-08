@@ -86,6 +86,7 @@ const GameSettings = {
         SPAWN_RANDOM_RADIUS: 500,
     },
     PLAYER: {
+        INTERACTION_MAX_DISTANCE: 200,
         DAMAGE: {
             HIT: 1,
             BULLET: 2,

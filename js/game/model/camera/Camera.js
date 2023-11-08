@@ -159,6 +159,7 @@ export default class Camera {
             }
             if (this.checkElevator(piece)) {
                 elevators.push(piece);
+                interactables.push(piece);
                 return;
             }
             const { image, position, flipped } = piece;
@@ -174,7 +175,7 @@ export default class Camera {
                 mirrored: flipped,
             });
         });
-        Game.getInstance().interactables = interactables;
+        Game.getInstance().interactablesManager.interactablesList = interactables;
         Game.getInstance().elevators = elevators;
         if (!hasUpdatedPlayer && player.currState !== player.inElevatorState) {
             player.updateState(colliders);
@@ -214,6 +215,7 @@ export default class Camera {
                 objects.push(piece);
             });
         });
+        // @ts-ignore
         objects.push(...enemyList);
         objects.sort((pieceOne, pieceTwo) => {
             let positionOne = pieceOne.position.y;

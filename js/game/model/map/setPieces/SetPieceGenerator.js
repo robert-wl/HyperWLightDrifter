@@ -2,7 +2,6 @@ import Game from '../../game/Game.js';
 import { getRandomBoolean, getRandomValue } from '../../../helper/randomHelper.js';
 import SetPiece from './SetPiece.js';
 import GameSettings from '../../../constants.js';
-import Elevator from '../../interactables/Elevator/Elevator.js';
 const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
 export default class SetPieceGenerator {
@@ -53,7 +52,7 @@ export default class SetPieceGenerator {
         const pieces = [];
         const objectX = x * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - x * GAME_SCALE;
         const objectY = y * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - y * GAME_SCALE + 12;
-        const elevator = new Elevator({ x: objectX, y: objectY });
+        const elevator = this.interactablesFactory.generateElevator({ x: objectX, y: objectY });
         const key = `${y},${x}`;
         pieces.push(elevator);
         const { objects } = Game.getInstance();
@@ -148,36 +147,37 @@ export default class SetPieceGenerator {
         Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'stone'));
     }
     updateChance(position) {
+        var _a, _b, _c, _d, _e;
         const { objects } = Game.getInstance();
         for (let i = 0; i < 8; i++) {
             const key = `${position.y + directionY[i]},${position.x + directionX[i]}`;
             if (!objects.has(key)) {
                 continue;
             }
-            if (objects.get(key).type === 'tree') {
+            if (((_a = objects.get(key)) === null || _a === void 0 ? void 0 : _a.type) === 'tree') {
                 this.treeChance += 0.1;
                 this.healthChance += 0.05;
                 this.stoneChance += 0.05;
                 continue;
             }
-            if (objects.get(key).type === 'enemy') {
+            if (((_b = objects.get(key)) === null || _b === void 0 ? void 0 : _b.type) === 'enemy') {
                 this.enemyChance += 0.05;
                 this.treeChance -= 0.2;
                 this.stoneChance -= 0.01;
                 continue;
             }
-            if (objects.get(key).type === 'health') {
+            if (((_c = objects.get(key)) === null || _c === void 0 ? void 0 : _c.type) === 'health') {
                 this.treeChance = 0;
                 this.healthChance = 0;
                 this.stoneChance = 0;
             }
-            if (objects.get(key).type === 'elevator') {
+            if (((_d = objects.get(key)) === null || _d === void 0 ? void 0 : _d.type) === 'elevator') {
                 this.treeChance = 0;
                 this.enemyChance = 0;
                 this.healthChance = 0;
                 this.stoneChance = 0;
             }
-            if (objects.get(key).type === 'stone') {
+            if (((_e = objects.get(key)) === null || _e === void 0 ? void 0 : _e.type) === 'stone') {
                 this.treeChance += 0.05;
                 this.healthChance += 0.05;
                 this.stoneChance += 0.2;

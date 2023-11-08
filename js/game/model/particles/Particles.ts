@@ -1,6 +1,15 @@
 import Game from '../game/Game.js';
 import Animateable from '../utility/Animateable.js';
+import { Vector } from '../utility/enums/Vector.js';
+import Observable from '../utility/Observable.js';
+
 export default class Particles extends Animateable {
+    protected position: Vector;
+    protected speed: number;
+    protected lifeSpan: number;
+    protected canvas: CanvasRenderingContext2D;
+    protected eventEmitter: Observable;
+
     constructor({ position, speed, lifeSpan, canvas, eventEmitter }) {
         super();
         this.position = position;
@@ -10,6 +19,7 @@ export default class Particles extends Animateable {
         this.number = 0;
         this.eventEmitter = eventEmitter;
     }
+
     update() {
         const { deltaTime } = Game.getInstance();
         this.number += deltaTime;

@@ -87,11 +87,10 @@ export default class Grenade extends Animateable {
         });
     }
     handleDamage() {
-        //TODO FIX
         const { audio, enemyManager } = Game.getInstance();
         const { enemyList, bossEntities, boss } = enemyManager;
         enemyList.forEach((enemy) => {
-            if (enemy.currState === enemy.dieState) {
+            if ('currState' in enemy && 'dieState' in enemy && enemy.currState === enemy.dieState) {
                 return;
             }
             const distance = getMagnitudeValue({

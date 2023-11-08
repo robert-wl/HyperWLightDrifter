@@ -8,8 +8,8 @@ import CrystalBruteMoveState from './state/CrystalBruteMoveState.js';
 import HealthBar from '../healthBar/HealthBar.js';
 import CrystalBruteIdleState from './state/CrystalBruteIdleState.js';
 export default class CrystalBrute extends Enemy {
-    constructor(position, width, height, hitbox, maxHealth) {
-        super(position, width, height, hitbox, maxHealth);
+    constructor(position, width, height, hitbox, maxHealth, attackObserver) {
+        super(position, width, height, hitbox, maxHealth, attackObserver);
         this.speed = 3;
         this.attack = [];
         this.healthBar = HealthBar.generate({

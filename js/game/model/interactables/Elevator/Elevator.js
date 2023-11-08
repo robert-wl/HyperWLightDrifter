@@ -2,12 +2,14 @@ import ElevatorBaseState from './state/ElevatorBaseState.js';
 import ElevatorMountedTopState from './state/ElevatorMountedTopState.js';
 import ElevatorMoveState from './state/ElevatorMoveState.js';
 import ElevatorMountedDownState from './state/ElevatorMountedDownState.js';
+import { getMagnitudeValue } from '../../../helper/distanceHelper.js';
+import GameSettings from '../../../constants.js';
 export default class Elevator {
-    constructor(position) {
+    constructor(position, interactableEventEmitter) {
         this._position = position;
+        this.interactableEventEmitter = interactableEventEmitter;
         this._width = 0;
         this._height = 0;
-        this.interactionStage = 0;
         this._travelDistance = 0;
         this._stageLocation = 1;
         this._bottomCrop = 0;
@@ -15,6 +17,7 @@ export default class Elevator {
         this.mountedDownState = new ElevatorMountedDownState();
         this.mountedTopState = new ElevatorMountedTopState();
         this.moveState = new ElevatorMoveState();
+        this.interactionDistance = GameSettings.PLAYER.INTERACTION_MAX_DISTANCE;
         this.switchState(this.mountedTopState);
     }
     get stageLocation() {
@@ -56,6 +59,13 @@ export default class Elevator {
     changeStage() {
         this._travelDistance = 0;
         this._stageLocation = 2;
+    }
+    detectInteraction(position) {
+        const distance = getMagnitudeValue({
+            x: position.x - (this.position.x + this.width / 2),
+            y: position.y - (this.position.y + this.height / 2),
+        });
+        return distance < this.interactionDistance;
     }
     activate() {
         this.switchState(this.moveState);

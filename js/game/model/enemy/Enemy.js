@@ -2,7 +2,7 @@ import Game from '../game/Game.js';
 import Animateable from '../utility/Animateable.js';
 import DistanceHelper from '../utility/DistanceHelper.js';
 export default class Enemy extends Animateable {
-    constructor(position, width, height, hitbox, maxHealth) {
+    constructor(position, width, height, hitbox, maxHealth, attackObserver) {
         super();
         this._hitbox = hitbox;
         this._health = maxHealth;
@@ -10,11 +10,18 @@ export default class Enemy extends Animateable {
         this._width = width;
         this._height = height;
         this._position = position;
+        this._attackObserver = attackObserver;
         this._damaged = -1;
         this._velocity = {
             value: 0,
             angle: 0,
         };
+    }
+    get attackObserver() {
+        return this._attackObserver;
+    }
+    set attackObserver(value) {
+        this._attackObserver = value;
     }
     get hitbox() {
         return this._hitbox;

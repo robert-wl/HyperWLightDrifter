@@ -1,15 +1,15 @@
 import { getRandomValue } from '../../helper/randomHelper.js';
 import Medkit from './Medkit.js';
-import Game from '../game/Game.js';
 import Key from './Key.js';
 import Elevator from './Elevator/Elevator.js';
 import { Vector } from '../utility/enums/Vector.js';
+import Observable from '../utility/Observable.js';
 
 export default class InteractablesFactory {
-    private readonly game: Game;
+    private eventEmitter: Observable;
 
-    public constructor(game: Game) {
-        this.game = game;
+    public constructor(eventEmitter: Observable) {
+        this.eventEmitter = eventEmitter;
     }
 
     public generateKey(position: Vector) {
@@ -17,10 +17,9 @@ export default class InteractablesFactory {
         const y = Math.round(position.y / 256);
         const key = `${y},${x}`;
 
-        const keyObject = new Key(position, 10, 10, key);
+        const keyObject = new Key(position, 10, 10, key, this.eventEmitter);
 
-        const { coins } = this.game;
-        coins.push(keyObject);
+        this.eventEmitter.notify('addInteractable', keyObject);
     }
 
     public generateMedkit(position: Vector, key: string) {
@@ -35,10 +34,18 @@ export default class InteractablesFactory {
             y: position.y + Math.sin(angle) * 100,
         };
 
-        return new Medkit(position, 10, 10, key);
+        const medkit = new Medkit(position, 10, 10, key, this.eventEmitter);
+
+        this.eventEmitter.notify('addInteractable', medkit);
+
+        return medkit;
     }
 
     public generateElevator(position: Vector) {
-        return new Elevator(position);
+        const elevator = new Elevator(position, this.eventEmitter);
+
+        this.eventEmitter.notify('addInteractable', elevator);
+
+        return elevator;
     }
 }

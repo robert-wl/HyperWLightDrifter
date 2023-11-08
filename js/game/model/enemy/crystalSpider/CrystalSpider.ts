@@ -9,6 +9,7 @@ import { getRandomValue } from '../../../helper/randomHelper.js';
 import CrystalSpiderIdleState from './state/CrystalSpiderIdleState.js';
 import HitBoxComponent from '../../utility/HitBoxComponent';
 import { Vector } from '../../utility/enums/Vector.js';
+import Observable from '../../utility/Observable';
 
 export default class CrystalSpider extends Enemy {
     public currState: CrystalSpiderBaseState;
@@ -20,8 +21,8 @@ export default class CrystalSpider extends Enemy {
     private _angle: number;
     private _attackSpeed: number;
 
-    constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number) {
-        super(position, width, height, hitbox, maxHealth);
+    constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, attackObserver: Observable) {
+        super(position, width, height, hitbox, maxHealth, attackObserver);
         this.currState = new CrystalSpiderBaseState();
         this.attackState = new CrystalSpiderAttackState();
         this.moveState = new CrystalSpiderMoveState();

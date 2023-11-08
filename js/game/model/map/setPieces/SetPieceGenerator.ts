@@ -2,7 +2,6 @@ import Game from '../../game/Game.js';
 import { getRandomBoolean, getRandomValue } from '../../../helper/randomHelper.js';
 import SetPiece from './SetPiece.js';
 import GameSettings from '../../../constants.js';
-import Elevator from '../../interactables/Elevator/Elevator.js';
 import PieceFactory from './PieceFactory.js';
 import { CombinedPiece } from '../../utility/enums/Piece.js';
 import InteractablesFactory from '../../interactables/InteractablesFactory.js';
@@ -78,7 +77,7 @@ export default class SetPieceGenerator {
         const objectX = x * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - x * GAME_SCALE;
         const objectY = y * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - y * GAME_SCALE + 12;
 
-        const elevator = new Elevator({ x: objectX, y: objectY });
+        const elevator = this.interactablesFactory.generateElevator({ x: objectX, y: objectY });
 
         const key = `${y},${x}`;
         pieces.push(elevator);
@@ -220,30 +219,30 @@ export default class SetPieceGenerator {
             if (!objects.has(key)) {
                 continue;
             }
-            if (objects.get(key).type === 'tree') {
+            if (objects.get(key)?.type === 'tree') {
                 this.treeChance += 0.1;
                 this.healthChance += 0.05;
                 this.stoneChance += 0.05;
                 continue;
             }
-            if (objects.get(key).type === 'enemy') {
+            if (objects.get(key)?.type === 'enemy') {
                 this.enemyChance += 0.05;
                 this.treeChance -= 0.2;
                 this.stoneChance -= 0.01;
                 continue;
             }
-            if (objects.get(key).type === 'health') {
+            if (objects.get(key)?.type === 'health') {
                 this.treeChance = 0;
                 this.healthChance = 0;
                 this.stoneChance = 0;
             }
-            if (objects.get(key).type === 'elevator') {
+            if (objects.get(key)?.type === 'elevator') {
                 this.treeChance = 0;
                 this.enemyChance = 0;
                 this.healthChance = 0;
                 this.stoneChance = 0;
             }
-            if (objects.get(key).type === 'stone') {
+            if (objects.get(key)?.type === 'stone') {
                 this.treeChance += 0.05;
                 this.healthChance += 0.05;
                 this.stoneChance += 0.2;

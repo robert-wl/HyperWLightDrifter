@@ -2,24 +2,26 @@ import Animateable from '../utility/Animateable.js';
 import { getNumberedImage } from '../../helper/assets/assetGetter.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
-import InteractionBar from './InteractionBar.js';
-import Game from '../game/Game.js';
 import { Vector } from '../utility/enums/Vector.js';
+import { getMagnitudeValue } from '../../helper/distanceHelper.js';
+import Observable from '../utility/Observable.js';
 
 export default class Key extends Animateable {
     private _position: Vector;
     private width: number;
     private height: number;
     private key: string;
-    private interactionStage: number;
+    private interactableEventEmitter: Observable;
+    private interactionDistance: number;
 
-    constructor(position: Vector, width: number, height: number, key: string) {
+    constructor(position: Vector, width: number, height: number, key: string, interactableEventEmitter: Observable) {
         super();
         this._position = position;
         this.width = width;
         this.height = height;
         this.key = key;
-        this.interactionStage = 1;
+        this.interactableEventEmitter = interactableEventEmitter;
+        this.interactionDistance = GameSettings.PLAYER.INTERACTION_MAX_DISTANCE;
     }
 
     get position(): Vector {
@@ -28,17 +30,6 @@ export default class Key extends Animateable {
 
     set position(value: Vector) {
         this._position = value;
-    }
-
-    static generate(position) {
-        const x = Math.round(position.x / 256);
-        const y = Math.round(position.y / 256);
-        const key = `${y},${x}`;
-
-        const keyObject = new Key(position, 10, 10, key);
-
-        const { coins } = Game.getInstance();
-        coins.push(keyObject);
     }
 
     update() {
@@ -69,15 +60,16 @@ export default class Key extends Animateable {
         });
     }
 
-    detectInteraction() {
-        InteractionBar.detectPlayerInteraction(this);
+    detectInteraction(position: Vector) {
+        const distance = getMagnitudeValue({
+            x: position.x - (this.position.x + this.width / 2),
+            y: position.y - (this.position.y + this.height / 2),
+        });
+
+        return distance < this.interactionDistance;
     }
 
     activate() {
-        const { interactables, coins } = Game.getInstance();
-        // audio.playAudio('player/medkit/use.wav');
-        interactables.splice(interactables.indexOf(this), 1);
-
-        coins.splice(coins.indexOf(this), 1);
+        this.interactableEventEmitter.notify('keyCollected', this.key);
     }
 }

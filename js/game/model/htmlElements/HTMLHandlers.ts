@@ -72,6 +72,9 @@ export default class HTMLHandlers {
                 this.openingScreen.css('animation', 'fadeIn 0.5s ease-in-out');
                 return;
             }
+            if (event === 'startScreen') {
+                this.openingScreen.css('opacity', '100%').css('display', 'block');
+            }
             if (event === 'changeOutfit') {
                 this.game.player.outfit = data;
             }

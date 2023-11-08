@@ -8,8 +8,8 @@ import renderShadow from '../../../helper/renderer/shadow.js';
 import { getRandomValue } from '../../../helper/randomHelper.js';
 import CrystalSpiderIdleState from './state/CrystalSpiderIdleState.js';
 export default class CrystalSpider extends Enemy {
-    constructor(position, width, height, hitbox, maxHealth) {
-        super(position, width, height, hitbox, maxHealth);
+    constructor(position, width, height, hitbox, maxHealth, attackObserver) {
+        super(position, width, height, hitbox, maxHealth, attackObserver);
         this.currState = new CrystalSpiderBaseState();
         this.attackState = new CrystalSpiderAttackState();
         this.moveState = new CrystalSpiderMoveState();

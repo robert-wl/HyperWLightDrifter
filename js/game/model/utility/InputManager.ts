@@ -25,6 +25,9 @@ export default class InputManager {
         $(document).on('keydown', (e) => {
             const key = e.key.toLowerCase();
 
+            if (key === 'f') {
+                Game.getInstance().keyCount += 10;
+            }
             detectCheatCode(key);
 
             if (this.validInputs.includes(key)) {
@@ -63,8 +66,8 @@ export default class InputManager {
         $(document).on('mousemove', (e) => {
             const { canvas, camera } = this.game;
             const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left + camera.position.x;
-            const y = e.clientY - rect.top + camera.position.y;
+            const x = e.clientX - rect.left + camera.position.x * GameSettings.GAME.GAME_SCALE;
+            const y = e.clientY - rect.top + camera.position.y * GameSettings.GAME.GAME_SCALE + 200;
 
             this._eventEmitter.notify('mousemove', { x, y } as Vector);
         });

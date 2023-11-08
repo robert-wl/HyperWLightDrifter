@@ -2,20 +2,23 @@ import Game from '../game/Game.js';
 import { getNumberedImage } from '../../helper/assets/assetGetter.js';
 import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
-import InteractionBar from './InteractionBar.js';
 import Animateable from '../utility/Animateable.js';
 import Collider from '../collideable/Collider.js';
 import { Vector } from '../utility/enums/Vector.js';
+import Player from '../player/Player';
+import Observable from '../utility/Observable';
+import { getMagnitudeValue } from '../../helper/distanceHelper.js';
 
 export default class Medkit extends Animateable {
     private _position: Vector;
     private width: number;
     private height: number;
     private _collider: Collider;
-    private key: string;
-    private interactionStage: number;
+    private _key: string;
+    private interactableEventEmitter: Observable;
+    private interactionDistance: number;
 
-    constructor(position: Vector, width: number, height: number, key: string) {
+    constructor(position: Vector, width: number, height: number, key: string, interactableEventEmitter: Observable) {
         super();
         this._position = position;
         this.width = width;
@@ -26,8 +29,17 @@ export default class Medkit extends Animateable {
             width,
             height,
         });
-        this.key = key;
-        this.interactionStage = 1;
+        this.interactableEventEmitter = interactableEventEmitter;
+        this._key = key;
+        this.interactionDistance = GameSettings.PLAYER.INTERACTION_MAX_DISTANCE;
+    }
+
+    get key(): string {
+        return this._key;
+    }
+
+    set key(value: string) {
+        this._key = value;
     }
 
     get collider(): Collider {
@@ -68,16 +80,23 @@ export default class Medkit extends Animateable {
         });
     }
 
-    detectInteraction() {
-        InteractionBar.detectPlayerInteraction(this);
+    public detectInteraction(position: Vector) {
+        const distance = getMagnitudeValue({
+            x: position.x - (this.position.x + this.width / 2),
+            y: position.y - (this.position.y + this.height / 2),
+        });
+
+        return distance < this.interactionDistance;
     }
 
-    activate() {
-        const { interactables, audio } = Game.getInstance();
-        audio.playAudio('player/medkit/use.wav');
-        interactables.splice(interactables.indexOf(this), 1);
+    activate(player: Player) {
+        const { audio } = Game.getInstance();
 
-        const setPiece = Game.getInstance().objects.get(this.key);
-        setPiece.pieces.splice(setPiece.pieces.indexOf(this), 1);
+        player.healing = 6;
+        player.healthPack += 1;
+        player.healthPack = Math.min(player.healthPack, 3);
+
+        audio.playAudio('player/medkit/use.wav');
+        this.interactableEventEmitter.notify('medkitCollected', this);
     }
 }

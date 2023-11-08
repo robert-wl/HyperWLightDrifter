@@ -1,65 +1,59 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import GameBaseState from './GameBaseState.js';
-import ParticlesManager from '../../particles/ParticlesManager.js';
-import Fireflies from '../../particles/Fireflies.js';
 import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
 import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
 import AssetManager from '../../utility/AssetManager.js';
-
+import { Vector } from '../../utility/enums/Vector.js';
 export default class GameStartState extends GameBaseState {
-    async enterState(game) {
-        super.enterState(game);
-        Navbar.open();
-        game.toggleFullscreen(false);
-        this.spawnParticles = true;
-
-        game.instance = null;
-
-        Game.getInstance();
-
-        await game.init();
-
-        game.prepareCanvas();
-        game.changeState();
-        await AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
-        await assetLoader([GameSettings.ASSETS.SPAWN], game.htmlHandlers);
-
-        // menuHandler();
-
-        const { audio } = game;
-
-        audio.allowSound = true;
-        audio.playAudio('menu/background.ogg', null, true);
-
-        $('#opening-screen').css('opacity', '100%').css('display', 'block');
+    constructor() {
+        super();
+        this.spawnParticles = false;
     }
-
+    enterState(game) {
+        const _super = Object.create(null, {
+            enterState: { get: () => super.enterState }
+        });
+        return __awaiter(this, void 0, void 0, function* () {
+            _super.enterState.call(this, game);
+            Navbar.open();
+            game.toggleFullscreen(false);
+            this.spawnParticles = true;
+            game.htmlHandlers.notify('startScreen');
+            // game.instance = null;
+            Game.getInstance();
+            yield game.init();
+            game.prepareCanvas();
+            game.changeState();
+            yield AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
+            yield assetLoader([GameSettings.ASSETS.SPAWN], game.htmlHandlers);
+            // menuHandler();
+            const { audio } = game;
+            audio.allowSound = true;
+            audio.playAudio('menu/background.ogg', null, true);
+        });
+    }
     updateState(game) {
         super.updateState(game);
         const { HUD } = game;
-
         HUD.clearRect(0, 0, game.canvas.width, game.canvas.height);
         if (this.spawnParticles && this.checkCounter(1)) {
-            Fireflies.generate({
-                canvas: HUD,
-                distance: 1000,
-                position: {
-                    x: game.canvas.width / 4,
-                    y: game.canvas.height / 4,
-                },
-                speed: 0.25,
-                lifespan: 3,
-            });
-
+            const position = new Vector(game.canvas.width / 4, game.canvas.height / 4);
+            game.particlesFactory.generateFireflies(1000, 3, 0.25, position, HUD);
             this.resetCounter();
         }
-
-        ParticlesManager.getInstance().update();
+        game.particlesManager.update();
     }
-
     exitState(game) {
-        console.log('waduh');
         const { audio } = game;
         audio.stopAll();
     }

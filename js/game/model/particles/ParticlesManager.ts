@@ -1,25 +1,37 @@
 import Game from '../game/Game.js';
+import Particles from './Particles.js';
 import ParticlesFactory from './ParticlesFactory.js';
 import Observable from '../utility/Observable.js';
+
 export default class ParticlesManager {
+    private eventEmitter: Observable;
+    private particleList: Particles[];
+    private _particleFactory: ParticlesFactory;
+
     constructor() {
-        this.update = () => this.particleList.forEach((particle) => particle.update());
         this.eventEmitter = new Observable();
         this.particleList = [];
         this._particleFactory = new ParticlesFactory(this.eventEmitter);
+
         this.eventHandler();
     }
-    get particleFactory() {
+
+    get particleFactory(): ParticlesFactory {
         return this._particleFactory;
     }
-    set particleFactory(value) {
+
+    set particleFactory(value: ParticlesFactory) {
         this._particleFactory = value;
     }
-    clear() {
+
+    public update = () => this.particleList.forEach((particle) => particle.update());
+
+    public clear() {
         const { currState } = Game.getInstance();
         currState.spawnParticles = false;
     }
-    eventHandler() {
+
+    private eventHandler() {
         this.eventEmitter.subscribe(({ event, data }) => {
             if (event === 'spawnParticles') {
                 this.particleList.push(data);

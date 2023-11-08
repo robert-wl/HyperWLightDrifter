@@ -1,6 +1,5 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import Game from '../../../game/Game.js';
-import playerCollision from '../../../../helper/collision/playerCollision.js';
 import { getImage } from '../../../../helper/assets/assetGetter.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
@@ -37,13 +36,7 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
             magnitude: currSpider.attackSpeed * deltaTime,
             angle: this.angle,
         });
-        playerCollision({
-            position: {
-                x: currSpider.position.x,
-                y: currSpider.position.y,
-            },
-            angle: this.angle,
-        });
+        currSpider.attackObserver.notify('attack', currSpider);
     }
     drawImage(currSpider) {
         const spiderAttack = getImage('crystal_spider_attack');

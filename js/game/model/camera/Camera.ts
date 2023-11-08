@@ -59,7 +59,7 @@ export default class Camera {
         this.currState = this.normalState;
     }
 
-    public init(lowerLayer: Map<string, HTMLImageElement>) {
+    public init(lowerLayer?: Map<string, HTMLImageElement>) {
         if (lowerLayer) {
             this.lowerLayers = lowerLayer;
         }
@@ -88,7 +88,7 @@ export default class Camera {
             length: this.cameraBox.height / 2,
         });
 
-        ctx.translate(-translateX, -translateY);
+        ctx!.translate(-translateX, -translateY);
 
         this.position.x += translateX;
         this.position.y += translateY;
@@ -136,7 +136,7 @@ export default class Camera {
             });
 
         const { ctx } = Game.getInstance();
-        ctx.translate(this.translateOffset.x, this.translateOffset.y);
+        ctx!.translate(this.translateOffset.x, this.translateOffset.y);
         this.hasTranslated = true;
     }
 
@@ -146,7 +146,7 @@ export default class Camera {
         }
 
         const { ctx } = Game.getInstance();
-        ctx.translate(-this.translateOffset.x, -this.translateOffset.y);
+        ctx!.translate(-this.translateOffset.x, -this.translateOffset.y);
         this.hasTranslated = false;
     }
 
@@ -196,7 +196,7 @@ export default class Camera {
 
         const { objects, colliders } = this.getObjects();
 
-        const interactables: (Medkit | Key)[] = [];
+        const interactables: (Medkit | Key | Elevator)[] = [];
         const elevators: Elevator[] = [];
 
         objects.forEach((piece) => {
@@ -213,6 +213,7 @@ export default class Camera {
 
             if (this.checkElevator(piece)) {
                 elevators.push(piece);
+                interactables.push(piece);
                 return;
             }
 
@@ -232,10 +233,10 @@ export default class Camera {
             });
         });
 
-        Game.getInstance().interactables = interactables;
+        Game.getInstance().interactablesManager!.interactablesList = interactables;
         Game.getInstance().elevators = elevators;
-        if (!hasUpdatedPlayer && player.currState !== player.inElevatorState) {
-            player.updateState(colliders);
+        if (!hasUpdatedPlayer && player!.currState !== player!.inElevatorState) {
+            player!.updateState(colliders);
         }
     }
 
@@ -244,7 +245,7 @@ export default class Camera {
         const { GAME_SCALE, FOREST_STAGE } = GameSettings.GAME;
         const objects: CombinedPiece[] = [];
         const colliders: Collider[] = [];
-        const enemyList = enemyManager.enemyList;
+        const enemyList = enemyManager!.enemyList;
 
         this.upperLayers.forEach((object: SetPiece, positionStr) => {
             const position = {
@@ -270,8 +271,8 @@ export default class Camera {
                 }
 
                 const distance = getManhattanDistance({
-                    x: collider.x - player.centerPosition.x,
-                    y: collider.y - player.centerPosition.y,
+                    x: collider.x - player!.centerPosition.x,
+                    y: collider.y - player!.centerPosition.y,
                 });
 
                 if (distance < 300) {
@@ -281,6 +282,7 @@ export default class Camera {
             });
         });
 
+        // @ts-ignore
         objects.push(...enemyList);
         objects.sort((pieceOne, pieceTwo) => {
             let positionOne = pieceOne.position.y;
@@ -327,11 +329,11 @@ export default class Camera {
     updatePlayer(yAbsPosition: number, colliders) {
         const { player } = Game.getInstance();
 
-        if (player.currState === player.inElevatorState) {
+        if (player!.currState === player!.inElevatorState) {
             return false;
         }
 
-        const { centerPosition, height } = player;
+        const { centerPosition, height } = player!;
 
         const playerY = centerPosition.y + height;
 
@@ -339,7 +341,7 @@ export default class Camera {
             return false;
         }
 
-        player.updateState(colliders);
+        player!.updateState(colliders);
         return true;
     }
 
@@ -360,23 +362,23 @@ export default class Camera {
         const { player, ctx } = Game.getInstance();
 
         if (direction.includes('d')) {
-            const displacement = moveDirection?.x || Math.abs(player.velocity.x);
-            ctx.translate(-displacement, 0);
+            const displacement = moveDirection?.x || Math.abs(player!.velocity.x);
+            ctx!.translate(-displacement, 0);
             this.position.x += displacement;
         }
         if (direction.includes('a')) {
-            const displacement = moveDirection?.x || Math.abs(player.velocity.x);
-            ctx.translate(displacement, 0);
+            const displacement = moveDirection?.x || Math.abs(player!.velocity.x);
+            ctx!.translate(displacement, 0);
             this.position.x -= displacement;
         }
         if (direction.includes('w')) {
-            const displacement = moveDirection?.y || Math.abs(player.velocity.y);
-            ctx.translate(0, displacement);
+            const displacement = moveDirection?.y || Math.abs(player!.velocity.y);
+            ctx!.translate(0, displacement);
             this.position.y -= displacement;
         }
         if (direction.includes('s')) {
-            const displacement = moveDirection?.y || Math.abs(player.velocity.y);
-            ctx.translate(0, -displacement);
+            const displacement = moveDirection?.y || Math.abs(player!.velocity.y);
+            ctx!.translate(0, -displacement);
             this.position.y += displacement;
         }
     }

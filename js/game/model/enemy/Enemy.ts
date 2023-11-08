@@ -3,6 +3,7 @@ import Animateable from '../utility/Animateable.js';
 import DistanceHelper from '../utility/DistanceHelper.js';
 import HitBoxComponent from '../utility/HitBoxComponent';
 import { Vector } from '../utility/enums/Vector.js';
+import Observable from '../utility/Observable';
 
 export default abstract class Enemy extends Animateable {
     private _hitbox: HitBoxComponent;
@@ -13,8 +14,9 @@ export default abstract class Enemy extends Animateable {
     private _position: Vector;
     private _damaged: number;
     private _velocity: PolarVector;
+    private _attackObserver: Observable;
 
-    protected constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number) {
+    protected constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, attackObserver: Observable) {
         super();
         this._hitbox = hitbox;
         this._health = maxHealth;
@@ -22,11 +24,20 @@ export default abstract class Enemy extends Animateable {
         this._width = width;
         this._height = height;
         this._position = position;
+        this._attackObserver = attackObserver;
         this._damaged = -1;
         this._velocity = {
             value: 0,
             angle: 0,
         };
+    }
+
+    get attackObserver(): Observable {
+        return this._attackObserver;
+    }
+
+    set attackObserver(value: Observable) {
+        this._attackObserver = value;
     }
 
     get hitbox(): HitBoxComponent {

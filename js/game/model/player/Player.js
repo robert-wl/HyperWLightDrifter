@@ -16,33 +16,35 @@ import { checkCollision } from '../../helper/collision/playerCollision.js';
 import PlayerSpawnState from './state/PlayerSpawnState.js';
 import PlayerDeathState from './state/PlayerDeathState.js';
 import PlayerInElevatorState from './state/PlayerInElevatorState.js';
+import Observable from '../utility/Observable.js';
 import HitBoxComponent from '../utility/HitBoxComponent.js';
 import { getAngle } from '../../helper/angleHelper.js';
 import { Vector } from '../utility/enums/Vector.js';
 import { Box } from '../utility/enums/Box.js';
+import InteractionBar from '../interactables/InteractionBar.js';
 export default class Player {
     constructor(inputEventEmitter) {
         const { player: playerDefault } = GameSettings;
         this.maxhealth = playerDefault.MAX_HEALTH;
-        this.health = playerDefault.MAX_HEALTH;
-        this.healthPack = playerDefault.MAX_HEALTHPACKS;
+        this._health = playerDefault.MAX_HEALTH;
+        this._healthPack = playerDefault.MAX_HEALTHPACKS;
         this._stamina = playerDefault.MAX_STAMINA;
-        this.bombs = playerDefault.MAX_BOMBS;
+        this._bombs = playerDefault.MAX_BOMBS;
         this._bullets = playerDefault.MAX_BULLETS;
-        this.friction = playerDefault.FRICTION;
-        this.maxSpeed = playerDefault.MAX_SPEED;
+        this._friction = playerDefault.FRICTION;
+        this._maxSpeed = playerDefault.MAX_SPEED;
         this._attackMoveSpeed = playerDefault.ATTACK_MOVE_SPEED;
         this._dashMoveSpeed = playerDefault.DASH_MOVE_SPEED;
-        this.width = playerDefault.WIDTH;
-        this.height = playerDefault.HEIGHT;
+        this._width = playerDefault.WIDTH;
+        this._height = playerDefault.HEIGHT;
         this._lastDirection = playerDefault.LAST_DIRECTION;
         this._velocity = Vector.Zero();
         this._lookAngle = 0;
-        this.hitbox = new HitBoxComponent(-this.width / 2 + 10, -this.height / 2 + 5, 20, 10);
+        this._hitbox = new HitBoxComponent(-this._width / 2 + 10, -this._height / 2 + 5, 20, 10);
         this._attackBox = Box.Zero();
-        this._centerPosition = new Vector(playerDefault.START_POSITION.x + this.width / 2, playerDefault.START_POSITION.y + this.height / 2);
+        this._centerPosition = new Vector(playerDefault.START_POSITION.x + this._width / 2, playerDefault.START_POSITION.y + this._height / 2);
         this._combo = false;
-        this.counter = 0;
+        this._counter = 0;
         this.currState = new PlayerBaseState();
         this.spawnState = new PlayerSpawnState();
         this.idleState = new PlayerIdleState();
@@ -55,15 +57,119 @@ export default class Player {
         this.throwState = new PlayerThrowingState();
         this.deathState = new PlayerDeathState();
         this.inElevatorState = new PlayerInElevatorState();
-        this.playerDefault = playerDefault;
-        this.healing = 0;
-        this.immunity = playerDefault.MAX_IMMUNITY;
-        this.projectiles = [];
-        this.outfit = 'default';
-        this.inputEventEmitter = inputEventEmitter;
+        this._playerDefault = playerDefault;
+        this._healing = 0;
+        this._immunity = playerDefault.MAX_IMMUNITY;
+        this._projectiles = [];
+        this._outfit = 'default';
+        this._inputEventEmitter = inputEventEmitter;
+        this._interactionBar = new InteractionBar(this, inputEventEmitter);
         this._keys = [];
         this._clicks = [];
+        this._attackObserver = new Observable();
         this.eventHandler();
+    }
+    get attackObserver() {
+        return this._attackObserver;
+    }
+    set attackObserver(value) {
+        this._attackObserver = value;
+    }
+    get interactionBar() {
+        return this._interactionBar;
+    }
+    set interactionBar(value) {
+        this._interactionBar = value;
+    }
+    get healthPack() {
+        return this._healthPack;
+    }
+    set healthPack(value) {
+        this._healthPack = value;
+    }
+    get friction() {
+        return this._friction;
+    }
+    set friction(value) {
+        this._friction = value;
+    }
+    get maxSpeed() {
+        return this._maxSpeed;
+    }
+    set maxSpeed(value) {
+        this._maxSpeed = value;
+    }
+    get width() {
+        return this._width;
+    }
+    set width(value) {
+        this._width = value;
+    }
+    get height() {
+        return this._height;
+    }
+    set height(value) {
+        this._height = value;
+    }
+    get hitbox() {
+        return this._hitbox;
+    }
+    set hitbox(value) {
+        this._hitbox = value;
+    }
+    get counter() {
+        return this._counter;
+    }
+    set counter(value) {
+        this._counter = value;
+    }
+    get healing() {
+        return this._healing;
+    }
+    set healing(value) {
+        this._healing = value;
+    }
+    get projectiles() {
+        return this._projectiles;
+    }
+    set projectiles(value) {
+        this._projectiles = value;
+    }
+    get playerDefault() {
+        return this._playerDefault;
+    }
+    set playerDefault(value) {
+        this._playerDefault = value;
+    }
+    get inputEventEmitter() {
+        return this._inputEventEmitter;
+    }
+    set inputEventEmitter(value) {
+        this._inputEventEmitter = value;
+    }
+    get outfit() {
+        return this._outfit;
+    }
+    set outfit(value) {
+        this._outfit = value;
+    }
+    get health() {
+        return this._health;
+    }
+    set health(value) {
+        this._health = value;
+    }
+    get bombs() {
+        return this._bombs;
+    }
+    set bombs(value) {
+        this._bombs = value;
+    }
+    get immunity() {
+        return this._immunity;
+    }
+    set immunity(value) {
+        this._immunity = value;
     }
     get stamina() {
         return this._stamina;
@@ -132,7 +238,7 @@ export default class Player {
         this._centerPosition = value;
     }
     updateState(colliders) {
-        if (this.health <= 0 && this.currState !== this.deathState) {
+        if (this._health <= 0 && this.currState !== this.deathState) {
             this.switchState(this.deathState);
         }
         this.updateBombs();
@@ -160,8 +266,9 @@ export default class Player {
             currPlayer: this,
             clear: true,
         });
-        this.projectiles.forEach((projectile) => projectile.update());
+        this._projectiles.forEach((projectile) => projectile.update());
         this.heal();
+        this._interactionBar.update();
         if (Game.getInstance().debug) {
             this.renderDebugBox();
         }
@@ -177,11 +284,11 @@ export default class Player {
         if (this.currState === this.deathState) {
             return;
         }
-        if (this.immunity < 50 || this.currState === this.dashState) {
+        if (this._immunity < 50 || this.currState === this.dashState) {
             return;
         }
-        this.immunity = 0;
-        this.health -= 1;
+        this._immunity = 0;
+        this._health -= 1;
         if (this.currState !== this.hurtState) {
             this.switchState(this.hurtState);
         }
@@ -205,8 +312,8 @@ export default class Player {
         if (this._clicks.includes('right') && aim) {
             return this.switchState(this.aimState);
         }
-        if (this._keys.includes('c') && throws && this.bombs >= 1) {
-            this.bombs -= 1;
+        if (this._keys.includes('c') && throws && this._bombs >= 1) {
+            this._bombs -= 1;
             return this.switchState(this.throwState);
         }
         if (this._clicks.includes('left') && attackOne) {
@@ -230,9 +337,9 @@ export default class Player {
     }
     moveHandler(colliders) {
         const { movementDeltaTime } = Game.getInstance();
-        this._velocity.x = this._velocity.x * (1 - this.friction * movementDeltaTime);
-        this._velocity.y = this._velocity.y * (1 - this.friction * movementDeltaTime);
-        let { x, y, w, h } = this.hitbox.getPoints(this._centerPosition, this.width, this.height);
+        this._velocity.x = this._velocity.x * (1 - this._friction * movementDeltaTime);
+        this._velocity.y = this._velocity.y * (1 - this._friction * movementDeltaTime);
+        let { x, y, w, h } = this._hitbox.getPoints(this._centerPosition, this._width, this._height);
         if (checkCollision({
             colliders,
             x: x + this._velocity.x,
@@ -255,50 +362,50 @@ export default class Player {
     getAttackBox({ direction }) {
         if (direction === 'w') {
             this._attackBox = {
-                x: this._centerPosition.x + this.playerDefault.ATTACK_BOX.UP.X,
-                y: this._centerPosition.y + this.playerDefault.ATTACK_BOX.UP.Y,
-                w: this.playerDefault.ATTACK_BOX.UP.W,
-                h: this.playerDefault.ATTACK_BOX.UP.H,
+                x: this._centerPosition.x + this._playerDefault.ATTACK_BOX.UP.X,
+                y: this._centerPosition.y + this._playerDefault.ATTACK_BOX.UP.Y,
+                w: this._playerDefault.ATTACK_BOX.UP.W,
+                h: this._playerDefault.ATTACK_BOX.UP.H,
             };
         }
         if (direction === 'a') {
             this._attackBox = {
-                x: this._centerPosition.x + this.playerDefault.ATTACK_BOX.LEFT.X,
-                y: this._centerPosition.y + this.playerDefault.ATTACK_BOX.LEFT.Y,
-                w: this.playerDefault.ATTACK_BOX.LEFT.W,
-                h: this.playerDefault.ATTACK_BOX.LEFT.H,
+                x: this._centerPosition.x + this._playerDefault.ATTACK_BOX.LEFT.X,
+                y: this._centerPosition.y + this._playerDefault.ATTACK_BOX.LEFT.Y,
+                w: this._playerDefault.ATTACK_BOX.LEFT.W,
+                h: this._playerDefault.ATTACK_BOX.LEFT.H,
             };
         }
         if (direction === 'd') {
             this._attackBox = {
-                x: this._centerPosition.x + this.playerDefault.ATTACK_BOX.RIGHT.X,
-                y: this._centerPosition.y + this.playerDefault.ATTACK_BOX.RIGHT.Y,
-                w: this.playerDefault.ATTACK_BOX.RIGHT.W,
-                h: this.playerDefault.ATTACK_BOX.RIGHT.H,
+                x: this._centerPosition.x + this._playerDefault.ATTACK_BOX.RIGHT.X,
+                y: this._centerPosition.y + this._playerDefault.ATTACK_BOX.RIGHT.Y,
+                w: this._playerDefault.ATTACK_BOX.RIGHT.W,
+                h: this._playerDefault.ATTACK_BOX.RIGHT.H,
             };
         }
         if (direction === 's') {
             this._attackBox = {
-                x: this._centerPosition.x + this.playerDefault.ATTACK_BOX.DOWN.X,
-                y: this._centerPosition.y + this.playerDefault.ATTACK_BOX.DOWN.Y,
-                w: this.playerDefault.ATTACK_BOX.DOWN.W,
-                h: this.playerDefault.ATTACK_BOX.DOWN.H,
+                x: this._centerPosition.x + this._playerDefault.ATTACK_BOX.DOWN.X,
+                y: this._centerPosition.y + this._playerDefault.ATTACK_BOX.DOWN.Y,
+                w: this._playerDefault.ATTACK_BOX.DOWN.W,
+                h: this._playerDefault.ATTACK_BOX.DOWN.H,
             };
         }
     }
     updateBombs() {
-        if (this.bombs > 2) {
+        if (this._bombs > 2) {
             return;
         }
         const { deltaTime } = Game.getInstance();
-        this.bombs += 0.001 * deltaTime;
+        this._bombs += 0.001 * deltaTime;
     }
     updateCounter() {
         const { deltaTime } = Game.getInstance();
-        if (this.counter >= 1) {
-            this.counter = 0;
+        if (this._counter >= 1) {
+            this._counter = 0;
         }
-        this.counter += deltaTime;
+        this._counter += deltaTime;
     }
     heal() {
         const { keys } = Game.getInstance();
@@ -306,15 +413,15 @@ export default class Player {
             return;
         }
         keys.splice(keys.indexOf('q'), 1);
-        if (this.healthPack <= 0) {
+        if (this._healthPack <= 0) {
             return;
         }
-        this.healthPack -= 1;
-        this.health = 6;
-        this.healing = 6;
+        this._healthPack -= 1;
+        this._health = 6;
+        this._healing = 6;
     }
     eventHandler() {
-        this.inputEventEmitter.subscribe(({ event, data }) => {
+        this._inputEventEmitter.subscribe(({ event, data }) => {
             if (event === 'keydown') {
                 if (!this._keys.includes(data)) {
                     this._keys.push(data);
@@ -345,5 +452,29 @@ export default class Player {
                 });
             }
         });
+        this.attackObserver.subscribe(({ event, data }) => {
+            if (event === 'attack') {
+                this.playerAttackCollision(data.position);
+                this.damage({ angle: 0 });
+            }
+        });
+    }
+    playerAttackCollision(position, angle) {
+        if (this.currState === this.dashState) {
+            return false;
+        }
+        if (this.currState === this.inElevatorState) {
+            return false;
+        }
+        if (this.detectCollision(position)) {
+            this.damage({
+                angle: Math.PI,
+            });
+            return true;
+        }
+        return false;
+    }
+    detectCollision(position) {
+        return this.centerPosition.x + this.hitbox.xOffset < position.x && this.centerPosition.x + this.width - this.hitbox.wOffset > position.x && this.centerPosition.y + this.hitbox.yOffset < position.y && this.centerPosition.y + this.height - this.hitbox.hOffset > position.y;
     }
 }

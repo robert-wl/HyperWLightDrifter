@@ -3,7 +3,6 @@ import Game from '../../../game/Game.js';
 import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../../../helper/distanceHelper.js';
 import { drawImage } from '../../../../helper/renderer/drawer.js';
 import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import Key from '../../../interactables/Key.js';
 import { getRandomBoolean } from '../../../../helper/randomHelper.js';
 import { getImage } from '../../../../helper/assets/assetGetter.js';
 import CrystalSpider from '../CrystalSpider';
@@ -23,7 +22,7 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
         const { audio } = Game.getInstance();
 
         if (getRandomBoolean(0.05)) {
-            Key.generate(currSpider.position);
+            // Key.generate(currSpider.position);
         }
         audio.playAudio('enemy/crystal_spider/death.wav');
     }
