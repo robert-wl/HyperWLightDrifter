@@ -1,6 +1,5 @@
-// @ts-ignore
-import AudioPlayer from '../../../audio/AudioPlayer.js';
 import Observable from '../utility/Observable.js';
+import AudioManager from '../utility/manager/AudioManager.js';
 
 export default abstract class Modal {
     protected eventEmitter: Observable;
@@ -22,11 +21,7 @@ export default abstract class Modal {
     protected open() {
         this._modal?.css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '100%');
 
-        AudioPlayer.getInstance()
-            .playSound({
-                sound: 'menu/action.wav',
-            })
-            .then();
+        AudioManager.playAudio('menu/action.wav');
     }
 
     protected toggle() {

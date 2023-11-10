@@ -1,11 +1,14 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../game/Game.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
-import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
 import GameSettings from '../../../constants.js';
 import Player from '../Player.js';
-import AssetManager from '../../utility/AssetManager.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../utility/helper/DirectionHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class PlayerAttackState extends PlayerBaseState {
     private direction: string;
@@ -36,8 +39,7 @@ export default class PlayerAttackState extends PlayerBaseState {
     }
 
     drawImage(currPlayer: Player) {
-        const { debug } = Game.getInstance();
-        if (debug) {
+        if (Game.debug) {
             this.drawDebug(currPlayer);
         }
 
@@ -57,34 +59,25 @@ export default class PlayerAttackState extends PlayerBaseState {
             return;
         }
 
-        drawImage({
-            img: attackImage,
+        const imageSize = Box.parse({
             x: currPlayer.centerPosition.x,
             y: currPlayer.centerPosition.y,
-            width: attackImage.width * GameSettings.GAME.GAME_SCALE,
-            height: attackImage.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-            mirrored: this.direction === 'a',
+            w: attackImage.width * GameSettings.GAME.GAME_SCALE,
+            h: attackImage.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(attackImage, imageSize, true, this.direction === 'a');
     }
 
     enterState(currPlayer: Player) {
         this.number = 1;
         this.animationStage = 1;
-        const { lookAngle } = currPlayer;
 
-        currPlayer.velocity.x = getHorizontalValue({
-            magnitude: currPlayer.attackMoveSpeed,
-            angle: lookAngle,
-        });
-        currPlayer.velocity.y = getVerticalValue({
-            magnitude: currPlayer.attackMoveSpeed,
-            angle: lookAngle,
-        });
+        const pVector = new PolarVector(currPlayer.attackMoveSpeed, currPlayer.lookAngle);
+        currPlayer.velocity.x = DistanceHelper.getHorizontalValue(pVector);
+        currPlayer.velocity.y = DistanceHelper.getVerticalValue(pVector);
 
-        const direction = getMouseDirection({
-            angle: lookAngle,
-        });
+        const direction = DirectionHelper.getMouseDirection(currPlayer.lookAngle);
 
         this.direction = direction;
         currPlayer.lastDirection = direction;
@@ -95,10 +88,10 @@ export default class PlayerAttackState extends PlayerBaseState {
 
         currPlayer.attackObserver.notify('playerAttack');
 
-        const { clicks, audio } = Game.getInstance();
+        const { clicks } = Game.getInstance();
 
         currPlayer.clicks.splice(clicks.indexOf('left'), 1);
-        audio.playAudio('player/attack.wav', 1);
+        AudioManager.playAudio('player/attack.wav', 1);
     }
 
     exitState(currPlayer: Player) {

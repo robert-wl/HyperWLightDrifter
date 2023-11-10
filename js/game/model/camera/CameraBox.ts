@@ -1,16 +1,20 @@
 import Game from '../game/Game.js';
 import GameSettings from '../../constants.js';
-import { Vector } from '../utility/enums/Vector.js';
+import { Vector } from '../utility/interfaces/Vector.js';
+import DrawHelper from '../utility/helper/DrawHelper.js';
+import { Box } from '../utility/interfaces/Box.js';
 
 const CAMERA_X_CONSTANT = -45;
 const CAMERA_Y_CONSTANT = -25;
 
 export default class CameraBox {
+    private game: Game;
     private position: Vector;
     private _width: number;
     private _height: number;
 
-    public constructor() {
+    public constructor(game: Game) {
+        this.game = game;
         this.position = {
             x: 0,
             y: 0,
@@ -36,7 +40,7 @@ export default class CameraBox {
     }
 
     public update() {
-        const { player } = Game.getInstance();
+        const { player } = this.game;
 
         this.position.x = this.getTranslatePosition({
             position: player.centerPosition.x,
@@ -47,16 +51,14 @@ export default class CameraBox {
             length: this._height / 2 + CAMERA_Y_CONSTANT,
         });
 
-        if (Game.getInstance().debug) {
+        if (Game.debug) {
             this.renderDebugBox();
         }
     }
 
     renderDebugBox() {
-        const { ctx } = Game.getInstance();
-
-        ctx.fillStyle = GameSettings.DEBUG.COLOR.CAMERA_BOX;
-        ctx.fillRect(this.position.x, this.position.y, this._width, this._height);
+        DrawHelper.setFillStyle(GameSettings.DEBUG.COLOR.CAMERA_BOX);
+        DrawHelper.drawRectangle(new Box(this.position.x, this.position.y, this._width, this._height));
     }
 
     public getOverlap(points: Sides) {

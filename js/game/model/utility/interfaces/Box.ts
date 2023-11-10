@@ -10,6 +10,10 @@ export class Box {
         return { x, y, w, h };
     }
 
+    public static parse(box: Box): Box {
+        return { x: box.x, y: box.y, w: box.w, h: box.h };
+    }
+
     public static Zero(): Box {
         return { x: 0, y: 0, w: 0, h: 0 };
     }

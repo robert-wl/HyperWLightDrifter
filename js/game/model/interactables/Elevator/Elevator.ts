@@ -2,10 +2,10 @@ import ElevatorBaseState from './state/ElevatorBaseState.js';
 import ElevatorMountedTopState from './state/ElevatorMountedTopState.js';
 import ElevatorMoveState from './state/ElevatorMoveState.js';
 import ElevatorMountedDownState from './state/ElevatorMountedDownState.js';
-import { Vector } from '../../utility/enums/Vector.js';
-import Observable from '../../utility/Observable';
-import { getMagnitudeValue } from '../../../helper/distanceHelper.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
+import Observable from '../../utility/Observable.js';
 import GameSettings from '../../../constants.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
 
 export default class Elevator {
     public currState: ElevatorBaseState;
@@ -95,7 +95,8 @@ export default class Elevator {
     }
 
     public detectInteraction(position: Vector) {
-        const distance = getMagnitudeValue({
+        //if()
+        const distance = DistanceHelper.getMagnitude({
             x: position.x - (this.position.x + this.width / 2),
             y: position.y - (this.position.y + this.height / 2),
         });

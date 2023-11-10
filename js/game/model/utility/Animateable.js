@@ -21,7 +21,6 @@ export default class Animateable {
         }
     }
     updateNumberCounter() {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
+        this.number += Game.deltaTime;
     }
 }

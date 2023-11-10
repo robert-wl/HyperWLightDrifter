@@ -1,8 +1,8 @@
-import { getRandomBoolean, getRandomValue } from '../../../helper/randomHelper.js';
-import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
 import Collider from '../../collideable/Collider.js';
-import { Piece } from '../../utility/enums/Piece.js';
-import { Vector } from '../../utility/enums/Vector.js';
+import { Piece } from '../../utility/interfaces/Piece.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import RandomHelper from '../../utility/helper/RandomHelper.js';
 
 export default class PieceFactory {
     public constructor() {
@@ -10,13 +10,9 @@ export default class PieceFactory {
     }
 
     public generateTreePiece(position: Vector) {
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 6,
-            rounded: true,
-        });
+        const random = RandomHelper.randomValue(1, 6, true);
 
-        const image = getNumberedImage('set_pieces_tree', random);
+        const image = AssetManager.getNumberedImage('set_pieces_tree', random);
 
         const collider = new Collider({
             x: position.x + image.width / 2,
@@ -28,30 +24,26 @@ export default class PieceFactory {
         return {
             image: image,
             position: position,
-            flipped: getRandomBoolean(0.5),
+            flipped: RandomHelper.getRandomBoolean(0.5),
             collider: collider,
         } as Piece;
     }
 
     public generatePlantsPiece(position: Vector, type: number) {
-        const image = getNumberedImage('set_pieces_plants', type);
+        const image = AssetManager.getNumberedImage('set_pieces_plants', type);
 
         return {
             image: image,
             position: position,
-            flipped: getRandomBoolean(0.5),
+            flipped: RandomHelper.getRandomBoolean(0.5),
             collider: null,
         } as Piece;
     }
 
     public generateLargeTreePiece(position: Vector) {
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 2,
-            rounded: true,
-        });
+        const random = RandomHelper.randomValue(1, 2, true);
 
-        const image = getNumberedImage('set_pieces_tree', 6 + random);
+        const image = AssetManager.getNumberedImage('set_pieces_tree', 6 + random);
 
         const collider = new Collider({
             x: position.x + (4 * image.width) / 5,
@@ -63,19 +55,15 @@ export default class PieceFactory {
         return {
             image: image,
             position: position,
-            flipped: getRandomBoolean(0.5),
+            flipped: RandomHelper.getRandomBoolean(0.5),
             collider: collider,
         } as Piece;
     }
 
     public generateStonePiece(position: Vector) {
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 5,
-            rounded: true,
-        });
+        const random = RandomHelper.randomValue(1, 5, true);
 
-        const image = getNumberedImage('set_pieces_stone_small', random);
+        const image = AssetManager.getNumberedImage('set_pieces_stone_small', random);
 
         const collider = new Collider({
             x: position.x + image.width / 2,
@@ -86,19 +74,15 @@ export default class PieceFactory {
         return {
             image: image,
             position: position,
-            flipped: getRandomBoolean(0.5),
+            flipped: RandomHelper.getRandomBoolean(0.5),
             collider: collider,
         } as Piece;
     }
 
     public generateLargeStonePiece(position: Vector) {
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 4,
-            rounded: true,
-        });
+        const random = RandomHelper.randomValue(1, 4, true);
 
-        const image = getNumberedImage('set_pieces_stone_big', random);
+        const image = AssetManager.getNumberedImage('set_pieces_stone_big', random);
 
         const collider = new Collider({
             x: position.x + image.width / 2,
@@ -109,19 +93,15 @@ export default class PieceFactory {
         return {
             image: image,
             position: position,
-            flipped: getRandomBoolean(0.5),
+            flipped: RandomHelper.getRandomBoolean(0.5),
             collider: collider,
         } as Piece;
     }
 
     public generateEnemyPiece(position: Vector) {
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 7,
-            rounded: true,
-        });
+        const random = RandomHelper.randomValue(1, 7, true);
 
-        const image = getNumberedImage('set_pieces_enemy', random);
+        const image = AssetManager.getNumberedImage('set_pieces_enemy', random);
 
         const collider = new Collider({
             x: position.x + (4 * image.width) / 5,
@@ -133,19 +113,15 @@ export default class PieceFactory {
         return {
             image: image,
             position: position,
-            flipped: getRandomBoolean(0.5),
+            flipped: RandomHelper.getRandomBoolean(0.5),
             collider: collider,
         } as Piece;
     }
 
     public generateHealthPiece(position: Vector) {
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 5,
-            rounded: true,
-        });
+        const random = RandomHelper.randomValue(1, 5, true);
 
-        const image = getNumberedImage('set_pieces_health', random);
+        const image = AssetManager.getNumberedImage('set_pieces_health', random);
 
         const collider = new Collider({
             x: position.x + (4 * image.width) / 5,
@@ -157,7 +133,7 @@ export default class PieceFactory {
         return {
             image: image,
             position: position,
-            flipped: getRandomBoolean(0.5),
+            flipped: RandomHelper.getRandomBoolean(0.5),
             collider: collider,
         } as Piece;
     }

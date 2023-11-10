@@ -1,10 +1,11 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import Grenade from '../Grenade.js';
-import Game from '../../game/Game.js';
-import { getFaceDirection, getMouseDirection } from '../../../helper/collision/directionHandler.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
-import AssetManager from '../../utility/AssetManager.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../utility/helper/DirectionHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
+import { Box } from '../../utility/interfaces/Box.js';
 export default class PlayerThrowingState extends PlayerBaseState {
     constructor() {
         super();
@@ -14,11 +15,8 @@ export default class PlayerThrowingState extends PlayerBaseState {
     enterState(currPlayer) {
         super.enterState(currPlayer);
         this.hasThrown = false;
-        this.direction = getMouseDirection({
-            angle: currPlayer.lookAngle,
-        });
-        const { audio } = Game.getInstance();
-        audio.playAudio('player/grenade/throw.wav');
+        this.direction = DirectionHelper.getMouseDirection(currPlayer.lookAngle);
+        AudioManager.playAudio('player/grenade/throw.wav');
     }
     updateState(currPlayer) {
         super.updateState(currPlayer);
@@ -57,14 +55,12 @@ export default class PlayerThrowingState extends PlayerBaseState {
         if (!playerThrow) {
             return;
         }
-        drawImage({
-            img: playerThrow,
+        const imageSize = Box.parse({
             x: centerPosition.x,
             y: centerPosition.y,
-            width: playerThrow.width * GameSettings.GAME.GAME_SCALE,
-            height: playerThrow.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-            mirrored: getFaceDirection(lookAngle) === 'left',
+            w: playerThrow.width * GameSettings.GAME.GAME_SCALE,
+            h: playerThrow.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(playerThrow, imageSize, true, DirectionHelper.getFaceDirection(lookAngle) === 'left');
     }
 }

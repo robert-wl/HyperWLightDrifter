@@ -1,15 +1,16 @@
-import { getImage } from '../assets/assetGetter.js';
-import { drawImage } from './drawer.js';
+import DrawHelper from '../../model/utility/helper/DrawHelper.js';
+import AssetManager from '../../model/utility/manager/AssetManager.js';
+import { Box } from '../../model/utility/interfaces/Box.js';
 
 export default function renderShadow({ position, sizeMultiplier }) {
-    const shadow = getImage('shadow');
+    const shadow = AssetManager.getImage('shadow');
 
-    drawImage({
-        img: shadow,
+    const imageSize = Box.parse({
         x: position.x,
         y: position.y,
-        width: shadow.width * sizeMultiplier,
-        height: shadow.height * sizeMultiplier,
-        translate: true,
+        w: shadow.width * sizeMultiplier,
+        h: shadow.height * sizeMultiplier,
     });
+
+    DrawHelper.drawImage(shadow, imageSize, true);
 }

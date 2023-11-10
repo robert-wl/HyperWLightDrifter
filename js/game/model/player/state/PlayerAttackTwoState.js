@@ -1,10 +1,13 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
 import Game from '../../game/Game.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
-import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
 import GameSettings from '../../../constants.js';
-import AssetManager from '../../utility/AssetManager.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../utility/helper/DirectionHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 export default class PlayerAttackTwoState extends PlayerBaseState {
     constructor() {
         super();
@@ -14,32 +17,25 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         this.number = 1;
         this.animationStage = 1;
         const angle = currPlayer.lookAngle;
-        currPlayer.velocity.x = getHorizontalValue({
-            magnitude: currPlayer.attackMoveSpeed,
-            angle: angle,
-        });
-        currPlayer.velocity.y = getVerticalValue({
-            magnitude: currPlayer.attackMoveSpeed,
-            angle: angle,
-        });
-        const direction = getMouseDirection({ angle });
+        const pVector = new PolarVector(currPlayer.attackMoveSpeed, angle);
+        currPlayer.velocity.x = DistanceHelper.getHorizontalValue(pVector);
+        currPlayer.velocity.y = DistanceHelper.getVerticalValue(pVector);
+        const direction = DirectionHelper.getMouseDirection(angle);
         this.direction = direction;
         currPlayer.lastDirection = direction;
         currPlayer.getAttackBox({
             direction: this.direction,
         });
         currPlayer.attackObserver.notify('playerAttack');
-        const { clicks, audio, enemyManager } = Game.getInstance();
-        clicks.splice(clicks.indexOf('left'), 1);
-        audio.playAudio('player/attack.wav', 2);
+        currPlayer.clicks.splice(currPlayer.clicks.indexOf('left'), 1);
+        AudioManager.playAudio('player/attack.wav', 2);
     }
     exitState(currPlayer) {
         this.direction = '';
         this.animationStage = 1;
     }
     updateState(currPlayer) {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
+        this.number += Game.deltaTime;
         currPlayer.getAttackBox({
             direction: this.direction,
         });
@@ -52,7 +48,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         }
     }
     drawImage(currPlayer) {
-        if (Game.getInstance().debug) {
+        if (Game.debug) {
             this.drawDebug(currPlayer);
         }
         let attackImage = null;
@@ -68,15 +64,13 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         if (attackImage === null) {
             return;
         }
-        drawImage({
-            img: attackImage,
+        const imageSize = Box.parse({
             x: currPlayer.centerPosition.x,
             y: currPlayer.centerPosition.y,
-            width: attackImage.width * GameSettings.GAME.GAME_SCALE,
-            height: attackImage.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-            mirrored: this.direction === 'a',
+            w: attackImage.width * GameSettings.GAME.GAME_SCALE,
+            h: attackImage.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(attackImage, imageSize, true, this.direction === 'a');
     }
     drawDebug(currPlayer) {
         const { ctx } = Game.getInstance();

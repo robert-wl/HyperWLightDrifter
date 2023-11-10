@@ -1,10 +1,11 @@
 import ElevatorBaseState from './ElevatorBaseState.js';
-import { getImage } from '../../../../helper/assets/assetGetter.js';
 import GameSettings from '../../../../constants.js';
 import Game from '../../../game/Game.js';
-import { drawImageCropped } from '../../../../helper/renderer/drawer.js';
-import AudioPlayer from '../../../../../audio/AudioPlayer.js';
 import Elevator from '../Elevator.js';
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import AudioManager from '../../../utility/manager/AudioManager.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
 
 export default class ElevatorMountedDownState extends ElevatorBaseState {
     public enterState(elevator: Elevator) {
@@ -12,25 +13,28 @@ export default class ElevatorMountedDownState extends ElevatorBaseState {
         player.switchState(player.idleState);
         camera.switchState(camera.normalState);
 
-        AudioPlayer.getInstance().playAudio('elevator/mount.wav');
+        AudioManager.playAudio('elevator/mount.wav');
     }
 
     public drawImage(elevator: Elevator) {
-        const elevatorImage = getImage('elevator');
+        const elevatorImage = AssetManager.getImage('elevator');
 
         elevator.width = -0.5 * elevatorImage.width;
         elevator.height = -2 * elevatorImage.height;
 
-        drawImageCropped({
-            img: elevatorImage,
-            imgX: 0,
-            imgY: 0,
-            imgWidth: elevatorImage.width,
-            imgHeight: elevatorImage.height - elevator.bottomCrop,
+        const imageBox = Box.parse({
+            x: 0,
+            y: 0,
+            w: elevatorImage.width,
+            h: elevatorImage.height - elevator.bottomCrop,
+        });
+        const drawBox = Box.parse({
             x: elevator.position.x - elevatorImage.width,
             y: elevator.position.y - elevatorImage.height,
-            width: elevatorImage.width * GameSettings.GAME.GAME_SCALE,
-            height: (elevatorImage.height - elevator.bottomCrop) * GameSettings.GAME.GAME_SCALE,
+            w: elevatorImage.width * GameSettings.GAME.GAME_SCALE,
+            h: (elevatorImage.height - elevator.bottomCrop) * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImageCropped(elevatorImage, imageBox, drawBox);
     }
 }

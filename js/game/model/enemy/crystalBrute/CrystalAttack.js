@@ -1,6 +1,7 @@
 import CrystalSpike from './CrystalSpike.js';
 import Game from '../../game/Game.js';
-import DistanceHelper from '../../utility/DistanceHelper.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
 export default class CrystalAttack {
     constructor(position, angle, playAudio, attackObserver) {
         this.position = position;
@@ -13,11 +14,10 @@ export default class CrystalAttack {
         this.attackObserver = attackObserver;
     }
     update() {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
-        this.lifetime += deltaTime;
+        this.number += Game.deltaTime;
+        this.lifetime += Game.deltaTime;
         const vector = {
-            value: this.speed * deltaTime,
+            value: this.speed * Game.deltaTime,
             angle: this.angle,
         };
         this.position.x += DistanceHelper.getHorizontalValue(vector);
@@ -26,8 +26,7 @@ export default class CrystalAttack {
             const spike = new CrystalSpike(this.position, this.attackObserver);
             this.spikes.push(spike);
             if (this.playAudio) {
-                const { audio } = Game.getInstance();
-                audio.playAudio('enemy/crystal_brute/spike_spawn.wav');
+                AudioManager.playAudio('enemy/crystal_brute/spike_spawn.wav');
             }
             this.number = 0;
         }

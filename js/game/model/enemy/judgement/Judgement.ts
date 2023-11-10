@@ -8,14 +8,14 @@ import JudgementLaserState from './state/JudgementLaserState.js';
 import JudgementDashState from './state/JudgementDashState.js';
 import JudgementBombState from './state/JudgementBombState.js';
 import HealthBar from '../healthBar/HealthBar.js';
-import AudioPlayer from '../../../../audio/AudioPlayer.js';
 import JudgementDeathState from './state/JudgementDeathState.js';
-import { getManhattanDistance } from '../../../helper/distanceHelper.js';
-import { getRandomBoolean } from '../../../helper/randomHelper.js';
-import { Vector } from '../../utility/enums/Vector.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
 import Observable from '../../utility/Observable.js';
 import HitBoxComponent from '../../utility/HitBoxComponent.js';
 import GameSettings from '../../../constants.js';
+import RandomHelper from '../../utility/helper/RandomHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
 
 export default class Judgement extends Enemy {
     public currState: JudgementBaseState;
@@ -25,10 +25,10 @@ export default class Judgement extends Enemy {
     public attackState: JudgementAttackState;
     public laserState: JudgementLaserState;
     public bombState: JudgementBombState;
-    public deathState: JudgementDeathState;
-    private attackPosition: Vector[];
+    public dieState: JudgementDeathState;
+    private _attackPosition: Vector[];
     private _angle: number;
-    private moveSpeed: number;
+    private _moveSpeed: number;
     private healthBar: HealthBar;
 
     constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, enemyObserver: Observable, attackObserver: Observable) {
@@ -36,8 +36,8 @@ export default class Judgement extends Enemy {
 
         this._angle = 0;
         this.damaged = 0;
-        this.attackPosition = GameSettings.GAME.ENEMY.JUDGEMENT.ATTACK_POSITION;
-        this.moveSpeed = GameSettings.GAME.ENEMY.JUDGEMENT.MOVE_SPEED;
+        this._attackPosition = GameSettings.GAME.ENEMY.JUDGEMENT.ATTACK_POSITION;
+        this._moveSpeed = GameSettings.GAME.ENEMY.JUDGEMENT.MOVE_SPEED;
         this.currState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
@@ -45,22 +45,27 @@ export default class Judgement extends Enemy {
         this.attackState = new JudgementAttackState();
         this.laserState = new JudgementLaserState();
         this.bombState = new JudgementBombState();
-        this.deathState = new JudgementDeathState();
+        this.dieState = new JudgementDeathState();
 
-        this.healthBar = HealthBar.generate({
-            position: {
-                x: 0,
-                y: 0,
-            },
-            offset: {
-                x: 130,
-                y: 500,
-            },
-            maxHealth: this.maxHealth,
-            HUD: Game.getInstance().HUD,
-        });
+        this.healthBar = new HealthBar(new Vector(130, 500), this.maxHealth, Game.getInstance().HUD);
 
         this.switchState(this.spawnState);
+    }
+
+    get moveSpeed(): number {
+        return this._moveSpeed;
+    }
+
+    set moveSpeed(value: number) {
+        this._moveSpeed = value;
+    }
+
+    get attackPosition(): Vector[] {
+        return this._attackPosition;
+    }
+
+    set attackPosition(value: Vector[]) {
+        this._attackPosition = value;
     }
 
     get angle(): number {
@@ -78,27 +83,26 @@ export default class Judgement extends Enemy {
     }
 
     public isDead() {
-        return this.currState === this.deathState;
+        return this.currState === this.dieState;
     }
 
     public handleSwitchState() {
-        AudioPlayer.getInstance().playAudio('boss/scream.wav');
-
+        AudioManager.playAudio('boss/scream.wav');
         const { dashChance, attackChance, laserChance, bombChance } = this.getStateProbability();
 
-        if (getRandomBoolean(dashChance)) {
+        if (RandomHelper.getRandomBoolean(dashChance)) {
             this.switchState(this.dashState);
             return;
         }
-        if (getRandomBoolean(attackChance)) {
+        if (RandomHelper.getRandomBoolean(attackChance)) {
             this.switchState(this.attackState);
             return;
         }
-        if (getRandomBoolean(laserChance)) {
+        if (RandomHelper.getRandomBoolean(laserChance)) {
             this.switchState(this.laserState);
             return;
         }
-        if (getRandomBoolean(bombChance)) {
+        if (RandomHelper.getRandomBoolean(bombChance)) {
             this.switchState(this.bombState);
             return;
         }
@@ -109,9 +113,7 @@ export default class Judgement extends Enemy {
         this.currState.updateState(this);
         this.currState.drawImage(this);
 
-        const { debug, deltaTime } = Game.getInstance();
-
-        if (debug) {
+        if (Game.debug) {
             this.debugMode();
         }
 
@@ -125,7 +127,7 @@ export default class Judgement extends Enemy {
 
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('none');
-            this.damaged -= deltaTime;
+            this.damaged -= Game.deltaTime;
         }
     }
 
@@ -138,7 +140,7 @@ export default class Judgement extends Enemy {
             return;
         }
 
-        if (this.currState === this.deathState) {
+        if (this.currState === this.dieState) {
             return;
         }
 
@@ -148,7 +150,7 @@ export default class Judgement extends Enemy {
 
         const { player } = Game.getInstance();
         if (this.health <= 0 && (player.currState === player.attackState || player.currState === player.attackTwoState)) {
-            this.switchState(this.deathState);
+            this.switchState(this.dieState);
         }
 
         super.handleDamage({ amount, angle });
@@ -169,25 +171,25 @@ export default class Judgement extends Enemy {
 
         const { player } = Game.getInstance();
 
-        const distance = getManhattanDistance({
+        const distance = DistanceHelper.getManhattanDistance({
             x: this.position.x - player.centerPosition.x,
             y: this.position.y - player.centerPosition.y,
         });
 
         if (distance < 400) {
-            dashChance = 0.25;
-            attackChance = 0.35;
+            dashChance = 0.15;
+            attackChance = 0.45;
             laserChance = 0.05;
             bombChance = 0.35;
         } else if (distance < 750) {
-            dashChance = 0.25;
-            attackChance = 0.35;
+            dashChance = 0.15;
+            attackChance = 0.45;
             laserChance = 0.15;
             bombChance = 0.35;
         } else {
-            dashChance = 0.25;
+            dashChance = 0.15;
             attackChance = 0.05;
-            laserChance = 0.35;
+            laserChance = 0.45;
             bombChance = 0.35;
         }
 

@@ -1,9 +1,9 @@
-import { getImage, getNumberedImage } from '../../helper/assets/assetGetter.js';
-import { getRandomBoolean, getRandomValue } from '../../helper/randomHelper.js';
 import Game from '../game/Game.js';
 import GameSettings from '../../constants.js';
 import SetPieceGenerator from './setPieces/SetPieceGenerator.js';
 import PieceFactory from './setPieces/PieceFactory.js';
+import AssetManager from '../utility/manager/AssetManager.js';
+import RandomHelper from '../utility/helper/RandomHelper.js';
 const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
 export default class MapGenerator {
@@ -29,16 +29,12 @@ export default class MapGenerator {
     }
     getFloorImage(elevator = false) {
         if (elevator) {
-            return getImage('forest_floor_elevator');
+            return AssetManager.getImage('forest_floor_elevator');
         }
-        if (getRandomBoolean(0.5)) {
-            return getNumberedImage('forest_floor', 1);
+        if (RandomHelper.getRandomBoolean(0.5)) {
+            return AssetManager.getNumberedImage('forest_floor', 1);
         }
-        return getNumberedImage('forest_floor', getRandomValue({
-            initialValue: 1,
-            randomValue: 7,
-            rounded: true,
-        }));
+        return AssetManager.getNumberedImage('forest_floor', RandomHelper.randomValue(1, 7, true));
     }
     generateChunks() {
         const { player } = Game.getInstance();
@@ -68,7 +64,7 @@ export default class MapGenerator {
     generateElevatorFloor({ x, y }) {
         const { SETPIECE_ELEVATOR_INITIAL_CHANCE, SETPIECE_ELEVATOR_MAX_CHANCE } = GameSettings.GAME.FOREST_STAGE;
         const chance = Math.min(SETPIECE_ELEVATOR_INITIAL_CHANCE + Game.getInstance().keyCount * 0.0005, SETPIECE_ELEVATOR_MAX_CHANCE);
-        if (getRandomBoolean(chance)) {
+        if (RandomHelper.getRandomBoolean(chance)) {
             this.lowerLayers.set(`${x},${y}`, this.getFloorImage(true));
             this.setPieceGenerator.generateElevator({ x, y });
             for (let i = 0; i < 8; i++) {

@@ -1,10 +1,11 @@
 import Animateable from '../utility/Animateable.js';
-import { getNumberedImage } from '../../helper/assets/assetGetter.js';
-import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
-import { Vector } from '../utility/enums/Vector.js';
-import { getMagnitudeValue } from '../../helper/distanceHelper.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import Observable from '../utility/Observable.js';
+import AssetManager from '../utility/manager/AssetManager.js';
+import DistanceHelper from '../utility/helper/DistanceHelper.js';
+import { Box } from '../utility/interfaces/Box.js';
+import DrawHelper from '../utility/helper/DrawHelper.js';
 
 export default class Key extends Animateable {
     private _position: Vector;
@@ -49,19 +50,20 @@ export default class Key extends Animateable {
     }
 
     render() {
-        const medKit = getNumberedImage('keys', this.animationStage);
+        const medKit = AssetManager.getNumberedImage('keys', this.animationStage);
 
-        drawImage({
-            img: medKit,
+        const imageSize = Box.parse({
             x: this._position.x,
             y: this._position.y,
-            width: medKit.width * GameSettings.GAME.GAME_SCALE,
-            height: medKit.height * GameSettings.GAME.GAME_SCALE,
+            w: medKit.width * GameSettings.GAME.GAME_SCALE,
+            h: medKit.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(medKit, imageSize);
     }
 
     detectInteraction(position: Vector) {
-        const distance = getMagnitudeValue({
+        const distance = DistanceHelper.getMagnitude({
             x: position.x - (this.position.x + this.width / 2),
             y: position.y - (this.position.y + this.height / 2),
         });

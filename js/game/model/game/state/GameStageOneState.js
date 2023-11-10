@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import GameBaseState from './GameBaseState.js';
 import GameSettings from '../../../constants.js';
-import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
-import AssetManager from '../../utility/AssetManager.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
 export default class GameStageOneState extends GameBaseState {
     enterState(game) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -19,19 +19,19 @@ export default class GameStageOneState extends GameBaseState {
             game.toggleFullscreen(true);
             game.stage = 1;
             yield this.stageInitializer(game);
-            const { audio, player } = game;
+            const { player } = game;
             player.switchState(player.spawnState);
-            audio.playAudio('forest_stage/background.ogg', null, true);
+            AudioManager.playAudio('forest_stage/background.ogg', null, true);
         });
     }
     updateState(game) {
         super.updateState(game);
         game.pauseHandler();
         game.mapGenerator.update();
-        const { ctx, camera, player, elevators, interactablesManager } = game;
-        ctx.clearRect(camera.position.x, camera.position.y, game.canvas.width * 2, game.canvas.height * 2);
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(camera.position.x, camera.position.y, game.canvas.width * 2, game.canvas.height * 3);
+        const { camera, player, elevators, interactablesManager } = game;
+        game.ctx.clearRect(camera.position.x, camera.position.y, game.canvas.width * 2, game.canvas.height * 2);
+        game.ctx.fillStyle = '#000000';
+        game.ctx.fillRect(camera.position.x, camera.position.y, game.canvas.width * 2, game.canvas.height * 3);
         camera.shakeCamera();
         elevators.forEach((elevator) => {
             elevator.update();
@@ -49,6 +49,7 @@ export default class GameStageOneState extends GameBaseState {
         game.setTransparency(game.backgroundOpacity);
         camera.renderTopBackground();
         game.setTransparency(1);
+        interactablesManager.updateKeys();
         camera.updateCamera();
         camera.resetShakeCamera();
         game.particlesManager.update();
@@ -70,8 +71,7 @@ export default class GameStageOneState extends GameBaseState {
             const { camera, player, htmlHandlers } = game;
             game.keys = [];
             game.clicks = [];
-            yield AssetManager.assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER]);
-            yield assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], htmlHandlers);
+            yield AssetManager.assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], game.player.outfit);
             game.mapGenerator.init();
             camera.init();
             player.centerPosition = {

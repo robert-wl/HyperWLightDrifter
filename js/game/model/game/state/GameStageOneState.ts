@@ -1,9 +1,9 @@
 import GameBaseState from './GameBaseState.js';
 import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
-import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
-import AssetManager from '../../utility/AssetManager.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
 
 export default class GameStageOneState extends GameBaseState {
     async enterState(game: Game) {
@@ -11,11 +11,11 @@ export default class GameStageOneState extends GameBaseState {
         game.toggleFullscreen(true);
         game.stage = 1;
         await this.stageInitializer(game);
-        const { audio, player } = game;
+        const { player } = game;
 
         player.switchState(player.spawnState);
 
-        audio.playAudio('forest_stage/background.ogg', null, true);
+        AudioManager.playAudio('forest_stage/background.ogg', null, true);
     }
 
     updateState(game: Game) {
@@ -23,11 +23,11 @@ export default class GameStageOneState extends GameBaseState {
         game.pauseHandler();
         game.mapGenerator.update();
 
-        const { ctx, camera, player, elevators, interactablesManager } = game;
+        const { camera, player, elevators, interactablesManager } = game;
 
-        ctx.clearRect(camera.position.x, camera.position.y, game.canvas.width * 2, game.canvas.height * 2);
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(camera.position.x, camera.position.y, game.canvas.width * 2, game.canvas.height * 3);
+        game.ctx.clearRect(camera.position.x, camera.position.y, game.canvas.width * 2, game.canvas.height * 2);
+        game.ctx.fillStyle = '#000000';
+        game.ctx.fillRect(camera.position.x, camera.position.y, game.canvas.width * 2, game.canvas.height * 3);
 
         camera.shakeCamera();
 
@@ -53,13 +53,14 @@ export default class GameStageOneState extends GameBaseState {
         camera.renderTopBackground();
         game.setTransparency(1);
 
+        interactablesManager.updateKeys();
+
         camera.updateCamera();
         camera.resetShakeCamera();
 
         game.particlesManager.update();
 
         const validInteractable = interactablesManager.detectInteractable(game.player.centerPosition);
-
         player.interactionBar.detectPlayerInteraction(validInteractable);
 
         player.interactionBar.drawBar();
@@ -81,8 +82,7 @@ export default class GameStageOneState extends GameBaseState {
         game.keys = [];
         game.clicks = [];
 
-        await AssetManager.assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER]);
-        await assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], htmlHandlers);
+        await AssetManager.assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], game.player.outfit);
 
         game.mapGenerator.init();
 

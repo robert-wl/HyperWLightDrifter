@@ -1,5 +1,5 @@
 import Animateable from '../../../utility/Animateable.js';
-import Judgement from '../Judgement';
+import Judgement from '../Judgement.js';
 
 export default class JudgementBaseState extends Animateable {
     public updateState(currJudgement: Judgement) {

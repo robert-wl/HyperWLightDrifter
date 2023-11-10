@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import Player from '../player/Player.js';
 import Camera from '../camera/Camera.js';
-import hudHandler from '../../ui/hudHandler.js';
 import GameSettings from '../../constants.js';
 import EnemyManager from '../enemy/EnemyManager.js';
 import GameStartState from './state/GameStartState.js';
@@ -17,29 +16,28 @@ import GameStageOneState from './state/GameStageOneState.js';
 import GameStageTwoState from './state/GameStageTwoState.js';
 import GamePausedState from './state/GamePausedState.js';
 import GameBaseState from './state/GameBaseState.js';
-import AudioPlayer from '../../../audio/AudioPlayer.js';
 import GameLoseState from './state/GameLoseState.js';
 import MapGenerator from '../map/MapGenerator.js';
 import GameEndState from './state/GameEndState.js';
-import { getImage } from '../../helper/assets/assetGetter.js';
 import HTMLHandlers from '../htmlElements/HTMLHandlers.js';
 import ParticlesManager from '../particles/ParticlesManager.js';
-import CheatCodeManager from '../utility/CheatCodeManager.js';
+import CheatCodeManager from '../utility/manager/CheatCodeManager.js';
 import InputManager from '../utility/InputManager.js';
-import AssetManager from '../utility/AssetManager.js';
+import AssetManager from '../utility/manager/AssetManager.js';
 import InteractablesManager from '../interactables/InteractablesManager.js';
+import GunHelper from '../utility/helper/GunHelper.js';
+import DrawHelper from '../utility/helper/DrawHelper.js';
+import HUDManager from '../utility/manager/HUDManager.js';
 class Game {
     constructor() {
         this.eventHandler = () => this.inputManager.inputObservable.subscribe(({ event, data }) => {
             if (event === 'keydown') {
-                if (data === 'p') {
+                if (data === 'p' && (this.currState === this.stageTwoState || this.currState === this.stageOneState)) {
                     this.switchState(this.pausedState).then();
                 }
             }
         });
         this.stage = 1;
-        this.deltaTime = 0;
-        this.movementDeltaTime = 0;
         this.showFPS = false;
         this.fpsShowCounter = 0;
         this.fps = 60;
@@ -52,10 +50,8 @@ class Game {
         this.coins = [];
         this.elevators = [];
         this.elevator = null;
-        this.debug = true;
         this.backgroundOpacity = 1;
         this.keyCount = 0;
-        this.audio = AudioPlayer.getInstance();
         this.currState = new GameBaseState();
         this.startState = new GameStartState();
         this.stageOneState = new GameStageOneState();
@@ -63,7 +59,36 @@ class Game {
         this.pausedState = new GamePausedState();
         this.loseState = new GameLoseState();
         this.endState = new GameEndState();
-        this.renderCollider = false;
+    }
+    static get renderCollider() {
+        return this._renderCollider;
+    }
+    static set renderCollider(value) {
+        this._renderCollider = value;
+    }
+    static get deltaTime() {
+        return this._deltaTime;
+    }
+    static set deltaTime(value) {
+        this._deltaTime = value;
+    }
+    static get movementDeltaTime() {
+        return this._movementDeltaTime;
+    }
+    static set movementDeltaTime(value) {
+        this._movementDeltaTime = value;
+    }
+    static get debug() {
+        return this._debug;
+    }
+    static set debug(value) {
+        this._debug = value;
+    }
+    get HUD() {
+        return this._HUD;
+    }
+    set HUD(value) {
+        this._HUD = value;
     }
     static getInstance() {
         if (Game.instance == null) {
@@ -79,7 +104,7 @@ class Game {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             this.keyCount = 0;
-            this.camera = new Camera();
+            this.camera = new Camera(this);
             this.inputManager = new InputManager(this);
             this.player = new Player(this.inputManager.inputObservable);
             this.enemyManager = new EnemyManager(this);
@@ -89,8 +114,10 @@ class Game {
             this.mapGenerator = new MapGenerator(this);
             this.particlesManager = new ParticlesManager();
             this.particlesFactory = this.particlesManager.particleFactory;
+            this.hudManager = new HUDManager(this);
             this.htmlHandlers = new HTMLHandlers(this);
             AssetManager.setHTMLHandler(this.htmlHandlers);
+            GunHelper.setEnemyManager(this.enemyManager);
             this.eventHandler();
         });
     }
@@ -108,15 +135,16 @@ class Game {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-        this.HUD = document.getElementById('HUD').getContext('2d');
-        this.HUD.setTransform(1, 0, 0, 1, 0, 0);
+        DrawHelper.setDefaultContext(this.ctx);
+        this._HUD = document.getElementById('HUD').getContext('2d');
+        this._HUD.setTransform(1, 0, 0, 1, 0, 0);
         this.configCanvas();
     }
     configCanvas() {
         this.ctx.imageSmoothingEnabled = false;
         this.ctx.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
-        this.HUD.imageSmoothingEnabled = false;
-        this.HUD.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
+        this._HUD.imageSmoothingEnabled = false;
+        this._HUD.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
     }
     switchState(nextState) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -126,8 +154,8 @@ class Game {
         });
     }
     update(deltaTime) {
-        this.deltaTime = deltaTime * GameSettings.GAME.GAME_SPEED;
-        this.movementDeltaTime = Math.cbrt(deltaTime * GameSettings.GAME.GAME_SPEED);
+        Game.deltaTime = deltaTime * GameSettings.GAME.GAME_SPEED;
+        Game.movementDeltaTime = Math.cbrt(deltaTime * GameSettings.GAME.GAME_SPEED);
         if (this.loading) {
             return;
         }
@@ -145,7 +173,7 @@ class Game {
         }
     }
     pauseHandler() {
-        if (this.keys.includes('p')) {
+        if (this.keys.includes('p') && (this.currState === this.stageTwoState || this.currState === this.stageOneState)) {
             this.switchState(this.pausedState).then();
         }
     }
@@ -165,29 +193,23 @@ class Game {
         if (!this.showFPS) {
             return;
         }
-        if (!this.deltaTime)
-            return;
-        this.fpsShowCounter += this.deltaTime;
+        this.fpsShowCounter += Game.deltaTime;
         if (this.fpsShowCounter > 5) {
             this.fpsShowCounter = 0;
-            this.fps = Math.round(60 / this.deltaTime);
+            this.fps = Math.round(60 / Game.deltaTime);
         }
-        this.HUD.font = '25px Arial';
-        this.HUD.fillStyle = 'white';
-        this.HUD.textAlign = 'right';
-        this.HUD.fillText(String(this.fps), GameSettings.GAME.SCREEN_WIDTH / 2 - 5, 25);
+        this._HUD.font = '25px Arial';
+        this._HUD.fillStyle = 'white';
+        this._HUD.textAlign = 'right';
+        this._HUD.fillText(String(this.fps), GameSettings.GAME.SCREEN_WIDTH / 2 - 5, 25);
     }
     drawHUD() {
-        hudHandler({
-            HUD: this.HUD,
-            player: this.player,
-            keyCount: this.keyCount,
-        });
+        this.hudManager.drawHUD();
         if (this.player.immunity >= 30) {
             return;
         }
         this.setTransparency(Math.sin(Math.abs(this.player.immunity - 30) / 30));
-        const damageUI = getImage('damaged_ui');
+        const damageUI = AssetManager.getImage('damaged_ui');
         this.ctx.drawImage(damageUI, this.camera.position.x, this.camera.position.y, damageUI.width * GameSettings.GAME.GAME_SCALE, damageUI.height * GameSettings.GAME.GAME_SCALE);
         this.setTransparency(1);
     }
@@ -213,5 +235,9 @@ class Game {
         this.ctx.filter = filter;
     }
 }
+Game._deltaTime = 0;
+Game._movementDeltaTime = 0;
+Game._debug = false;
 Game.instance = null;
+Game._renderCollider = false;
 export default Game;

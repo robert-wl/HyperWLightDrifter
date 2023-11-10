@@ -1,9 +1,11 @@
 import Particles from './Particles.js';
 import Game from '../game/Game.js';
-import { drawRotated } from '../../helper/renderer/drawer.js';
-import { getRandomValue } from '../../helper/randomHelper.js';
-import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
-import { getNumberedImage } from '../../helper/assets/assetGetter.js';
+import AssetManager from '../utility/manager/AssetManager.js';
+import RandomHelper from '../utility/helper/RandomHelper.js';
+import { PolarVector } from '../utility/interfaces/PolarVector.js';
+import DistanceHelper from '../utility/helper/DistanceHelper.js';
+import { Box } from '../utility/interfaces/Box.js';
+import DrawHelper from '../utility/helper/DrawHelper.js';
 
 export default class Fireflies extends Particles {
     private size: number;
@@ -29,26 +31,14 @@ export default class Fireflies extends Particles {
         if (this.checkCounter(20)) {
             this.lifeSpan -= 1;
             this.number = 0;
-            this.rotation =
-                Math.round(
-                    getRandomValue({
-                        randomValue: 4,
-                    }),
-                ) / 2;
+            this.rotation = RandomHelper.randomValue(0, 4, true) / 2;
         }
 
-        const { deltaTime } = Game.getInstance();
-        const speed = this.speed * deltaTime;
+        const speed = this.speed * Game.deltaTime;
 
-        this.position.x += getHorizontalValue({
-            magnitude: speed,
-            angle: this.angle,
-        });
-
-        this.position.y += getVerticalValue({
-            magnitude: speed,
-            angle: this.angle,
-        });
+        const pVector = new PolarVector(speed, this.angle);
+        this.position.x += DistanceHelper.getHorizontalValue(pVector);
+        this.position.y += DistanceHelper.getVerticalValue(pVector);
 
         this.drawImage();
 
@@ -62,19 +52,19 @@ export default class Fireflies extends Particles {
     }
 
     drawImage() {
-        const firefly = getNumberedImage('fireflies', (this.lifeSpan % 4) + 1);
+        const firefly = AssetManager.getNumberedImage('fireflies', (this.lifeSpan % 4) + 1);
 
-        const canvas = this.canvas || Game.getInstance().ctx;
-        canvas.globalAlpha = this.lifeSpan / 5;
+        this.canvas.globalAlpha = this.lifeSpan / 5;
 
-        drawRotated({
-            canvas: canvas,
-            img: firefly,
-            angle: this.rotation * Math.PI,
-            position: this.position,
-            size: this.size,
+        const imageSize = Box.parse({
+            x: this.position.x,
+            y: this.position.y,
+            w: firefly.width * this.size,
+            h: firefly.height * this.size,
         });
 
-        canvas.globalAlpha = 1;
+        DrawHelper.drawRotated(firefly, imageSize, this.rotation * Math.PI, false, this.canvas);
+
+        this.canvas.globalAlpha = 1;
     }
 }

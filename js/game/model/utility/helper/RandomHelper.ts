@@ -3,7 +3,7 @@ export default class RandomHelper {
         //
     }
 
-    public static getRandomValue(initialValue = 0, randomValue = 0, rounded = false) {
+    public static randomValue(initialValue = 0, randomValue = 0, rounded = false) {
         const value = initialValue + Math.random() * randomValue;
         if (rounded) {
             return Math.floor(value);

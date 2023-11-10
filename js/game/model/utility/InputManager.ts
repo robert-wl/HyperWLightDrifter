@@ -1,19 +1,15 @@
 import Game from '../game/Game.js';
-import detectCheatCode from '../../helper/cheatCodeHelper.js';
 import GameSettings from '../../constants.js';
 import Observable from './Observable.js';
-import { Vector } from './enums/Vector.js';
+import { Vector } from './interfaces/Vector.js';
 
 export default class InputManager {
     private readonly game: Game;
     private readonly _inputObservable: Observable;
-    private readonly validInputs: string[] = [];
 
     public constructor(game: Game) {
         this.game = game;
         this._inputObservable = new Observable();
-        this.validInputs = GameSettings.GAME.INPUT;
-
         this.eventHandler();
     }
 
@@ -28,19 +24,14 @@ export default class InputManager {
             if (key === 'f') {
                 Game.getInstance().keyCount += 10;
             }
-            detectCheatCode(key);
 
-            if (this.validInputs.includes(key)) {
-                this._inputObservable.notify('keydown', key);
-            }
+            this._inputObservable.notify('keydown', key);
         });
 
         $(document).on('keyup', (e) => {
             const key = e.key.toLowerCase();
 
-            if (this.validInputs.includes(key)) {
-                this._inputObservable.notify('keyup', key);
-            }
+            this._inputObservable.notify('keyup', key);
         });
 
         $(document).on('mousedown', (e) => {

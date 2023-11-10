@@ -1,111 +1,51 @@
 import Game from '../../game/Game.js';
 import Enemy from '../Enemy.js';
-import { getRandomValue } from '../../../helper/randomHelper.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
-import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
-import playerCollision from '../../../helper/collision/playerCollision.js';
-import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
-
+import AssetManager from '../../utility/manager/AssetManager.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 export default class JudgementBullet extends Enemy {
-    constructor({ x, y, velocity, lifetime }) {
-        super({
-            x,
-            y,
-            hitbox: {
-                x: 0,
-                y: 0,
-                w: 0,
-                h: 0,
-            },
-            w: 20,
-            h: 20,
-            health: 1,
-            maxHealth: 1,
-        });
+    constructor(position, width, height, hitbox, maxHealth, velocity, lifetime, enemyObserver, attackObserver) {
+        super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
         this.velocity = velocity;
         this.maxLifetime = lifetime;
         this.lifetime = lifetime;
     }
-
-    static generate({ x, y, angle }) {
-        const newJudgementBullet = new JudgementBullet({
-            x,
-            y,
-            velocity: {
-                value: getRandomValue({
-                    initialValue: 5,
-                    randomValue: 1,
-                }),
-                angle: angle,
-            },
-            lifetime: getRandomValue({
-                initialValue: 200,
-                randomValue: 200,
-            }),
-        });
-
-        const { bossEntities } = Game.getInstance().enemyManager;
-        bossEntities.push(newJudgementBullet);
-    }
-
-    damage({ amount, angle }) {
-        super.damage({ amount, angle });
+    handleDamage({ amount, angle }) {
+        super.handleDamage({ amount, angle });
         this.knockback();
     }
-
     knockback() {
         this.velocity.value *= 3;
     }
-
     update() {
-        const { deltaTime } = Game.getInstance();
-        this.lifetime -= deltaTime;
-
-        this.position.x += getHorizontalValue({
-            angle: this.velocity.angle,
-            magnitude: this.velocity.value * deltaTime,
-        });
-        this.position.y += getVerticalValue({
-            angle: this.velocity.angle,
-            magnitude: this.velocity.value * deltaTime,
-        });
-
-        playerCollision({
-            position: {
-                x: this.position.x,
-                y: this.position.y,
-            },
-            angle: this.velocity.angle,
-        });
-
+        this.lifetime -= Game.deltaTime;
+        const pVector = new PolarVector(this.velocity.value * Game.deltaTime, this.velocity.angle);
+        this.position.x += DistanceHelper.getHorizontalValue(pVector);
+        this.position.y += DistanceHelper.getVerticalValue(pVector);
+        this.attackObserver.notify('attack', this);
         this.render();
-
-        if (this.lifetime <= 1) {
+        if (this.lifetime <= 0) {
             this.kill();
         }
     }
-
     kill() {
-        const { bossEntities } = Game.getInstance().enemyManager;
-        bossEntities.splice(bossEntities.indexOf(this), 1);
+        this.enemyObserver.notify('clearBossEntity', this);
     }
-
     render() {
-        const judgementBullet = getNumberedImage('judgement_bullet', this.getAnimationNumber());
-
+        const judgementBullet = AssetManager.getNumberedImage('judgement_bullet', this.getAnimationNumber());
         if (!judgementBullet) {
             return;
         }
-        drawImage({
-            img: judgementBullet,
+        const imageSize = Box.parse({
             x: this.position.x,
             y: this.position.y,
-            width: judgementBullet.width,
-            height: judgementBullet.height,
-            translate: true,
+            w: judgementBullet.width,
+            h: judgementBullet.height,
         });
+        DrawHelper.drawImage(judgementBullet, imageSize, true);
     }
-
     getAnimationNumber() {
         return Math.min(Math.floor((this.lifetime / this.maxLifetime) * 4) + 1, 4);
     }

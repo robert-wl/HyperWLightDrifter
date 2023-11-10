@@ -2,19 +2,7 @@ import Modal from './Modal.js';
 export default class LoadingModal extends Modal {
     constructor(eventEmitter) {
         super($('#loading-modal'), eventEmitter);
-        this.loadingAsset = $('#loading-asset');
-        this.loadingNumber = $('#loading-number');
-        this.close();
-        this.handleEvent();
-    }
-    editText(text) {
-        this.loadingAsset.text(text);
-    }
-    editCounter(text) {
-        this.loadingNumber.text(text);
-    }
-    handleEvent() {
-        this.eventEmitter.subscribe(({ event, data }) => {
+        this.eventFunction = ({ event, data }) => {
             if (event === 'loadingModal:open') {
                 this.open();
                 return;
@@ -31,6 +19,20 @@ export default class LoadingModal extends Modal {
                 this.editCounter(data);
                 return;
             }
-        });
+        };
+        this.loadingAsset = $('#loading-asset');
+        this.loadingNumber = $('#loading-number');
+        this.close();
+        this.handleEvent();
+    }
+    editText(text) {
+        this.loadingAsset.text(text);
+    }
+    editCounter(text) {
+        this.loadingNumber.text(text);
+    }
+    handleEvent() {
+        this.eventEmitter.unsubscribe(this.eventFunction);
+        this.eventEmitter.subscribe(this.eventFunction);
     }
 }

@@ -1,4 +1,4 @@
-import { Vector } from './enums/Vector.js';
+import { Vector } from './interfaces/Vector.js';
 
 export default class HitBoxComponent {
     private _xOffset: number;

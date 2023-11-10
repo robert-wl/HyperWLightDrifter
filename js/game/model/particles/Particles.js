@@ -11,7 +11,6 @@ export default class Particles extends Animateable {
         this.eventEmitter = eventEmitter;
     }
     update() {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
+        this.number += Game.deltaTime;
     }
 }

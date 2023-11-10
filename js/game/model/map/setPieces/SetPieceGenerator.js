@@ -1,7 +1,7 @@
 import Game from '../../game/Game.js';
-import { getRandomBoolean, getRandomValue } from '../../../helper/randomHelper.js';
 import SetPiece from './SetPiece.js';
 import GameSettings from '../../../constants.js';
+import RandomHelper from '../../utility/helper/RandomHelper.js';
 const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
 export default class SetPieceGenerator {
@@ -26,23 +26,23 @@ export default class SetPieceGenerator {
         this.plantChance = SETPIECE_PLANTS_INITIAL_CHANCE;
         this.stoneChance = SETPIECE_STONES_INITIAL_CHANCE;
         this.updateChance(position);
-        if (getRandomBoolean(this.treeChance)) {
+        if (RandomHelper.getRandomBoolean(this.treeChance)) {
             this.generateTree(position);
             return;
         }
-        if (getRandomBoolean(this.stoneChance)) {
+        if (RandomHelper.getRandomBoolean(this.stoneChance)) {
             this.generateStone(position);
             return;
         }
-        if (getRandomBoolean(this.enemyChance)) {
+        if (RandomHelper.getRandomBoolean(this.enemyChance)) {
             this.generateEnemy(position);
             return;
         }
-        if (getRandomBoolean(this.healthChance)) {
+        if (RandomHelper.getRandomBoolean(this.healthChance)) {
             this.generateHealth(position);
             return;
         }
-        if (getRandomBoolean(this.plantChance)) {
+        if (RandomHelper.getRandomBoolean(this.plantChance)) {
             this.generatePlants(position);
         }
     }
@@ -78,16 +78,8 @@ export default class SetPieceGenerator {
             x: objectX + healthPiece.collider.width / 2,
             y: objectY - healthPiece.collider.height / 2,
         }, key));
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 5,
-            rounded: true,
-        });
-        const generateAmount = getRandomValue({
-            initialValue: 1,
-            randomValue: 8,
-            rounded: true,
-        });
+        const random = RandomHelper.randomValue(1, 5, true);
+        const generateAmount = RandomHelper.randomValue(1, 8, true);
         for (let i = 0; i < generateAmount; i++) {
             const { objectX, objectY } = this.getRandomCoordinates({ x, y });
             pieces.push(this.pieceFactory.generatePlantsPiece({ x: objectX, y: objectY }, random));
@@ -107,27 +99,19 @@ export default class SetPieceGenerator {
         const pieces = [];
         for (let i = 0; i < Math.random() * 5; i++) {
             const { objectX, objectY } = this.getRandomCoordinates({ x, y });
-            if (getRandomBoolean(0.4)) {
+            if (RandomHelper.getRandomBoolean(0.4)) {
                 pieces.push(this.pieceFactory.generateLargeTreePiece({ x: objectX, y: objectY }));
             }
             pieces.push(this.pieceFactory.generateTreePiece({ x: objectX, y: objectY }));
         }
-        if (getRandomBoolean(0.85)) {
+        if (RandomHelper.getRandomBoolean(0.85)) {
             Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'tree'));
             return;
         }
-        const generateAmount = getRandomValue({
-            initialValue: 1,
-            randomValue: 8,
-            rounded: true,
-        });
+        const generateAmount = RandomHelper.randomValue(1, 8, true);
         for (let i = 0; i < generateAmount; i++) {
             const { objectX, objectY } = this.getRandomCoordinates({ x, y });
-            const random = getRandomValue({
-                initialValue: 1,
-                randomValue: 5,
-                rounded: true,
-            });
+            const random = RandomHelper.randomValue(1, 5, true);
             pieces.push(this.pieceFactory.generatePlantsPiece({ x: objectX, y: objectY }, random));
         }
         Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'tree'));
@@ -135,7 +119,7 @@ export default class SetPieceGenerator {
     generateStone({ x, y }) {
         const pieces = [];
         const { objectX, objectY } = this.getRandomCoordinates({ x, y });
-        if (getRandomBoolean(0.4)) {
+        if (RandomHelper.getRandomBoolean(0.4)) {
             pieces.push(this.pieceFactory.generateLargeStonePiece({ x: objectX, y: objectY }));
             Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'stone'));
             return;
@@ -189,16 +173,8 @@ export default class SetPieceGenerator {
         const { FLOOR_WIDTH } = FOREST_STAGE;
         const pieces = [];
         const key = `${position.y},${position.x}`;
-        const random = getRandomValue({
-            initialValue: 1,
-            randomValue: 5,
-            rounded: true,
-        });
-        const generateAmount = getRandomValue({
-            initialValue: 1,
-            randomValue: 8,
-            rounded: true,
-        });
+        const random = RandomHelper.randomValue(1, 5, true);
+        const generateAmount = RandomHelper.randomValue(1, 8, true);
         for (let i = 0; i < generateAmount; i++) {
             const objectX = position.x * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
             const objectY = position.y * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;

@@ -1,6 +1,8 @@
-import Game from '../game/Game.js';
 import Animateable from '../utility/Animateable.js';
-import DistanceHelper from '../utility/DistanceHelper.js';
+import DistanceHelper from '../utility/helper/DistanceHelper.js';
+import { PolarVector } from '../utility/interfaces/PolarVector.js';
+import DrawHelper from '../utility/helper/DrawHelper.js';
+import { Box } from '../utility/interfaces/Box.js';
 export default class Enemy extends Animateable {
     constructor(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver) {
         super();
@@ -13,10 +15,7 @@ export default class Enemy extends Animateable {
         this._enemyObserver = enemyObserver;
         this._attackObserver = attackObserver;
         this._damaged = -1;
-        this._velocity = {
-            value: 0,
-            angle: 0,
-        };
+        this._velocity = PolarVector.Zero();
     }
     get enemyObserver() {
         return this._enemyObserver;
@@ -98,9 +97,8 @@ export default class Enemy extends Animateable {
         this._velocity.value *= 0.9;
     }
     debugMode() {
-        const { ctx } = Game.getInstance();
-        ctx.fillStyle = 'rgb(255, 255, 0, 0.5)';
+        DrawHelper.setFillStyle('rgb(255, 255, 0, 0.5)');
         const { x, y, w, h } = this._hitbox.getPoints(this._position, this._width, this._height);
-        ctx.fillRect(x, y, w, h);
+        DrawHelper.drawRectangle(new Box(x, y, w, h));
     }
 }

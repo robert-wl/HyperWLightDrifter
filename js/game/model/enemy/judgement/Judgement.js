@@ -8,18 +8,19 @@ import JudgementLaserState from './state/JudgementLaserState.js';
 import JudgementDashState from './state/JudgementDashState.js';
 import JudgementBombState from './state/JudgementBombState.js';
 import HealthBar from '../healthBar/HealthBar.js';
-import AudioPlayer from '../../../../audio/AudioPlayer.js';
 import JudgementDeathState from './state/JudgementDeathState.js';
-import { getManhattanDistance } from '../../../helper/distanceHelper.js';
-import { getRandomBoolean } from '../../../helper/randomHelper.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
 import GameSettings from '../../../constants.js';
+import RandomHelper from '../../utility/helper/RandomHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
 export default class Judgement extends Enemy {
     constructor(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
         this._angle = 0;
         this.damaged = 0;
-        this.attackPosition = GameSettings.GAME.ENEMY.JUDGEMENT.ATTACK_POSITION;
-        this.moveSpeed = GameSettings.GAME.ENEMY.JUDGEMENT.MOVE_SPEED;
+        this._attackPosition = GameSettings.GAME.ENEMY.JUDGEMENT.ATTACK_POSITION;
+        this._moveSpeed = GameSettings.GAME.ENEMY.JUDGEMENT.MOVE_SPEED;
         this.currState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
@@ -27,20 +28,21 @@ export default class Judgement extends Enemy {
         this.attackState = new JudgementAttackState();
         this.laserState = new JudgementLaserState();
         this.bombState = new JudgementBombState();
-        this.deathState = new JudgementDeathState();
-        this.healthBar = HealthBar.generate({
-            position: {
-                x: 0,
-                y: 0,
-            },
-            offset: {
-                x: 130,
-                y: 500,
-            },
-            maxHealth: this.maxHealth,
-            HUD: Game.getInstance().HUD,
-        });
+        this.dieState = new JudgementDeathState();
+        this.healthBar = new HealthBar(new Vector(130, 500), this.maxHealth, Game.getInstance().HUD);
         this.switchState(this.spawnState);
+    }
+    get moveSpeed() {
+        return this._moveSpeed;
+    }
+    set moveSpeed(value) {
+        this._moveSpeed = value;
+    }
+    get attackPosition() {
+        return this._attackPosition;
+    }
+    set attackPosition(value) {
+        this._attackPosition = value;
     }
     get angle() {
         return this._angle;
@@ -54,24 +56,24 @@ export default class Judgement extends Enemy {
         this.currState.enterState(this);
     }
     isDead() {
-        return this.currState === this.deathState;
+        return this.currState === this.dieState;
     }
     handleSwitchState() {
-        AudioPlayer.getInstance().playAudio('boss/scream.wav');
+        AudioManager.playAudio('boss/scream.wav');
         const { dashChance, attackChance, laserChance, bombChance } = this.getStateProbability();
-        if (getRandomBoolean(dashChance)) {
+        if (RandomHelper.getRandomBoolean(dashChance)) {
             this.switchState(this.dashState);
             return;
         }
-        if (getRandomBoolean(attackChance)) {
+        if (RandomHelper.getRandomBoolean(attackChance)) {
             this.switchState(this.attackState);
             return;
         }
-        if (getRandomBoolean(laserChance)) {
+        if (RandomHelper.getRandomBoolean(laserChance)) {
             this.switchState(this.laserState);
             return;
         }
-        if (getRandomBoolean(bombChance)) {
+        if (RandomHelper.getRandomBoolean(bombChance)) {
             this.switchState(this.bombState);
             return;
         }
@@ -80,8 +82,7 @@ export default class Judgement extends Enemy {
     update() {
         this.currState.updateState(this);
         this.currState.drawImage(this);
-        const { debug, deltaTime } = Game.getInstance();
-        if (debug) {
+        if (Game.debug) {
             this.debugMode();
         }
         this.drawHealthbar();
@@ -91,7 +92,7 @@ export default class Judgement extends Enemy {
         this.currState.drawImage(this);
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('none');
-            this.damaged -= deltaTime;
+            this.damaged -= Game.deltaTime;
         }
     }
     handleDamage({ amount, angle = 0 }) {
@@ -101,7 +102,7 @@ export default class Judgement extends Enemy {
         if (this.currState === this.dashState) {
             return;
         }
-        if (this.currState === this.deathState) {
+        if (this.currState === this.dieState) {
             return;
         }
         if (this.currState === this.spawnState) {
@@ -109,7 +110,7 @@ export default class Judgement extends Enemy {
         }
         const { player } = Game.getInstance();
         if (this.health <= 0 && (player.currState === player.attackState || player.currState === player.attackTwoState)) {
-            this.switchState(this.deathState);
+            this.switchState(this.dieState);
         }
         super.handleDamage({ amount, angle });
         return;
@@ -125,26 +126,26 @@ export default class Judgement extends Enemy {
         let laserChance;
         let bombChance;
         const { player } = Game.getInstance();
-        const distance = getManhattanDistance({
+        const distance = DistanceHelper.getManhattanDistance({
             x: this.position.x - player.centerPosition.x,
             y: this.position.y - player.centerPosition.y,
         });
         if (distance < 400) {
-            dashChance = 0.25;
-            attackChance = 0.35;
+            dashChance = 0.15;
+            attackChance = 0.45;
             laserChance = 0.05;
             bombChance = 0.35;
         }
         else if (distance < 750) {
-            dashChance = 0.25;
-            attackChance = 0.35;
+            dashChance = 0.15;
+            attackChance = 0.45;
             laserChance = 0.15;
             bombChance = 0.35;
         }
         else {
-            dashChance = 0.25;
+            dashChance = 0.15;
             attackChance = 0.05;
-            laserChance = 0.35;
+            laserChance = 0.45;
             bombChance = 0.35;
         }
         return { dashChance, attackChance, laserChance, bombChance };

@@ -1,6 +1,5 @@
 import Player from '../player/Player.js';
 import Camera from '../camera/Camera.js';
-import hudHandler from '../../ui/hudHandler.js';
 import GameSettings from '../../constants.js';
 import EnemyManager from '../enemy/EnemyManager.js';
 import GameStartState from './state/GameStartState.js';
@@ -8,26 +7,29 @@ import GameStageOneState from './state/GameStageOneState.js';
 import GameStageTwoState from './state/GameStageTwoState.js';
 import GamePausedState from './state/GamePausedState.js';
 import GameBaseState from './state/GameBaseState.js';
-import AudioPlayer from '../../../audio/AudioPlayer.js';
 import GameLoseState from './state/GameLoseState.js';
 import MapGenerator from '../map/MapGenerator.js';
 import GameEndState from './state/GameEndState.js';
-import { getImage } from '../../helper/assets/assetGetter.js';
 import HTMLHandlers from '../htmlElements/HTMLHandlers.js';
 import ParticlesManager from '../particles/ParticlesManager.js';
 import InteractablesFactory from '../interactables/InteractablesFactory.js';
-import CheatCodeManager from '../utility/CheatCodeManager.js';
+import CheatCodeManager from '../utility/manager/CheatCodeManager.js';
 import InputManager from '../utility/InputManager.js';
-import AssetManager from '../utility/AssetManager.js';
+import AssetManager from '../utility/manager/AssetManager.js';
 import ParticlesFactory from '../particles/ParticlesFactory.js';
 import InteractablesManager from '../interactables/InteractablesManager.js';
-import SetPiece from '../map/setPieces/SetPiece';
+import SetPiece from '../map/setPieces/SetPiece.js';
+import GunHelper from '../utility/helper/GunHelper.js';
+import DrawHelper from '../utility/helper/DrawHelper.js';
+import HUDManager from '../utility/manager/HUDManager.js';
 
 export default class Game {
-    public static instance: Game | null = null;
-    public deltaTime: number;
+    private static _deltaTime: number = 0;
+    private static _movementDeltaTime: number = 0;
+    private static _debug: boolean = false;
+    private static instance: Game | null = null;
+    private static _renderCollider: boolean = false;
     public stage: number;
-    public movementDeltaTime: number;
     public showFPS: boolean;
     public fpsShowCounter: number;
     public fps: number;
@@ -44,10 +46,8 @@ export default class Game {
     public enemyManager!: EnemyManager;
     public canvas!: HTMLCanvasElement;
     public ctx!: CanvasRenderingContext2D;
-    public debug: boolean;
     public backgroundOpacity: number;
     public keyCount: number;
-    public audio: AudioPlayer;
     public currState: any;
     public startState: any;
     public stageOneState: any;
@@ -55,22 +55,20 @@ export default class Game {
     public pausedState: any;
     public loseState: any;
     public endState: any;
-    public renderCollider: boolean;
     public interactablesManager!: InteractablesManager;
     public interactablesFactory!: InteractablesFactory;
     public htmlHandlers!: HTMLHandlers;
     public mapGenerator!: MapGenerator;
     public cheatCodeManager!: CheatCodeManager;
     public inputManager!: InputManager;
-    public HUD!: CanvasRenderingContext2D;
     public camera!: Camera;
     public particlesManager!: ParticlesManager;
     public particlesFactory!: ParticlesFactory;
+    public hudManager!: HUDManager;
+    private _HUD!: CanvasRenderingContext2D;
 
     constructor() {
         this.stage = 1;
-        this.deltaTime = 0;
-        this.movementDeltaTime = 0;
         this.showFPS = false;
         this.fpsShowCounter = 0;
         this.fps = 60;
@@ -83,10 +81,8 @@ export default class Game {
         this.coins = [];
         this.elevators = [];
         this.elevator = null;
-        this.debug = true;
         this.backgroundOpacity = 1;
         this.keyCount = 0;
-        this.audio = AudioPlayer.getInstance();
         this.currState = new GameBaseState();
         this.startState = new GameStartState();
         this.stageOneState = new GameStageOneState();
@@ -94,7 +90,46 @@ export default class Game {
         this.pausedState = new GamePausedState();
         this.loseState = new GameLoseState();
         this.endState = new GameEndState();
-        this.renderCollider = false;
+    }
+
+    static get renderCollider(): boolean {
+        return this._renderCollider;
+    }
+
+    static set renderCollider(value: boolean) {
+        this._renderCollider = value;
+    }
+
+    static get deltaTime(): number {
+        return this._deltaTime;
+    }
+
+    static set deltaTime(value: number) {
+        this._deltaTime = value;
+    }
+
+    static get movementDeltaTime(): number {
+        return this._movementDeltaTime;
+    }
+
+    static set movementDeltaTime(value: number) {
+        this._movementDeltaTime = value;
+    }
+
+    static get debug(): boolean {
+        return this._debug;
+    }
+
+    static set debug(value: boolean) {
+        this._debug = value;
+    }
+
+    get HUD(): CanvasRenderingContext2D {
+        return this._HUD;
+    }
+
+    set HUD(value: CanvasRenderingContext2D) {
+        this._HUD = value;
     }
 
     static getInstance() {
@@ -112,7 +147,7 @@ export default class Game {
 
     async init() {
         this.keyCount = 0;
-        this.camera = new Camera();
+        this.camera = new Camera(this);
         this.inputManager = new InputManager(this);
         this.player = new Player(this.inputManager.inputObservable);
         this.enemyManager = new EnemyManager(this);
@@ -122,8 +157,10 @@ export default class Game {
         this.mapGenerator = new MapGenerator(this);
         this.particlesManager = new ParticlesManager();
         this.particlesFactory = this.particlesManager.particleFactory;
+        this.hudManager = new HUDManager(this);
         this.htmlHandlers = new HTMLHandlers(this);
         AssetManager.setHTMLHandler(this.htmlHandlers!);
+        GunHelper.setEnemyManager(this.enemyManager!);
 
         this.eventHandler();
     }
@@ -143,8 +180,10 @@ export default class Game {
         this.ctx = canvas.getContext('2d')!;
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-        this.HUD = (document.getElementById('HUD') as HTMLCanvasElement).getContext('2d')!;
-        this.HUD.setTransform(1, 0, 0, 1, 0, 0);
+        DrawHelper.setDefaultContext(this.ctx!);
+
+        this._HUD = (document.getElementById('HUD') as HTMLCanvasElement).getContext('2d')!;
+        this._HUD.setTransform(1, 0, 0, 1, 0, 0);
         this.configCanvas();
     }
 
@@ -152,8 +191,8 @@ export default class Game {
         this.ctx!.imageSmoothingEnabled = false;
         this.ctx!.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
 
-        this.HUD!.imageSmoothingEnabled = false;
-        this.HUD!.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
+        this._HUD!.imageSmoothingEnabled = false;
+        this._HUD!.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
     }
 
     async switchState(nextState: GameBaseState) {
@@ -163,8 +202,8 @@ export default class Game {
     }
 
     update(deltaTime: number) {
-        this.deltaTime = deltaTime * GameSettings.GAME.GAME_SPEED;
-        this.movementDeltaTime = Math.cbrt(deltaTime * GameSettings.GAME.GAME_SPEED);
+        Game.deltaTime = deltaTime * GameSettings.GAME.GAME_SPEED;
+        Game.movementDeltaTime = Math.cbrt(deltaTime * GameSettings.GAME.GAME_SPEED);
         if (this.loading) {
             return;
         }
@@ -183,7 +222,7 @@ export default class Game {
     }
 
     pauseHandler() {
-        if (this.keys.includes('p')) {
+        if (this.keys.includes('p') && (this.currState === this.stageTwoState || this.currState === this.stageOneState)) {
             this.switchState(this.pausedState).then();
         }
     }
@@ -205,25 +244,20 @@ export default class Game {
             return;
         }
 
-        if (!this.deltaTime) return;
-        this.fpsShowCounter += this.deltaTime;
+        this.fpsShowCounter += Game.deltaTime;
         if (this.fpsShowCounter > 5) {
             this.fpsShowCounter = 0;
-            this.fps = Math.round(60 / this.deltaTime);
+            this.fps = Math.round(60 / Game.deltaTime);
         }
 
-        this.HUD!.font = '25px Arial';
-        this.HUD!.fillStyle = 'white';
-        this.HUD!.textAlign = 'right';
-        this.HUD!.fillText(String(this.fps), GameSettings.GAME.SCREEN_WIDTH / 2 - 5, 25);
+        this._HUD!.font = '25px Arial';
+        this._HUD!.fillStyle = 'white';
+        this._HUD!.textAlign = 'right';
+        this._HUD!.fillText(String(this.fps), GameSettings.GAME.SCREEN_WIDTH / 2 - 5, 25);
     }
 
     drawHUD() {
-        hudHandler({
-            HUD: this.HUD,
-            player: this.player,
-            keyCount: this.keyCount,
-        });
+        this.hudManager.drawHUD();
 
         if (this.player!.immunity >= 30) {
             return;
@@ -231,7 +265,7 @@ export default class Game {
 
         this.setTransparency(Math.sin(Math.abs(this.player!.immunity - 30) / 30));
 
-        const damageUI = getImage('damaged_ui');
+        const damageUI = AssetManager.getImage('damaged_ui');
         this.ctx!.drawImage(damageUI, this.camera!.position.x, this.camera!.position.y, damageUI.width * GameSettings.GAME.GAME_SCALE, damageUI.height * GameSettings.GAME.GAME_SCALE);
 
         this.setTransparency(1);
@@ -265,7 +299,7 @@ export default class Game {
     private eventHandler = () =>
         this.inputManager.inputObservable.subscribe(({ event, data }) => {
             if (event === 'keydown') {
-                if (data === 'p') {
+                if (data === 'p' && (this.currState === this.stageTwoState || this.currState === this.stageOneState)) {
                     this.switchState(this.pausedState).then();
                 }
             }

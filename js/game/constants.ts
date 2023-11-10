@@ -1,3 +1,5 @@
+import { Outfit } from './model/utility/enums/Outfit.js';
+
 const GameSettings = {
     GAME: {
         GAME_SCALE: 2,
@@ -25,7 +27,7 @@ const GameSettings = {
         MAIN_MENU: {
             SELECTION: {
                 IMAGE_OUTFIT_REF: ['../assets/ui/player_select/player-red.png', '../assets/ui/player_select/player-dark.png', '../assets/ui/player_select/player-yellow.png'],
-                OUTFIT: ['default', 'dark', 'yellow'],
+                OUTFIT: [Outfit.default, Outfit.dark, Outfit.yellow],
             },
         },
         ENEMY: {
@@ -64,6 +66,18 @@ const GameSettings = {
                 LIFETIME: 300,
                 OFFSET: 120,
             },
+            JUDGEMENT_BULLET: {
+                WIDTH: 20,
+                HEIGHT: 20,
+                MAX_HEALTH: 1,
+            },
+            JUDGEMENT_LASER: {
+                WIDTH: 20,
+                HEIGHT: 20,
+                MAX_HEALTH: 1000,
+                MAX_LIFETIME: 2000,
+                SPEED: 12.5,
+            },
         },
         CHEAT_CODES: {
             erwin: 'erwinganteng',
@@ -72,7 +86,6 @@ const GameSettings = {
             hesoyam: 'hesoyam',
             obert: 'oobacachat',
         },
-        INPUT: ['a', 'w', 'd', 's', 'e', 'c', 'q', 'p', ' '],
         COLOR: {
             default: [
                 [197, 60, 84],
@@ -105,7 +118,7 @@ const GameSettings = {
     PLAYER: {
         INTERACTION_MAX_DISTANCE: 200,
         DAMAGE: {
-            HIT: 1,
+            HIT: 100,
             BULLET: 2,
             GRENADE: 2,
         },
@@ -205,133 +218,133 @@ const GameSettings = {
             {
                 ref: 'player/aim/aim_top.png',
                 name: 'aim_top',
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/aim/aim_bottom.png',
                 name: 'aim_bottom',
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/move/move_up.png',
                 name: 'move_up',
                 amount: 12,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/move/move_down.png',
                 name: 'move_down',
                 amount: 12,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/move/move_left.png',
                 name: 'move_left',
                 amount: 12,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/move/move_right.png',
                 name: 'move_right',
                 amount: 12,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/idle/idle_up.png',
                 name: 'idle_up',
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/idle/idle_left.png',
                 name: 'idle_left',
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/idle/idle_right.png',
                 name: 'idle_right',
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/idle/idle_down.png',
                 name: 'idle_down',
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/hurt/player_hurt.png',
                 name: 'player_hurt',
                 amount: 3,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/dash/animation/dash_animation.png',
                 name: 'dash_animation',
                 amount: 4,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/dash/down/dash.png',
                 name: 'dash_down',
                 amount: 11,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/dash/side/dash.png',
                 name: 'dash_side',
                 amount: 11,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/dash/up/dash.png',
                 name: 'dash_up',
                 amount: 11,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/attack/up/attack.png',
                 name: 'attack_up',
                 amount: 11,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/attack/side/attack.png',
                 name: 'attack_side',
                 amount: 19,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/attack/down/attack.png',
                 name: 'attack_down',
                 amount: 11,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/attack_two/up/attack.png',
                 name: 'attack_two_up',
                 amount: 11,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/attack_two/side/attack.png',
                 name: 'attack_two_side',
                 amount: 19,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/attack_two/down/attack.png',
                 name: 'attack_two_down',
                 amount: 11,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/spawn/spawn.png',
                 name: 'player_spawn',
                 amount: 15,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/aim/aim_side.png',
                 name: 'aim_side',
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/aim/gun/gun_effect.png',
@@ -355,19 +368,19 @@ const GameSettings = {
                 ref: 'player/grenade/throw/side/throw.png',
                 name: 'player_throw_side',
                 amount: 8,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/grenade/throw/down/throw.png',
                 name: 'player_throw_down',
                 amount: 8,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/grenade/throw/up/throw.png',
                 name: 'player_throw_up',
                 amount: 8,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'player/aim/gun/projectile.png',
@@ -377,7 +390,7 @@ const GameSettings = {
                 ref: 'player/death/death.png',
                 name: 'player_death',
                 amount: 6,
-                outfit: true,
+                isOutfit: true,
             },
             {
                 ref: 'UI/damaged.png',

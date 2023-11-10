@@ -1,6 +1,6 @@
 import GameBaseState from './GameBaseState.js';
 import EndingVideo from '../../htmlElements/EndingVideo.js';
-import Game from '../Game';
+import Game from '../Game.js';
 
 export default class GameEndState extends GameBaseState {
     enterState(game: Game) {

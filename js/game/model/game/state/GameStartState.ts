@@ -1,10 +1,10 @@
 import GameBaseState from './GameBaseState.js';
 import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
-import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
-import AssetManager from '../../utility/AssetManager.js';
-import { Vector } from '../../utility/enums/Vector.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
 
 export default class GameStartState extends GameBaseState {
     private spawnParticles: boolean;
@@ -24,21 +24,15 @@ export default class GameStartState extends GameBaseState {
 
         Game.getInstance();
 
+        game.prepareCanvas();
+
         await game.init();
 
         game.htmlHandlers.notify('startScreen');
-
-        game.prepareCanvas();
         game.changeState();
         await AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
-        await assetLoader([GameSettings.ASSETS.SPAWN], game.htmlHandlers);
 
-        // menuHandler();
-
-        const { audio } = game;
-
-        audio.allowSound = true;
-        audio.playAudio('menu/background.ogg', null, true);
+        AudioManager.playAudio('menu/background.ogg', undefined, true);
     }
 
     updateState(game: Game) {
@@ -59,7 +53,7 @@ export default class GameStartState extends GameBaseState {
 
     exitState(game: Game) {
         game.htmlHandlers.eventRemover();
-        const { audio } = game;
-        audio.stopAll();
+        console.log('hai');
+        AudioManager.stopAll();
     }
 }

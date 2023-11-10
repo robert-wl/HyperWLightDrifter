@@ -1,3 +1,4 @@
+import Game from '../Game.js';
 export default class GameBaseState {
     constructor() {
         this.number = 0;
@@ -6,9 +7,8 @@ export default class GameBaseState {
         this.number = 0;
     }
     updateState(game) {
-        const { deltaTime } = game;
-        if (deltaTime) {
-            this.number += deltaTime;
+        if (Game.deltaTime) {
+            this.number += Game.deltaTime;
         }
     }
     exitState(game) { }

@@ -1,6 +1,6 @@
 import Game from '../game/Game.js';
 import Animateable from '../utility/Animateable.js';
-import { Vector } from '../utility/enums/Vector.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import Observable from '../utility/Observable.js';
 
 export default class Particles extends Animateable {
@@ -21,7 +21,6 @@ export default class Particles extends Animateable {
     }
 
     update() {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
+        this.number += Game.deltaTime;
     }
 }

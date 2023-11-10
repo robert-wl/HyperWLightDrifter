@@ -1,11 +1,14 @@
 import Game from '../../game/Game.js';
 import Enemy from '../Enemy.js';
 import HealthBar from '../healthBar/HealthBar.js';
-import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../../helper/distanceHelper.js';
-import { getNumberedImage } from '../../../helper/assets/assetGetter.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
-import { getRandomBoolean } from '../../../helper/randomHelper.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import RandomHelper from '../../utility/helper/RandomHelper.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 export default class JudgementBomb extends Enemy {
     constructor(position, width, height, hitbox, maxHealth, angle, offset, lifetime, enemyObserver, attackObserver) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
@@ -18,14 +21,7 @@ export default class JudgementBomb extends Enemy {
         this.lifeTime = lifetime;
         this.animationStage = 1;
         this.number = 0;
-        this.healthbar = HealthBar.generate({
-            position: this.position,
-            offset: {
-                x: 3,
-                y: 30,
-            },
-            maxHealth: this.maxHealth,
-        });
+        this.healthbar = new HealthBar(new Vector(3, 30), this.maxHealth);
         this.moveAngle = Math.random() * Math.PI * 2;
     }
     get spawning() {
@@ -37,22 +33,15 @@ export default class JudgementBomb extends Enemy {
     update() {
         this.handleTimer();
         this.drawBomb();
+        const pVector = new PolarVector(this.offset, this.angle);
         this.healthbar.update({
             health: this.health,
             position: {
-                x: getHorizontalValue({
-                    initial: this.position.x,
-                    magnitude: this.offset,
-                    angle: this.angle,
-                }),
-                y: getVerticalValue({
-                    initial: this.position.y,
-                    magnitude: this.offset,
-                    angle: this.angle,
-                }),
+                x: DistanceHelper.getHorizontalValue(pVector, this.position.x),
+                y: DistanceHelper.getVerticalValue(pVector, this.position.y),
             },
         });
-        if (Game.getInstance().debug) {
+        if (Game.debug) {
             this.debugMode();
         }
         if (this.animationStage === 11) {
@@ -76,73 +65,47 @@ export default class JudgementBomb extends Enemy {
         if (this._spawning) {
             return;
         }
-        const { deltaTime } = Game.getInstance();
-        this.lifeTime -= deltaTime;
+        this.lifeTime -= Game.deltaTime;
     }
     kill() {
         this.enemyObserver.notify('clearBossEntity', this);
     }
     drawBomb() {
-        const judgementBomb = getNumberedImage('judgement_bomb', this.animationStage);
-        drawImage({
-            img: judgementBomb,
-            x: getHorizontalValue({
-                initial: this.position.x,
-                magnitude: this.offset,
-                angle: this.angle,
-            }),
-            y: getVerticalValue({
-                initial: this.position.y,
-                magnitude: this.offset,
-                angle: this.angle,
-            }),
-            width: judgementBomb.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementBomb.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
+        const judgementBomb = AssetManager.getNumberedImage('judgement_bomb', this.animationStage);
+        const pVector = new PolarVector(this.offset, this.angle);
+        const imageSize = Box.parse({
+            x: DistanceHelper.getHorizontalValue(pVector, this.position.x),
+            y: DistanceHelper.getVerticalValue(pVector, this.position.y),
+            w: judgementBomb.width * GameSettings.GAME.GAME_SCALE,
+            h: judgementBomb.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(judgementBomb, imageSize, true);
     }
     drawExplosion() {
         // console.log(this.animationStage - 3);
-        const judgementExplosion = getNumberedImage('judgement_explosion', this.animationStage - 3);
-        drawImage({
-            img: judgementExplosion,
-            x: getHorizontalValue({
-                initial: this.position.x,
-                magnitude: this.offset,
-                angle: this.angle,
-            }),
-            y: getVerticalValue({
-                initial: this.position.y,
-                magnitude: this.offset,
-                angle: this.angle,
-            }),
-            width: judgementExplosion.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementExplosion.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
+        const judgementExplosion = AssetManager.getNumberedImage('judgement_explosion', this.animationStage - 3);
+        const pVector = new PolarVector(this.offset, this.angle);
+        const imageSize = Box.parse({
+            x: DistanceHelper.getHorizontalValue(pVector, this.position.x),
+            y: DistanceHelper.getVerticalValue(pVector, this.position.y),
+            w: judgementExplosion.width * GameSettings.GAME.GAME_SCALE,
+            h: judgementExplosion.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(judgementExplosion, imageSize, true);
     }
     isAboutToExplode() {
         return this.lifeTime <= 160;
     }
     handleExplosion() {
-        const { player, deltaTime } = Game.getInstance();
+        const { player } = Game.getInstance();
         if (this.exploding) {
             this.drawExplosion();
             this.advanceAnimationStage(7);
             this.animationStage = Math.min(this.animationStage, 11);
-            const distance = getManhattanDistance({
-                x: player.centerPosition.x -
-                    getHorizontalValue({
-                        initial: this.position.x,
-                        magnitude: this.offset,
-                        angle: this.angle,
-                    }),
-                y: player.centerPosition.y -
-                    getVerticalValue({
-                        initial: this.position.y,
-                        magnitude: this.offset,
-                        angle: this.angle,
-                    }),
+            const pVector = new PolarVector(this.offset, this.angle);
+            const distance = DistanceHelper.getManhattanDistance({
+                x: player.centerPosition.x - DistanceHelper.getHorizontalValue(pVector, this.position.x),
+                y: player.centerPosition.y - DistanceHelper.getVerticalValue(pVector, this.position.y),
             });
             if (distance < 150) {
                 player.damage({
@@ -152,20 +115,15 @@ export default class JudgementBomb extends Enemy {
             }
         }
         if (!this.exploding) {
-            if (this.animationStage === 5 && this.checkCounter(10) && getRandomBoolean(0.15)) {
+            if (this.animationStage === 5 && this.checkCounter(10) && RandomHelper.getRandomBoolean(0.15)) {
                 this.animationStage--;
                 if (!this._spawning) {
                     this.moveAngle = Math.random() * Math.PI * 2;
                 }
             }
-            this.position.x += getHorizontalValue({
-                magnitude: 3 * deltaTime,
-                angle: this.moveAngle,
-            });
-            this.position.y += getVerticalValue({
-                magnitude: 3 * deltaTime,
-                angle: this.moveAngle,
-            });
+            const pVector = new PolarVector(3 * Game.deltaTime, this.moveAngle);
+            this.position.x += DistanceHelper.getHorizontalValue(pVector);
+            this.position.y += DistanceHelper.getVerticalValue(pVector);
         }
         if (this.lifeTime <= 50) {
             this.exploding = true;

@@ -1,21 +1,24 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getMouseDirection } from '../../../helper/collision/directionHandler.js';
-import { drawImage, drawRotated } from '../../../helper/renderer/drawer.js';
 import Game from '../../game/Game.js';
 import GameSettings from '../../../constants.js';
-import { drawExplosion, drawShootLine, shootHandler } from '../../../helper/player/gunHelper.js';
-import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
-import { getImage } from '../../../helper/assets/assetGetter.js';
 import Player from '../Player.js';
-import Enemy from '../../enemy/Enemy.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../utility/helper/DirectionHelper.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
+import GunHelper from '../../utility/helper/GunHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class PlayerAimingState extends PlayerBaseState {
     private exploding: number;
     private shooting: number;
     private canAim: boolean;
     private length: number;
-    private enemy: Enemy | null;
     private hasKnockedBack: boolean;
+    private finalTracePosition: Vector;
     private angle: number;
     private direction: string;
 
@@ -25,8 +28,8 @@ export default class PlayerAimingState extends PlayerBaseState {
         this.shooting = 0;
         this.canAim = true;
         this.length = 0;
-        this.enemy = null;
         this.hasKnockedBack = false;
+        this.finalTracePosition = Vector.Zero();
         this.angle = 0;
         this.direction = '';
     }
@@ -36,22 +39,18 @@ export default class PlayerAimingState extends PlayerBaseState {
         this.shooting = 0;
         this.canAim = true;
         this.length = 0;
-        this.enemy = null;
         this.hasKnockedBack = false;
     }
 
     updateState(currPlayer: Player) {
-        const { deltaTime } = Game.getInstance();
         this.angle = currPlayer.lookAngle;
 
         if (this.shooting > 0) {
-            this.shooting -= deltaTime;
+            this.shooting -= Game.deltaTime;
         }
 
         this.handleRecoil(currPlayer);
-        this.direction = getMouseDirection({
-            angle: this.angle,
-        });
+        this.direction = DirectionHelper.getMouseDirection(this.angle);
 
         if (!currPlayer.clicks.includes('right') && this.shooting <= 0) {
             currPlayer.handleSwitchState({
@@ -69,7 +68,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         }
 
         if (this.shooting >= 10) {
-            shootHandler({
+            this.shootHandler({
                 currPlayer,
                 clicks: currPlayer.clicks,
                 angle: this.angle,
@@ -77,7 +76,7 @@ export default class PlayerAimingState extends PlayerBaseState {
                 first: this.shooting === 20,
             });
 
-            drawExplosion({
+            this.drawExplosion({
                 distance: this.length,
                 currPlayer: currPlayer,
                 angle: this.angle,
@@ -89,24 +88,18 @@ export default class PlayerAimingState extends PlayerBaseState {
         }
 
         if (this.shooting >= 20) {
-            this.enemy?.handleDamage({
-                amount: GameSettings.PLAYER.DAMAGE.BULLET,
-                angle: this.angle,
-            });
+            GunHelper.damageTargetPosition(this.finalTracePosition);
         }
 
         if (this.canAim) {
-            const { audio } = Game.getInstance();
-            audio.playAudio('player/gun_aim.wav');
+            AudioManager.playAudio('player/gun_aim.wav');
             this.canAim = false;
         }
     }
 
     drawImage(currPlayer: Player) {
         if (this.shooting <= 0) {
-            const { length, enemy } = drawShootLine(currPlayer);
-            this.length = length;
-            this.enemy = enemy;
+            this.length = this.drawShootLine(currPlayer);
         }
 
         const { image, offset, angle, mirrored, bottom } = this.getAimDrawConstant(currPlayer);
@@ -132,11 +125,88 @@ export default class PlayerAimingState extends PlayerBaseState {
         });
     }
 
-    getAimDrawConstant(currPlayer: Player) {
+    drawPlayer({ image, currPlayer, angle, mirrored = false, bottom = false }) {
+        const railgun = AssetManager.getImage('railgun');
+
+        if (!bottom) {
+            const imageSize = Box.parse({
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                w: railgun.width * GameSettings.GAME.GAME_SCALE,
+                h: railgun.height * GameSettings.GAME.GAME_SCALE,
+            });
+
+            DrawHelper.drawRotated(railgun, imageSize, angle, mirrored);
+        }
+
+        const imageSize = Box.parse({
+            x: currPlayer.centerPosition.x,
+            y: currPlayer.centerPosition.y,
+            w: image.width * GameSettings.GAME.GAME_SCALE,
+            h: image.height * GameSettings.GAME.GAME_SCALE,
+        });
+
+        DrawHelper.drawImage(image, imageSize, true, mirrored);
+
+        if (bottom) {
+            const imageSize = Box.parse({
+                x: currPlayer.centerPosition.x,
+                y: currPlayer.centerPosition.y,
+                w: railgun.width * GameSettings.GAME.GAME_SCALE,
+                h: railgun.height * GameSettings.GAME.GAME_SCALE,
+            });
+
+            DrawHelper.drawRotated(railgun, imageSize, angle, mirrored);
+        }
+
+        if (this.exploding <= 0) {
+            return;
+        }
+
+        this.exploding -= Game.deltaTime;
+    }
+
+    private handleRecoil(currPlayer: Player) {
+        if (this.shooting >= 11 || this.shooting <= 0 || this.hasKnockedBack) {
+            return;
+        }
+
+        const { GUN } = GameSettings.PLAYER;
+        this.hasKnockedBack = true;
+
+        const pVector = new PolarVector(GUN.RECOIL * 3, this.angle + Math.PI);
+
+        currPlayer.velocity.x = DistanceHelper.getHorizontalValue(pVector);
+        currPlayer.velocity.y = DistanceHelper.getVerticalValue(pVector);
+
+        const { camera } = Game.getInstance();
+
+        camera.setShakeCamera({
+            duration: GUN.RECOIL * 20,
+            angle: this.angle + Math.PI,
+        });
+    }
+
+    private drawExplosion({ distance, currPlayer, angle, number }) {
+        const effect = AssetManager.getNumberedImage('gun_impact', number);
+
+        const pVector = new PolarVector(distance, angle);
+
+        const imageSize = Box.parse({
+            x: DistanceHelper.getHorizontalValue(pVector, currPlayer.centerPosition.x),
+            y: DistanceHelper.getVerticalValue(pVector, currPlayer.centerPosition.y),
+            w: effect.width * GameSettings.GAME.GAME_SCALE,
+            h: effect.height * GameSettings.GAME.GAME_SCALE,
+        });
+
+        DrawHelper.drawImage(effect, imageSize, true);
+    }
+
+    private getAimDrawConstant(currPlayer: Player) {
         const { GUN } = GameSettings.PLAYER;
         if (this.direction === 'w') {
             return {
-                image: getImage('aim_top'),
+                image: AssetManager.getImage('aim_top'),
                 offset: {
                     x: GUN.OFFSET.UP.X,
                     y: GUN.OFFSET.UP.Y,
@@ -147,7 +217,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         }
         if (this.direction === 'a') {
             return {
-                image: getImage('aim_side'),
+                image: AssetManager.getImage('aim_side'),
                 offset: {
                     x: GUN.OFFSET.LEFT.X,
                     y: GUN.OFFSET.LEFT.Y,
@@ -158,7 +228,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         }
         if (this.direction === 's') {
             return {
-                image: getImage('aim_bottom'),
+                image: AssetManager.getImage('aim_bottom'),
                 offset: {
                     x: GUN.OFFSET.BOTTOM.X,
                     y: GUN.OFFSET.BOTTOM.Y,
@@ -170,7 +240,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         }
         if (this.direction === 'd') {
             return {
-                image: getImage('aim_side'),
+                image: AssetManager.getImage('aim_side'),
                 offset: {
                     x: GUN.OFFSET.RIGHT.X,
                     y: GUN.OFFSET.RIGHT.Y,
@@ -183,74 +253,73 @@ export default class PlayerAimingState extends PlayerBaseState {
         return {};
     }
 
-    handleRecoil(currPlayer: Player) {
-        if (this.shooting >= 11 || this.shooting <= 0 || this.hasKnockedBack) {
-            return;
+    private drawShootLine(currPlayer: Player) {
+        const { ctx } = Game.getInstance();
+        const { lookAngle } = currPlayer;
+
+        let length = 1200;
+        for (let i = 0; i < 300; i++) {
+            const pVector = new PolarVector(i * 3, lookAngle);
+            const x = DistanceHelper.getHorizontalValue(pVector, currPlayer.centerPosition.x);
+            const y = DistanceHelper.getVerticalValue(pVector, currPlayer.centerPosition.y);
+
+            const position = new Vector(x, y);
+
+            if (GunHelper.checkTargetPosition(position)) {
+                this.finalTracePosition = position;
+                length = i * 3 + 10;
+                break;
+            }
         }
+        const pVector = new PolarVector(length, lookAngle);
+        const x = DistanceHelper.getHorizontalValue(pVector, currPlayer.centerPosition.x);
+        const y = DistanceHelper.getVerticalValue(pVector, currPlayer.centerPosition.y);
 
-        const { movementDeltaTime } = Game.getInstance();
-        const { GUN } = GameSettings.PLAYER;
-        this.hasKnockedBack = true;
+        const lineWidth = 2;
+        ctx.beginPath();
+        ctx.strokeStyle = `rgb(255, 0, 0, ${Math.random() * 0.5 + 0.1})`;
+        ctx.lineWidth = lineWidth;
+        ctx.translate(-lineWidth / 2, -lineWidth / 2);
+        ctx.moveTo(currPlayer.centerPosition.x, currPlayer.centerPosition.y);
+        ctx.lineTo(x, y);
+        ctx.translate(lineWidth / 2, lineWidth / 2);
+        ctx.stroke();
 
-        currPlayer.velocity.x = getHorizontalValue({
-            magnitude: GUN.RECOIL * 3 * movementDeltaTime,
-            angle: this.angle + Math.PI,
-        });
-        currPlayer.velocity.y = getVerticalValue({
-            magnitude: GUN.RECOIL * 3 * movementDeltaTime,
-            angle: this.angle + Math.PI,
-        });
-
-        const { camera } = Game.getInstance();
-
-        camera.setShakeCamera({
-            duration: GUN.RECOIL * 20,
-            angle: this.angle + Math.PI,
-        });
+        return length;
     }
 
-    drawPlayer({ image, currPlayer, angle, mirrored = false, bottom = false }) {
-        const railgun = getImage('railgun');
-
-        if (!bottom) {
-            drawRotated({
-                img: railgun,
-                position: {
-                    x: currPlayer.centerPosition.x,
-                    y: currPlayer.centerPosition.y,
-                },
-                angle: angle,
-                mirrored: mirrored,
-            });
-        }
-
-        drawImage({
-            img: image,
-            x: currPlayer.centerPosition.x,
-            y: currPlayer.centerPosition.y,
-            width: image.width * GameSettings.game.GAME_SCALE,
-            height: image.height * GameSettings.game.GAME_SCALE,
-            translate: true,
-            mirrored: mirrored,
+    private shootHandler({ currPlayer, clicks, angle, length, first }) {
+        this.drawRay({
+            length: length,
+            currPlayer: currPlayer,
+            lookAngle: angle,
         });
 
-        if (bottom) {
-            drawRotated({
-                img: railgun,
-                position: {
-                    x: currPlayer.centerPosition.x,
-                    y: currPlayer.centerPosition.y,
-                },
-                angle: angle,
-                mirrored: mirrored,
+        clicks.splice(clicks.indexOf('left'), 1);
+
+        if (first) {
+            currPlayer.bullets -= 1;
+            AudioManager.playAudio('player/gun_fire.wav');
+        }
+    }
+
+    private drawRay({ length, currPlayer, lookAngle }) {
+        const rayImage = AssetManager.getImage('gun_ray');
+
+        let { x: lastX, y: lastY } = currPlayer.centerPosition;
+        for (let i = 0; i < length; i += 3) {
+            const pVector = new PolarVector(3, lookAngle);
+            lastX = DistanceHelper.getHorizontalValue(pVector, lastX);
+            lastY = DistanceHelper.getVerticalValue(pVector, lastX);
+
+            const imageSize = Box.parse({
+                x: lastX,
+                y: lastY,
+                w: rayImage.width * GameSettings.GAME.GAME_SCALE,
+                h: rayImage.height * GameSettings.GAME.GAME_SCALE,
             });
-        }
 
-        if (this.exploding <= 0) {
-            return;
+            DrawHelper.drawRotated(rayImage, imageSize, lookAngle);
         }
-
-        const { deltaTime } = Game.getInstance();
-        this.exploding -= deltaTime;
     }
 }

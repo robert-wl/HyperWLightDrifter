@@ -1,37 +1,34 @@
 import ElevatorBaseState from './ElevatorBaseState.js';
-import { getImage } from '../../../../helper/assets/assetGetter.js';
-import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import Game from '../../../game/Game.js';
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
 export default class ElevatorMountedTopState extends ElevatorBaseState {
     updateState(elevator) {
-        const { keyCount } = Game.getInstance();
-        if (keyCount < 10) {
-            return;
-        }
-        // InteractionBar.detectPlayerInteraction(elevator, 50);
+        //
     }
     drawImage(elevator) {
-        const elevatorImage = getImage('elevator');
+        const elevatorImage = AssetManager.getImage('elevator');
         elevator.width = -0.5 * elevatorImage.width;
         elevator.height = -2 * elevatorImage.height;
-        drawImage({
-            img: elevatorImage,
+        const imageSize = Box.parse({
             x: elevator.position.x - elevatorImage.width,
             y: elevator.position.y - elevatorImage.height,
-            width: elevatorImage.width * GameSettings.GAME.GAME_SCALE,
-            height: elevatorImage.height * GameSettings.GAME.GAME_SCALE,
+            w: elevatorImage.width * GameSettings.GAME.GAME_SCALE,
+            h: elevatorImage.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(elevatorImage, imageSize);
         if (Game.getInstance().keyCount >= 10) {
             return;
         }
-        const lock = getImage('lock');
-        drawImage({
-            img: lock,
+        const lock = AssetManager.getImage('lock');
+        const imageLockSize = Box.parse({
             x: elevator.position.x - elevatorImage.width + 15,
             y: elevator.position.y - elevatorImage.height + 7,
-            width: lock.width * GameSettings.GAME.GAME_SCALE,
-            height: lock.height * GameSettings.GAME.GAME_SCALE,
+            w: lock.width * GameSettings.GAME.GAME_SCALE,
+            h: lock.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(lock, imageLockSize);
     }
 }

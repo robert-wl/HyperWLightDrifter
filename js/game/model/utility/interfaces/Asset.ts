@@ -2,6 +2,6 @@ interface Asset {
     name: string;
     ref: string;
     amount?: number;
-    outfit?: boolean;
+    isOutfit?: boolean;
     isAudio?: boolean;
 }

@@ -1,6 +1,6 @@
-import GameSettings from '../../constants.js';
-import Game from '../game/Game.js';
-import Observable from './Observable';
+import GameSettings from '../../../constants.js';
+import Game from '../../game/Game.js';
+import Observable from '../Observable.js';
 
 export default class CheatCodeManager {
     private readonly game: Game;
@@ -70,7 +70,7 @@ export default class CheatCodeManager {
             return;
         }
         if (cheatCodesKey === 'obert') {
-            this.game.renderCollider = !this.game.renderCollider;
+            Game.renderCollider = !Game.renderCollider;
             return;
         }
     }

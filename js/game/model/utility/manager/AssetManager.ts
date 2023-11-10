@@ -1,16 +1,25 @@
-import Game from '../game/Game.js';
-import GameSettings from '../../constants.js';
-import HTMLHandlers from '../htmlElements/HTMLHandlers.js';
+import Game from '../../game/Game.js';
+import GameSettings from '../../../constants.js';
+import HTMLHandlers from '../../htmlElements/HTMLHandlers.js';
+import { Outfit } from '../enums/Outfit.js';
 
 export default class AssetManager {
     private static colors = GameSettings.GAME.COLOR;
     private static htmlHandler: HTMLHandlers;
     private static counter: number;
     private static assetAmount: number;
-    private static assetList: Map<string, HTMLImageElement | HTMLAudioElement> = new Map();
+    private static _assetList: Map<string, HTMLImageElement | HTMLAudioElement> = new Map();
 
     private constructor() {
         //
+    }
+
+    static get assetList(): Map<string, HTMLImageElement | HTMLAudioElement> {
+        return this._assetList;
+    }
+
+    static set assetList(value: Map<string, HTMLImageElement | HTMLAudioElement>) {
+        this._assetList = value;
     }
 
     public static setHTMLHandler(htmlHandler: HTMLHandlers) {
@@ -18,14 +27,14 @@ export default class AssetManager {
     }
 
     public static getImage(name: string): HTMLImageElement {
-        return <HTMLImageElement>this.assetList.get(name);
+        return <HTMLImageElement>this._assetList.get(name);
     }
 
     public static getNumberedImage(name: string, number: number): HTMLImageElement {
-        return <HTMLImageElement>this.assetList.get(`${name}_${number}`);
+        return <HTMLImageElement>this._assetList.get(`${name}_${number}`);
     }
 
-    public static async assetLoader(assetData: Asset[][]) {
+    public static async assetLoader(assetData: Asset[][], outfit?: Outfit) {
         this.assetAmount = 0;
         this.counter = 0;
         let assets: Asset[] = [];
@@ -49,22 +58,18 @@ export default class AssetManager {
                 await this.assetLoadAudio(asset);
                 continue;
             }
-            await this.assetLoadImage(asset);
+            await this.assetLoadImage(asset, outfit);
         }
 
         this.htmlHandler.notify('loadingModal:close');
     }
 
-    public static async loadImage({ ref, name, outfit }: Asset) {
-        const data: HTMLImageElement = await new Promise((resolve, reject) => {
-            let img = new Image();
+    public static async loadImage({ ref, name, isOutfit }: Asset, outfit?: Outfit) {
+        let data: HTMLImageElement = await new Promise((resolve, reject) => {
+            const img = new Image();
             img.src = '../assets/' + ref;
+            img.onload;
             img.onload = () => {
-                if (outfit && Game.getInstance().player.outfit !== 'default') {
-                    if (img instanceof HTMLImageElement) {
-                        img = this.replaceOutfitColor(img);
-                    }
-                }
                 resolve(img);
             };
             img.onerror = () => {
@@ -72,7 +77,11 @@ export default class AssetManager {
             };
         });
 
-        this.assetList.set(name, data);
+        if (isOutfit && outfit !== Outfit.default) {
+            data = this.replaceOutfitColor(data);
+        }
+
+        this._assetList.set(name, data);
     }
 
     public static replaceOutfitColor(image: HTMLImageElement) {
@@ -102,24 +111,27 @@ export default class AssetManager {
         return image;
     }
 
-    private static async assetLoadImage({ ref, name, amount, outfit }: Asset) {
+    private static async assetLoadImage({ ref, name, amount, isOutfit }: Asset, outfit?: Outfit) {
         if (amount) {
             for (let i = 1; i <= amount; i++) {
                 const refNumbered = `${ref.split('.')[0]}_${i}.png`;
                 const nameNumbered = `${name}_${i}`;
                 this.htmlHandler.notify('loadingModal:editText', nameNumbered);
-                await this.loadImage({
-                    ref: refNumbered,
-                    name: nameNumbered,
-                    outfit: outfit,
-                });
+                await this.loadImage(
+                    {
+                        ref: refNumbered,
+                        name: nameNumbered,
+                        isOutfit: isOutfit,
+                    },
+                    outfit,
+                );
                 this.htmlHandler.notify('loadingModal:editCounter', ++this.counter + '/' + this.assetAmount);
             }
             return;
         }
 
         this.htmlHandler.notify('loadingModal:editText', name);
-        await this.loadImage({ ref, name, outfit });
+        await this.loadImage({ ref, name, isOutfit }, outfit);
         this.htmlHandler.notify('loadingModal:editCounter', ++this.counter + '/' + this.assetAmount);
     }
 
@@ -157,7 +169,7 @@ export default class AssetManager {
             };
         });
 
-        this.assetList.set(name, data);
+        this._assetList.set(name, data);
     }
 
     private static getEqualPixel(color: number[], pixel: Uint8ClampedArray, i: number) {

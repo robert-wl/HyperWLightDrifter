@@ -1,10 +1,11 @@
 import PlayerBaseState from './PlayerBaseState.js';
 import GameSettings from '../../../constants.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
 import Game from '../../game/Game.js';
-import { getImage } from '../../../helper/assets/assetGetter.js';
 import Player from '../Player.js';
-import { Vector } from '../../utility/enums/Vector.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class PlayerInElevatorState extends PlayerBaseState {
     private initialPosition: Vector;
@@ -26,21 +27,20 @@ export default class PlayerInElevatorState extends PlayerBaseState {
         }
 
         if (currPlayer.centerPosition.y - this.initialPosition.y > 300) {
-            const { deltaTime } = Game.getInstance();
-            Game.getInstance().darkenBackground(0.0025 * deltaTime);
+            Game.getInstance().darkenBackground(0.0025 * Game.deltaTime);
         }
     }
 
     drawImage(currPlayer: Player) {
-        const moveDown = getImage('idle_down');
+        const moveDown = AssetManager.getImage('idle_down');
 
-        drawImage({
-            img: moveDown,
+        const imageSize = Box.parse({
             x: currPlayer.centerPosition.x,
             y: currPlayer.centerPosition.y,
-            width: moveDown.width * GameSettings.GAME.GAME_SCALE,
-            height: moveDown.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
+            w: moveDown.width * GameSettings.GAME.GAME_SCALE,
+            h: moveDown.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(moveDown, imageSize, true);
     }
 }

@@ -1,14 +1,16 @@
-import { getNumberedImage } from '../../helper/assets/assetGetter.js';
-import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
 import Game from '../game/Game.js';
-import { getMagnitudeValue } from '../../helper/distanceHelper.js';
 import Medkit from './Medkit.js';
 import Key from './Key.js';
-import Player from '../player/Player';
-import Observable from '../utility/Observable';
-import { Interactables } from '../utility/enums/Interactables';
+import Player from '../player/Player.js';
+import Observable from '../utility/Observable.js';
+import { Interactables } from '../utility/interfaces/Interactables';
 import Elevator from './Elevator/Elevator.js';
+import AssetManager from '../utility/manager/AssetManager.js';
+import AudioManager from '../utility/manager/AudioManager.js';
+import DistanceHelper from '../utility/helper/DistanceHelper.js';
+import { Box } from '../utility/interfaces/Box.js';
+import DrawHelper from '../utility/helper/DrawHelper.js';
 
 export default class InteractionBar {
     private player: Player;
@@ -42,9 +44,8 @@ export default class InteractionBar {
     }
 
     public update() {
-        const { deltaTime } = Game.getInstance();
         if (!this.isInteracting) {
-            this.interactionStage -= deltaTime;
+            this.interactionStage -= Game.deltaTime;
             this.interactionStage = Math.max(this.interactionStage, 0);
         }
     }
@@ -56,7 +57,7 @@ export default class InteractionBar {
             return;
         }
 
-        const distance = getMagnitudeValue({
+        const distance = DistanceHelper.getMagnitude({
             x: player.centerPosition.x - object.position.x,
             y: player.centerPosition.y - object.position.y,
         });
@@ -77,7 +78,7 @@ export default class InteractionBar {
         }
         const { player, ctx } = Game.getInstance();
 
-        const interactionBar = getNumberedImage('interaction_bar', this.animationStage);
+        const interactionBar = AssetManager.getNumberedImage('interaction_bar', this.animationStage);
 
         Game.getInstance().setTransparency(this.transparency);
 
@@ -85,13 +86,14 @@ export default class InteractionBar {
             return;
         }
 
-        drawImage({
-            img: interactionBar,
+        const imageSize = Box.parse({
             x: player.centerPosition.x + 50,
             y: player.centerPosition.y - 10,
-            width: interactionBar.width * GameSettings.GAME.GAME_SCALE,
-            height: interactionBar.height * GameSettings.GAME.GAME_SCALE,
+            w: interactionBar.width * GameSettings.GAME.GAME_SCALE,
+            h: interactionBar.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(interactionBar, imageSize);
 
         ctx.fillStyle = 'rgb(255, 255, 255, 0.9)';
 
@@ -133,11 +135,9 @@ export default class InteractionBar {
         });
 
     private handler(object: Interactables) {
-        const { audio, deltaTime } = Game.getInstance();
-
         if (this.isInteracting && this.transparency >= 0.5) {
-            this.number += deltaTime;
-            this.interactionStage += deltaTime;
+            this.number += Game.deltaTime;
+            this.interactionStage += Game.deltaTime;
 
             if (this.interactionStage >= 20) {
                 if (object instanceof Medkit) {
@@ -154,7 +154,7 @@ export default class InteractionBar {
             }
 
             if (this.checkCounter(10)) {
-                audio.playAudio('player/interact/interact.wav');
+                AudioManager.playAudio('player/interact/interact.wav');
             }
 
             this.advanceAnimationStage(10);

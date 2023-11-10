@@ -1,9 +1,9 @@
-import { getRandomValue } from '../../helper/randomHelper.js';
 import Medkit from './Medkit.js';
 import Key from './Key.js';
 import Elevator from './Elevator/Elevator.js';
-import { Vector } from '../utility/enums/Vector.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import Observable from '../utility/Observable.js';
+import RandomHelper from '../utility/helper/RandomHelper.js';
 
 export default class InteractablesFactory {
     private eventEmitter: Observable;
@@ -19,15 +19,11 @@ export default class InteractablesFactory {
 
         const keyObject = new Key(position, 10, 10, key, this.eventEmitter);
 
-        this.eventEmitter.notify('addInteractable', keyObject);
+        this.eventEmitter.notify('addInteractable:key', keyObject);
     }
 
     public generateMedkit(position: Vector, key: string) {
-        const angle =
-            getRandomValue({
-                initialValue: 0,
-                randomValue: 4,
-            }) * Math.PI;
+        const angle = RandomHelper.randomValue(0, 4) * Math.PI;
 
         position = {
             x: position.x + Math.cos(angle) * 100,

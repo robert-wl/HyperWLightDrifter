@@ -1,34 +1,31 @@
-import Game from '../game/Game.js';
 import GameSettings from '../../constants.js';
-import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../helper/distanceHelper.js';
 import CameraBox from './CameraBox.js';
 import CameraNormalState from './state/CameraNormalState.js';
 import CameraFollowState from './state/CameraFollowState.js';
-import { drawImage, drawImageFromBottom } from '../../helper/renderer/drawer.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
 import Medkit from '../interactables/Medkit.js';
 import Key from '../interactables/Key.js';
 import Elevator from '../interactables/Elevator/Elevator.js';
+import DistanceHelper from '../utility/helper/DistanceHelper.js';
+import { PolarVector } from '../utility/interfaces/PolarVector.js';
+import DrawHelper from '../utility/helper/DrawHelper.js';
+import { Box } from '../utility/interfaces/Box.js';
 export default class Camera {
-    constructor() {
-        this.position = {
-            x: 0,
-            y: 0,
-        };
+    constructor(game) {
+        this.game = game;
+        this.position = Vector.Zero();
         this.width = 0;
         this.height = 0;
-        this.cameraBox = new CameraBox();
+        this.cameraBox = new CameraBox(this.game);
         this.lowerLayers = new Map();
-        this.upperLayers = Game.getInstance().objects;
+        this.upperLayers = game.objects;
         this.shakeDuration = 0;
         this.shakeStartTime = -1;
         this.shakeStrength = 0;
         this.shakeAngle = 0;
-        this.translateOffset = {
-            x: 0,
-            y: 0,
-        };
+        this.translateOffset = Vector.Zero();
         this.hasTranslated = false;
         this.screenSize = GameSettings.GAME.SCREEN_WIDTH;
         this.normalState = new CameraNormalState();
@@ -50,7 +47,6 @@ export default class Camera {
         this.currState.enterState(this);
     }
     setCameraPosition({ position }) {
-        const { ctx } = Game.getInstance();
         const translateX = this.getTranslatePosition({
             position: position.x,
             length: this.cameraBox.width / 2,
@@ -59,7 +55,7 @@ export default class Camera {
             position: position.y,
             length: this.cameraBox.height / 2,
         });
-        ctx.translate(-translateX, -translateY);
+        this.game.ctx.translate(-translateX, -translateY);
         this.position.x += translateX;
         this.position.y += translateY;
     }
@@ -83,30 +79,17 @@ export default class Camera {
             return;
         }
         const easing = Math.pow(tDiff / this.shakeDuration - 1, 3) + 1;
-        this.translateOffset.x =
-            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) *
-                this.shakeStrength *
-                getHorizontalValue({
-                    magnitude: easing,
-                    angle: this.shakeAngle,
-                });
-        this.translateOffset.y =
-            (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) *
-                this.shakeStrength *
-                getVerticalValue({
-                    magnitude: easing,
-                    angle: this.shakeAngle,
-                });
-        const { ctx } = Game.getInstance();
-        ctx.translate(this.translateOffset.x, this.translateOffset.y);
+        const pVector = new PolarVector(easing, this.shakeAngle);
+        this.translateOffset.x = (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) * this.shakeStrength * DistanceHelper.getHorizontalValue(pVector);
+        this.translateOffset.y = (Math.sin(tDiff * 0.05) + Math.sin(tDiff * 0.057113)) * this.shakeStrength * DistanceHelper.getVerticalValue(pVector);
+        this.game.ctx.translate(this.translateOffset.x, this.translateOffset.y);
         this.hasTranslated = true;
     }
     resetShakeCamera() {
         if (this.shakeStartTime === -1 || !this.hasTranslated) {
             return;
         }
-        const { ctx } = Game.getInstance();
-        ctx.translate(-this.translateOffset.x, -this.translateOffset.y);
+        this.game.ctx.translate(-this.translateOffset.x, -this.translateOffset.y);
         this.hasTranslated = false;
     }
     updateCamera() {
@@ -131,18 +114,18 @@ export default class Camera {
             if (!this.isInScreen(position)) {
                 return;
             }
-            drawImage({
-                img: background,
+            const imageSize = Box.parse({
                 x: position.x,
                 y: position.y,
-                width: background.width * GAME_SCALE,
-                height: background.height * GAME_SCALE,
+                w: background.width * GAME_SCALE,
+                h: background.height * GAME_SCALE,
             });
+            DrawHelper.drawImage(background, imageSize);
         });
     }
     renderUpperLayer() {
         let hasUpdatedPlayer = false;
-        const { player } = Game.getInstance();
+        const { player } = this.game;
         const { GAME_SCALE } = GameSettings.GAME;
         const { objects, colliders } = this.getObjects();
         const interactables = [];
@@ -166,23 +149,22 @@ export default class Camera {
             if (!hasUpdatedPlayer) {
                 hasUpdatedPlayer = this.updatePlayer(position.y, colliders);
             }
-            drawImageFromBottom({
-                img: image,
+            const imageBox = Box.parse({
                 x: position.x,
                 y: position.y,
-                width: image.width * GAME_SCALE,
-                height: image.height * GAME_SCALE,
-                mirrored: flipped,
+                w: image.width * GAME_SCALE,
+                h: image.height * GAME_SCALE,
             });
+            DrawHelper.drawImageFromBottom(image, imageBox, flipped);
         });
-        Game.getInstance().interactablesManager.interactablesList = interactables;
-        Game.getInstance().elevators = elevators;
+        this.game.interactablesManager.interactablesList = interactables;
+        this.game.elevators = elevators;
         if (!hasUpdatedPlayer && player.currState !== player.inElevatorState) {
             player.updateState(colliders);
         }
     }
     getObjects() {
-        const { player, enemyManager, coins } = Game.getInstance();
+        const { player, enemyManager, coins } = this.game;
         const { GAME_SCALE, FOREST_STAGE } = GameSettings.GAME;
         const objects = [];
         const colliders = [];
@@ -205,7 +187,7 @@ export default class Camera {
                     objects.push(piece);
                     return;
                 }
-                const distance = getManhattanDistance({
+                const distance = DistanceHelper.getManhattanDistance({
                     x: collider.x - player.centerPosition.x,
                     y: collider.y - player.centerPosition.y,
                 });
@@ -232,7 +214,7 @@ export default class Camera {
         return { objects, colliders };
     }
     isInScreen(position) {
-        const { currState, stageTwoState } = Game.getInstance();
+        const { currState, stageTwoState } = this.game;
         if (currState === stageTwoState) {
             return true;
         }
@@ -251,7 +233,7 @@ export default class Camera {
         return object instanceof Elevator;
     }
     updatePlayer(yAbsPosition, colliders) {
-        const { player } = Game.getInstance();
+        const { player } = this.game;
         if (player.currState === player.inElevatorState) {
             return false;
         }
@@ -275,25 +257,25 @@ export default class Camera {
         return position - length;
     }
     translateCamera(direction, moveDirection) {
-        const { player, ctx } = Game.getInstance();
+        const { player } = this.game;
         if (direction.includes('d')) {
             const displacement = (moveDirection === null || moveDirection === void 0 ? void 0 : moveDirection.x) || Math.abs(player.velocity.x);
-            ctx.translate(-displacement, 0);
+            this.game.ctx.translate(-displacement, 0);
             this.position.x += displacement;
         }
         if (direction.includes('a')) {
             const displacement = (moveDirection === null || moveDirection === void 0 ? void 0 : moveDirection.x) || Math.abs(player.velocity.x);
-            ctx.translate(displacement, 0);
+            this.game.ctx.translate(displacement, 0);
             this.position.x -= displacement;
         }
         if (direction.includes('w')) {
             const displacement = (moveDirection === null || moveDirection === void 0 ? void 0 : moveDirection.y) || Math.abs(player.velocity.y);
-            ctx.translate(0, displacement);
+            this.game.ctx.translate(0, displacement);
             this.position.y -= displacement;
         }
         if (direction.includes('s')) {
             const displacement = (moveDirection === null || moveDirection === void 0 ? void 0 : moveDirection.y) || Math.abs(player.velocity.y);
-            ctx.translate(0, -displacement);
+            this.game.ctx.translate(0, -displacement);
             this.position.y += displacement;
         }
     }

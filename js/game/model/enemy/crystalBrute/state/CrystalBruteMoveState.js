@@ -1,11 +1,15 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
 import Game from '../../../game/Game.js';
-import { getRandomBoolean, getRandomValue } from '../../../../helper/randomHelper.js';
-import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
-import { getAngle } from '../../../../helper/angleHelper.js';
-import { drawImage } from '../../../../helper/renderer/drawer.js';
-import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../../utility/helper/DirectionHelper.js';
+import RandomHelper from '../../../utility/helper/RandomHelper.js';
+import AudioManager from '../../../utility/manager/AudioManager.js';
+import DistanceHelper from '../../../utility/helper/DistanceHelper.js';
+import { PolarVector } from '../../../utility/interfaces/PolarVector.js';
+import AngleHelper from '../../../utility/helper/AngleHelper.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import GameSettings from '../../../../constants.js';
 export default class CrystalBruteMoveState extends CrystalBruteBaseState {
     constructor() {
         super(...arguments);
@@ -14,22 +18,17 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         this.attackDelay = 0;
     }
     enterState(currBrute) {
-        this.clockwise = getRandomBoolean(0.5);
+        this.clockwise = RandomHelper.getRandomBoolean(0.5);
         this.moveTime = 0;
-        this.attackDelay = getRandomValue({
-            initialValue: 100,
-            randomValue: 100,
-        });
+        this.attackDelay = RandomHelper.randomValue(100, 100);
         currBrute.speed = 0.5;
     }
     updateState(currBrute) {
         super.updateState(currBrute);
-        const { deltaTime } = Game.getInstance();
-        this.moveTime += deltaTime;
+        this.moveTime += Game.deltaTime;
         this.advanceAnimationStage(20, 6);
         if (this.checkCounter(20) && (this.animationStage === 0 || this.animationStage === 3)) {
-            const { audio } = Game.getInstance();
-            audio.playAudio('enemy/crystal_brute/walk.wav');
+            AudioManager.playAudio('enemy/crystal_brute/walk.wav');
         }
         if (currBrute.health <= 0) {
             currBrute.switchState(currBrute.dieState);
@@ -42,25 +41,23 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         this.handleMovement(currBrute);
     }
     drawImage(currBrute) {
-        const bruteWalk = getNumberedImage('crystal_brute_walk', this.animationStage);
-        drawImage({
-            img: bruteWalk,
+        const bruteWalk = AssetManager.getNumberedImage('crystal_brute_walk', this.animationStage);
+        const imageSize = Box.parse({
             x: currBrute.position.x,
             y: currBrute.position.y,
-            width: currBrute.width,
-            height: currBrute.height,
-            translate: true,
-            mirrored: getFaceDirection(currBrute.angle) === 'left',
+            w: bruteWalk.width * GameSettings.GAME.GAME_SCALE,
+            h: bruteWalk.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(bruteWalk, imageSize, true, DirectionHelper.getFaceDirection(currBrute.angle) === 'left');
     }
     handleMovement(currBrute) {
-        const { player, deltaTime } = Game.getInstance();
+        const { player } = Game.getInstance();
         const { centerPosition } = player;
-        const distance = getMagnitudeValue({
+        const distance = DistanceHelper.getMagnitude({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
         });
-        let angle = getAngle({
+        let angle = AngleHelper.getAngle({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
         });
@@ -72,14 +69,9 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         if (distance < 200) {
             angle = this.getRotateAngle(currBrute.angle);
         }
-        currBrute.position.x += getHorizontalValue({
-            magnitude: currBrute.speed * deltaTime,
-            angle: angle,
-        });
-        currBrute.position.y += getVerticalValue({
-            magnitude: currBrute.speed * deltaTime,
-            angle: angle,
-        });
+        const pVector = new PolarVector(currBrute.speed * Game.deltaTime, angle);
+        currBrute.position.x += DistanceHelper.getHorizontalValue(pVector);
+        currBrute.position.y += DistanceHelper.getVerticalValue(pVector);
     }
     getRotateAngle(angle) {
         return angle + (Math.PI / 2) * (this.clockwise ? 1 : -1);

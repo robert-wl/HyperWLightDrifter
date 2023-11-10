@@ -1,13 +1,14 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
 import Game from '../../../game/Game.js';
 import CrystalAttack from '../CrystalAttack.js';
-import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
-import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
-import { getAngle } from '../../../../helper/angleHelper.js';
-import { getRandomValue } from '../../../../helper/randomHelper.js';
-import CrystalBrute from '../CrystalBrute';
+import CrystalBrute from '../CrystalBrute.js';
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../../utility/helper/DirectionHelper.js';
+import RandomHelper from '../../../utility/helper/RandomHelper.js';
+import AngleHelper from '../../../utility/helper/AngleHelper.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
 
 export default class CrystalBruteAttackState extends CrystalBruteBaseState {
     private angle: number;
@@ -29,7 +30,7 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
         const { centerPosition } = Game.getInstance().player;
 
         currBrute.speed = 0;
-        currBrute.angle = getAngle({
+        currBrute.angle = AngleHelper.getAngle({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
         });
@@ -56,32 +57,28 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
     }
 
     public drawImage(currBrute: CrystalBrute) {
-        const bruteAttack = getNumberedImage('crystal_brute_attack', this.animationStage);
+        const bruteAttack = AssetManager.getNumberedImage('crystal_brute_attack', this.animationStage);
 
-        drawImage({
-            img: bruteAttack,
+        const imageSize = Box.parse({
             x: currBrute.position.x,
             y: currBrute.position.y,
-            width: bruteAttack.width * GameSettings.GAME.GAME_SCALE,
-            height: bruteAttack.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-            mirrored: getFaceDirection(currBrute.angle) === 'left',
+            w: bruteAttack.width * GameSettings.GAME.GAME_SCALE,
+            h: bruteAttack.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(bruteAttack, imageSize, true, DirectionHelper.getFaceDirection(currBrute.angle) === 'left');
     }
 
     private handleAttack(currBrute: CrystalBrute) {
         const { player, camera } = Game.getInstance();
         const { centerPosition } = player;
 
-        const angle = getAngle({
+        const angle = AngleHelper.getAngle({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
         });
 
-        const type = getRandomValue({
-            randomValue: 3,
-            rounded: true,
-        });
+        const type = RandomHelper.randomValue(0, 3, true);
 
         camera.setShakeCamera({
             duration: 200,

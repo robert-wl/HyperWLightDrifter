@@ -1,11 +1,13 @@
-import { getNumberedImage } from '../../helper/assets/assetGetter.js';
-import { drawImage } from '../../helper/renderer/drawer.js';
 import GameSettings from '../../constants.js';
 import Game from '../game/Game.js';
-import { getMagnitudeValue } from '../../helper/distanceHelper.js';
 import Medkit from './Medkit.js';
 import Key from './Key.js';
 import Elevator from './Elevator/Elevator.js';
+import AssetManager from '../utility/manager/AssetManager.js';
+import AudioManager from '../utility/manager/AudioManager.js';
+import DistanceHelper from '../utility/helper/DistanceHelper.js';
+import { Box } from '../utility/interfaces/Box.js';
+import DrawHelper from '../utility/helper/DrawHelper.js';
 export default class InteractionBar {
     constructor(player, inputEventEmitter) {
         this.eventHandler = () => this.inputEventEmitter.subscribe(({ event, data }) => {
@@ -37,9 +39,8 @@ export default class InteractionBar {
         this.transparency = transparency;
     }
     update() {
-        const { deltaTime } = Game.getInstance();
         if (!this.isInteracting) {
-            this.interactionStage -= deltaTime;
+            this.interactionStage -= Game.deltaTime;
             this.interactionStage = Math.max(this.interactionStage, 0);
         }
     }
@@ -48,7 +49,7 @@ export default class InteractionBar {
         if (object == null) {
             return;
         }
-        const distance = getMagnitudeValue({
+        const distance = DistanceHelper.getMagnitude({
             x: player.centerPosition.x - object.position.x,
             y: player.centerPosition.y - object.position.y,
         });
@@ -64,18 +65,18 @@ export default class InteractionBar {
             return;
         }
         const { player, ctx } = Game.getInstance();
-        const interactionBar = getNumberedImage('interaction_bar', this.animationStage);
+        const interactionBar = AssetManager.getNumberedImage('interaction_bar', this.animationStage);
         Game.getInstance().setTransparency(this.transparency);
         if (interactionBar == null) {
             return;
         }
-        drawImage({
-            img: interactionBar,
+        const imageSize = Box.parse({
             x: player.centerPosition.x + 50,
             y: player.centerPosition.y - 10,
-            width: interactionBar.width * GameSettings.GAME.GAME_SCALE,
-            height: interactionBar.height * GameSettings.GAME.GAME_SCALE,
+            w: interactionBar.width * GameSettings.GAME.GAME_SCALE,
+            h: interactionBar.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(interactionBar, imageSize);
         ctx.fillStyle = 'rgb(255, 255, 255, 0.9)';
         ctx.fillRect(player.centerPosition.x + 54, player.centerPosition.y - 2, this.interactionStage, 16);
         Game.getInstance().setTransparency(1);
@@ -95,10 +96,9 @@ export default class InteractionBar {
         }
     }
     handler(object) {
-        const { audio, deltaTime } = Game.getInstance();
         if (this.isInteracting && this.transparency >= 0.5) {
-            this.number += deltaTime;
-            this.interactionStage += deltaTime;
+            this.number += Game.deltaTime;
+            this.interactionStage += Game.deltaTime;
             if (this.interactionStage >= 20) {
                 if (object instanceof Medkit) {
                     object.activate(this.player);
@@ -113,7 +113,7 @@ export default class InteractionBar {
                 return true;
             }
             if (this.checkCounter(10)) {
-                audio.playAudio('player/interact/interact.wav');
+                AudioManager.playAudio('player/interact/interact.wav');
             }
             this.advanceAnimationStage(10);
         }

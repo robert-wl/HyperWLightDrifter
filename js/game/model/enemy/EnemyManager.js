@@ -1,8 +1,8 @@
 import Observable from '../utility/Observable.js';
 import EnemyFactory from './EnemyFactory.js';
+import GameSettings from '../../constants.js';
 import CrystalSpider from './crystalSpider/CrystalSpider.js';
 import CrystalBrute from './crystalBrute/CrystalBrute.js';
-import GameSettings from '../../constants.js';
 export default class EnemyManager {
     constructor(game) {
         this.game = game;
@@ -47,41 +47,33 @@ export default class EnemyManager {
             entity.update();
         });
     }
-    handleDamageBox(enemy) {
-        if (!(enemy instanceof CrystalSpider) && !(enemy instanceof CrystalBrute)) {
-            return;
+    handleDetectPoint(position, enemy, notifyData) {
+        if (enemy instanceof CrystalSpider || enemy instanceof CrystalBrute) {
+            if (enemy.currState == enemy.dieState)
+                return false;
         }
-        if (enemy.currState === enemy.dieState) {
-            return;
-        }
-        if (this.detectCollisionBox(enemy, this.game.player)) {
+        return this.detectCollisionPoint(position, enemy);
+    }
+    handleDamagePoint(position, enemy) {
+        if (this.detectCollisionPoint(position, enemy)) {
             enemy.handleDamage({
                 amount: GameSettings.PLAYER.DAMAGE.HIT,
                 angle: this.game.player.lookAngle,
             });
         }
-        // for (const entity of this.bossEntities) {
-        //     if (entity.currState === entity.dieState) {
-        //         continue;
-        //     }
-        //
-        //     if (entity.position.x + entity.hitbox.x < position.x && entity.position.x + entity.width / 2 - entity.hitbox.w > position.x && entity.position.y + entity.hitbox.y < position.y && entity.position.y + entity.height / 2 - entity.hitbox.h > position.y) {
-        //         return entity;
-        //     }
-        // }
-        //
-        // if (this.boss) {
-        //     if (boss.currState === boss.deathState || boss.currState === boss.bombState) {
-        //         return null;
-        //     }
-        //
-        //     if (boss.position.x + boss.hitbox.x < position.x && boss.position.x + boss.width / 2 - boss.hitbox.w > position.x && boss.position.y + boss.hitbox.y < position.y && boss.position.y + boss.height / 2 - boss.hitbox.h > position.y) {
-        //         return boss;
-        //     }
-        // }
+        this.attackObserver.notify('playerHitPoint');
     }
-    detectCollision(positionOne, positionTwo, hitbox, width, height) {
-        return positionOne.x + hitbox.xOffset < positionTwo.x && positionOne.x + width - hitbox.wOffset > positionTwo.x && positionOne.y + hitbox.yOffset < positionTwo.y && positionOne.y + height - hitbox.hOffset > positionTwo.y;
+    handleDamageBox(enemy) {
+        if (this.detectCollisionBox(enemy, this.game.player)) {
+            enemy.handleDamage({
+                amount: GameSettings.PLAYER.DAMAGE.HIT,
+                angle: this.game.player.lookAngle,
+            });
+            this.attackObserver.notify('playerHitArea');
+        }
+    }
+    detectCollisionPoint(position, enemy) {
+        return enemy.position.x + enemy.hitbox.xOffset < position.x && enemy.position.x + enemy.width / 2 - enemy.hitbox.wOffset > position.x && enemy.position.y + enemy.hitbox.yOffset < position.y && enemy.position.y + enemy.height / 2 - enemy.hitbox.hOffset > position.y;
     }
     detectCollisionBox(enemy, player) {
         const enemyX1 = enemy.position.x + enemy.hitbox.xOffset;
@@ -124,13 +116,30 @@ export default class EnemyManager {
                 this.enemyFactory.generateBossBomb(data.position, data.angle);
                 return;
             }
+            if (event === 'spawnBossBullet') {
+                this.enemyFactory.generateBossBullet(data.position, data.angle);
+                return;
+            }
+            if (event === 'spawnBossLaser') {
+                this.enemyFactory.generateBossLaser(data.position, data.angle);
+            }
         });
         this.attackObserver.subscribe(({ event, data }) => {
             if (event === 'playerAttack') {
                 this.enemyList.forEach((enemy) => {
                     this.handleDamageBox(enemy);
                 });
+                this.bossEntities.forEach((entity) => {
+                    this.handleDamageBox(entity);
+                });
+                if (this.boss)
+                    this.handleDamageBox(this.boss);
             }
+            // if (event === 'gunAim') {
+            //     if (this.gunAimHandler(data)) {
+            //         this.attackObserver.notify('playerHit', data.length);
+            //     }
+            // }
         });
     }
 }

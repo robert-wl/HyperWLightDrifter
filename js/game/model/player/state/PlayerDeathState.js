@@ -1,15 +1,17 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
-import { getFaceDirection } from '../../../helper/collision/directionHandler.js';
 import GameSettings from '../../../constants.js';
 import Game from '../../game/Game.js';
-import AssetManager from '../../utility/AssetManager.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../utility/helper/DirectionHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 export default class PlayerDeathState extends PlayerBaseState {
     enterState(currPlayer) {
         super.enterState(currPlayer);
-        const { loseState, audio } = Game.getInstance();
+        const { loseState } = Game.getInstance();
         Game.getInstance().switchState(loseState);
-        audio.playAudio('player/die.wav', null, false, true);
+        AudioManager.playAudio('player/die.wav', null, false, true);
     }
     updateState(currPlayer) {
         super.updateState(currPlayer);
@@ -20,14 +22,12 @@ export default class PlayerDeathState extends PlayerBaseState {
     }
     drawImage(currPlayer) {
         const death = AssetManager.getNumberedImage('player_death', this.animationStage);
-        drawImage({
-            img: death,
+        const imageSize = Box.parse({
             x: currPlayer.centerPosition.x,
             y: currPlayer.centerPosition.y,
-            width: death.width * GameSettings.GAME.GAME_SCALE,
-            height: death.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-            mirrored: getFaceDirection(currPlayer.lookAngle) === 'left',
+            w: death.width * GameSettings.GAME.GAME_SCALE,
+            h: death.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(death, imageSize, true, DirectionHelper.getFaceDirection(currPlayer.lookAngle) === 'left');
     }
 }

@@ -1,12 +1,13 @@
 import JudgementBaseState from './JudgementBaseState.js';
 import Game from '../../../game/Game.js';
 import JudgementBomb from '../JudgementBomb.js';
-import { drawImage, drawMirroredY } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
-import { getRandomValue } from '../../../../helper/randomHelper.js';
-import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import AudioPlayer from '../../../../../audio/AudioPlayer.js';
-import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import RandomHelper from '../../../utility/helper/RandomHelper.js';
+import AudioManager from '../../../utility/manager/AudioManager.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
 export default class JudgementBombState extends JudgementBaseState {
     constructor() {
         super();
@@ -28,14 +29,12 @@ export default class JudgementBombState extends JudgementBaseState {
         this.finished = false;
         this.playedSpawnAudio = false;
         this.playedSmashAudio = false;
-        this.startAngle = getRandomValue({
-            randomValue: Math.PI * 2,
-        });
+        this.startAngle = RandomHelper.randomValue(0, Math.PI * 2);
     }
     drawImage(currJudgement) {
         if (!this.finished) {
             this.drawNormal(currJudgement);
-            return; //TODO ADA INI
+            return;
         }
         if (!this.isEnemyAboutToExplode()) {
             this.animationStage = 1;
@@ -52,7 +51,7 @@ export default class JudgementBombState extends JudgementBaseState {
                 position: player.centerPosition,
                 angle: this.startAngle + (this.attackCount * Math.PI) / 3,
             });
-            AudioPlayer.getInstance().playAudio('boss/bomb_summon.wav');
+            AudioManager.playAudio('boss/bomb_summon.wav');
             this.number = 0;
             this.attackCount += 1;
         }
@@ -63,10 +62,7 @@ export default class JudgementBombState extends JudgementBaseState {
                     enemy.spawning = false;
                 }
             });
-            currJudgement.position = {
-                x: 1000,
-                y: 600,
-            };
+            currJudgement.position = new Vector(1000, 600);
             this.attackCount += 1;
         }
         if (backgroundOpacity <= 0.05 && this.attackCount >= this.maxAttackCount + 1) {
@@ -75,14 +71,14 @@ export default class JudgementBombState extends JudgementBaseState {
         }
         if (backgroundOpacity === 1 && this.finished && this.checkCounter(7)) {
             if (this.animationStage === 2 && !this.playedSpawnAudio) {
-                AudioPlayer.getInstance().playAudio('boss/spawn.wav');
+                AudioManager.playAudio('boss/spawn.wav');
                 this.playedSpawnAudio = true;
             }
             this.animationStage += 1;
             this.number = 0;
         }
         if (this.animationStage === 14 && !this.playedSmashAudio) {
-            AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
+            AudioManager.playAudio('boss/smash_ground.wav');
             this.playedSmashAudio = true;
         }
         if (this.animationStage === 21 && this.finished) {
@@ -90,33 +86,27 @@ export default class JudgementBombState extends JudgementBaseState {
         }
     }
     drawNormal(currJudgement) {
-        const judgementMove = getNumberedImage('judgement_move', 1);
+        const judgementMove = AssetManager.getNumberedImage('judgement_move', 1);
         const { backgroundOpacity } = Game.getInstance();
         Game.getInstance().setTransparency(backgroundOpacity);
-        drawMirroredY({
-            img: judgementMove,
-            position: {
-                x: currJudgement.position.x,
-                y: currJudgement.position.y,
-            },
-            width: judgementMove.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementMove.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-            mirrored: getFaceDirection(currJudgement.angle) === 'left',
+        const imageSize = Box.parse({
+            x: currJudgement.position.x,
+            y: currJudgement.position.y,
+            w: judgementMove.width * GameSettings.GAME.GAME_SCALE,
+            h: judgementMove.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawMirroredY(judgementMove, imageSize, true);
         Game.getInstance().setTransparency(1);
     }
     drawSpawn(currJudgement) {
-        console.log(this.animationStage);
-        const judgementSpawn = getNumberedImage('judgement_spawn', this.animationStage);
-        drawImage({
-            img: judgementSpawn,
+        const judgementSpawn = AssetManager.getNumberedImage('judgement_spawn', this.animationStage);
+        const imageSize = Box.parse({
             x: currJudgement.position.x,
             y: currJudgement.position.y,
-            width: judgementSpawn.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementSpawn.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
+            w: judgementSpawn.width * GameSettings.GAME.GAME_SCALE,
+            h: judgementSpawn.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(judgementSpawn, imageSize, true);
     }
     isEnemyAboutToExplode() {
         const { bossEntities } = Game.getInstance().enemyManager;
@@ -127,11 +117,10 @@ export default class JudgementBombState extends JudgementBaseState {
         });
     }
     backgroundHandler() {
-        const { deltaTime } = Game.getInstance();
         if (this.finished) {
-            Game.getInstance().brightenBackground(0.05 * deltaTime);
+            Game.getInstance().brightenBackground(0.05 * Game.deltaTime);
             return;
         }
-        Game.getInstance().darkenBackground(0.05 * deltaTime);
+        Game.getInstance().darkenBackground(0.05 * Game.deltaTime);
     }
 }

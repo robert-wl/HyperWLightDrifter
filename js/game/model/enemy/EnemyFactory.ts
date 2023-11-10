@@ -3,10 +3,13 @@ import GameSettings from '../../constants.js';
 import HitBoxComponent from '../utility/HitBoxComponent.js';
 import Observable from '../utility/Observable.js';
 import CrystalBrute from './crystalBrute/CrystalBrute.js';
-import { getRandomBoolean } from '../../helper/randomHelper.js';
-import { Vector } from '../utility/enums/Vector.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import Judgement from './judgement/Judgement.js';
 import JudgementBomb from './judgement/JudgementBomb.js';
+import JudgementBullet from './judgement/JudgementBullet.js';
+import RandomHelper from '../utility/helper/RandomHelper.js';
+import { PolarVector } from '../utility/interfaces/PolarVector.js';
+import JudgementLaser from './judgement/JudgementLaser.js';
 
 export default class EnemyFactory {
     private enemyObserver: Observable;
@@ -35,7 +38,7 @@ export default class EnemyFactory {
     }
 
     public generateEnemy(position: Vector) {
-        if (getRandomBoolean(GameSettings.GAME.FOREST_STAGE.SPIDER_SPAWN_CHANCE)) {
+        if (RandomHelper.getRandomBoolean(GameSettings.GAME.FOREST_STAGE.SPIDER_SPAWN_CHANCE)) {
             this.generateCrystalSpider(position);
             return;
         }
@@ -57,5 +60,30 @@ export default class EnemyFactory {
         const judgementBomb = new JudgementBomb(position, WIDTH, HEIGHT, hitbox, MAX_HEALTH, angle, OFFSET, LIFETIME, this.enemyObserver, this.attackObserver);
 
         this.enemyObserver.notify('spawnBossEntity', judgementBomb);
+    }
+
+    public generateBossBullet(position: Vector, angle: number) {
+        const { WIDTH, HEIGHT, MAX_HEALTH } = GameSettings.GAME.ENEMY.JUDGEMENT_BULLET;
+
+        const hitbox = new HitBoxComponent(-WIDTH / 2, -HEIGHT / 2, 0, 0);
+        const lifetime = RandomHelper.randomValue(200, 200);
+
+        const speed = RandomHelper.randomValue(5, 1);
+        const velocity = new PolarVector(speed, angle);
+
+        const judgementBullet = new JudgementBullet(position, WIDTH, HEIGHT, hitbox, MAX_HEALTH, velocity, lifetime, this.enemyObserver, this.attackObserver);
+
+        this.enemyObserver.notify('spawnBossEntity', judgementBullet);
+    }
+
+    public generateBossLaser(position: Vector, angle: number) {
+        const { WIDTH, HEIGHT, MAX_HEALTH, SPEED, MAX_LIFETIME } = GameSettings.GAME.ENEMY.JUDGEMENT_LASER;
+
+        const hitbox = new HitBoxComponent(-WIDTH / 2, -HEIGHT / 2, 0, 0);
+        const velocity = new PolarVector(SPEED, angle);
+
+        const judgementLaser = new JudgementLaser(position, WIDTH, HEIGHT, hitbox, MAX_HEALTH, velocity, MAX_LIFETIME, this.enemyObserver, this.attackObserver);
+
+        this.enemyObserver.notify('spawnBossEntity', judgementLaser);
     }
 }

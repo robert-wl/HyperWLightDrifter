@@ -23,23 +23,26 @@ export default class LoadingModal extends Modal {
     }
 
     protected handleEvent(): void {
-        this.eventEmitter.subscribe(({ event, data }) => {
-            if (event === 'loadingModal:open') {
-                this.open();
-                return;
-            }
-            if (event === 'loadingModal:close') {
-                this.close();
-                return;
-            }
-            if (event === 'loadingModal:editText') {
-                this.editText(data);
-                return;
-            }
-            if (event === 'loadingModal:editCounter') {
-                this.editCounter(data);
-                return;
-            }
-        });
+        this.eventEmitter.unsubscribe(this.eventFunction);
+        this.eventEmitter.subscribe(this.eventFunction);
     }
+
+    private eventFunction = ({ event, data }) => {
+        if (event === 'loadingModal:open') {
+            this.open();
+            return;
+        }
+        if (event === 'loadingModal:close') {
+            this.close();
+            return;
+        }
+        if (event === 'loadingModal:editText') {
+            this.editText(data);
+            return;
+        }
+        if (event === 'loadingModal:editCounter') {
+            this.editCounter(data);
+            return;
+        }
+    };
 }

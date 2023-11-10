@@ -1,11 +1,12 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
-import Game from '../../game/Game.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
-import { getRandomValue } from '../../../helper/randomHelper.js';
 import Player from '../Player.js';
-import AssetManager from '../../utility/AssetManager.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../utility/helper/DirectionHelper.js';
+import RandomHelper from '../../utility/helper/RandomHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class PlayerMoveState extends PlayerBaseState {
     private direction: string;
@@ -23,21 +24,14 @@ export default class PlayerMoveState extends PlayerBaseState {
         this.advanceAnimationStage(4, 12);
 
         if (this.animationStage % 6 === 0) {
-            const randomValue = getRandomValue({
-                initialValue: 1,
-                randomValue: 2,
-                rounded: true,
-            });
+            const randomValue = RandomHelper.randomValue(1, 2, true);
 
-            const { audio } = Game.getInstance();
-            audio.playAudio('player/footstep_forest.wav', randomValue);
+            AudioManager.playAudio('player/footstep_forest.wav', randomValue);
         }
 
         currPlayer.regenerateStamina();
 
-        const { direction, playerDirection } = getMoveDirection({
-            currPlayer: currPlayer,
-        });
+        const { direction, playerDirection } = DirectionHelper.getMoveDirection(currPlayer);
 
         this.direction = direction;
 
@@ -75,14 +69,14 @@ export default class PlayerMoveState extends PlayerBaseState {
             moveImage = this.getIdleImages(currPlayer);
         }
 
-        drawImage({
-            img: moveImage,
+        const imageSize = Box.parse({
             x: currPlayer.centerPosition.x,
             y: currPlayer.centerPosition.y,
-            width: moveImage.width * GameSettings.GAME.GAME_SCALE,
-            height: moveImage.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
+            w: moveImage.width * GameSettings.GAME.GAME_SCALE,
+            h: moveImage.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(moveImage, imageSize, true);
     }
 
     getIdleImages(currPlayer: Player): HTMLImageElement {

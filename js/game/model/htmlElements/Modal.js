@@ -1,5 +1,4 @@
-// @ts-ignore
-import AudioPlayer from '../../../audio/AudioPlayer.js';
+import AudioManager from '../utility/manager/AudioManager.js';
 export default class Modal {
     constructor(modal, eventEmitter) {
         this._modal = modal;
@@ -14,11 +13,7 @@ export default class Modal {
     open() {
         var _a;
         (_a = this._modal) === null || _a === void 0 ? void 0 : _a.css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '100%');
-        AudioPlayer.getInstance()
-            .playSound({
-            sound: 'menu/action.wav',
-        })
-            .then();
+        AudioManager.playAudio('menu/action.wav');
     }
     toggle() {
         if (this._modal.css('display') === 'none') {

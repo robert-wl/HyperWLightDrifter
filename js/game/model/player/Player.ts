@@ -8,21 +8,22 @@ import Game from '../game/Game.js';
 import renderShadow from '../../helper/renderer/shadow.js';
 import PlayerAimingState from './state/PlayerAimingState.js';
 import PlayerHurtState from './state/PlayerHurtState.js';
-import playerEffectsHandler from '../../helper/player/playerEffectsHelper.js';
 import PlayerThrowingState from './state/PlayerThrowingState.js';
 import GameSettings from '../../constants.js';
-import { getHorizontalValue, getVerticalValue } from '../../helper/distanceHelper.js';
-import { checkCollision } from '../../helper/collision/playerCollision.js';
 import PlayerSpawnState from './state/PlayerSpawnState.js';
 import PlayerDeathState from './state/PlayerDeathState.js';
 import PlayerInElevatorState from './state/PlayerInElevatorState.js';
 import Observable from '../utility/Observable.js';
 import HitBoxComponent from '../utility/HitBoxComponent.js';
 import Collider from '../collideable/Collider.js';
-import { getAngle } from '../../helper/angleHelper.js';
-import { Vector } from '../utility/enums/Vector.js';
-import { Box } from '../utility/enums/Box.js';
+import { Vector } from '../utility/interfaces/Vector.js';
+import { Box } from '../utility/interfaces/Box.js';
 import InteractionBar from '../interactables/InteractionBar.js';
+import { PolarVector } from '../utility/interfaces/PolarVector.js';
+import DistanceHelper from '../utility/helper/DistanceHelper.js';
+import AngleHelper from '../utility/helper/AngleHelper.js';
+import AudioManager from '../utility/manager/AudioManager.js';
+import { Outfit } from '../utility/enums/Outfit.js';
 
 export default class Player {
     public currState: PlayerBaseState;
@@ -60,10 +61,10 @@ export default class Player {
     private _immunity: number;
     private _projectiles: any[];
     private _playerDefault: any;
-    private _outfit: string;
+    private _outfit: Outfit;
     private _inputEventEmitter: Observable;
     private _interactionBar: InteractionBar;
-    private readonly maxhealth: number;
+    private _maxhealth: number;
     private _keys: string[];
     private _clicks: string[];
     private _attackObserver: Observable;
@@ -71,7 +72,7 @@ export default class Player {
 
     public constructor(inputEventEmitter: Observable) {
         const { player: playerDefault } = GameSettings;
-        this.maxhealth = playerDefault.MAX_HEALTH;
+        this._maxhealth = playerDefault.MAX_HEALTH;
         this._health = playerDefault.MAX_HEALTH;
         this._healthPack = playerDefault.MAX_HEALTHPACKS;
         this._stamina = playerDefault.MAX_STAMINA;
@@ -107,7 +108,7 @@ export default class Player {
         this._healing = 0;
         this._immunity = playerDefault.MAX_IMMUNITY;
         this._projectiles = [];
-        this._outfit = 'default';
+        this._outfit = Outfit.default;
         this._inputEventEmitter = inputEventEmitter;
         this._interactionBar = new InteractionBar(this, inputEventEmitter);
         this._keys = [];
@@ -116,6 +117,14 @@ export default class Player {
         this._isBelowGround = false;
 
         this.eventHandler();
+    }
+
+    get maxhealth(): number {
+        return this._maxhealth;
+    }
+
+    set maxhealth(value: number) {
+        this._maxhealth = value;
     }
 
     get isBelowGround(): boolean {
@@ -230,11 +239,11 @@ export default class Player {
         this._inputEventEmitter = value;
     }
 
-    get outfit(): string {
+    get outfit(): Outfit {
         return this._outfit;
     }
 
-    set outfit(value: string) {
+    set outfit(value: Outfit) {
         this._outfit = value;
     }
 
@@ -372,9 +381,7 @@ export default class Player {
         this.currState.updateState(this);
 
         if (this.currState !== this.deathState) {
-            playerEffectsHandler({
-                currPlayer: this,
-            });
+            this.playerEffectsHandler();
         }
 
         if (this.currState !== this.inElevatorState) {
@@ -383,17 +390,14 @@ export default class Player {
 
         this.currState.drawImage(this);
 
-        playerEffectsHandler({
-            currPlayer: this,
-            clear: true,
-        });
+        this.playerEffectsHandler(true);
 
         this._projectiles.forEach((projectile) => projectile.update());
 
         this.heal();
 
         this._interactionBar.update();
-        if (Game.getInstance().debug) {
+        if (Game.debug) {
             this.renderDebugBox();
         }
     }
@@ -422,21 +426,14 @@ export default class Player {
             this.switchState(this.hurtState);
         }
 
-        const { movementDeltaTime } = Game.getInstance();
-        this._velocity.x += getHorizontalValue({
-            magnitude: 5 * movementDeltaTime,
-            angle: angle + Math.PI,
-        });
-        this._velocity.y += getVerticalValue({
-            magnitude: 5 * movementDeltaTime,
-            angle: angle + Math.PI,
-        });
+        const pVector = new PolarVector(5, angle);
+        this._velocity.x += DistanceHelper.getHorizontalValue(pVector);
+        this._velocity.y += DistanceHelper.getVerticalValue(pVector);
     }
 
     public regenerateStamina() {
-        const { deltaTime } = Game.getInstance();
         if (this._stamina < 100) {
-            this._stamina += 0.5 * deltaTime;
+            this._stamina += 0.5 * Game.deltaTime;
         }
     }
 
@@ -470,15 +467,13 @@ export default class Player {
     }
 
     public moveHandler(colliders: Collider[]) {
-        const { movementDeltaTime } = Game.getInstance();
-
-        this._velocity.x = this._velocity.x * (1 - this._friction * movementDeltaTime);
-        this._velocity.y = this._velocity.y * (1 - this._friction * movementDeltaTime);
+        this._velocity.x = this._velocity.x * (1 - this._friction * Game.movementDeltaTime);
+        this._velocity.y = this._velocity.y * (1 - this._friction * Game.movementDeltaTime);
 
         let { x, y, w, h } = this._hitbox.getPoints(this._centerPosition, this._width, this._height);
 
         if (
-            checkCollision({
+            this.checkCollision({
                 colliders,
                 x: x + this._velocity.x,
                 y: y,
@@ -490,7 +485,7 @@ export default class Player {
         }
 
         if (
-            checkCollision({
+            this.checkCollision({
                 colliders,
                 x: x,
                 y: y + this._velocity.y,
@@ -537,32 +532,39 @@ export default class Player {
         }
     }
 
+    private checkCollision({ colliders, x, y, w, h }) {
+        return colliders.every((c) => {
+            return c.checkCollision({
+                x: x,
+                y: y,
+                w: w,
+                h: h,
+            });
+        });
+    }
+
     private updateBombs() {
         if (this._bombs > 2) {
             return;
         }
 
-        const { deltaTime } = Game.getInstance();
-        this._bombs += 0.001 * deltaTime;
+        this._bombs += 0.001 * Game.deltaTime;
     }
 
     private updateCounter() {
-        const { deltaTime } = Game.getInstance();
         if (this._counter >= 1) {
             this._counter = 0;
         }
 
-        this._counter += deltaTime;
+        this._counter += Game.deltaTime;
     }
 
     private heal() {
-        const { keys } = Game.getInstance();
-
-        if (!keys.includes('q')) {
+        if (!this.keys.includes('q')) {
             return;
         }
 
-        keys.splice(keys.indexOf('q'), 1);
+        this.keys.splice(this.keys.indexOf('q'), 1);
 
         if (this._healthPack <= 0) {
             return;
@@ -600,7 +602,7 @@ export default class Player {
                 const playerX = this._centerPosition.x * GameSettings.GAME.GAME_SCALE;
                 const playerY = this._centerPosition.y * GameSettings.GAME.GAME_SCALE;
 
-                this._lookAngle = getAngle({
+                this._lookAngle = AngleHelper.getAngle({
                     x: data.x - playerX,
                     y: data.y - playerY,
                 });
@@ -613,8 +615,11 @@ export default class Player {
                 return;
             }
             if (event === 'attackArea') {
-                this.playerAttackCollision(data);
+                this.playerAttackCollisionArea(data);
                 return;
+            }
+            if (event === 'playerHitArea') {
+                this.bullets += 1;
             }
         });
     }
@@ -674,5 +679,53 @@ export default class Player {
         const playerY1 = this.centerPosition.y + this.hitbox.yOffset;
         const playerY2 = this.centerPosition.y + this.hitbox.yOffset + this.height - this.hitbox.hOffset;
         return enemyX1 < playerX2 && enemyX2 > playerX1 && enemyY1 < playerY2 && enemyY2 > playerY1;
+    }
+
+    private playerEffectsHandler(clear = false) {
+        if (clear) {
+            this.clearFilter();
+            return;
+        }
+        this.damagedHandler();
+        this.healingHandler();
+    }
+
+    private damagedHandler() {
+        if (this.immunity < 50) {
+            this.immunity += Game.deltaTime;
+        }
+        if (this.immunity <= 5) {
+            Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');
+        }
+    }
+
+    private healingHandler() {
+        if (this.healing === 6) {
+            AudioManager.playAudio('player/medkit/use.wav');
+        }
+        if (this.healing > 0) {
+            this.healing -= Game.deltaTime;
+        }
+
+        if (this.healing > 0) {
+            const { ctx } = Game.getInstance();
+
+            Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%)');
+
+            ctx.strokeStyle = 'rgb(0, 255, 0)';
+            ctx.lineWidth = (this.healing / 3) * 3;
+            ctx.save();
+            ctx.translate(this.centerPosition.x - 15, this.centerPosition.y - 30);
+            ctx.rotate(Math.PI / 4);
+
+            ctx.strokeRect(10, -15, this.width - this.hitbox.xOffset, this.width - this.hitbox.xOffset);
+            ctx.restore();
+        }
+    }
+
+    private clearFilter() {
+        if (this.immunity <= 5 || this.healing >= 0) {
+            Game.getInstance().setFilter('none');
+        }
     }
 }

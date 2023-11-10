@@ -1,4 +1,4 @@
-import { CombinedPiece } from '../../utility/enums/Piece';
+import { CombinedPiece } from '../../utility/interfaces/Piece';
 
 export default class SetPiece {
     private _pieces: CombinedPiece[];

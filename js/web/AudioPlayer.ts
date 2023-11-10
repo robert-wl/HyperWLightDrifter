@@ -1,4 +1,4 @@
-import AudioVisualizer from './AudioVisualizer';
+import AudioVisualizer from './AudioVisualizer.js';
 
 interface AudioPlayerConstructor {
     audioVisualizer: AudioVisualizer;

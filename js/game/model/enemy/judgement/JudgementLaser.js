@@ -1,96 +1,43 @@
 import Game from '../../game/Game.js';
 import Enemy from '../Enemy.js';
-import { getHorizontalValue, getVerticalValue } from '../../../helper/distanceHelper.js';
-import { getImage } from '../../../helper/assets/assetGetter.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
-import playerCollision from '../../../helper/collision/playerCollision.js';
-
+import AssetManager from '../../utility/manager/AssetManager.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 export default class JudgementLaser extends Enemy {
-    constructor({ x, y, velocity, lifetime }) {
-        super({
-            x,
-            y,
-            hitbox: {
-                x: 0,
-                y: 0,
-                w: 0,
-                h: 0,
-            },
-            w: 20,
-            h: 20,
-            health: 1,
-            maxHealth: 1,
-        });
+    constructor(position, width, height, hitbox, maxHealth, velocity, lifetime, enemyObserver, attackObserver) {
+        super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
         this.velocity = velocity;
-        this.maxLifetime = lifetime;
         this.lifetime = lifetime;
     }
-
-    static generate({ x, y, angle }) {
-        const newJudgementLaser = new JudgementLaser({
-            x,
-            y,
-            velocity: {
-                value: 12.5,
-                angle: angle,
-            },
-            lifetime: 300,
-        });
-
-        const { bossEntities } = Game.getInstance().enemyManager;
-        bossEntities.push(newJudgementLaser);
-    }
-
-    damage(_) {}
-
+    handleDamage() { }
     knockback() {
         this.velocity.value *= 3;
     }
-
     update() {
-        const { deltaTime } = Game.getInstance();
-        this.lifetime -= deltaTime;
-
-        this.position.x += getHorizontalValue({
-            angle: this.velocity.angle,
-            magnitude: this.velocity.value * deltaTime,
-        });
-
-        this.position.y += getVerticalValue({
-            angle: this.velocity.angle,
-            magnitude: this.velocity.value * deltaTime,
-        });
-
-        playerCollision({
-            position: {
-                x: this.position.x,
-                y: this.position.y,
-            },
-            angle: this.velocity.angle,
-        });
-
+        this.lifetime -= Game.deltaTime;
+        const pVector = new PolarVector(this.velocity.value * Game.deltaTime, this.velocity.angle);
+        this.position.x += DistanceHelper.getHorizontalValue(pVector);
+        this.position.y += DistanceHelper.getVerticalValue(pVector);
+        const box = new Box(this.position.x, this.position.y, this.width, this.height);
+        this.attackObserver.notify('attackArea', box);
         this.render();
-
         if (this.lifetime <= 0) {
             this.kill();
         }
     }
-
     kill() {
-        const { bossEntities } = Game.getInstance().enemyManager;
-        bossEntities.splice(bossEntities.indexOf(this), 1);
+        this.enemyObserver.notify('clearBossEntity', this);
     }
-
     render() {
-        const laserBullet = getImage('judgement_laser_bullet');
-
-        drawImage({
-            img: laserBullet,
+        const laserBullet = AssetManager.getImage('judgement_laser_bullet');
+        const imageSize = Box.parse({
             x: this.position.x,
             y: this.position.y,
-            width: laserBullet.width,
-            height: laserBullet.height,
-            translate: true,
+            w: laserBullet.width,
+            h: laserBullet.height,
         });
+        DrawHelper.drawImage(laserBullet, imageSize, true);
     }
 }

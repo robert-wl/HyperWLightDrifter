@@ -7,19 +7,15 @@ import CrystalBruteDieState from './state/CrystalBruteDieState.js';
 import CrystalBruteMoveState from './state/CrystalBruteMoveState.js';
 import HealthBar from '../healthBar/HealthBar.js';
 import CrystalBruteIdleState from './state/CrystalBruteIdleState.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
 export default class CrystalBrute extends Enemy {
     constructor(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
         this._speed = 3;
         this._angle = 0;
         this.attack = [];
-        this.healthBar = HealthBar.generate({
-            position: this.position,
-            offset: {
-                x: 5,
-                y: 75,
-            },
-        });
+        const offset = new Vector(5, 75);
+        this.healthBar = new HealthBar(offset, this.maxHealth);
         this.currState = new CrystalBruteBaseState();
         this.attackState = new CrystalBruteAttackState();
         this.moveState = new CrystalBruteMoveState();
@@ -46,8 +42,7 @@ export default class CrystalBrute extends Enemy {
     }
     update() {
         this.knockback();
-        const { debug, deltaTime } = Game.getInstance();
-        if (debug) {
+        if (Game.debug) {
             this.debugMode();
         }
         this.currState.updateState(this);
@@ -80,7 +75,7 @@ export default class CrystalBrute extends Enemy {
         this.currState.drawImage(this);
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('none');
-            this.damaged -= deltaTime;
+            this.damaged -= Game.deltaTime;
         }
     }
 }

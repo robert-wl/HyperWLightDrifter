@@ -1,91 +1,94 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import JudgementBaseState from './JudgementBaseState.js';
 import Game from '../../../game/Game.js';
-import JudgementLaser from '../JudgementLaser.js';
-import { drawImage } from '../../../../helper/renderer/drawer.js';
-import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
 import GameSettings from '../../../../constants.js';
-import { getAngle } from '../../../../helper/angleHelper.js';
-import AudioPlayer from '../../../../../audio/AudioPlayer.js';
-import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
-
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../../utility/helper/DirectionHelper.js';
+import AudioManager from '../../../utility/manager/AudioManager.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
+import AngleHelper from '../../../utility/helper/AngleHelper.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
 export default class JudgementLaserState extends JudgementBaseState {
-    async enterState(currJudgement) {
-        super.enterState(currJudgement);
-        this.attackCount = 0;
+    constructor() {
+        super();
         this.attacking = 8;
         this.attackingNumber = 0;
         this.attackAmount = 0;
         this.angleConstant = 0;
-        this.attackAngle = currJudgement.angle;
-
-        this.audio = await AudioPlayer.getInstance().playAudio('boss/laser.wav');
+        this.attackAngle = 0;
+        this.audio = new Audio();
     }
-
-    drawImage(currJudgement) {
-        const judgementLaser = getNumberedImage('judgement_laser', this.animationStage);
-
-        drawImage({
-            img: judgementLaser,
-            x: currJudgement.position.x,
-            y: currJudgement.position.y,
-            width: judgementLaser.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementLaser.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-            mirrored: getFaceDirection(currJudgement.angle) === 'left',
+    enterState(currJudgement) {
+        const _super = Object.create(null, {
+            enterState: { get: () => super.enterState }
+        });
+        return __awaiter(this, void 0, void 0, function* () {
+            _super.enterState.call(this, currJudgement);
+            this.attacking = 8;
+            this.attackingNumber = 0;
+            this.attackAmount = 0;
+            this.angleConstant = 0;
+            this.attackAngle = currJudgement.angle;
+            this.audio = yield AudioManager.playAudio('boss/laser.wav');
         });
     }
-
+    drawImage(currJudgement) {
+        const judgementLaser = AssetManager.getNumberedImage('judgement_laser', this.animationStage);
+        const imageSize = Box.parse({
+            x: currJudgement.position.x,
+            y: currJudgement.position.y,
+            w: judgementLaser.width * GameSettings.GAME.GAME_SCALE,
+            h: judgementLaser.height * GameSettings.GAME.GAME_SCALE,
+        });
+        DrawHelper.drawImage(judgementLaser, imageSize, true, DirectionHelper.getFaceDirection(currJudgement.angle) === 'left');
+    }
     updateState(currJudgement) {
         super.updateState(currJudgement);
-
         this.advanceAnimationStage(12);
-
-        const { player, deltaTime } = Game.getInstance();
-        this.attackingNumber += deltaTime;
-        this.angleConstant += deltaTime;
-        this.attackAmount += deltaTime;
-
+        const { player } = Game.getInstance();
+        this.attackingNumber += Game.deltaTime;
+        this.angleConstant += Game.deltaTime;
+        this.attackAmount += Game.deltaTime;
         if (this.animationStage === 8) {
-            this.attackAngle = getAngle({
+            this.attackAngle = AngleHelper.getAngle({
                 x: player.centerPosition.x - currJudgement.position.x,
                 y: player.centerPosition.y - (currJudgement.position.y + 40),
             });
-
             currJudgement.angle = this.attackAngle;
         }
-
         if (this.attacking < 8 && this.animationStage < 13 && this.attackAmount >= 1) {
-            JudgementLaser.generate({
-                x: currJudgement.position.x + this.getAttackOffset(currJudgement),
-                y: currJudgement.position.y + 60,
-                angle: this.getAttackAngle(currJudgement.angle),
-            });
+            const position = new Vector(currJudgement.position.x + this.getAttackOffset(currJudgement), currJudgement.position.y + 60);
+            const angle = this.getAttackAngle(currJudgement.angle);
+            currJudgement.enemyObserver.notify('spawnBossLaser', { position, angle });
             this.attackAmount = 0;
         }
-
         if (this.animationStage === 9 && this.attackingNumber >= 14) {
             this.attacking -= 1;
             this.attackingNumber = 0;
         }
-
         if (this.animationStage === 13 && this.attacking > 0) {
             this.animationStage -= 4;
         }
-
         if (this.animationStage >= 14) {
             currJudgement.switchState(currJudgement.moveState);
         }
     }
-
     getAttackAngle(angle) {
         return angle + (Math.random() - 0.5) * 0.25 + Math.sin(this.angleConstant * 0.05) * 0.5;
     }
-
     getAttackOffset(currJudgement) {
-        return getFaceDirection(currJudgement.angle) === 'left' ? -60 : 60;
+        return DirectionHelper.getFaceDirection(currJudgement.angle) === 'left' ? -60 : 60;
     }
-
     exitState() {
-        AudioPlayer.getInstance().stop(this.audio);
+        AudioManager === null || AudioManager === void 0 ? void 0 : AudioManager.stop(this.audio);
     }
 }

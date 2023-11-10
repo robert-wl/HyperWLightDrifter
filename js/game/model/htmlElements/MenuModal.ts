@@ -14,23 +14,29 @@ export default class MenuModal extends Modal {
         this.handleEvent();
     }
 
-    protected handleEvent = () =>
-        this.eventEmitter.subscribe(({ event }) => {
-            if (event === 'menuModal:open') {
-                this.open();
-                return;
-            }
-            if (event === 'menuModal:toggle') {
-                this.toggle();
-            }
-        });
+    protected handleEvent() {
+        this.eventEmitter.unsubscribe(this.eventFunction);
+        this.eventEmitter.subscribe(this.eventFunction);
+    }
+
+    private eventFunction = ({ event }) => {
+        if (event === 'menuModal:open') {
+            this.open();
+            return;
+        }
+        if (event === 'menuModal:toggle') {
+            this.toggle();
+        }
+    };
 
     private handleInteraction() {
+        this.newGameButton.off();
         this.newGameButton.on('mousedown', () => {
             this.eventEmitter.notify('selectionModal:open');
             this.close();
         });
 
+        this.settingsButton.off();
         this.settingsButton.on('mousedown', () => {
             this.eventEmitter.notify('settingsModal:open');
             this.close();

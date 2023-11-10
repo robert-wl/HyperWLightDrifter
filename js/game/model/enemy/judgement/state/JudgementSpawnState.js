@@ -1,61 +1,53 @@
 import JudgementBaseState from './JudgementBaseState.js';
-import { drawImage } from '../../../../helper/renderer/drawer.js';
 import GameSettings from '../../../../constants.js';
 import Game from '../../../game/Game.js';
-import AudioPlayer from '../../../../../audio/AudioPlayer.js';
-import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
-
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import AudioManager from '../../../utility/manager/AudioManager.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
 export default class JudgementSpawnState extends JudgementBaseState {
-    firstSpawn = true;
-
+    constructor() {
+        super();
+        this.firstSpawn = true;
+        this.playedSmash = false;
+    }
     updateState(currJudgement) {
-        super.updateState();
+        super.updateState(currJudgement);
         const { camera } = Game.getInstance();
-
         this.advanceAnimationStage(7);
-
         if (this.checkCounter(6) && this.animationStage === 16) {
             camera.setShakeCamera({
                 duration: 200,
                 angle: Math.PI / 2,
             });
         }
-
         if (this.animationStage === 14 && !this.playedSmash) {
-            AudioPlayer.getInstance().playAudio('boss/smash_ground.wav');
+            AudioManager.playAudio('boss/smash_ground.wav');
             this.playedSmash = true;
         }
-
         if (this.animationStage === 22) {
             currJudgement.handleSwitchState();
         }
     }
-
     drawImage(currJudgement) {
-        const judgementSpawn = getNumberedImage('judgement_spawn', this.animationStage);
-
-        drawImage({
-            img: judgementSpawn,
+        const judgementSpawn = AssetManager.getNumberedImage('judgement_spawn', this.animationStage);
+        const imageSize = Box.parse({
             x: currJudgement.position.x,
             y: currJudgement.position.y,
-            width: judgementSpawn.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementSpawn.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
+            w: judgementSpawn.width * GameSettings.GAME.GAME_SCALE,
+            h: judgementSpawn.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(judgementSpawn, imageSize, true);
     }
-
-    enterState() {
-        super.enterState();
+    enterState(currJudgement) {
+        super.enterState(currJudgement);
         this.playedSmash = false;
-
-        AudioPlayer.getInstance().playAudio('boss/spawn.wav');
+        AudioManager.playAudio('boss/spawn.wav');
     }
-
-    exitState() {
+    exitState(currJudgement) {
         if (this.firstSpawn) {
-            AudioPlayer.getInstance().playAudio('boss/music.wav', null, true);
+            AudioManager.playAudio('boss/music.wav', null, true);
         }
-
         this.firstSpawn = false;
     }
 }

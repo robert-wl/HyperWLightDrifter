@@ -1,10 +1,11 @@
 import Modal from './Modal.js';
 import Observable from '../utility/Observable.js';
 import GameSettings from '../../constants.js';
+import { Outfit } from '../utility/enums/Outfit.js';
 
 export default class SelectionModal extends Modal {
     protected imageList: string[];
-    protected outfit: string[];
+    protected outfit: Outfit[];
     protected selectedImage = 0;
     protected playButton: JQuery;
     protected cancelButton: JQuery;
@@ -18,33 +19,39 @@ export default class SelectionModal extends Modal {
         this.outfit = GameSettings.GAME.MAIN_MENU.SELECTION.OUTFIT;
         this.playButton = $('#play-button');
         this.cancelButton = $('#cancel-button');
-        this.arrowLeft = $('#arrow-left');
-        this.arrowRight = $('#arrow-right');
-        this.imagePreview = $('#image-preview');
+        this.arrowLeft = $('#image-arrow-left');
+        this.arrowRight = $('#image-arrow-right');
+        this.imagePreview = $('#player-preview');
 
         this.handleInteraction();
         this.handleEvent();
     }
 
     protected handleEvent(): void {
-        this.eventEmitter.subscribe(({ event }) => {
-            if (event === 'selectionModal:open') {
-                this.open();
-            }
-        });
+        this.eventEmitter.unsubscribe(this.eventFunction);
+        this.eventEmitter.subscribe(this.eventFunction);
     }
 
+    private eventFunction = ({ event }) => {
+        if (event === 'selectionModal:open') {
+            this.open();
+        }
+    };
+
     private handleInteraction() {
+        this.cancelButton.off();
         this.cancelButton.on('mousedown', () => {
             this.eventEmitter.notify('menuModal:open');
             this.close();
         });
 
+        this.playButton.off();
         this.playButton.on('mousedown', () => {
             this.eventEmitter.notify('playGame');
             this.close();
         });
 
+        this.arrowLeft.off();
         this.arrowLeft.on('mousedown', () => {
             this.selectedImage -= 1;
 
@@ -57,6 +64,7 @@ export default class SelectionModal extends Modal {
             this.eventEmitter.notify('changeOutfit', this.outfit[this.selectedImage]);
         });
 
+        this.arrowRight.off();
         this.arrowRight.on('mousedown', () => {
             this.selectedImage += 1;
 

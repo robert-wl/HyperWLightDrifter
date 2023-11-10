@@ -1,11 +1,15 @@
 import CrystalSpiderBaseState from './CrystalSpiderBaseState.js';
 import Game from '../../../game/Game.js';
-import { getHorizontalValue, getManhattanDistance, getVerticalValue } from '../../../../helper/distanceHelper.js';
-import { drawImage } from '../../../../helper/renderer/drawer.js';
-import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import { getRandomBoolean } from '../../../../helper/randomHelper.js';
-import { getImage } from '../../../../helper/assets/assetGetter.js';
-import CrystalSpider from '../CrystalSpider';
+import CrystalSpider from '../CrystalSpider.js';
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../../utility/helper/DirectionHelper.js';
+import RandomHelper from '../../../utility/helper/RandomHelper.js';
+import AudioManager from '../../../utility/manager/AudioManager.js';
+import DistanceHelper from '../../../utility/helper/DistanceHelper.js';
+import { PolarVector } from '../../../utility/interfaces/PolarVector.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import GameSettings from '../../../../constants.js';
 
 export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
     private friction: number;
@@ -19,17 +23,15 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
         super.enterState(currSpider);
         this.friction = 0.1;
 
-        const { audio } = Game.getInstance();
-
-        if (getRandomBoolean(0.05)) {
+        if (RandomHelper.getRandomBoolean(0.05)) {
             currSpider.enemyObserver.notify('spawnKey', currSpider.position);
         }
-        audio.playAudio('enemy/crystal_spider/death.wav');
+        AudioManager.playAudio('enemy/crystal_spider/death.wav');
     }
 
     updateState(currSpider: CrystalSpider) {
         const { centerPosition } = Game.getInstance().player;
-        const distance = getManhattanDistance({
+        const distance = DistanceHelper.getManhattanDistance({
             x: currSpider.position.x - centerPosition.x,
             y: currSpider.position.y - centerPosition.y,
         });
@@ -40,30 +42,21 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
     }
 
     drawImage(currSpider: CrystalSpider) {
-        const { deltaTime, movementDeltaTime } = Game.getInstance();
+        currSpider.speed = currSpider.speed * (1 - this.friction) * Game.movementDeltaTime;
 
-        currSpider.speed = currSpider.speed * (1 - this.friction) * movementDeltaTime;
+        const pVector = new PolarVector(currSpider.speed, currSpider.angle);
+        currSpider.position.x += DistanceHelper.getHorizontalValue(pVector);
+        currSpider.position.y += DistanceHelper.getVerticalValue(pVector);
 
-        currSpider.position.x += getHorizontalValue({
-            magnitude: currSpider.speed * deltaTime,
-            angle: currSpider.angle,
-        });
+        const spiderDie = AssetManager.getImage('crystal_spider_die');
 
-        currSpider.position.y += getVerticalValue({
-            magnitude: currSpider.speed * deltaTime,
-            angle: currSpider.angle,
-        });
-
-        const spiderDie = getImage('crystal_spider_die');
-
-        drawImage({
-            img: spiderDie,
+        const imageSize = Box.parse({
             x: currSpider.position.x,
             y: currSpider.position.y,
-            width: currSpider.width,
-            height: currSpider.height,
-            translate: true,
-            mirrored: getFaceDirection(currSpider.angle) === 'left',
+            w: spiderDie.width * GameSettings.GAME.GAME_SCALE,
+            h: spiderDie.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(spiderDie, imageSize, true, DirectionHelper.getFaceDirection(currSpider.angle) === 'left');
     }
 }

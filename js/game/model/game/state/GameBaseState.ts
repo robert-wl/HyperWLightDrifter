@@ -1,4 +1,4 @@
-import Game from '../Game';
+import Game from '../Game.js';
 
 export default class GameBaseState {
     protected number = 0;
@@ -8,9 +8,8 @@ export default class GameBaseState {
     }
 
     public updateState(game: Game) {
-        const { deltaTime } = game;
-        if (deltaTime) {
-            this.number += deltaTime;
+        if (Game.deltaTime) {
+            this.number += Game.deltaTime;
         }
     }
 

@@ -1,16 +1,18 @@
 import CrystalBruteBaseState from './CrystalBruteBaseState.js';
 import Game from '../../../game/Game.js';
-import { getMagnitudeValue } from '../../../../helper/distanceHelper.js';
-import { getImage } from '../../../../helper/assets/assetGetter.js';
-import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import { drawImage } from '../../../../helper/renderer/drawer.js';
-import CrystalBrute from '../CrystalBrute';
+import CrystalBrute from '../CrystalBrute.js';
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../../utility/helper/DirectionHelper.js';
+import DistanceHelper from '../../../utility/helper/DistanceHelper.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import GameSettings from '../../../../constants.js';
 
 export default class CrystalBruteIdleState extends CrystalBruteBaseState {
     updateState(currBrute: CrystalBrute) {
         const { player } = Game.getInstance();
 
-        const distance = getMagnitudeValue({
+        const distance = DistanceHelper.getMagnitude({
             x: player.centerPosition.x - currBrute.position.x,
             y: player.centerPosition.y - currBrute.position.y,
         });
@@ -21,16 +23,15 @@ export default class CrystalBruteIdleState extends CrystalBruteBaseState {
     }
 
     drawImage(currBrute: CrystalBrute) {
-        const bruteIdle = getImage('crystal_brute_idle');
+        const bruteIdle = AssetManager.getImage('crystal_brute_idle');
 
-        drawImage({
-            img: bruteIdle,
+        const imageSize = Box.parse({
             x: currBrute.position.x,
             y: currBrute.position.y,
-            width: currBrute.width,
-            height: currBrute.height,
-            translate: true,
-            mirrored: getFaceDirection(currBrute.angle) === 'left',
+            w: bruteIdle.width * GameSettings.GAME.GAME_SCALE,
+            h: bruteIdle.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(bruteIdle, imageSize, true, DirectionHelper.getFaceDirection(currBrute.angle) === 'left');
     }
 }

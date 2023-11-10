@@ -42,7 +42,8 @@ export default class HTMLHandlers {
         this.modalObservable.notify(event, data);
     }
 
-    private HUDHandler = () =>
+    private HUDHandler = () => {
+        this.HUD.off();
         this.HUD.on('mousedown', () => {
             if (this.selectionModal.isOpen()) {
                 return;
@@ -55,6 +56,7 @@ export default class HTMLHandlers {
             }
             this.modalObservable.notify('menuModal:toggle');
         });
+    };
 
     private eventHandler() {
         this.modalObservable.subscribe(async ({ event, data }) => {

@@ -1,74 +1,59 @@
 import JudgementBaseState from './JudgementBaseState.js';
 import Game from '../../../game/Game.js';
-import { drawImage } from '../../../../helper/renderer/drawer.js';
-import { getHorizontalValue, getMagnitudeValue, getVerticalValue } from '../../../../helper/distanceHelper.js';
-import { getAngle } from '../../../../helper/angleHelper.js';
 import GameSettings from '../../../../constants.js';
-import { getRandomValue } from '../../../../helper/randomHelper.js';
-import { getFaceDirection } from '../../../../helper/collision/directionHandler.js';
-import { getNumberedImage } from '../../../../helper/assets/assetGetter.js';
-
+import AssetManager from '../../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../../utility/helper/DirectionHelper.js';
+import RandomHelper from '../../../utility/helper/RandomHelper.js';
+import DistanceHelper from '../../../utility/helper/DistanceHelper.js';
+import { PolarVector } from '../../../utility/interfaces/PolarVector.js';
+import AngleHelper from '../../../utility/helper/AngleHelper.js';
+import { Box } from '../../../utility/interfaces/Box.js';
+import DrawHelper from '../../../utility/helper/DrawHelper.js';
 export default class JudgementMoveState extends JudgementBaseState {
-    enterState() {
-        super.enterState();
+    constructor() {
+        super();
         this.walkAmount = 0;
-        this.walkTime = getRandomValue({
-            initialValue: 5,
-            randomValue: 10,
-        });
+        this.walkTime = 0;
     }
-
+    enterState(currJudgement) {
+        super.enterState(currJudgement);
+        this.walkAmount = 0;
+        this.walkTime = RandomHelper.randomValue(5, 10);
+    }
     drawImage(currJudgement) {
-        const judgementMove = getNumberedImage('judgement_move', this.animationStage);
-
-        drawImage({
-            img: judgementMove,
+        const judgementMove = AssetManager.getNumberedImage('judgement_move', this.animationStage);
+        const imageSize = Box.parse({
             x: currJudgement.position.x,
             y: currJudgement.position.y,
-            width: judgementMove.width * GameSettings.GAME.GAME_SCALE,
-            height: judgementMove.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-            mirrored: getFaceDirection(currJudgement.angle) === 'left',
+            w: judgementMove.width * GameSettings.GAME.GAME_SCALE,
+            h: judgementMove.height * GameSettings.GAME.GAME_SCALE,
         });
+        DrawHelper.drawImage(judgementMove, imageSize, true, DirectionHelper.getFaceDirection(currJudgement.angle) === 'left');
     }
-
     updateState(currJudgement) {
-        super.updateState();
-
+        super.updateState(currJudgement);
         if (this.checkCounter(15)) {
             this.walkAmount += 1;
         }
-
         this.advanceAnimationStage(15, 4);
-
         if (this.walkTime <= this.walkAmount) {
             currJudgement.handleSwitchState();
         }
-
-        const { player, deltaTime } = Game.getInstance();
+        const { player } = Game.getInstance();
         const { centerPosition } = player;
-
-        const distance = getMagnitudeValue({
+        const distance = DistanceHelper.getMagnitude({
             x: centerPosition.x - currJudgement.position.x,
             y: centerPosition.y - currJudgement.position.y,
         });
-
-        currJudgement.angle = getAngle({
+        currJudgement.angle = AngleHelper.getAngle({
             x: centerPosition.x - currJudgement.position.x,
             y: centerPosition.y - currJudgement.position.y,
         });
-
         if (Math.abs(distance) < 100) {
             currJudgement.angle += Math.PI / 2;
         }
-
-        currJudgement.position.x += getHorizontalValue({
-            magnitude: currJudgement.moveSpeed * deltaTime,
-            angle: currJudgement.angle,
-        });
-        currJudgement.position.y += getVerticalValue({
-            magnitude: currJudgement.moveSpeed * deltaTime,
-            angle: currJudgement.angle,
-        });
+        const pVector = new PolarVector(currJudgement.moveSpeed * Game.deltaTime, currJudgement.angle);
+        currJudgement.position.x += DistanceHelper.getHorizontalValue(pVector);
+        currJudgement.position.y += DistanceHelper.getVerticalValue(pVector);
     }
 }

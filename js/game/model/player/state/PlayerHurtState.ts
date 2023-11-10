@@ -1,11 +1,12 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
-import { getMoveDirection } from '../../../helper/collision/directionHandler.js';
-import { getRandomBoolean } from '../../../helper/randomHelper.js';
-import Game from '../../game/Game.js';
 import Player from '../Player.js';
-import AssetManager from '../../utility/AssetManager.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import DirectionHelper from '../../utility/helper/DirectionHelper.js';
+import RandomHelper from '../../utility/helper/RandomHelper.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class PlayerHurtState extends PlayerBaseState {
     private mirrored: boolean;
@@ -20,8 +21,7 @@ export default class PlayerHurtState extends PlayerBaseState {
 
         this.mirrored = this.mirroredHandler(currPlayer);
 
-        const { audio } = Game.getInstance();
-        audio.playAudio('player/hurt.wav');
+        AudioManager.playAudio('player/hurt.wav');
     }
 
     updateState(currPlayer: Player) {
@@ -43,22 +43,21 @@ export default class PlayerHurtState extends PlayerBaseState {
     drawImage(currPlayer: Player) {
         const playerHurt = AssetManager.getNumberedImage('player_hurt', this.animationStage);
 
-        drawImage({
-            img: playerHurt,
+        const imageSize = Box.parse({
             x: currPlayer.centerPosition.x,
             y: currPlayer.centerPosition.y,
-            width: playerHurt.width * GameSettings.GAME.GAME_SCALE,
-            height: playerHurt.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
-            mirrored: this.mirrored,
+            w: playerHurt.width * GameSettings.GAME.GAME_SCALE,
+            h: playerHurt.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(playerHurt, imageSize, true, this.mirrored);
     }
 
     private mirroredHandler(currPlayer: Player) {
-        const { direction } = getMoveDirection({ currPlayer });
+        const { direction } = DirectionHelper.getMoveDirection(currPlayer);
 
         if (direction === 'w' || direction === 's' || direction === '') {
-            return getRandomBoolean(0.5);
+            return RandomHelper.getRandomBoolean(0.5);
         }
         return direction === 'a';
     }

@@ -1,8 +1,10 @@
 import CrystalSpike from './CrystalSpike.js';
 import Game from '../../game/Game.js';
-import DistanceHelper from '../../utility/DistanceHelper.js';
-import { Vector } from '../../utility/enums/Vector.js';
-import Observable from '../../utility/Observable';
+import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
+import Observable from '../../utility/Observable.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
 
 export default class CrystalAttack {
     private position: Vector;
@@ -26,12 +28,11 @@ export default class CrystalAttack {
     }
 
     update() {
-        const { deltaTime } = Game.getInstance();
-        this.number += deltaTime;
-        this.lifetime += deltaTime;
+        this.number += Game.deltaTime;
+        this.lifetime += Game.deltaTime;
 
         const vector = {
-            value: this.speed * deltaTime,
+            value: this.speed * Game.deltaTime,
             angle: this.angle,
         } as PolarVector;
 
@@ -43,9 +44,7 @@ export default class CrystalAttack {
             this.spikes.push(spike);
 
             if (this.playAudio) {
-                const { audio } = Game.getInstance();
-
-                audio.playAudio('enemy/crystal_brute/spike_spawn.wav');
+                AudioManager.playAudio('enemy/crystal_brute/spike_spawn.wav');
             }
             this.number = 0;
         }

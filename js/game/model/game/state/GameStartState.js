@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import GameBaseState from './GameBaseState.js';
 import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
-import { assetLoader } from '../../../helper/assets/assetLoader.js';
 import Navbar from '../../htmlElements/Navbar.js';
-import AssetManager from '../../utility/AssetManager.js';
-import { Vector } from '../../utility/enums/Vector.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
 export default class GameStartState extends GameBaseState {
     constructor() {
         super();
@@ -30,16 +30,12 @@ export default class GameStartState extends GameBaseState {
             this.spawnParticles = true;
             // game.instance = null;
             Game.getInstance();
+            game.prepareCanvas();
             yield game.init();
             game.htmlHandlers.notify('startScreen');
-            game.prepareCanvas();
             game.changeState();
             yield AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
-            yield assetLoader([GameSettings.ASSETS.SPAWN], game.htmlHandlers);
-            // menuHandler();
-            const { audio } = game;
-            audio.allowSound = true;
-            audio.playAudio('menu/background.ogg', null, true);
+            AudioManager.playAudio('menu/background.ogg', undefined, true);
         });
     }
     updateState(game) {
@@ -55,7 +51,7 @@ export default class GameStartState extends GameBaseState {
     }
     exitState(game) {
         game.htmlHandlers.eventRemover();
-        const { audio } = game;
-        audio.stopAll();
+        console.log('hai');
+        AudioManager.stopAll();
     }
 }

@@ -1,9 +1,11 @@
 import PlayerBaseState from './PlayerBaseState.js';
-import { drawImage } from '../../../helper/renderer/drawer.js';
 import GameSettings from '../../../constants.js';
 import Game from '../../game/Game.js';
 import Player from '../Player.js';
-import AssetManager from '../../utility/AssetManager.js';
+import AssetManager from '../../utility/manager/AssetManager.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import { Box } from '../../utility/interfaces/Box.js';
+import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class PlayerSpawnState extends PlayerBaseState {
     private spawnDelay: number;
@@ -16,13 +18,11 @@ export default class PlayerSpawnState extends PlayerBaseState {
     enterState(currPlayer: Player) {
         super.enterState(currPlayer);
         this.spawnDelay = 0;
-        const { audio } = Game.getInstance();
-        audio.playAudio('player/teleport_arrive.wav');
+        AudioManager.playAudio('player/teleport_arrive.wav');
     }
 
     updateState(currPlayer: Player) {
-        const { deltaTime } = Game.getInstance();
-        this.spawnDelay += deltaTime;
+        this.spawnDelay += Game.deltaTime;
 
         if (this.spawnDelay < 20) {
             return;
@@ -44,13 +44,13 @@ export default class PlayerSpawnState extends PlayerBaseState {
 
         const playerSpawn = AssetManager.getNumberedImage('player_spawn', this.animationStage);
 
-        drawImage({
-            img: playerSpawn,
+        const imageSize = Box.parse({
             x: currPlayer.centerPosition.x,
             y: currPlayer.centerPosition.y - playerSpawn.height / 1.45,
-            width: playerSpawn.width * GameSettings.GAME.GAME_SCALE,
-            height: playerSpawn.height * GameSettings.GAME.GAME_SCALE,
-            translate: true,
+            w: playerSpawn.width * GameSettings.GAME.GAME_SCALE,
+            h: playerSpawn.height * GameSettings.GAME.GAME_SCALE,
         });
+
+        DrawHelper.drawImage(playerSpawn, imageSize, true);
     }
 }
