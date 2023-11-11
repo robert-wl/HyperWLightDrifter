@@ -20,10 +20,10 @@ export default class PlayerMoveState extends PlayerBaseState {
         console.log(this.number);
         if (Math.round(this.animationStage) % 6 === 0 && this.canPlayAudio) {
             if (RandomHelper.getRandomBoolean(0.5)) {
-                AudioManager.playAudio('player_footstep_forest_one_audio');
+                AudioManager.playAudio('player_footstep_forest_one_audio').then();
             }
             else {
-                AudioManager.playAudio('player_footstep_forest_two_audio');
+                AudioManager.playAudio('player_footstep_forest_two_audio').then();
             }
             this.canPlayAudio = false;
         }

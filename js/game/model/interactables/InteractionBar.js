@@ -35,9 +35,6 @@ export default class InteractionBar {
     setAllowDraw(boolean) {
         this.allowDraw = boolean;
     }
-    setTransparency(transparency) {
-        this.transparency = transparency;
-    }
     update() {
         if (!this.isInteracting) {
             this.interactionStage -= Game.deltaTime;
@@ -113,7 +110,7 @@ export default class InteractionBar {
                 return true;
             }
             if (this.checkCounter(10)) {
-                AudioManager.playAudio('player_interact_audio');
+                AudioManager.playAudio('player_interact_audio').then();
             }
             this.advanceAnimationStage(10);
         }

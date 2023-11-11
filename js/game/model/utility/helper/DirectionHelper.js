@@ -1,8 +1,5 @@
 import Game from '../../game/Game.js';
 export default class DirectionHelper {
-    constructor() {
-        //
-    }
     static getMouseDirection(angle) {
         if (angle <= (Math.PI * 5) / 6 && angle > Math.PI / 6) {
             return 's';

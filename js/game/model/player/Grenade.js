@@ -2,7 +2,6 @@ import Game from '../game/Game.js';
 import Animateable from '../utility/Animateable.js';
 import GameSettings from '../../constants.js';
 import RandomHelper from '../utility/helper/RandomHelper.js';
-import { Vector } from '../utility/interfaces/Vector.js';
 import AssetManager from '../utility/manager/AssetManager.js';
 import AudioManager from '../utility/manager/AudioManager.js';
 import DistanceHelper from '../utility/helper/DistanceHelper.js';
@@ -11,11 +10,11 @@ import AngleHelper from '../utility/helper/AngleHelper.js';
 import { Box } from '../utility/interfaces/Box.js';
 import DrawHelper from '../utility/helper/DrawHelper.js';
 export default class Grenade extends Animateable {
-    constructor({ x, y, w, h, angle, velocity }) {
+    constructor(position, width, height, angle, velocity) {
         super();
-        this.position = new Vector(x, y);
-        this.width = w;
-        this.height = h;
+        this.position = position;
+        this.width = width;
+        this.height = height;
         this.angle = angle;
         this.velocity = velocity;
         this.friction = 0.03;
@@ -24,18 +23,6 @@ export default class Grenade extends Animateable {
         this.rotationNumber = 0;
         this.rotation = RandomHelper.randomValue(0, Math.PI * 3);
         this.playedAudio = false;
-    }
-    static generate({ x, y, angle }) {
-        //TODO
-        const newGrenade = new Grenade({
-            x: x,
-            y: y,
-            w: 16,
-            h: 16,
-            angle: angle,
-            velocity: 10,
-        });
-        Game.getInstance().player.projectiles.push(newGrenade);
     }
     update() {
         this.number += Game.deltaTime;
@@ -57,7 +44,7 @@ export default class Grenade extends Animateable {
         const { player } = Game.getInstance();
         const { projectiles } = player;
         if (!this.playedAudio && this.animationStage >= 2) {
-            AudioManager.playAudio('player_grenade_explode_audio');
+            AudioManager.playAudio('player_grenade_explode_audio').then();
             this.playedAudio = true;
             this.handleDamage();
         }

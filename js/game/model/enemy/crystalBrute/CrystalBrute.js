@@ -40,7 +40,7 @@ export default class CrystalBrute extends Enemy {
     handleDamage({ amount, angle }) {
         super.handleDamage({ amount, angle });
         if (this.health > 0) {
-            AudioManager.playAudio('crystal_brute_hurt_audio');
+            AudioManager.playAudio('crystal_brute_hurt_audio').then();
         }
     }
     switchState(newState) {

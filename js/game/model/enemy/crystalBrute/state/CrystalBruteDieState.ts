@@ -20,7 +20,7 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
     }
 
     public enterState(currBrute: CrystalBrute) {
-        if (RandomHelper.getRandomBoolean(0.5)) {
+        if (RandomHelper.getRandomBoolean(GameSettings.GAME.ENEMY.CRYSTAL_BRUTE.COIN_DROP_CHANCE)) {
             currBrute.enemyObserver.notify('spawnCoin', currBrute.position);
         }
 

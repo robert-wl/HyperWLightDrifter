@@ -22,7 +22,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
             });
         }
         if (this.animationStage === 14 && !this.playedSmash) {
-            AudioManager.playAudio('judgement_smash_ground_audio');
+            AudioManager.playAudio('judgement_smash_ground_audio').then();
             this.playedSmash = true;
         }
         if (this.animationStage === 22) {
@@ -42,11 +42,11 @@ export default class JudgementSpawnState extends JudgementBaseState {
     enterState(currJudgement) {
         super.enterState(currJudgement);
         this.playedSmash = false;
-        AudioManager.playAudio('judgement_spawn_audio');
+        AudioManager.playAudio('judgement_spawn_audio').then();
     }
     exitState(currJudgement) {
         if (this.firstSpawn) {
-            AudioManager.playAudio('boss_stage_background_audio', true);
+            AudioManager.playAudio('boss_stage_background_audio', true).then();
         }
         this.firstSpawn = false;
     }

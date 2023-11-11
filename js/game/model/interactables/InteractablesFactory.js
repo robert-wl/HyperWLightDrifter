@@ -6,12 +6,12 @@ export default class InteractablesFactory {
     constructor(eventEmitter) {
         this.eventEmitter = eventEmitter;
     }
-    generateKey(position) {
+    generateCoin(position) {
         const x = Math.round(position.x / 256);
         const y = Math.round(position.y / 256);
         const key = `${y},${x}`;
-        const keyObject = new Coin(position, 10, 10, key, this.eventEmitter);
-        this.eventEmitter.notify('addInteractable:key', keyObject);
+        const coinObject = new Coin(position, 10, 10, key, this.eventEmitter);
+        this.eventEmitter.notify('addInteractable:coin', coinObject);
     }
     generateMedkit(position, key) {
         const angle = RandomHelper.randomValue(0, 4) * Math.PI;

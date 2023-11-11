@@ -1,7 +1,4 @@
 export default class DistanceHelper {
-    constructor() {
-        //
-    }
     static getHorizontalValue(vector, initial = 0) {
         return Math.cos(vector.angle) * vector.value + initial;
     }

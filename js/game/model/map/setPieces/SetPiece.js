@@ -9,9 +9,6 @@ export default class SetPiece {
     get pieces() {
         return this._pieces;
     }
-    set pieces(value) {
-        this._pieces = value;
-    }
     get type() {
         return this._type;
     }

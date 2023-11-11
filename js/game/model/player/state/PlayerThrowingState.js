@@ -16,17 +16,15 @@ export default class PlayerThrowingState extends PlayerBaseState {
         super.enterState(currPlayer);
         this.hasThrown = false;
         this.direction = DirectionHelper.getMouseDirection(currPlayer.lookAngle);
-        AudioManager.playAudio('player_grenade_throw_audio');
+        AudioManager.playAudio('player_grenade_throw_audio').then();
     }
     updateState(currPlayer) {
         super.updateState(currPlayer);
         this.advanceAnimationStage(5);
         if (this.animationStage >= 4 && !this.hasThrown) {
-            Grenade.generate({
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-                angle: currPlayer.lookAngle,
-            });
+            const { WIDTH, HEIGHT, VELOCITY } = GameSettings.PLAYER.GRENADE;
+            const grenade = new Grenade(Object.assign({}, currPlayer.centerPosition), WIDTH, HEIGHT, currPlayer.lookAngle, VELOCITY);
+            currPlayer.projectiles.push(grenade);
             this.hasThrown = true;
         }
         if (this.animationStage < 8) {

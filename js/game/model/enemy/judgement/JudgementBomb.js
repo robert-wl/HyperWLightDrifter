@@ -24,9 +24,6 @@ export default class JudgementBomb extends Enemy {
         this.healthbar = new HealthBar(new Vector(3, 30), this.maxHealth);
         this.moveAngle = Math.random() * Math.PI * 2;
     }
-    get spawning() {
-        return this._spawning;
-    }
     set spawning(value) {
         this._spawning = value;
     }
@@ -124,11 +121,10 @@ export default class JudgementBomb extends Enemy {
                         this.moveAngle = Math.random() * Math.PI * 2;
                     }
                     else {
-                        const angle = AngleHelper.getAngle({
+                        this.moveAngle = AngleHelper.getAngle({
                             x: player.centerPosition.x - this.position.x,
                             y: player.centerPosition.y - this.position.y,
                         });
-                        this.moveAngle = angle;
                     }
                 }
             }

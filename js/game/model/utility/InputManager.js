@@ -1,20 +1,8 @@
-import Game from '../game/Game.js';
 import Observable from './Observable.js';
 import { Vector } from './interfaces/Vector.js';
 import GameSettings from '../../constants.js';
 export default class InputManager {
     constructor(game) {
-        this.keyDownHandler = (e) => {
-            const key = e.key.toLowerCase();
-            if (key === 'f') {
-                Game.getInstance().keyCount += 10;
-            }
-            this._inputObservable.notify('keydown', key);
-        };
-        this.keyUpHandler = (e) => {
-            const key = e.key.toLowerCase();
-            this._inputObservable.notify('keyup', key);
-        };
         this.game = game;
         this._inputObservable = new Observable();
         this.eventHandler();
@@ -27,9 +15,6 @@ export default class InputManager {
             .off('keydown.inputManager')
             .on('keydown.inputManager', (e) => {
             const key = e.key.toLowerCase();
-            if (key === 'f') {
-                Game.getInstance().keyCount += 10;
-            }
             this._inputObservable.notify('keydown', key);
         });
         $(document)
@@ -62,7 +47,7 @@ export default class InputManager {
         $(document)
             .off('mousemove.inputManager')
             .on('mousemove.inputManager', (e) => {
-            const { canvas, camera, player } = this.game;
+            const { canvas, camera } = this.game;
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left - window.innerWidth / 2 + camera.position.x * GameSettings.GAME.GAME_SCALE + 950;
             const y = e.clientY - rect.top - window.innerHeight / 2 + camera.position.y * GameSettings.GAME.GAME_SCALE + 600;

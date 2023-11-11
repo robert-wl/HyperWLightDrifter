@@ -12,9 +12,6 @@ export default class ParticlesManager {
     get particleFactory() {
         return this._particleFactory;
     }
-    set particleFactory(value) {
-        this._particleFactory = value;
-    }
     clear() {
         const { currState } = Game.getInstance();
         currState.spawnParticles = false;

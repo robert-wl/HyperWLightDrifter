@@ -28,7 +28,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         this.canAim = true;
         this.length = 0;
         this.hasKnockedBack = false;
-        AudioManager.playAudio('player_gun_aim_audio');
+        AudioManager.playAudio('player_gun_aim_audio').then();
     }
     updateState(currPlayer) {
         this.angle = currPlayer.lookAngle;
@@ -74,7 +74,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         if (this.shooting <= 0) {
             this.length = this.drawShootLine(currPlayer);
         }
-        const { image, offset, angle, mirrored, bottom } = this.getAimDrawConstant(currPlayer);
+        const { image, angle, mirrored, bottom } = this.getAimDrawConstant();
         if (!image) {
             return;
         }
@@ -152,7 +152,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         });
         DrawHelper.drawImage(effect, imageSize, true);
     }
-    getAimDrawConstant(currPlayer) {
+    getAimDrawConstant() {
         const { GUN } = GameSettings.PLAYER;
         if (this.direction === 'w') {
             return {
@@ -234,7 +234,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         this.drawRay(currPlayer, angle, length);
         if (first) {
             currPlayer.bullets -= 1;
-            AudioManager.playAudio('player_gun_fire_audio');
+            AudioManager.playAudio('player_gun_fire_audio').then();
         }
     }
     drawRay(currPlayer, angle, length) {

@@ -1,5 +1,6 @@
 import { Box } from '../utility/interfaces/Box.js';
 import DrawHelper from '../utility/helper/DrawHelper.js';
+import Game from '../game/Game.js';
 
 export default class Collider {
     private _x: number;
@@ -53,5 +54,18 @@ export default class Collider {
     renderDebug() {
         DrawHelper.setFillStyle('rgb(0, 255, 0, 0.2)');
         DrawHelper.drawRectangle(new Box(this._x, this._y, this._width, this._height));
+    }
+
+    public checkCollision({ x, y, w, h }: Box) {
+        if (Game.renderCollider) {
+            this.renderDebug();
+        }
+        return !(this._x + this._width >= x && this._x <= x + w && this._y + this._height >= y && this._y <= y + h);
+    }
+
+    update() {
+        if (Game.renderCollider) {
+            this.renderDebug();
+        }
     }
 }

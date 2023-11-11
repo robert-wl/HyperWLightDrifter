@@ -17,7 +17,7 @@ export default class GameLoseState extends GameBaseState {
             this.transparency -= 0.01;
         }
         if (this.transparency < -1) {
-            game.switchState(game.startState);
+            game.switchState(game.startState).then();
             return;
         }
         game.setFilter('hue-rotate(90deg)');

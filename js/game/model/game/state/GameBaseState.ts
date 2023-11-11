@@ -12,6 +12,8 @@ export default class GameBaseState {
             this.number += Game.deltaTime;
         }
     }
+    
+    public exitState(game: Game) {}
 
     protected checkCounter(number: number) {
         return this.number >= number;

@@ -11,9 +11,6 @@ import Game from '../../game/Game.js';
 import GameSettings from '../../../constants.js';
 import { Outfit } from '../enums/Outfit.js';
 class AssetManager {
-    constructor() {
-        //
-    }
     static get assetList() {
         return this._assetList;
     }
@@ -29,12 +26,14 @@ class AssetManager {
     static getNumberedImage(name, number) {
         return this._assetList.get(`${name}_${number}`);
     }
-    static assetLoader(assetData, outfit) {
+    static assetLoader(assetData, outfit, show = true) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.showLoading = show;
             this.assetAmount = 0;
             this.counter = 0;
             let assets = [];
-            this.htmlHandler.notify('loadingModal:open');
+            if (this.showLoading)
+                this.htmlHandler.notify('loadingModal:open');
             assetData.forEach((assetD) => {
                 assets = [...assets, ...assetD];
             });
@@ -53,7 +52,8 @@ class AssetManager {
                 }
                 yield this.assetLoadImage(asset, outfit);
             }
-            this.htmlHandler.notify('loadingModal:close');
+            if (this.showLoading)
+                this.htmlHandler.notify('loadingModal:close');
         });
     }
     static loadImage({ ref, name, isOutfit }, outfit) {

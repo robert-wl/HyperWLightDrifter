@@ -23,14 +23,14 @@ import { Outfit } from '../utility/enums/Outfit.js';
 import Shadow from '../shadow/Shadow.js';
 export default class Player {
     constructor(inputEventEmitter) {
-        const { player: playerDefault } = GameSettings;
-        this._maxhealth = playerDefault.MAX_HEALTH;
+        const { PLAYER: playerDefault } = GameSettings;
+        this._maxHealth = playerDefault.MAX_HEALTH;
         this._health = playerDefault.MAX_HEALTH;
         this._healthPack = playerDefault.MAX_HEALTHPACKS;
         this._stamina = playerDefault.MAX_STAMINA;
         this._bombs = playerDefault.MAX_BOMBS;
         this._bullets = playerDefault.MAX_BULLETS;
-        this._friction = playerDefault.FRICTION;
+        this.friction = playerDefault.FRICTION;
         this._maxSpeed = playerDefault.MAX_SPEED;
         this._attackMoveSpeed = playerDefault.ATTACK_MOVE_SPEED;
         this._dashMoveSpeed = playerDefault.DASH_MOVE_SPEED;
@@ -70,11 +70,8 @@ export default class Player {
         this.shadow = new Shadow(1.5);
         this.eventHandler();
     }
-    get maxhealth() {
-        return this._maxhealth;
-    }
-    set maxhealth(value) {
-        this._maxhealth = value;
+    get maxHealth() {
+        return this._maxHealth;
     }
     get isBelowGround() {
         return this._isBelowGround;
@@ -91,26 +88,14 @@ export default class Player {
     get interactionBar() {
         return this._interactionBar;
     }
-    set interactionBar(value) {
-        this._interactionBar = value;
-    }
     get healthPack() {
         return this._healthPack;
     }
     set healthPack(value) {
         this._healthPack = value;
     }
-    get friction() {
-        return this._friction;
-    }
-    set friction(value) {
-        this._friction = value;
-    }
     get maxSpeed() {
         return this._maxSpeed;
-    }
-    set maxSpeed(value) {
-        this._maxSpeed = value;
     }
     get width() {
         return this._width;
@@ -145,21 +130,6 @@ export default class Player {
     get projectiles() {
         return this._projectiles;
     }
-    set projectiles(value) {
-        this._projectiles = value;
-    }
-    get playerDefault() {
-        return this._playerDefault;
-    }
-    set playerDefault(value) {
-        this._playerDefault = value;
-    }
-    get inputEventEmitter() {
-        return this._inputEventEmitter;
-    }
-    set inputEventEmitter(value) {
-        this._inputEventEmitter = value;
-    }
     get outfit() {
         return this._outfit;
     }
@@ -193,9 +163,6 @@ export default class Player {
     get dashMoveSpeed() {
         return this._dashMoveSpeed;
     }
-    set dashMoveSpeed(value) {
-        this._dashMoveSpeed = value;
-    }
     get bullets() {
         return this._bullets;
     }
@@ -211,29 +178,17 @@ export default class Player {
     get attackMoveSpeed() {
         return this._attackMoveSpeed;
     }
-    set attackMoveSpeed(value) {
-        this._attackMoveSpeed = value;
-    }
     get attackBox() {
         return this._attackBox;
     }
-    set attackBox(value) {
-        this._attackBox = value;
-    }
     get lookAngle() {
         return this._lookAngle;
-    }
-    set lookAngle(value) {
-        this._lookAngle = value;
     }
     get lastDirection() {
         return this._lastDirection;
     }
     set lastDirection(value) {
         this._lastDirection = value;
-    }
-    get combo() {
-        return this._combo;
     }
     set combo(value) {
         this._combo = value;
@@ -268,7 +223,6 @@ export default class Player {
         }
         this.currState.drawImage(this);
         this.playerEffectsHandler(true);
-        this._projectiles.forEach((projectile) => projectile.update());
         this.heal();
         this._interactionBar.update();
         if (Game.debug) {
@@ -328,8 +282,8 @@ export default class Player {
         this.currState.enterState(this);
     }
     moveHandler(colliders) {
-        this._velocity.x = this._velocity.x * (1 - this._friction * Game.movementDeltaTime);
-        this._velocity.y = this._velocity.y * (1 - this._friction * Game.movementDeltaTime);
+        this._velocity.x = this._velocity.x * (1 - this.friction * Game.movementDeltaTime);
+        this._velocity.y = this._velocity.y * (1 - this.friction * Game.movementDeltaTime);
         let { x, y, w, h } = this._hitbox.getPoints(this._centerPosition, this._width, this._height);
         if (this.checkCollision({
             colliders,
@@ -463,6 +417,7 @@ export default class Player {
             }
             if (event === 'playerHitArea') {
                 this.bullets += 1;
+                this.bullets = Math.min(this.bullets, this._playerDefault.MAX_BULLETS);
             }
         });
     }
@@ -474,10 +429,6 @@ export default class Player {
             return false;
         }
         if (this.detectCollisionBox(box)) {
-            const angle = AngleHelper.getAngle({
-                x: box.x + box.w / 2 - this.centerPosition.x,
-                y: box.y + box.h / 2 - this.centerPosition.y,
-            });
             this.damage(1);
             return true;
         }
@@ -528,7 +479,7 @@ export default class Player {
     }
     healingHandler() {
         if (this.healing === 6) {
-            AudioManager.playAudio('player_medkit_use_audio');
+            AudioManager.playAudio('player_medkit_use_audio').then();
         }
         if (this.healing > 0) {
             this.healing -= Game.deltaTime;

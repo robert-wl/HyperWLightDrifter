@@ -1,7 +1,4 @@
 export default class GunHelper {
-    constructor() {
-        //
-    }
     static setEnemyManager(enemyManager) {
         this.enemyManager = enemyManager;
     }

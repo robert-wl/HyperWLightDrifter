@@ -36,14 +36,8 @@ export default class Judgement extends Enemy {
     get moveSpeed() {
         return this._moveSpeed;
     }
-    set moveSpeed(value) {
-        this._moveSpeed = value;
-    }
     get attackPosition() {
         return this._attackPosition;
-    }
-    set attackPosition(value) {
-        this._attackPosition = value;
     }
     get angle() {
         return this._angle;
@@ -61,7 +55,7 @@ export default class Judgement extends Enemy {
         return this.currState === this.dieState;
     }
     handleSwitchState() {
-        AudioManager.playAudio('judgement_scream_audio');
+        AudioManager.playAudio('judgement_scream_audio').then();
         const { dashChance, attackChance, laserChance, bombChance } = this.getStateProbability();
         if (RandomHelper.getRandomBoolean(dashChance) && this.lastState !== this.dashState) {
             this.switchState(this.dashState);
@@ -116,7 +110,7 @@ export default class Judgement extends Enemy {
         }
         super.handleDamage({ amount, angle });
         if (RandomHelper.getRandomBoolean(0.3)) {
-            AudioManager.playAudio('judgement_hurt_audio');
+            AudioManager.playAudio('judgement_hurt_audio').then();
         }
         return;
     }

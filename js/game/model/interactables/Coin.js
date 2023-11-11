@@ -5,7 +5,6 @@ import DistanceHelper from '../utility/helper/DistanceHelper.js';
 import { Box } from '../utility/interfaces/Box.js';
 import DrawHelper from '../utility/helper/DrawHelper.js';
 import AudioManager from '../utility/manager/AudioManager.js';
-
 export default class Coin extends Animateable {
     constructor(position, width, height, key, interactableEventEmitter) {
         super();
@@ -16,15 +15,12 @@ export default class Coin extends Animateable {
         this.interactableEventEmitter = interactableEventEmitter;
         this.interactionDistance = GameSettings.PLAYER.INTERACTION_MAX_DISTANCE;
     }
-
     get position() {
         return this._position;
     }
-
     set position(value) {
         this._position = value;
     }
-
     update() {
         this.updateNumberCounter();
         if (this.animationStage === 1) {
@@ -38,7 +34,6 @@ export default class Coin extends Animateable {
         }
         this.render();
     }
-
     render() {
         const medKit = AssetManager.getNumberedImage('keys', this.animationStage);
         const imageSize = Box.parse({
@@ -49,7 +44,6 @@ export default class Coin extends Animateable {
         });
         DrawHelper.drawImage(medKit, imageSize);
     }
-
     detectInteraction(position) {
         const distance = DistanceHelper.getMagnitude({
             x: position.x - (this.position.x + this.width / 2),
@@ -57,9 +51,8 @@ export default class Coin extends Animateable {
         });
         return distance < this.interactionDistance;
     }
-
     activate() {
-        AudioManager.playAudio('player_coin_pickup_audio');
+        AudioManager.playAudio('player_key_pickup_audio').then();
         this.interactableEventEmitter.notify('coin:collected', this.key);
     }
 }

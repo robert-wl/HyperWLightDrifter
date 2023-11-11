@@ -27,7 +27,7 @@ export default class HUDManager {
         const width = [0, 15, 27, 42, 57, 72];
         this.HUD.fillStyle = 'rgb(100, 100, 100)';
         this.HUD.fillRect(45, 12, 86, 10);
-        for (let i = 0; i < this.game.player.maxhealth; i++) {
+        for (let i = 0; i < this.game.player.maxHealth; i++) {
             if (i < this.game.player.health) {
                 this.HUD.fillStyle = 'lightgreen';
                 this.HUD.fillRect(45 + width[i], 12, 15, 10);
@@ -41,6 +41,7 @@ export default class HUDManager {
         this.HUD.drawImage(HUDImage, 0, 0, HUDImage.width * 1.5, HUDImage.height * 1.5);
         this.HUD.font = 'bold 25px Courier New';
         this.HUD.fillStyle = '#ffb733';
-        this.HUD.fillText('' + this.game.keyCount, 25, 60);
+        this.HUD.textAlign = 'start';
+        this.HUD.fillText('' + this.game.coinCount, 25, 60);
     }
 }

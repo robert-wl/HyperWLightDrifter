@@ -1,6 +1,6 @@
-import Game from '../game/Game.js';
 import { Box } from '../utility/interfaces/Box.js';
 import DrawHelper from '../utility/helper/DrawHelper.js';
+import Game from '../game/Game.js';
 export default class Collider {
     constructor({ x, y, width, height }) {
         this._x = x;

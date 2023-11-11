@@ -15,8 +15,8 @@ export default class PlayerDeathState extends PlayerBaseState {
         super.enterState(currPlayer);
         this.lastLookAngle = currPlayer.lookAngle;
         const { loseState } = Game.getInstance();
-        Game.getInstance().switchState(loseState);
-        AudioManager.playAudio('player_death_audio');
+        Game.getInstance().switchState(loseState).then();
+        AudioManager.playAudio('player_death_audio').then();
     }
     updateState(currPlayer) {
         super.updateState(currPlayer);

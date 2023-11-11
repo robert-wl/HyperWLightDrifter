@@ -68,7 +68,7 @@ export default class PlayerAttackState extends PlayerBaseState {
         });
         currPlayer.attackObserver.notify('playerAttack');
         currPlayer.clicks.splice(currPlayer.clicks.indexOf('left'), 1);
-        AudioManager.playAudio('player_attack_one_audio');
+        AudioManager.playAudio('player_attack_one_audio').then();
     }
     exitState(currPlayer) {
         this.direction = '';

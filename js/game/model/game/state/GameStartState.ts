@@ -29,7 +29,7 @@ export default class GameStartState extends GameBaseState {
 
         game.htmlHandlers.notify('startScreen');
         game.changeState();
-        await AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
+        await AssetManager.assetLoader([GameSettings.ASSETS.SPAWN], undefined, false);
 
         AudioManager.playAudio('menu_background_audio', true).then();
     }

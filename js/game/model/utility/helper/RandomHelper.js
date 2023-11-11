@@ -1,7 +1,4 @@
 export default class RandomHelper {
-    constructor() {
-        //
-    }
     static randomValue(initialValue = 0, randomValue = 0, rounded = false) {
         const value = initialValue + Math.random() * randomValue;
         if (rounded) {

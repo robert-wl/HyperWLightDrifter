@@ -9,14 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import AssetManager from './AssetManager.js';
 class AudioManager {
-    constructor() {
-        //
-    }
     static get volume() {
         return this._volume;
-    }
-    static set volume(value) {
-        this._volume = value;
     }
     static increaseVolume() {
         if (this._volume < 1) {

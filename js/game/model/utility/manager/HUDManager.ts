@@ -58,6 +58,7 @@ export default class HUDManager {
 
         this.HUD.font = 'bold 25px Courier New';
         this.HUD.fillStyle = '#ffb733';
+        this.HUD.textAlign = 'start';
         this.HUD.fillText('' + this.game.coinCount, 25, 60);
     }
 }

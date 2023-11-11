@@ -34,6 +34,7 @@ const GameSettings = {
                 WIDTH: 66,
                 HEIGHT: 50,
                 MAX_HEALTH: 1,
+                COIN_DROP_CHANCE: 0.1,
             },
             CRYSTAL_BRUTE: {
                 CRYSTAL_SPIKE: {
@@ -44,6 +45,7 @@ const GameSettings = {
                 HEIGHT: 140,
                 MAX_HEALTH: 10,
                 ATTACK_PATTERN: [[0], [0, -1 / 6, 1 / 6], [1 / 10, -1 / 10, 2 / 10, -2 / 10]],
+                COIN_DROP_CHANCE: 0.75,
             },
             JUDGEMENT: {
                 MOVE_SPEED: 1,
@@ -79,11 +81,13 @@ const GameSettings = {
             },
         },
         CHEAT_CODES: {
-            erwin: 'erwinganteng',
+            candi: 'candi',
             felix: 'felixmarah',
             phoebus: 'lordpibus',
             hesoyam: 'hesoyam',
             obert: 'oobacachat',
+            dutisa: '23-1',
+            tatuil: 'tatuil',
         },
         COLOR: {
             default: [
@@ -109,17 +113,31 @@ const GameSettings = {
             ],
         },
     },
-    game: {
-        GAME_SCALE: 2,
-        SCREEN_WIDTH: 1920,
-        SCREEN_HEIGHT: 1080,
-    },
     PLAYER: {
+        MAX_IMMUNITY: 30,
+        MAX_HEALTH: 6,
+        MAX_HEALTHPACKS: 3,
+        MAX_STAMINA: 100,
+        MAX_BOMBS: 2,
+        MAX_BULLETS: 3,
+        FRICTION: 0.2,
+        MAX_SPEED: 4,
+        ATTACK_MOVE_SPEED: 2,
+        DASH_MOVE_SPEED: 12,
+        START_POSITION: {
+            x: 200,
+            y: 200,
+        },
         INTERACTION_MAX_DISTANCE: 200,
         DAMAGE: {
-            HIT: 100,
+            HIT: 1,
             BULLET: 2,
             GRENADE: 2,
+        },
+        GRENADE: {
+            WIDTH: 16,
+            HEIGHT: 16,
+            VELOCITY: 10,
         },
         GUN: {
             RECOIL: 3,
@@ -141,22 +159,6 @@ const GameSettings = {
                     Y: 32.5,
                 },
             },
-        },
-    },
-    player: {
-        MAX_IMMUNITY: 30,
-        MAX_HEALTH: 6,
-        MAX_HEALTHPACKS: 3,
-        MAX_STAMINA: 100,
-        MAX_BOMBS: 2,
-        MAX_BULLETS: 3,
-        FRICTION: 0.2,
-        MAX_SPEED: 4,
-        ATTACK_MOVE_SPEED: 2,
-        DASH_MOVE_SPEED: 12,
-        START_POSITION: {
-            x: 200,
-            y: 200,
         },
         WIDTH: 50,
         HEIGHT: 60,
@@ -240,25 +242,25 @@ const GameSettings = {
                 isOutfit: true,
             },
             {
-                ref: 'player/move/move_up.png',
+                ref: 'player/move/up/move_up.png',
                 name: 'move_up',
                 amount: 12,
                 isOutfit: true,
             },
             {
-                ref: 'player/move/move_down.png',
+                ref: 'player/move/down/move_down.png',
                 name: 'move_down',
                 amount: 12,
                 isOutfit: true,
             },
             {
-                ref: 'player/move/move_left.png',
+                ref: 'player/move/left/move_left.png',
                 name: 'move_left',
                 amount: 12,
                 isOutfit: true,
             },
             {
-                ref: 'player/move/move_right.png',
+                ref: 'player/move/right/move_right.png',
                 name: 'move_right',
                 amount: 12,
                 isOutfit: true,
@@ -361,10 +363,6 @@ const GameSettings = {
                 isOutfit: true,
             },
             {
-                ref: 'player/aim/gun/gun_effect.png',
-                name: 'gun_effect',
-            },
-            {
                 ref: 'player/aim/gun/ray.png',
                 name: 'gun_ray',
             },
@@ -397,10 +395,6 @@ const GameSettings = {
                 isOutfit: true,
             },
             {
-                ref: 'player/aim/gun/projectile.png',
-                name: 'projectile',
-            },
-            {
                 ref: 'player/death/death.png',
                 name: 'player_death',
                 amount: 6,
@@ -416,8 +410,8 @@ const GameSettings = {
                 isAudio: true,
             },
             {
-                ref: 'player/key/pickup.wav',
-                name: 'player_key_pickup_audio',
+                ref: 'player/coin/pickup.wav',
+                name: 'player_coin_pickup_audio',
                 isAudio: true,
             },
             {
@@ -561,7 +555,7 @@ const GameSettings = {
                 name: 'crystal_spider_die',
             },
             {
-                ref: 'other/shadow.png',
+                ref: 'other/shadow/shadow.png',
                 name: 'shadow',
             },
             {
@@ -597,11 +591,6 @@ const GameSettings = {
                 ref: 'other/keys/keys.png',
                 name: 'keys',
                 amount: 6,
-            },
-            {
-                ref: 'world/door/door.png',
-                name: 'door',
-                amount: 13,
             },
             {
                 ref: 'UI/HUD.png',
@@ -670,7 +659,7 @@ const GameSettings = {
                 amount: 11,
             },
             {
-                ref: 'boss/bomb/judgement_explosion.png',
+                ref: 'boss/bomb/explosion/judgement_explosion.png',
                 name: 'judgement_explosion',
                 amount: 8,
             },
@@ -705,7 +694,7 @@ const GameSettings = {
                 amount: 21,
             },
             {
-                ref: 'boss/laser/judgement_laser_bullet.png',
+                ref: 'boss/laser/bullet/judgement_laser_bullet.png',
                 name: 'judgement_laser_bullet',
             },
             {
@@ -714,11 +703,11 @@ const GameSettings = {
                 amount: 4,
             },
             {
-                ref: 'world/boss_room.png',
+                ref: 'world/boss/boss_room.png',
                 name: 'map_ground_second',
             },
             {
-                ref: 'other/shadow.png',
+                ref: 'other/shadow/shadow.png',
                 name: 'shadow',
             },
             {

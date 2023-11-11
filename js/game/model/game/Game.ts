@@ -71,8 +71,8 @@ export default class Game {
         this.fpsShowCounter = 0;
         this.fps = 60;
         this.loading = false;
-        this.width = GameSettings.game.SCREEN_WIDTH;
-        this.height = GameSettings.game.SCREEN_HEIGHT;
+        this.width = GameSettings.GAME.SCREEN_WIDTH;
+        this.height = GameSettings.GAME.SCREEN_HEIGHT;
         this.objects = new Map();
         this.coins = [];
         this.elevators = [];
@@ -147,8 +147,8 @@ export default class Game {
         this.fpsShowCounter = 0;
         this.fps = 60;
         this.loading = false;
-        this.width = GameSettings.game.SCREEN_WIDTH;
-        this.height = GameSettings.game.SCREEN_HEIGHT;
+        this.width = GameSettings.GAME.SCREEN_WIDTH;
+        this.height = GameSettings.GAME.SCREEN_HEIGHT;
         this.objects = new Map();
         this.coins = [];
         this.elevators = [];
@@ -197,10 +197,10 @@ export default class Game {
 
     configCanvas() {
         this.ctx!.imageSmoothingEnabled = false;
-        this.ctx!.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
+        this.ctx!.scale(GameSettings.GAME.GAME_SCALE, GameSettings.GAME.GAME_SCALE);
 
         this._HUD!.imageSmoothingEnabled = false;
-        this._HUD!.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
+        this._HUD!.scale(GameSettings.GAME.GAME_SCALE, GameSettings.GAME.GAME_SCALE);
     }
 
     async switchState(nextState: GameBaseState) {

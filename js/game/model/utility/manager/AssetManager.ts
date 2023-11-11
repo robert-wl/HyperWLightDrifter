@@ -9,6 +9,7 @@ export default class AssetManager {
     private static counter: number;
     private static assetAmount: number;
     private static _assetList: Map<string, HTMLImageElement | HTMLAudioElement> = new Map();
+    private static showLoading: boolean;
 
     static get assetList(): Map<string, HTMLImageElement | HTMLAudioElement> {
         return this._assetList;
@@ -30,12 +31,13 @@ export default class AssetManager {
         return <HTMLImageElement>this._assetList.get(`${name}_${number}`);
     }
 
-    public static async assetLoader(assetData: Asset[][], outfit?: Outfit) {
+    public static async assetLoader(assetData: Asset[][], outfit?: Outfit, show = true) {
+        this.showLoading = show;
         this.assetAmount = 0;
         this.counter = 0;
         let assets: Asset[] = [];
 
-        this.htmlHandler.notify('loadingModal:open');
+        if (this.showLoading) this.htmlHandler.notify('loadingModal:open');
         assetData.forEach((assetD) => {
             assets = [...assets, ...assetD];
         });
@@ -57,7 +59,7 @@ export default class AssetManager {
             await this.assetLoadImage(asset, outfit);
         }
 
-        this.htmlHandler.notify('loadingModal:close');
+        if (this.showLoading) this.htmlHandler.notify('loadingModal:close');
     }
 
     public static async loadImage({ ref, name, isOutfit }: Asset, outfit?: Outfit) {

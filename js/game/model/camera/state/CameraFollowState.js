@@ -4,4 +4,6 @@ export default class CameraFollowState extends CameraBaseState {
         camera.moveCamera();
         camera.cameraBox.update();
     }
+    enterState() { }
+    exitState() { }
 }

@@ -24,7 +24,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
     updateState(elevator) {
         super.updateState(elevator);
         if (this.checkCounter(100)) {
-            AudioManager.playAudio('elevator_move_audio');
+            AudioManager.playAudio('elevator_move_audio').then();
             this.number = 0;
         }
         const { player } = Game.getInstance();

@@ -27,7 +27,7 @@ export default class PlayerDashState extends PlayerBaseState {
         this.finished = false;
         currPlayer.lastDirection = direction;
         currPlayer.stamina -= 20;
-        AudioManager.playAudio('player_dash_audio');
+        AudioManager.playAudio('player_dash_audio').then();
     }
     updateState(currPlayer) {
         super.updateState(currPlayer);

@@ -42,14 +42,14 @@ class Game {
         this.fpsShowCounter = 0;
         this.fps = 60;
         this.loading = false;
-        this.width = GameSettings.game.SCREEN_WIDTH;
-        this.height = GameSettings.game.SCREEN_HEIGHT;
+        this.width = GameSettings.GAME.SCREEN_WIDTH;
+        this.height = GameSettings.GAME.SCREEN_HEIGHT;
         this.objects = new Map();
         this.coins = [];
         this.elevators = [];
         this.elevator = null;
         this.backgroundOpacity = 1;
-        this.keyCount = 0;
+        this.coinCount = 0;
         this.currState = new GameBaseState();
         this.startState = new GameStartState();
         this.stageOneState = new GameStageOneState();
@@ -106,14 +106,14 @@ class Game {
             this.fpsShowCounter = 0;
             this.fps = 60;
             this.loading = false;
-            this.width = GameSettings.game.SCREEN_WIDTH;
-            this.height = GameSettings.game.SCREEN_HEIGHT;
+            this.width = GameSettings.GAME.SCREEN_WIDTH;
+            this.height = GameSettings.GAME.SCREEN_HEIGHT;
             this.objects = new Map();
             this.coins = [];
             this.elevators = [];
             this.elevator = null;
             this.backgroundOpacity = 1;
-            this.keyCount = 0;
+            this.coinCount = 0;
             this.camera = new Camera(this);
             this.inputManager = new InputManager(this);
             this.player = new Player(this.inputManager.inputObservable);
@@ -152,9 +152,9 @@ class Game {
     }
     configCanvas() {
         this.ctx.imageSmoothingEnabled = false;
-        this.ctx.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
+        this.ctx.scale(GameSettings.GAME.GAME_SCALE, GameSettings.GAME.GAME_SCALE);
         this._HUD.imageSmoothingEnabled = false;
-        this._HUD.scale(GameSettings.game.GAME_SCALE, GameSettings.game.GAME_SCALE);
+        this._HUD.scale(GameSettings.GAME.GAME_SCALE, GameSettings.GAME.GAME_SCALE);
     }
     switchState(nextState) {
         return __awaiter(this, void 0, void 0, function* () {

@@ -14,7 +14,7 @@ export default class PlayerHurtState extends PlayerBaseState {
     enterState(currPlayer) {
         super.enterState(currPlayer);
         this.mirrored = this.mirroredHandler(currPlayer);
-        AudioManager.playAudio('player_hurt_audio');
+        AudioManager.playAudio('player_hurt_audio').then();
     }
     updateState(currPlayer) {
         super.updateState(currPlayer);

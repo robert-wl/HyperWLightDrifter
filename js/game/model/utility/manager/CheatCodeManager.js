@@ -32,7 +32,7 @@ export default class CheatCodeManager {
         }
     }
     handleCheatCodes(cheatCodesKey) {
-        if (cheatCodesKey === 'erwin') {
+        if (cheatCodesKey === 'candi') {
             GameSettings.GAME.GAME_SPEED *= 0.5;
             return;
         }
@@ -46,10 +46,10 @@ export default class CheatCodeManager {
         }
         if (cheatCodesKey === 'hesoyam') {
             const { player } = this.game;
-            GameSettings.player.MAX_STAMINA = 100000;
-            GameSettings.player.MAX_HEALTH = 100000;
-            GameSettings.player.MAX_BOMBS = 1000;
-            GameSettings.player.MAX_BULLETS = 1000;
+            GameSettings.PLAYER.MAX_STAMINA = 100000;
+            GameSettings.PLAYER.MAX_HEALTH = 100000;
+            GameSettings.PLAYER.MAX_BOMBS = 1000;
+            GameSettings.PLAYER.MAX_BULLETS = 1000;
             player.health = 100000;
             player.stamina = 100000;
             player.bombs = 1000;
@@ -59,6 +59,15 @@ export default class CheatCodeManager {
         if (cheatCodesKey === 'obert') {
             Game.renderCollider = !Game.renderCollider;
             return;
+        }
+        if (cheatCodesKey === 'dutisa') {
+            Game.getInstance().coinCount += 5;
+            return;
+        }
+        if (cheatCodesKey === 'tatuil') {
+            GameSettings.PLAYER.DAMAGE.HIT = 1000;
+            GameSettings.PLAYER.DAMAGE.GRENADE = 1000;
+            GameSettings.PLAYER.DAMAGE.BULLET = 1000;
         }
     }
 }

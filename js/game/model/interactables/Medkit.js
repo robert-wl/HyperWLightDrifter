@@ -40,7 +40,6 @@ export default class Medkit extends Animateable {
     set position(value) {
         this._position = value;
     }
-    static generate(position, key) { }
     update() {
         this.updateNumberCounter();
         this.advanceAnimationStage(100, 2);
@@ -67,7 +66,7 @@ export default class Medkit extends Animateable {
         player.healing = 6;
         player.healthPack += 1;
         player.healthPack = Math.min(player.healthPack, 3);
-        AudioManager.playAudio('player_medkit_use_audio');
+        AudioManager.playAudio('player_medkit_use_audio').then();
         this.interactableEventEmitter.notify('medkit:collected', this);
     }
 }

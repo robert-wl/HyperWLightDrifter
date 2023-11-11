@@ -65,7 +65,7 @@ export default class Elevator {
         this._stageLocation = 2;
     }
     detectInteraction(position) {
-        if (Game.getInstance().keyCount < 10) {
+        if (Game.getInstance().coinCount < 10) {
             return false;
         }
         if (Game.getInstance().player.isInElevator()) {

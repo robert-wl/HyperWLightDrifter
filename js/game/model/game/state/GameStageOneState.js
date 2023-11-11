@@ -22,7 +22,7 @@ export default class GameStageOneState extends GameBaseState {
             yield this.stageInitializer(game);
             const { player } = game;
             player.switchState(player.spawnState);
-            AudioManager.playAudio('forest_stage_background_audio', true);
+            AudioManager.playAudio('forest_stage_background_audio', true).then();
         });
     }
     updateState(game) {
@@ -49,7 +49,7 @@ export default class GameStageOneState extends GameBaseState {
         game.setTransparency(game.backgroundOpacity);
         camera.renderTopBackground();
         game.setTransparency(1);
-        interactablesManager.updateKeys();
+        interactablesManager.updateCoins();
         camera.updateCamera();
         camera.resetShakeCamera();
         game.particlesManager.update();
@@ -62,7 +62,7 @@ export default class GameStageOneState extends GameBaseState {
     handleStageChange(game) {
         const { player, backgroundOpacity } = game;
         if (player.isBelowGround && backgroundOpacity === 0) {
-            game.switchState(game.stageTwoState);
+            game.switchState(game.stageTwoState).then();
         }
     }
     stageInitializer(game) {

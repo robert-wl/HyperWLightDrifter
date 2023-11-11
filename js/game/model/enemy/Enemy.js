@@ -44,9 +44,6 @@ export default class Enemy extends Animateable {
     get maxHealth() {
         return this._maxHealth;
     }
-    set maxHealth(value) {
-        this._maxHealth = value;
-    }
     get width() {
         return this._width;
     }

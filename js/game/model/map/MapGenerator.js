@@ -63,7 +63,7 @@ export default class MapGenerator {
     }
     generateElevatorFloor({ x, y }) {
         const { SETPIECE_ELEVATOR_INITIAL_CHANCE, SETPIECE_ELEVATOR_MAX_CHANCE } = GameSettings.GAME.FOREST_STAGE;
-        const chance = Math.min(SETPIECE_ELEVATOR_INITIAL_CHANCE + Game.getInstance().keyCount * 0.0005, SETPIECE_ELEVATOR_MAX_CHANCE);
+        const chance = Math.min(SETPIECE_ELEVATOR_INITIAL_CHANCE + Game.getInstance().coinCount * 0.0005, SETPIECE_ELEVATOR_MAX_CHANCE);
         if (RandomHelper.getRandomBoolean(chance)) {
             this.lowerLayers.set(`${x},${y}`, this.getFloorImage(true));
             this.setPieceGenerator.generateElevator({ x, y });

@@ -16,6 +16,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
         this.initialPosition = Object.assign({}, currPlayer.centerPosition);
     }
     updateState(currPlayer) {
+        currPlayer.regenerateStamina();
         if (currPlayer.centerPosition.y - this.initialPosition.y > 10) {
             currPlayer.isBelowGround = true;
         }

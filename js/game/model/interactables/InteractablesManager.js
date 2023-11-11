@@ -9,13 +9,13 @@ export default class InteractablesManager {
                 this._interactablesList.push(data);
                 return;
             }
-            if (event === 'addInteractable:key') {
-                this.keyList.push(data);
+            if (event === 'addInteractable:coin') {
+                this.coinList.push(data);
                 return;
             }
-            if (event === 'key:collected') {
-                Game.getInstance().keyCount += 1;
-                this.keyList.splice(this.keyList.indexOf(data), 1);
+            if (event === 'coin:collected') {
+                Game.getInstance().coinCount += 1;
+                this.coinList.splice(this.coinList.indexOf(data), 1);
                 return;
             }
             if (event === 'medkit:collected') {
@@ -32,12 +32,9 @@ export default class InteractablesManager {
         this.game = game;
         this.eventEmitter = new Observable();
         this._interactablesList = [];
-        this.keyList = [];
+        this.coinList = [];
         this._interactablesFactory = new InteractablesFactory(this.eventEmitter);
         this.eventHandler();
-    }
-    get interactablesList() {
-        return this._interactablesList;
     }
     set interactablesList(value) {
         this._interactablesList = value;
@@ -45,22 +42,19 @@ export default class InteractablesManager {
     get interactablesFactory() {
         return this._interactablesFactory;
     }
-    set interactablesFactory(value) {
-        this._interactablesFactory = value;
-    }
-    updateKeys() {
-        this.keyList.forEach((key) => {
-            key.update();
+    updateCoins() {
+        this.coinList.forEach((coin) => {
+            coin.update();
         });
     }
     detectInteractable(playerPosition) {
-        const validKey = this.keyList.filter((key) => {
+        const validCoins = this.coinList.filter((key) => {
             return key.detectInteraction(playerPosition);
         });
         const validInteractable = this._interactablesList.filter((interactable) => {
             return interactable.detectInteraction(playerPosition);
         });
-        const resultList = [...validKey, ...validInteractable];
+        const resultList = [...validCoins, ...validInteractable];
         if (resultList.length > 0) {
             return resultList[0];
         }

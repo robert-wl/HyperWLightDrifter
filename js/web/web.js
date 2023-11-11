@@ -132,7 +132,6 @@ function onLoadAnimationHandler() {
 function cursorHandler() {
     let yPos = 0;
     let xPos = 0;
-    const body = $('body');
     $(document).on('mousemove', (e) => {
         const documentTop = $(document).scrollTop();
         yPos = e.clientY;

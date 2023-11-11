@@ -17,20 +17,11 @@ export default class EnemyManager {
     get boss() {
         return this._boss;
     }
-    set boss(value) {
-        this._boss = value;
-    }
     get bossEntities() {
         return this._bossEntities;
     }
-    set bossEntities(value) {
-        this._bossEntities = value;
-    }
     get enemyList() {
         return this._enemyList;
-    }
-    set enemyList(value) {
-        this._enemyList = value;
     }
     get enemyFactory() {
         return this._enemyFactory;
@@ -47,7 +38,7 @@ export default class EnemyManager {
             entity.update();
         });
     }
-    handleDetectPoint(position, enemy, notifyData) {
+    handleDetectPoint(position, enemy) {
         if (enemy instanceof CrystalSpider || enemy instanceof CrystalBrute) {
             if (enemy.currState == enemy.dieState)
                 return false;
@@ -100,8 +91,8 @@ export default class EnemyManager {
                 this._bossEntities.push(data);
                 return;
             }
-            if (event === 'spawnKey') {
-                this.game.interactablesFactory.generateKey(data);
+            if (event === 'spawnCoin') {
+                this.game.interactablesFactory.generateCoin(data);
                 return;
             }
             if (event === 'clearEnemy') {
@@ -124,7 +115,7 @@ export default class EnemyManager {
                 this.enemyFactory.generateBossLaser(data.position, data.angle);
             }
         });
-        this.attackObserver.subscribe(({ event, data }) => {
+        this.attackObserver.subscribe(({ event }) => {
             if (event === 'playerAttack') {
                 this.enemyList.forEach((enemy) => {
                     this.handleDamageBox(enemy);
@@ -135,11 +126,6 @@ export default class EnemyManager {
                 if (this.boss)
                     this.handleDamageBox(this.boss);
             }
-            // if (event === 'gunAim') {
-            //     if (this.gunAimHandler(data)) {
-            //         this.attackObserver.notify('playerHit', data.length);
-            //     }
-            // }
         });
     }
 }

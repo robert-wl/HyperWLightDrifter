@@ -23,7 +23,7 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
         super.enterState(currSpider);
         this.friction = 0.1;
 
-        if (RandomHelper.getRandomBoolean(0.05)) {
+        if (RandomHelper.getRandomBoolean(GameSettings.GAME.ENEMY.CRYSTAL_SPIDER.COIN_DROP_CHANCE)) {
             currSpider.enemyObserver.notify('spawnCoin', currSpider.position);
         }
         AudioManager.playAudio('crystal_spider_death_audio').then();

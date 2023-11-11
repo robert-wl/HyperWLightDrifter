@@ -23,10 +23,6 @@ export default class InputManager {
             .on('keydown.inputManager', (e) => {
                 const key = e.key!.toLowerCase();
 
-                if (key === 'f') {
-                    Game.getInstance().coinCount += 10;
-                }
-
                 this._inputObservable.notify('keydown', key);
             });
 

@@ -22,14 +22,14 @@ export default class JudgementDeathState extends JudgementBaseState {
             this.animationStage = 21;
         }
         if (this.deadTime >= 0 && !this.playedAudio) {
-            AudioManager.playAudio('judgement_death_audio');
+            AudioManager.playAudio('judgement_death_audio').then();
             this.playedAudio = true;
         }
         if (this.deadTime > 100) {
             Game.getInstance().darkenBackground(0.005 * Game.deltaTime);
         }
         if (backgroundOpacity <= 0.01 && currState !== endState) {
-            Game.getInstance().switchState(endState);
+            Game.getInstance().switchState(endState).then();
         }
     }
     drawImage(currJudgement) {

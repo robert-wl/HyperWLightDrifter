@@ -35,6 +35,7 @@ const GameSettings = {
                 WIDTH: 66,
                 HEIGHT: 50,
                 MAX_HEALTH: 1,
+                COIN_DROP_CHANCE: 0.1,
             },
             CRYSTAL_BRUTE: {
                 CRYSTAL_SPIKE: {
@@ -45,6 +46,7 @@ const GameSettings = {
                 HEIGHT: 140,
                 MAX_HEALTH: 10,
                 ATTACK_PATTERN: [[0], [0, -1 / 6, 1 / 6], [1 / 10, -1 / 10, 2 / 10, -2 / 10]],
+                COIN_DROP_CHANCE: 0.75,
             },
             JUDGEMENT: {
                 MOVE_SPEED: 1,
@@ -80,11 +82,13 @@ const GameSettings = {
             },
         },
         CHEAT_CODES: {
-            erwin: 'erwinganteng',
+            candi: 'candi',
             felix: 'felixmarah',
             phoebus: 'lordpibus',
             hesoyam: 'hesoyam',
             obert: 'oobacachat',
+            dutisa: '23-1',
+            tatuil: 'tatuil',
         },
         COLOR: {
             default: [
@@ -110,15 +114,24 @@ const GameSettings = {
             ],
         },
     },
-    game: {
-        GAME_SCALE: 2,
-        SCREEN_WIDTH: 1920,
-        SCREEN_HEIGHT: 1080,
-    },
     PLAYER: {
+        MAX_IMMUNITY: 30,
+        MAX_HEALTH: 6,
+        MAX_HEALTHPACKS: 3,
+        MAX_STAMINA: 100,
+        MAX_BOMBS: 2,
+        MAX_BULLETS: 3,
+        FRICTION: 0.2,
+        MAX_SPEED: 4,
+        ATTACK_MOVE_SPEED: 2,
+        DASH_MOVE_SPEED: 12,
+        START_POSITION: {
+            x: 200,
+            y: 200,
+        },
         INTERACTION_MAX_DISTANCE: 200,
         DAMAGE: {
-            HIT: 100,
+            HIT: 1,
             BULLET: 2,
             GRENADE: 2,
         },
@@ -147,22 +160,6 @@ const GameSettings = {
                     Y: 32.5,
                 },
             },
-        },
-    },
-    player: {
-        MAX_IMMUNITY: 30,
-        MAX_HEALTH: 6,
-        MAX_HEALTHPACKS: 3,
-        MAX_STAMINA: 100,
-        MAX_BOMBS: 2,
-        MAX_BULLETS: 3,
-        FRICTION: 0.2,
-        MAX_SPEED: 4,
-        ATTACK_MOVE_SPEED: 2,
-        DASH_MOVE_SPEED: 12,
-        START_POSITION: {
-            x: 200,
-            y: 200,
         },
         WIDTH: 50,
         HEIGHT: 60,
@@ -559,7 +556,7 @@ const GameSettings = {
                 name: 'crystal_spider_die',
             },
             {
-                ref: 'other/shadow.png',
+                ref: 'other/shadow/shadow.png',
                 name: 'shadow',
             },
             {
@@ -595,11 +592,6 @@ const GameSettings = {
                 ref: 'other/keys/keys.png',
                 name: 'keys',
                 amount: 6,
-            },
-            {
-                ref: 'world/door/door.png',
-                name: 'door',
-                amount: 13,
             },
             {
                 ref: 'UI/HUD.png',

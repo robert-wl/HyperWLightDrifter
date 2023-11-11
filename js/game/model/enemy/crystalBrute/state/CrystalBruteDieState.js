@@ -15,10 +15,10 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
         this.friction = 0.1;
     }
     enterState(currBrute) {
-        if (RandomHelper.getRandomBoolean(0.5)) {
-            currBrute.enemyObserver.notify('spawnKey', currBrute.position);
+        if (RandomHelper.getRandomBoolean(GameSettings.GAME.ENEMY.CRYSTAL_BRUTE.COIN_DROP_CHANCE)) {
+            currBrute.enemyObserver.notify('spawnCoin', currBrute.position);
         }
-        AudioManager.playAudio('player_key_pickup_audio');
+        AudioManager.playAudio('player_key_pickup_audio').then();
     }
     updateState(currBrute) {
         const { player } = Game.getInstance();

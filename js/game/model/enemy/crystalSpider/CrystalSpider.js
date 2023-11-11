@@ -46,7 +46,7 @@ export default class CrystalSpider extends Enemy {
     handleDamage({ amount, angle }) {
         super.handleDamage({ amount, angle });
         if (this.health > 0) {
-            AudioManager.playAudio('crystal_spider_hurt_audio');
+            AudioManager.playAudio('crystal_spider_hurt_audio').then();
         }
     }
     debugMode() {

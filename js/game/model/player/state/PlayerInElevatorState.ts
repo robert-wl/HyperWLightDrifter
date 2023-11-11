@@ -22,6 +22,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
     }
 
     updateState(currPlayer: Player) {
+        currPlayer.regenerateStamina();
         if (currPlayer.centerPosition.y - this.initialPosition.y > 10) {
             currPlayer.isBelowGround = true;
         }

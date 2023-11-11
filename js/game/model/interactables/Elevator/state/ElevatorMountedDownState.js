@@ -10,7 +10,7 @@ export default class ElevatorMountedDownState extends ElevatorBaseState {
         const { player, camera } = Game.getInstance();
         player.switchState(player.idleState);
         camera.switchState(camera.normalState);
-        AudioManager.playAudio('elevator_mount_audio');
+        AudioManager.playAudio('elevator_mount_audio').then();
     }
     drawImage(elevator) {
         const elevatorImage = AssetManager.getImage('elevator');

@@ -4,4 +4,6 @@ export default class CameraNormalState extends CameraBaseState {
         camera.moveCamera();
         camera.cameraBox.update();
     }
+    enterState() { }
+    exitState() { }
 }

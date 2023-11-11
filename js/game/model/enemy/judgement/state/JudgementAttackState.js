@@ -73,7 +73,7 @@ export default class JudgementAttackState extends JudgementBaseState {
             this.attackNumber = 0;
         }
         if (this.attacking && !this.playedAudio && this.number >= 14) {
-            AudioManager.playAudio('judgement_bullet_audio');
+            AudioManager.playAudio('judgement_bullet_audio').then();
             this.playedAudio = true;
         }
     }

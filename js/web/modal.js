@@ -55,7 +55,7 @@ $(() => {
             $(`#${keys[e.key]}`).css('background-color', 'transparent');
         }
     });
-    $(document).on('click', (e) => {
+    $(document).on('click', () => {
         $('#key-left').css('background-color', 'rgb(253, 27, 94)');
         setTimeout(() => {
             $('#key-left').css('background-color', 'transparent');

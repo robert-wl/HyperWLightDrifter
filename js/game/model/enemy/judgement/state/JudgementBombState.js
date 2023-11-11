@@ -52,7 +52,7 @@ export default class JudgementBombState extends JudgementBaseState {
                 position: player.centerPosition,
                 angle: this.startAngle + (this.attackCount * Math.PI) / 3,
             });
-            AudioManager.playAudio('judgement_bomb_summon_audio');
+            AudioManager.playAudio('judgement_bomb_summon_audio').then();
             this.number = 0;
             this.attackCount += 1;
         }
@@ -72,14 +72,14 @@ export default class JudgementBombState extends JudgementBaseState {
         }
         if (backgroundOpacity === 1 && this.finished && this.checkCounter(7)) {
             if (this.animationStage === 2 && !this.playedSpawnAudio) {
-                AudioManager.playAudio('judgement_spawn_audio');
+                AudioManager.playAudio('judgement_spawn_audio').then();
                 this.playedSpawnAudio = true;
             }
             this.animationStage += 1;
             this.number = 0;
         }
         if (this.animationStage === 14 && !this.playedSmashAudio) {
-            AudioManager.playAudio('judgement_smash_ground_audio');
+            AudioManager.playAudio('judgement_smash_ground_audio').then();
             this.playedSmashAudio = true;
         }
         if (this.animationStage === 21 && this.finished) {

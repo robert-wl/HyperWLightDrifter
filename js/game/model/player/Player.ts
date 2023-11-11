@@ -71,7 +71,7 @@ export default class Player {
     private shadow: Shadow;
 
     public constructor(inputEventEmitter: Observable) {
-        const { player: playerDefault } = GameSettings;
+        const { PLAYER: playerDefault } = GameSettings;
         this._maxHealth = playerDefault.MAX_HEALTH;
         this._health = playerDefault.MAX_HEALTH;
         this._healthPack = playerDefault.MAX_HEALTHPACKS;
@@ -466,7 +466,7 @@ export default class Player {
     }
 
     private checkCollision({ colliders, x, y, w, h }) {
-        return colliders.every((c) => {
+        return colliders.every((c: Collider) => {
             return c.checkCollision({
                 x: x,
                 y: y,
@@ -552,6 +552,7 @@ export default class Player {
             }
             if (event === 'playerHitArea') {
                 this.bullets += 1;
+                this.bullets = Math.min(this.bullets, this._playerDefault.MAX_BULLETS);
             }
         });
     }

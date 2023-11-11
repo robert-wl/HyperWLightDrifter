@@ -33,8 +33,8 @@ export default class GameStartState extends GameBaseState {
             yield game.init();
             game.htmlHandlers.notify('startScreen');
             game.changeState();
-            yield AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
-            AudioManager.playAudio('menu_background_audio', true);
+            yield AssetManager.assetLoader([GameSettings.ASSETS.SPAWN], undefined, false);
+            AudioManager.playAudio('menu_background_audio', true).then();
         });
     }
     updateState(game) {
