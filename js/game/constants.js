@@ -401,7 +401,7 @@ const GameSettings = {
                 isOutfit: true,
             },
             {
-                ref: 'UI/damaged.png',
+                ref: 'ui/damaged.png',
                 name: 'damaged_ui',
             },
             {
@@ -593,7 +593,7 @@ const GameSettings = {
                 amount: 6,
             },
             {
-                ref: 'UI/HUD.png',
+                ref: 'ui/HUD.png',
                 name: 'HUD',
             },
             {
