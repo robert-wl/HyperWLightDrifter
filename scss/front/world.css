@@ -1,0 +1,339 @@
+.world-container * {
+  overflow: hidden;
+}
+
+.world-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.world-container .inner-container-carousel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+}
+.world-container .inner-container-carousel > h3 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 48px;
+  border-bottom: 0.3rem solid rgb(253, 27, 94);
+}
+.world-container .inner-container-carousel .content {
+  display: none;
+  background-color: transparent;
+}
+.world-container .inner-container-carousel .content .image-carousel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 2;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: transparent;
+}
+.world-container .inner-container-carousel .content .image-carousel .image-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: white;
+  width: 90%;
+  height: 30vw;
+  overflow: hidden;
+}
+.world-container .inner-container-carousel .content .image-carousel .image-box > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.world-container .inner-container-carousel .content .image-carousel .image-box > img:hover {
+  transform-origin: 50% 50%; /* Set the zoom origin to the center of the image */
+  transform: scale(1.2);
+}
+.world-container .inner-container-carousel .content .image-carousel .image-box .arrow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  color: white;
+  padding: 5rem 0.25rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  user-select: none;
+}
+.world-container .inner-container-carousel .content .image-carousel .image-box .arrow-left {
+  left: 0;
+}
+.world-container .inner-container-carousel .content .image-carousel .image-box .arrow-right {
+  right: 0;
+}
+.world-container .inner-container-carousel .content .image-carousel .image-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+  width: 90%;
+  height: 10rem;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  margin-top: 1rem;
+  background-color: transparent;
+}
+.world-container .inner-container-carousel .content .image-carousel .image-list .image-list-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: 0.2rem solid black;
+}
+.world-container .inner-container-carousel .content .image-carousel .image-list .image-list-box > img {
+  width: 10vw;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.25s;
+}
+.world-container .inner-container-carousel .content .image-carousel .image-list .image-list-box > img:hover {
+  filter: brightness(0.75);
+}
+.world-container .inner-container-carousel .content .image-carousel .image-list .image-list-box.bordered {
+  border: 0.2rem solid rgb(253, 27, 94);
+}
+.world-container .inner-container-carousel .content .image-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+  flex: 1;
+  font-family: "Kanit", sans-serif;
+}
+.world-container .inner-container-carousel .content .image-description > h3 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 40px;
+  border-bottom: 0.3rem solid rgb(253, 27, 94);
+  margin-top: 0;
+  height: fit-content;
+}
+.world-container .inner-container-carousel .content .image-description > h5 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 24px;
+  margin: 0;
+}
+.world-container .inner-container-carousel .content .image-description > p {
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
+  color: white;
+  font-size: 16px;
+  letter-spacing: 0.1rem;
+  letter-spacing: 0.1rem;
+  font-family: "Kanit", sans-serif;
+  height: auto;
+}
+.world-container .inner-container-carousel .content.active {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: flex-start;
+}
+
+.map-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.map-container > h1 {
+  font-family: "Kanit", sans-serif;
+  color: white;
+  border-bottom: 0.2rem solid white;
+}
+.map-container .image-container {
+  position: relative;
+  --value: 50%;
+  height: 80vw;
+  width: 100vw;
+  overflow: hidden;
+}
+.map-container .image-container img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 95vw;
+  aspect-ratio: 1.4;
+  z-index: 0;
+}
+.map-container .image-container .map-bottom {
+  clip-path: polygon(0% 0%, var(--value) 0%, var(--value) 100%, 0% 100%);
+}
+.map-container .image-container .image-range {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  box-sizing: border-box;
+  font-family: inherit;
+  height: 100%;
+  width: 95vw;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.map-container .image-container .image-range::-webkit-slider-thumb {
+  appearance: none;
+  background-color: transparent;
+  height: 72rem;
+  width: 1rem;
+}
+.map-container .image-container .image-range, .map-container .image-container .image-range::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.map-container .image-container .boss-marker {
+  aspect-ratio: 0.812;
+  width: 25rem;
+  overflow: hidden;
+  pointer-events: none;
+}
+.map-container .image-container .boss-marker .boss-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 15rem;
+  aspect-ratio: 1.3;
+  transition: all 0.5s;
+  user-select: none;
+  overflow: hidden;
+}
+.map-container .image-container .boss-marker .boss-image > h3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: Kanit, sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
+  color: white;
+  text-shadow: 0 0 0.5rem black;
+}
+.map-container .image-container .boss-marker .boss-image > img {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 70%;
+  object-fit: cover;
+  border: 0.2rem solid rgb(253, 27, 94);
+}
+.map-container .image-container .boss-marker .boss-image.hidden {
+  opacity: 0;
+}
+.map-container .image-container .boss-marker .boss-image.first {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.map-container .image-container .boss-marker .boss-image.first > img {
+  margin-top: 0;
+}
+.map-container .image-container .boss-marker .boss-image.second {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+.map-container .image-container .boss-marker .boss-image.second > img {
+  margin-bottom: 3rem;
+}
+.map-container .image-container .boss-marker .boss-image.third {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.map-container .image-container .boss-marker .boss-image.fourth {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.map-container .image-container .boss-marker .boss-image.fifth {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.map-container .image-container .boss-marker .boss-image.fifth > img {
+  object-position: center 0;
+}
+.map-container .image-container .boss-marker > img {
+  aspect-ratio: 0.812;
+  width: 2rem;
+  pointer-events: auto;
+}
+.map-container .image-container .boss-marker.first {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+.map-container .image-container .boss-marker.second {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+.map-container .image-container .boss-marker.third {
+  position: absolute;
+  top: 50%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+.map-container .image-container .boss-marker.fourth {
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+/*# sourceMappingURL=world.css.map */

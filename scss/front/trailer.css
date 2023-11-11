@@ -1,0 +1,17 @@
+.trailer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60rem;
+  scroll-snap-align: start;
+}
+.trailer > h3 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 48px;
+  border-bottom: 0.3rem solid rgb(253, 27, 94);
+}
+
+/*# sourceMappingURL=trailer.css.map */

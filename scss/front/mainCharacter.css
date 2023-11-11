@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@keyframes arrowMoveLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10%);
+  }
+}
+@keyframes arrowMoveRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10%);
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes onLoad {
+  from {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  to {
+    opacity: 100%;
+    transform: translateY(0);
+  }
+}
+.main-character-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  perspective: 2px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+.main-character-container .image-cover {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  overflow: hidden;
+}
+.main-character-container .image-cover::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: url("../../assets/web/parallax/campfire.png") center;
+  transform: scale(1);
+  z-index: -1;
+}
+.main-character-container .main-character-text-container {
+  position: absolute;
+  top: 50%;
+  left: 12.5%;
+  transform: translateY(-50%);
+  width: 40%;
+  font-family: "Kanit", sans-serif;
+  color: white;
+}
+.main-character-container .main-character-text-container > h1 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 40px;
+  border-bottom: 0.3rem solid rgb(253, 27, 94);
+  color: white;
+  padding-bottom: 0.2rem;
+  overflow: hidden;
+}
+.main-character-container .main-character-text-container > p {
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
+  color: white;
+  font-size: 16px;
+  letter-spacing: 0.1rem;
+  text-align: start;
+}
+.main-character-container .main-character-text-container > p .features-container {
+  position: absolute;
+}
+
+/*# sourceMappingURL=mainCharacter.css.map */

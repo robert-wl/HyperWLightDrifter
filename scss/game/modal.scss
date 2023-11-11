@@ -1,9 +1,10 @@
-@import "mixins";
+@import "../mixins";
 
 
 .modal {
-  @include size(45vw, auto);
-  @include max-size(960px, 1000px);
+  width: 25vw;
+  height: auto;
+  //@include max-size(960px, 1000px);
   @include flex-rules(column, center, none);
   @include background-image-settings;
   aspect-ratio: 18/15;
@@ -13,32 +14,4 @@
   position: absolute;
   display: none;
   z-index: 100;
-}
-
-.modal-background {
-  @include absolute(50%, 50%);
-  @include max-size(1920px, 1080px);
-  @include size(100vw, 100vh);
-  display: none;
-  background-color: rgb(0, 0, 0, 0.5);
-  z-index: 100;
-
-  .modal {
-    @include absolute(50%, 50%);
-    display: flex;
-
-    .title {
-      @include text-config(title);
-      @include absolute(10%, 50%);
-      background-color: transparent;
-      text-align: center;
-    }
-
-    .button {
-      @include hoverable;
-      @include text-config(button);
-      width: 91%;
-      text-align: center;
-    }
-  }
 }

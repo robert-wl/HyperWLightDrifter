@@ -1,1 +1,20 @@
-/*# sourceMappingURL=htmlElements.css.map */
+.modal {
+    width: 25vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: none;
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: pixelated;
+    aspect-ratio: 18/15;
+    background-color: transparent;
+    background-image: url("../assetsaa/ui/menu_modal.png");
+    opacity: 100%;
+    position: absolute;
+    display: none;
+    z-index: 100;
+}
+
+/*# sourceMappingURL=modal.css.map */
