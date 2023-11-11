@@ -1,10 +1,9 @@
 import Camera from '../Camera';
 
-const SCREEN_SIZE = 1920;
-export default class CameraBaseState {
-    updateState(camera: Camera) {}
+export default abstract class CameraBaseState {
+    public abstract updateState(camera: Camera): void;
 
-    enterState(camera: Camera) {}
+    public abstract enterState(camera: Camera): void;
 
-    exitState(camera: Camera) {}
+    public abstract exitState(camera: Camera): void;
 }

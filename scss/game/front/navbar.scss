@@ -6,7 +6,7 @@
   position: fixed;
   transition: background-color 0.5s;
   background: transparent;
-  z-index: 100;
+  z-index: 10;
 
   .navbar-container {
     @include flex-rules(row, space-between, center);
@@ -32,7 +32,6 @@
         width: fit-content;
         font-weight: normal;
         font-size: 20px;
-        cursor: pointer;
         margin-left: 2rem;
         font-family: "Kanit", sans-serif;
 
@@ -67,7 +66,6 @@
         padding: 0.75rem 0.75rem 0.6rem;
         background-color: transparent;
         outline: none;
-        cursor: pointer;
         transition: background-color 0.5s;
         border: 0.1rem solid white;
 

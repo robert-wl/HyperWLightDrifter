@@ -12,4 +12,8 @@ export class Vector {
     public static Zero(): Vector {
         return { x: 0, y: 0 };
     }
+
+    public static parse(vector: Vector): Vector {
+        return { x: vector.x, y: vector.y };
+    }
 }

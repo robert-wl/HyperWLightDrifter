@@ -4,7 +4,6 @@ import CrystalSpiderBaseState from './state/CrystalSpiderBaseState.js';
 import CrystalSpiderMoveState from './state/CrystalSpiderMoveState.js';
 import CrystalSpiderAttackState from './state/CrystalSpiderAttackState.js';
 import CrystalSpiderDieState from './state/CrystalSpiderDieState.js';
-import renderShadow from '../../../helper/renderer/shadow.js';
 import CrystalSpiderIdleState from './state/CrystalSpiderIdleState.js';
 import HitBoxComponent from '../../utility/HitBoxComponent.js';
 import { Vector } from '../../utility/interfaces/Vector.js';
@@ -12,6 +11,8 @@ import Observable from '../../utility/Observable.js';
 import RandomHelper from '../../utility/helper/RandomHelper.js';
 import DrawHelper from '../../utility/helper/DrawHelper.js';
 import { Box } from '../../utility/interfaces/Box.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import Shadow from '../../shadow/Shadow.js';
 
 export default class CrystalSpider extends Enemy {
     public currState: CrystalSpiderBaseState;
@@ -22,6 +23,7 @@ export default class CrystalSpider extends Enemy {
     private _speed: number;
     private _angle: number;
     private _attackSpeed: number;
+    private shadow: Shadow;
 
     constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, enemyObserver: Observable, attackObserver: Observable) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
@@ -33,6 +35,8 @@ export default class CrystalSpider extends Enemy {
         this._speed = RandomHelper.randomValue(2, 2);
         this._angle = Math.random() * 2 * Math.PI;
         this._attackSpeed = 0;
+        this.shadow = new Shadow(1.5);
+
         this.switchState(this.idleState);
     }
 
@@ -58,6 +62,13 @@ export default class CrystalSpider extends Enemy {
 
     set attackSpeed(value: number) {
         this._attackSpeed = value;
+    }
+
+    public handleDamage({ amount, angle }: { amount: any; angle: any }) {
+        super.handleDamage({ amount, angle });
+        if (this.health > 0) {
+            AudioManager.playAudio('crystal_spider_hurt_audio').then();
+        }
     }
 
     debugMode() {
@@ -86,13 +97,7 @@ export default class CrystalSpider extends Enemy {
         this.currState.updateState(this);
 
         if (this.currState !== this.dieState) {
-            renderShadow({
-                position: {
-                    x: this.position.x,
-                    y: this.position.y,
-                },
-                sizeMultiplier: 1.5,
-            });
+            this.shadow.renderShadow(new Vector(this.position.x, this.position.y));
         }
 
         if (this.damaged >= 0) {

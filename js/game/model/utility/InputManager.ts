@@ -1,7 +1,7 @@
 import Game from '../game/Game.js';
-import GameSettings from '../../constants.js';
 import Observable from './Observable.js';
 import { Vector } from './interfaces/Vector.js';
+import GameSettings from '../../constants.js';
 
 export default class InputManager {
     private readonly game: Game;
@@ -18,50 +18,63 @@ export default class InputManager {
     }
 
     private eventHandler() {
-        $(document).on('keydown', (e) => {
-            const key = e.key.toLowerCase();
+        $(document)
+            .off('keydown.inputManager')
+            .on('keydown.inputManager', (e) => {
+                const key = e.key!.toLowerCase();
 
-            if (key === 'f') {
-                Game.getInstance().keyCount += 10;
-            }
+                if (key === 'f') {
+                    Game.getInstance().coinCount += 10;
+                }
 
-            this._inputObservable.notify('keydown', key);
-        });
+                this._inputObservable.notify('keydown', key);
+            });
 
-        $(document).on('keyup', (e) => {
-            const key = e.key.toLowerCase();
+        $(document)
+            .off('keyup.inputManager')
+            .on('keyup.inputManager', (e) => {
+                const key = e.key!.toLowerCase();
 
-            this._inputObservable.notify('keyup', key);
-        });
+                this._inputObservable.notify('keyup', key);
+            });
 
-        $(document).on('mousedown', (e) => {
-            const click = this.convertClicksToKeys(e.which);
+        $(document)
+            .off('mousedown.inputManager')
+            .on('mousedown.inputManager', (e) => {
+                const click = this.convertClicksToKeys(e.which!);
 
-            if (click) {
-                this._inputObservable.notify('mousedown', click);
-            }
-        });
+                if (click) {
+                    this._inputObservable.notify('mousedown', click);
+                }
+            });
 
-        $(document).on('mouseup', (e) => {
-            const click = this.convertClicksToKeys(e.which);
+        $(document)
+            .off('mouseup.inputManager')
+            .on('mouseup.inputManager', (e) => {
+                const click = this.convertClicksToKeys(e.which!);
 
-            if (click) {
-                this._inputObservable.notify('mouseup', click);
-            }
-        });
+                if (click) {
+                    this._inputObservable.notify('mouseup', click);
+                }
+            });
 
-        $(document).on('contextmenu', (e) => {
-            e.preventDefault();
-        });
+        $(document)
+            .off('contextmenu.inputManager')
+            .on('contextmenu.inputManager', (e) => {
+                e.preventDefault();
+            });
 
-        $(document).on('mousemove', (e) => {
-            const { canvas, camera } = this.game;
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left + camera.position.x * GameSettings.GAME.GAME_SCALE;
-            const y = e.clientY - rect.top + camera.position.y * GameSettings.GAME.GAME_SCALE + 200;
+        $(document)
+            .off('mousemove.inputManager')
+            .on('mousemove.inputManager', (e) => {
+                const { canvas, camera } = this.game;
+                const rect = canvas.getBoundingClientRect();
 
-            this._inputObservable.notify('mousemove', { x, y } as Vector);
-        });
+                const x = e.clientX! - rect.left - window.innerWidth / 2 + camera.position.x * GameSettings.GAME.GAME_SCALE + 950;
+                const y = e.clientY! - rect.top - window.innerHeight / 2 + camera.position.y * GameSettings.GAME.GAME_SCALE + 600;
+
+                this._inputObservable.notify('mousemove', new Vector(x, y));
+            });
     }
 
     private convertClicksToKeys(click: number) {

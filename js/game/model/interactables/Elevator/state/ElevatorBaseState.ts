@@ -8,5 +8,7 @@ export default class ElevatorBaseState extends Animateable {
 
     public drawImage(elevator: Elevator) {}
 
-    public updateState(elevator: Elevator) {}
+    public updateState(elevator: Elevator) {
+        this.updateNumberCounter();
+    }
 }

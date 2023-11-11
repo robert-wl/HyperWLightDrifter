@@ -6,20 +6,21 @@ import { Vector } from '../../utility/interfaces/Vector.js';
 import Observable from '../../utility/Observable.js';
 import GameSettings from '../../../constants.js';
 import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import Game from '../../game/Game.js';
 
 export default class Elevator {
     public currState: ElevatorBaseState;
     public mountedDownState: ElevatorMountedDownState;
     public mountedTopState: ElevatorMountedTopState;
     public moveState: ElevatorMoveState;
-    private _position: Vector;
+    private readonly _position: Vector;
     private interactableEventEmitter: Observable;
     private _width: number;
     private _height: number;
     private _travelDistance: number;
     private _stageLocation: number;
     private _bottomCrop: number;
-    private interactionDistance: number;
+    private readonly interactionDistance: number;
 
     public constructor(position: Vector, interactableEventEmitter: Observable) {
         this._position = position;
@@ -95,7 +96,13 @@ export default class Elevator {
     }
 
     public detectInteraction(position: Vector) {
-        //if()
+        if (Game.getInstance().coinCount < 10) {
+            return false;
+        }
+        if (Game.getInstance().player.isInElevator()) {
+            return false;
+        }
+
         const distance = DistanceHelper.getMagnitude({
             x: position.x - (this.position.x + this.width / 2),
             y: position.y - (this.position.y + this.height / 2),

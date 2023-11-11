@@ -4,11 +4,13 @@ import CrystalSpiderBaseState from './state/CrystalSpiderBaseState.js';
 import CrystalSpiderMoveState from './state/CrystalSpiderMoveState.js';
 import CrystalSpiderAttackState from './state/CrystalSpiderAttackState.js';
 import CrystalSpiderDieState from './state/CrystalSpiderDieState.js';
-import renderShadow from '../../../helper/renderer/shadow.js';
 import CrystalSpiderIdleState from './state/CrystalSpiderIdleState.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
 import RandomHelper from '../../utility/helper/RandomHelper.js';
 import DrawHelper from '../../utility/helper/DrawHelper.js';
 import { Box } from '../../utility/interfaces/Box.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import Shadow from '../../shadow/Shadow.js';
 export default class CrystalSpider extends Enemy {
     constructor(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
@@ -20,6 +22,7 @@ export default class CrystalSpider extends Enemy {
         this._speed = RandomHelper.randomValue(2, 2);
         this._angle = Math.random() * 2 * Math.PI;
         this._attackSpeed = 0;
+        this.shadow = new Shadow(1.5);
         this.switchState(this.idleState);
     }
     get speed() {
@@ -40,6 +43,12 @@ export default class CrystalSpider extends Enemy {
     set attackSpeed(value) {
         this._attackSpeed = value;
     }
+    handleDamage({ amount, angle }) {
+        super.handleDamage({ amount, angle });
+        if (this.health > 0) {
+            AudioManager.playAudio('crystal_spider_hurt_audio');
+        }
+    }
     debugMode() {
         DrawHelper.setFillStyle('rgb(255, 255, 0, 0.5)');
         const { x, y, w, h } = this.hitbox.getPoints(this.position, this.width, this.height);
@@ -59,13 +68,7 @@ export default class CrystalSpider extends Enemy {
         }
         this.currState.updateState(this);
         if (this.currState !== this.dieState) {
-            renderShadow({
-                position: {
-                    x: this.position.x,
-                    y: this.position.y,
-                },
-                sizeMultiplier: 1.5,
-            });
+            this.shadow.renderShadow(new Vector(this.position.x, this.position.y));
         }
         if (this.damaged >= 0) {
             Game.getInstance().setFilter('sepia(100%) hue-rotate(111deg) saturate(1000%) contrast(118%) invert(100%)');

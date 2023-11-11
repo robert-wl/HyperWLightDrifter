@@ -88,10 +88,8 @@ export default class PlayerAttackState extends PlayerBaseState {
 
         currPlayer.attackObserver.notify('playerAttack');
 
-        const { clicks } = Game.getInstance();
-
-        currPlayer.clicks.splice(clicks.indexOf('left'), 1);
-        AudioManager.playAudio('player/attack.wav', 1);
+        currPlayer.clicks.splice(currPlayer.clicks.indexOf('left'), 1);
+        AudioManager.playAudio('player_attack_one_audio').then();
     }
 
     exitState(currPlayer: Player) {

@@ -26,9 +26,10 @@ export default class Judgement extends Enemy {
     public laserState: JudgementLaserState;
     public bombState: JudgementBombState;
     public dieState: JudgementDeathState;
-    private _attackPosition: Vector[];
+    private lastState: JudgementBaseState;
+    private readonly _attackPosition: Vector[];
     private _angle: number;
-    private _moveSpeed: number;
+    private readonly _moveSpeed: number;
     private healthBar: HealthBar;
 
     constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, enemyObserver: Observable, attackObserver: Observable) {
@@ -39,6 +40,7 @@ export default class Judgement extends Enemy {
         this._attackPosition = GameSettings.GAME.ENEMY.JUDGEMENT.ATTACK_POSITION;
         this._moveSpeed = GameSettings.GAME.ENEMY.JUDGEMENT.MOVE_SPEED;
         this.currState = new JudgementBaseState();
+        this.lastState = new JudgementBaseState();
         this.spawnState = new JudgementSpawnState();
         this.moveState = new JudgementMoveState();
         this.dashState = new JudgementDashState();
@@ -56,16 +58,8 @@ export default class Judgement extends Enemy {
         return this._moveSpeed;
     }
 
-    set moveSpeed(value: number) {
-        this._moveSpeed = value;
-    }
-
     get attackPosition(): Vector[] {
         return this._attackPosition;
-    }
-
-    set attackPosition(value: Vector[]) {
-        this._attackPosition = value;
     }
 
     get angle(): number {
@@ -78,6 +72,7 @@ export default class Judgement extends Enemy {
 
     public switchState(newState: JudgementBaseState) {
         this.currState.exitState(this);
+        this.lastState = this.currState;
         this.currState = newState;
         this.currState.enterState(this);
     }
@@ -87,22 +82,22 @@ export default class Judgement extends Enemy {
     }
 
     public handleSwitchState() {
-        AudioManager.playAudio('boss/scream.wav');
+        AudioManager.playAudio('judgement_scream_audio').then();
         const { dashChance, attackChance, laserChance, bombChance } = this.getStateProbability();
 
-        if (RandomHelper.getRandomBoolean(dashChance)) {
+        if (RandomHelper.getRandomBoolean(dashChance) && this.lastState !== this.dashState) {
             this.switchState(this.dashState);
             return;
         }
-        if (RandomHelper.getRandomBoolean(attackChance)) {
+        if (RandomHelper.getRandomBoolean(attackChance) && this.lastState !== this.attackState) {
             this.switchState(this.attackState);
             return;
         }
-        if (RandomHelper.getRandomBoolean(laserChance)) {
+        if (RandomHelper.getRandomBoolean(laserChance) && this.lastState !== this.laserState) {
             this.switchState(this.laserState);
             return;
         }
-        if (RandomHelper.getRandomBoolean(bombChance)) {
+        if (RandomHelper.getRandomBoolean(bombChance) && this.lastState !== this.bombState) {
             this.switchState(this.bombState);
             return;
         }
@@ -154,6 +149,10 @@ export default class Judgement extends Enemy {
         }
 
         super.handleDamage({ amount, angle });
+
+        if (RandomHelper.getRandomBoolean(0.3)) {
+            AudioManager.playAudio('judgement_hurt_audio').then();
+        }
         return;
     }
 
@@ -182,10 +181,10 @@ export default class Judgement extends Enemy {
             laserChance = 0.05;
             bombChance = 0.35;
         } else if (distance < 750) {
-            dashChance = 0.15;
+            dashChance = 0.1;
             attackChance = 0.45;
-            laserChance = 0.15;
-            bombChance = 0.35;
+            laserChance = 0.1;
+            bombChance = 0.45;
         } else {
             dashChance = 0.15;
             attackChance = 0.05;

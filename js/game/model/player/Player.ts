@@ -5,7 +5,6 @@ import PlayerAttackState from './state/PlayerAttackState.js';
 import PlayerAttackTwoState from './state/PlayerAttackTwoState.js';
 import PlayerDashState from './state/PlayerDashState.js';
 import Game from '../game/Game.js';
-import renderShadow from '../../helper/renderer/shadow.js';
 import PlayerAimingState from './state/PlayerAimingState.js';
 import PlayerHurtState from './state/PlayerHurtState.js';
 import PlayerThrowingState from './state/PlayerThrowingState.js';
@@ -19,11 +18,11 @@ import Collider from '../collideable/Collider.js';
 import { Vector } from '../utility/interfaces/Vector.js';
 import { Box } from '../utility/interfaces/Box.js';
 import InteractionBar from '../interactables/InteractionBar.js';
-import { PolarVector } from '../utility/interfaces/PolarVector.js';
-import DistanceHelper from '../utility/helper/DistanceHelper.js';
 import AngleHelper from '../utility/helper/AngleHelper.js';
 import AudioManager from '../utility/manager/AudioManager.js';
 import { Outfit } from '../utility/enums/Outfit.js';
+import Shadow from '../shadow/Shadow.js';
+import Grenade from './Grenade';
 
 export default class Player {
     public currState: PlayerBaseState;
@@ -43,10 +42,10 @@ export default class Player {
     private _stamina: number;
     private _bombs: number;
     private _bullets: number;
-    private _friction: number;
-    private _maxSpeed: number;
-    private _attackMoveSpeed: number;
-    private _dashMoveSpeed: number;
+    private readonly friction: number;
+    private readonly _maxSpeed: number;
+    private readonly _attackMoveSpeed: number;
+    private readonly _dashMoveSpeed: number;
     private _velocity: Vector;
     private _lookAngle: number;
     private _width: number;
@@ -59,26 +58,27 @@ export default class Player {
     private _counter: number;
     private _healing: number;
     private _immunity: number;
-    private _projectiles: any[];
+    private readonly _projectiles: Grenade[];
     private _playerDefault: any;
     private _outfit: Outfit;
     private _inputEventEmitter: Observable;
-    private _interactionBar: InteractionBar;
-    private _maxhealth: number;
-    private _keys: string[];
-    private _clicks: string[];
+    private readonly _interactionBar: InteractionBar;
+    private readonly _maxHealth: number;
+    private readonly _keys: string[];
+    private readonly _clicks: string[];
     private _attackObserver: Observable;
     private _isBelowGround: boolean;
+    private shadow: Shadow;
 
     public constructor(inputEventEmitter: Observable) {
         const { player: playerDefault } = GameSettings;
-        this._maxhealth = playerDefault.MAX_HEALTH;
+        this._maxHealth = playerDefault.MAX_HEALTH;
         this._health = playerDefault.MAX_HEALTH;
         this._healthPack = playerDefault.MAX_HEALTHPACKS;
         this._stamina = playerDefault.MAX_STAMINA;
         this._bombs = playerDefault.MAX_BOMBS;
         this._bullets = playerDefault.MAX_BULLETS;
-        this._friction = playerDefault.FRICTION;
+        this.friction = playerDefault.FRICTION;
         this._maxSpeed = playerDefault.MAX_SPEED;
         this._attackMoveSpeed = playerDefault.ATTACK_MOVE_SPEED;
         this._dashMoveSpeed = playerDefault.DASH_MOVE_SPEED;
@@ -115,16 +115,13 @@ export default class Player {
         this._clicks = [];
         this._attackObserver = new Observable();
         this._isBelowGround = false;
+        this.shadow = new Shadow(1.5);
 
         this.eventHandler();
     }
 
-    get maxhealth(): number {
-        return this._maxhealth;
-    }
-
-    set maxhealth(value: number) {
-        this._maxhealth = value;
+    get maxHealth(): number {
+        return this._maxHealth;
     }
 
     get isBelowGround(): boolean {
@@ -147,10 +144,6 @@ export default class Player {
         return this._interactionBar;
     }
 
-    set interactionBar(value: InteractionBar) {
-        this._interactionBar = value;
-    }
-
     get healthPack(): number {
         return this._healthPack;
     }
@@ -159,20 +152,8 @@ export default class Player {
         this._healthPack = value;
     }
 
-    get friction(): number {
-        return this._friction;
-    }
-
-    set friction(value: number) {
-        this._friction = value;
-    }
-
     get maxSpeed(): number {
         return this._maxSpeed;
-    }
-
-    set maxSpeed(value: number) {
-        this._maxSpeed = value;
     }
 
     get width(): number {
@@ -219,26 +200,6 @@ export default class Player {
         return this._projectiles;
     }
 
-    set projectiles(value: any[]) {
-        this._projectiles = value;
-    }
-
-    get playerDefault(): any {
-        return this._playerDefault;
-    }
-
-    set playerDefault(value: any) {
-        this._playerDefault = value;
-    }
-
-    get inputEventEmitter(): Observable {
-        return this._inputEventEmitter;
-    }
-
-    set inputEventEmitter(value: Observable) {
-        this._inputEventEmitter = value;
-    }
-
     get outfit(): Outfit {
         return this._outfit;
     }
@@ -283,10 +244,6 @@ export default class Player {
         return this._dashMoveSpeed;
     }
 
-    set dashMoveSpeed(value: number) {
-        this._dashMoveSpeed = value;
-    }
-
     get bullets(): number {
         return this._bullets;
     }
@@ -307,24 +264,12 @@ export default class Player {
         return this._attackMoveSpeed;
     }
 
-    set attackMoveSpeed(value: number) {
-        this._attackMoveSpeed = value;
-    }
-
     get attackBox(): Box {
         return this._attackBox;
     }
 
-    set attackBox(value: Box) {
-        this._attackBox = value;
-    }
-
     get lookAngle(): number {
         return this._lookAngle;
-    }
-
-    set lookAngle(value: number) {
-        this._lookAngle = value;
     }
 
     get lastDirection(): string {
@@ -333,10 +278,6 @@ export default class Player {
 
     set lastDirection(value: string) {
         this._lastDirection = value;
-    }
-
-    get combo(): boolean {
-        return this._combo;
     }
 
     set combo(value: boolean) {
@@ -367,13 +308,7 @@ export default class Player {
         this.updateBombs();
 
         if (this.currState !== this.spawnState) {
-            renderShadow({
-                position: {
-                    x: this._centerPosition.x,
-                    y: this._centerPosition.y + 12.5,
-                },
-                sizeMultiplier: 1.5,
-            });
+            this.shadow.renderShadow(new Vector(this.centerPosition.x, this.centerPosition.y + 12.5));
         }
 
         this.updateCounter();
@@ -392,8 +327,6 @@ export default class Player {
 
         this.playerEffectsHandler(true);
 
-        this._projectiles.forEach((projectile) => projectile.update());
-
         this.heal();
 
         this._interactionBar.update();
@@ -410,7 +343,7 @@ export default class Player {
         // Game.getInstance().ctx.fillRect(x, y, w, h);
     }
 
-    public damage({ amount, angle }) {
+    public damage(amount: number) {
         if (this.currState === this.deathState) {
             return;
         }
@@ -425,10 +358,6 @@ export default class Player {
         if (this.currState !== this.hurtState) {
             this.switchState(this.hurtState);
         }
-
-        const pVector = new PolarVector(5, angle);
-        this._velocity.x += DistanceHelper.getHorizontalValue(pVector);
-        this._velocity.y += DistanceHelper.getVerticalValue(pVector);
     }
 
     public regenerateStamina() {
@@ -467,8 +396,8 @@ export default class Player {
     }
 
     public moveHandler(colliders: Collider[]) {
-        this._velocity.x = this._velocity.x * (1 - this._friction * Game.movementDeltaTime);
-        this._velocity.y = this._velocity.y * (1 - this._friction * Game.movementDeltaTime);
+        this._velocity.x = this._velocity.x * (1 - this.friction * Game.movementDeltaTime);
+        this._velocity.y = this._velocity.y * (1 - this.friction * Game.movementDeltaTime);
 
         let { x, y, w, h } = this._hitbox.getPoints(this._centerPosition, this._width, this._height);
 
@@ -530,6 +459,10 @@ export default class Player {
                 h: this._playerDefault.ATTACK_BOX.DOWN.H,
             };
         }
+    }
+
+    public isInElevator() {
+        return this.currState === this.inElevatorState;
     }
 
     private checkCollision({ colliders, x, y, w, h }) {
@@ -598,7 +531,6 @@ export default class Player {
                 return;
             }
             if (event === 'mousemove') {
-                //TODo: fix this
                 const playerX = this._centerPosition.x * GameSettings.GAME.GAME_SCALE;
                 const playerY = this._centerPosition.y * GameSettings.GAME.GAME_SCALE;
 
@@ -634,10 +566,7 @@ export default class Player {
         }
 
         if (this.detectCollisionBox(box)) {
-            this.damage({
-                amount: 1,
-                angle: Math.PI,
-            });
+            this.damage(1);
             return true;
         }
 
@@ -654,10 +583,7 @@ export default class Player {
         }
 
         if (this.detectCollision(position)) {
-            this.damage({
-                amount: 1,
-                angle: Math.PI,
-            });
+            this.damage(1);
             return true;
         }
 
@@ -701,7 +627,7 @@ export default class Player {
 
     private healingHandler() {
         if (this.healing === 6) {
-            AudioManager.playAudio('player/medkit/use.wav');
+            AudioManager.playAudio('player_medkit_use_audio').then();
         }
         if (this.healing > 0) {
             this.healing -= Game.deltaTime;

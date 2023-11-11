@@ -5,7 +5,7 @@ import { Vector } from '../utility/interfaces/Vector.js';
 import RandomHelper from '../utility/helper/RandomHelper.js';
 
 export default class ParticlesFactory {
-    private eventEmitter: Observable;
+    private readonly eventEmitter: Observable;
 
     public constructor(eventEmitter: Observable) {
         this.eventEmitter = eventEmitter;

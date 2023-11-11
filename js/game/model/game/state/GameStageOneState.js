@@ -12,6 +12,7 @@ import GameSettings from '../../../constants.js';
 import Navbar from '../../htmlElements/Navbar.js';
 import AssetManager from '../../utility/manager/AssetManager.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
 export default class GameStageOneState extends GameBaseState {
     enterState(game) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -21,12 +22,11 @@ export default class GameStageOneState extends GameBaseState {
             yield this.stageInitializer(game);
             const { player } = game;
             player.switchState(player.spawnState);
-            AudioManager.playAudio('forest_stage/background.ogg', null, true);
+            AudioManager.playAudio('forest_stage_background_audio', true);
         });
     }
     updateState(game) {
         super.updateState(game);
-        game.pauseHandler();
         game.mapGenerator.update();
         const { camera, player, elevators, interactablesManager } = game;
         game.ctx.clearRect(camera.position.x, camera.position.y, game.canvas.width * 2, game.canvas.height * 2);
@@ -67,18 +67,15 @@ export default class GameStageOneState extends GameBaseState {
     }
     stageInitializer(game) {
         return __awaiter(this, void 0, void 0, function* () {
-            $('#menu-modal').css('display', 'none');
-            const { camera, player, htmlHandlers } = game;
-            game.keys = [];
-            game.clicks = [];
+            game.prepareCanvas();
+            const { camera, player } = game;
             yield AssetManager.assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], game.player.outfit);
             game.mapGenerator.init();
             camera.init();
-            player.centerPosition = {
+            player.centerPosition = Vector.parse({
                 x: 512 + player.width / 2,
                 y: 512 + player.height / 2,
-            };
-            game.prepareCanvas();
+            });
             camera.setCameraPosition({
                 position: game.player.centerPosition,
             });

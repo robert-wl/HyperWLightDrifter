@@ -1,6 +1,5 @@
 import Enemy from '../Enemy.js';
 import Game from '../../game/Game.js';
-import renderShadow from '../../../helper/renderer/shadow.js';
 import CrystalBruteBaseState from './state/CrystalBruteBaseState.js';
 import CrystalBruteAttackState from './state/CrystalBruteAttackState.js';
 import CrystalBruteDieState from './state/CrystalBruteDieState.js';
@@ -8,6 +7,8 @@ import CrystalBruteMoveState from './state/CrystalBruteMoveState.js';
 import HealthBar from '../healthBar/HealthBar.js';
 import CrystalBruteIdleState from './state/CrystalBruteIdleState.js';
 import { Vector } from '../../utility/interfaces/Vector.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import Shadow from '../../shadow/Shadow.js';
 export default class CrystalBrute extends Enemy {
     constructor(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
@@ -21,6 +22,7 @@ export default class CrystalBrute extends Enemy {
         this.moveState = new CrystalBruteMoveState();
         this.dieState = new CrystalBruteDieState();
         this.idleState = new CrystalBruteIdleState();
+        this.shadow = new Shadow(3);
         this.switchState(this.idleState);
     }
     get speed() {
@@ -35,6 +37,12 @@ export default class CrystalBrute extends Enemy {
     set angle(value) {
         this._angle = value;
     }
+    handleDamage({ amount, angle }) {
+        super.handleDamage({ amount, angle });
+        if (this.health > 0) {
+            AudioManager.playAudio('crystal_brute_hurt_audio');
+        }
+    }
     switchState(newState) {
         this.currState.exitState(this);
         this.currState = newState;
@@ -47,13 +55,7 @@ export default class CrystalBrute extends Enemy {
         }
         this.currState.updateState(this);
         if (this.currState !== this.dieState) {
-            renderShadow({
-                position: {
-                    x: this.position.x,
-                    y: this.position.y + 27.5,
-                },
-                sizeMultiplier: 3,
-            });
+            this.shadow.renderShadow(new Vector(this.position.x, this.position.y + 27.5));
         }
         if (this.currState !== this.dieState) {
             this.healthBar.update({

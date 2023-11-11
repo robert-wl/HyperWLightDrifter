@@ -37,8 +37,6 @@ export default class Game {
     public player!: Player;
     public width: number;
     public height: number;
-    public keys: string[];
-    public clicks: string[];
     public objects: Map<string, SetPiece>;
     public coins: any[];
     public elevators: any[];
@@ -47,7 +45,7 @@ export default class Game {
     public canvas!: HTMLCanvasElement;
     public ctx!: CanvasRenderingContext2D;
     public backgroundOpacity: number;
-    public keyCount: number;
+    public coinCount: number;
     public currState: any;
     public startState: any;
     public stageOneState: any;
@@ -75,14 +73,12 @@ export default class Game {
         this.loading = false;
         this.width = GameSettings.game.SCREEN_WIDTH;
         this.height = GameSettings.game.SCREEN_HEIGHT;
-        this.keys = [];
-        this.clicks = [];
         this.objects = new Map();
         this.coins = [];
         this.elevators = [];
         this.elevator = null;
         this.backgroundOpacity = 1;
-        this.keyCount = 0;
+        this.coinCount = 0;
         this.currState = new GameBaseState();
         this.startState = new GameStartState();
         this.stageOneState = new GameStageOneState();
@@ -146,7 +142,19 @@ export default class Game {
     }
 
     async init() {
-        this.keyCount = 0;
+        this.stage = 1;
+        this.showFPS = false;
+        this.fpsShowCounter = 0;
+        this.fps = 60;
+        this.loading = false;
+        this.width = GameSettings.game.SCREEN_WIDTH;
+        this.height = GameSettings.game.SCREEN_HEIGHT;
+        this.objects = new Map();
+        this.coins = [];
+        this.elevators = [];
+        this.elevator = null;
+        this.backgroundOpacity = 1;
+        this.coinCount = 0;
         this.camera = new Camera(this);
         this.inputManager = new InputManager(this);
         this.player = new Player(this.inputManager.inputObservable);
@@ -221,15 +229,7 @@ export default class Game {
         }
     }
 
-    pauseHandler() {
-        if (this.keys.includes('p') && (this.currState === this.stageTwoState || this.currState === this.stageOneState)) {
-            this.switchState(this.pausedState).then();
-        }
-    }
-
     unpauseGame() {
-        this.keys = [];
-        this.clicks = [];
         if (this.stage === 1) {
             this.currState.exitState(this);
             this.currState = this.stageOneState;

@@ -13,8 +13,6 @@ export default class GameBaseState {
         }
     }
 
-    public exitState(game: Game) {}
-
     protected checkCounter(number: number) {
         return this.number >= number;
     }

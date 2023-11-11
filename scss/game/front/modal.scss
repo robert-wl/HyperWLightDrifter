@@ -1,0 +1,204 @@
+@import "../mixins";
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.modal-container * {
+  background-color: transparent;
+  color: white;
+}
+
+.modal-container {
+  @include flex-rules(column, center, center);
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  background-color: rgb(0, 0, 0, 0.9);
+  transition: opacity 0.5s;
+  opacity: 100%;
+
+  .modal-inner-container {
+    @include flex-rules(row, center, center);
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+
+
+    .modal-content-image, .modal-content {
+      @include flex-rules(row, start, flex-start);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 40vw;
+      width: 85vw;
+      overflow: hidden;
+
+      .modal-left {
+        @include flex-rules(column, start, center);
+        justify-content: space-between;
+        background-color: transparent;
+        width: 30%;
+        height: 100%;
+        margin: 0.6vw;
+        border-right: rgb(253, 46, 195, 0.7) solid 0.5rem;
+
+        > header {
+          @include flex-rules(row, center, center);
+          font-family: "Press Start 2P", serif;
+          margin-top: 3vw;
+          width: 100%;
+          padding: 1rem 0;
+          background-color: rgb(253, 46, 195, 0.7);
+          font-size: 1.5vw;
+
+          .arrow-left {
+            @include animationArrow(left);
+            opacity: 100;
+            background-color: transparent;
+            width: 3vw;
+            cursor: pointer;
+          }
+
+          .arrow-right {
+            @include animationArrow(right);
+            text-align: end;
+            opacity: 100;
+            background-color: transparent;
+            width: 3vw;
+            cursor: pointer;
+          }
+        }
+
+        > div {
+          font-family: "Press Start 2P", serif;
+          font-size: 1.5vw;
+        }
+
+        > img {
+          width: 20vw;
+          transition: 0.5s;
+
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+
+        .modal-close-button {
+          @include flex-rules(row, center, center);
+          font-family: "Press Start 2P", serif;
+          margin-bottom: 3rem;
+          width: 100%;
+          padding: 1rem 0;
+          font-size: 1.5vw;
+          color: white;
+          outline: none;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+
+          &:hover {
+            background-color: rgb(253, 46, 195, 0.7);
+          }
+        }
+      }
+
+      .modal-right {
+        @include flex-rules(column, center, center);
+        background-color: transparent;
+        width: 70%;
+        height: 100%;
+        overflow: hidden;
+        margin-right: 2vw;
+
+        > ul {
+          font-family: "Press Start 2P", serif;
+          font-size: 1.5vw;
+          height: 100%;
+          list-style-type: disc;
+          overflow: hidden;
+
+          > li {
+            @include flex-rules(row, start, flex-start);
+            list-style-type: circle;
+            overflow: hidden;
+
+            > p {
+              overflow: hidden;
+              margin-top: 2.5vw;
+              margin-right: 0.75rem;
+              line-height: 2vw;
+            }
+
+          }
+
+        }
+
+      }
+
+      .modal-right-second-page {
+        @include flex-rules(row, center, center);
+        width: 70%;
+        font-family: "Press Start 2P", serif;
+        margin-right: 2vw;
+        font-size: 1.5vw;
+
+        .modal-right-first {
+          width: 50%;
+        }
+
+        .modal-right-second {
+          width: 50%;
+        }
+
+        ul {
+          padding-left: 1.5vw;
+          padding-top: 1.5vw;
+          margin: 0;
+
+          li {
+            @include flex-rules(row, start, center);
+            justify-content: space-between;
+
+            p {
+              margin: 1.5vw 0;
+            }
+
+            .key {
+              @include flex-rules(row, center, center);
+              width: fit-content;
+              border: 2px solid $pink-color;
+              text-align: center;
+              transition: all 0.25s;
+              padding: 0.65rem 0.5rem 0.5rem 0.65rem;
+            }
+
+            > div {
+              @include flex-rules(row, end, flex-end);
+              width: 70%;
+            }
+          }
+        }
+      }
+
+      > img {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 1;
+        z-index: 100;
+      }
+    }
+  }
+}
+
+.hidden {
+  display: none !important;
+  opacity: 0;
+}
+
+.transparent {
+  opacity: 0;
+  color: transparent;
+  cursor: none !important;
+}

@@ -1,7 +1,7 @@
 import { CombinedPiece } from '../../utility/interfaces/Piece';
 
 export default class SetPiece {
-    private _pieces: CombinedPiece[];
+    private readonly _pieces: CombinedPiece[];
     private _type: any;
 
     constructor(pieces: CombinedPiece[], type: string) {
@@ -14,10 +14,6 @@ export default class SetPiece {
 
     get pieces(): CombinedPiece[] {
         return this._pieces;
-    }
-
-    set pieces(value: CombinedPiece[]) {
-        this._pieces = value;
     }
 
     get type(): any {

@@ -122,6 +122,11 @@ const GameSettings = {
             BULLET: 2,
             GRENADE: 2,
         },
+        GRENADE: {
+            WIDTH: 16,
+            HEIGHT: 16,
+            VELOCITY: 10,
+        },
         GUN: {
             RECOIL: 3,
             OFFSET: {
@@ -209,6 +214,21 @@ const GameSettings = {
                 name: 'fireflies',
                 amount: 4,
             },
+            {
+                ref: 'menu/action.wav',
+                name: 'menu_action_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'menu/move.wav',
+                name: 'menu_move_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'menu/background.ogg',
+                name: 'menu_background_audio',
+                isAudio: true,
+            },
         ],
         PLAYER: [
             {
@@ -226,25 +246,25 @@ const GameSettings = {
                 isOutfit: true,
             },
             {
-                ref: 'player/move/move_up.png',
+                ref: 'player/move/up/move_up.png',
                 name: 'move_up',
                 amount: 12,
                 isOutfit: true,
             },
             {
-                ref: 'player/move/move_down.png',
+                ref: 'player/move/down/move_down.png',
                 name: 'move_down',
                 amount: 12,
                 isOutfit: true,
             },
             {
-                ref: 'player/move/move_left.png',
+                ref: 'player/move/left/move_left.png',
                 name: 'move_left',
                 amount: 12,
                 isOutfit: true,
             },
             {
-                ref: 'player/move/move_right.png',
+                ref: 'player/move/right/move_right.png',
                 name: 'move_right',
                 amount: 12,
                 isOutfit: true,
@@ -347,10 +367,6 @@ const GameSettings = {
                 isOutfit: true,
             },
             {
-                ref: 'player/aim/gun/gun_effect.png',
-                name: 'gun_effect',
-            },
-            {
                 ref: 'player/aim/gun/ray.png',
                 name: 'gun_ray',
             },
@@ -383,10 +399,6 @@ const GameSettings = {
                 isOutfit: true,
             },
             {
-                ref: 'player/aim/gun/projectile.png',
-                name: 'projectile',
-            },
-            {
                 ref: 'player/death/death.png',
                 name: 'player_death',
                 amount: 6,
@@ -402,6 +414,11 @@ const GameSettings = {
                 isAudio: true,
             },
             {
+                ref: 'player/coin/pickup.wav',
+                name: 'player_coin_pickup_audio',
+                isAudio: true,
+            },
+            {
                 ref: 'player/gun_fire.wav',
                 name: 'player_gun_fire_audio',
                 isAudio: true,
@@ -412,7 +429,7 @@ const GameSettings = {
                 isAudio: true,
             },
             {
-                ref: 'player/interact/interact.wav',
+                ref: 'player/interact.wav',
                 name: 'player_interact_audio',
                 isAudio: true,
             },
@@ -432,9 +449,13 @@ const GameSettings = {
                 isAudio: true,
             },
             {
-                ref: 'player/attack.wav',
-                name: 'player_attack_audio',
-                amount: 2,
+                ref: 'player/attack_1.wav',
+                name: 'player_attack_one_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/attack_2.wav',
+                name: 'player_attack_two_audio',
                 isAudio: true,
             },
             {
@@ -443,9 +464,13 @@ const GameSettings = {
                 isAudio: true,
             },
             {
-                ref: 'player/footstep_forest.wav',
-                name: 'player_footstep_forest_audio',
-                amount: 2,
+                ref: 'player/footstep_forest_1.wav',
+                name: 'player_footstep_forest_one_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'player/footstep_forest_2.wav',
+                name: 'player_footstep_forest_two_audio',
                 isAudio: true,
             },
             {
@@ -606,6 +631,11 @@ const GameSettings = {
                 isAudio: true,
             },
             {
+                ref: 'enemy/crystal_brute/walk.wav',
+                name: 'crystal_brute_walk_audio',
+                isAudio: true,
+            },
+            {
                 ref: 'enemy/crystal_brute/hurt.wav',
                 name: 'crystal_brute_hurt_audio',
                 isAudio: true,
@@ -638,7 +668,7 @@ const GameSettings = {
                 amount: 11,
             },
             {
-                ref: 'boss/bomb/judgement_explosion.png',
+                ref: 'boss/bomb/explosion/judgement_explosion.png',
                 name: 'judgement_explosion',
                 amount: 8,
             },
@@ -673,7 +703,7 @@ const GameSettings = {
                 amount: 21,
             },
             {
-                ref: 'boss/laser/judgement_laser_bullet.png',
+                ref: 'boss/laser/bullet/judgement_laser_bullet.png',
                 name: 'judgement_laser_bullet',
             },
             {
@@ -682,11 +712,11 @@ const GameSettings = {
                 amount: 4,
             },
             {
-                ref: 'world/boss_room.png',
+                ref: 'world/boss/boss_room.png',
                 name: 'map_ground_second',
             },
             {
-                ref: 'other/shadow.png',
+                ref: 'other/shadow/shadow.png',
                 name: 'shadow',
             },
             {
@@ -705,6 +735,11 @@ const GameSettings = {
                 isAudio: true,
             },
             {
+                ref: 'boss/hurt.wav',
+                name: 'judgement_hurt_audio',
+                isAudio: true,
+            },
+            {
                 ref: 'boss/bullet.wav',
                 name: 'judgement_bullet_audio',
                 isAudio: true,
@@ -720,11 +755,6 @@ const GameSettings = {
                 isAudio: true,
             },
             {
-                ref: 'boss/spawn.wav',
-                name: 'judgement_spawn_audio',
-                isAudio: true,
-            },
-            {
                 ref: 'boss/smash_ground.wav',
                 name: 'judgement_smash_ground_audio',
                 isAudio: true,
@@ -737,6 +767,11 @@ const GameSettings = {
             {
                 ref: 'boss/spawn.wav',
                 name: 'judgement_spawn_audio',
+                isAudio: true,
+            },
+            {
+                ref: 'boss_stage/background.ogg',
+                name: 'boss_stage_background_audio',
                 isAudio: true,
             },
         ],

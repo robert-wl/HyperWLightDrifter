@@ -23,7 +23,6 @@
       @include animationArrow(left);
       background-color: transparent;
       width: 20vw;
-      cursor: pointer;
     }
 
     img {
@@ -35,7 +34,6 @@
       @include animationArrow(right);
       background-color: transparent;
       width: 20vw;
-      cursor: pointer;
     }
   }
 

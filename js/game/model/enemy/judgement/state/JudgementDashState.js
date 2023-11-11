@@ -88,7 +88,7 @@ export default class JudgementDashState extends JudgementBaseState {
                 w: judgementMove.width * GameSettings.GAME.GAME_SCALE,
                 h: judgementMove.height * GameSettings.GAME.GAME_SCALE,
             });
-            DrawHelper.drawMirroredY(judgementMove, imageSize, true);
+            DrawHelper.drawImage(judgementMove, imageSize, true, DirectionHelper.getFaceDirection(angle) === 'left');
             return;
         }
         const imageSize = Box.parse({

@@ -2,10 +2,6 @@ import { Vector } from '../interfaces/Vector.js';
 import { PolarVector } from '../interfaces/PolarVector.js';
 
 export default class DistanceHelper {
-    private constructor() {
-        //
-    }
-
     public static getHorizontalValue(vector: PolarVector, initial: number = 0) {
         return Math.cos(vector.angle) * vector.value + initial;
     }

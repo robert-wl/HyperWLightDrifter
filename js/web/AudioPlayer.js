@@ -17,11 +17,11 @@ export default class AudioPlayer {
             this.audioToggle(true);
             this.audioVisualizer.playAudio();
         });
-        this.audioToggleButton.forEach((button) => {
-            button.addEventListener('click', () => {
-                console.log('hai');
-                this.audioToggle();
-            });
+        this.audioToggleButton[0].addEventListener('click', () => {
+            this.audioToggle(true);
+        });
+        this.audioToggleButton[1].addEventListener('click', () => {
+            this.audioToggle(false);
         });
     }
     audioToggle(state) {
@@ -29,6 +29,14 @@ export default class AudioPlayer {
             for (const button of this.audioToggleButton) {
                 button.classList.toggle('disabled');
             }
+        }
+        if (state) {
+            this.audioToggleButton[0].classList.add('disabled');
+            this.audioToggleButton[1].classList.remove('disabled');
+        }
+        else {
+            this.audioToggleButton[0].classList.remove('disabled');
+            this.audioToggleButton[1].classList.add('disabled');
         }
         this.isPlaying = state || !this.isPlaying;
         if (this.isPlaying) {

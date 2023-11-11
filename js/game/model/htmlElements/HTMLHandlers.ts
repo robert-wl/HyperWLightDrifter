@@ -5,46 +5,49 @@ import SettingsModal from './SettingsModal.js';
 import Game from '../game/Game.js';
 import LoadingModal from './LoadingModal.js';
 import PauseModal from './PauseModal.js';
+import AudioManager from '../utility/manager/AudioManager.js';
+import EndingVideo from './EndingVideo.js';
 
 export default class HTMLHandlers {
     private readonly modalObservable: Observable;
     private isInMenu: boolean;
     private game: Game;
     private HUD: JQuery;
+    private hoverable: JQuery;
     private openingScreen: JQuery;
     private menuModal: MenuModal;
     private selectionModal: SelectionModal;
     private settingsModal: SettingsModal;
     private _loadingModal: LoadingModal;
     private pauseModal: PauseModal;
+    private endingVideo: EndingVideo;
 
     public constructor(game: Game) {
         this.modalObservable = new Observable();
         this.isInMenu = true;
         this.game = game;
         this.HUD = $('#HUD');
+        this.hoverable = $('.hoverable');
         this.openingScreen = $('#opening-screen');
         this.menuModal = new MenuModal(this.modalObservable);
         this.selectionModal = new SelectionModal(this.modalObservable);
         this.settingsModal = new SettingsModal(this.modalObservable);
         this._loadingModal = new LoadingModal(this.modalObservable);
         this.pauseModal = new PauseModal(this.modalObservable);
+        this.endingVideo = new EndingVideo(this.modalObservable);
 
         this.HUDHandler();
         this.eventHandler();
     }
 
-    public eventRemover() {
-        this.HUD.off();
-    }
+    public eventRemover = () => this.HUD.off();
 
     public notify(event: any, data?: any) {
         this.modalObservable.notify(event, data);
     }
 
-    private HUDHandler = () => {
-        this.HUD.off();
-        this.HUD.on('mousedown', () => {
+    private HUDHandler = () =>
+        this.HUD.off().on('mousedown', () => {
             if (this.selectionModal.isOpen()) {
                 return;
             }
@@ -56,7 +59,6 @@ export default class HTMLHandlers {
             }
             this.modalObservable.notify('menuModal:toggle');
         });
-    };
 
     private eventHandler() {
         this.modalObservable.subscribe(async ({ event, data }) => {
@@ -82,6 +84,10 @@ export default class HTMLHandlers {
                 this.isInMenu = true;
                 return;
             }
+            if (event === 'endGame') {
+                this.endingVideo.open();
+                return;
+            }
             if (event === 'startScreen') {
                 this.openingScreen.css('opacity', '100%').css('display', 'block');
                 return;
@@ -92,7 +98,17 @@ export default class HTMLHandlers {
             }
             if (event === 'toggleFPS') {
                 this.game.showFPS = data;
+                return;
             }
+            if (event === 'finishGame') {
+                this.game.switchState(this.game.startState).then();
+                this.isInMenu = true;
+                $('#opening-screen').attr('src', '../assets/ui/start_end.png').css('animation', 'fadeIn 0.5s ease-in-out');
+            }
+        });
+
+        this.hoverable.on('mouseenter', () => {
+            AudioManager.playAudio('menu_move_audio').then();
         });
     }
 }

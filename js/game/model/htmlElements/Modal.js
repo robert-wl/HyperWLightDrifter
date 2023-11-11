@@ -13,7 +13,7 @@ export default class Modal {
     open() {
         var _a;
         (_a = this._modal) === null || _a === void 0 ? void 0 : _a.css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '100%');
-        AudioManager.playAudio('menu/action.wav');
+        AudioManager.playAudio('menu_action_audio');
     }
     toggle() {
         if (this._modal.css('display') === 'none') {

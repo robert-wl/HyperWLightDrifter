@@ -9,13 +9,13 @@ import DistanceHelper from '../../utility/helper/DistanceHelper.js';
 import { PolarVector } from '../../utility/interfaces/PolarVector.js';
 import { Box } from '../../utility/interfaces/Box.js';
 import DrawHelper from '../../utility/helper/DrawHelper.js';
+import AngleHelper from '../../utility/helper/AngleHelper.js';
 export default class JudgementBomb extends Enemy {
-    constructor(position, width, height, hitbox, maxHealth, angle, offset, lifetime, enemyObserver, attackObserver) {
+    constructor(position, positionFollow, offset, width, height, hitbox, maxHealth, angle, lifetime, enemyObserver, attackObserver) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
         this.angle = angle;
+        this.positionFollow = positionFollow;
         this.offset = offset;
-        this.positionFollow = position;
-        this.position = position;
         this._spawning = true;
         this.exploding = false;
         this.lifeTime = lifetime;
@@ -33,12 +33,11 @@ export default class JudgementBomb extends Enemy {
     update() {
         this.handleTimer();
         this.drawBomb();
-        const pVector = new PolarVector(this.offset, this.angle);
         this.healthbar.update({
             health: this.health,
             position: {
-                x: DistanceHelper.getHorizontalValue(pVector, this.position.x),
-                y: DistanceHelper.getVerticalValue(pVector, this.position.y),
+                x: this.position.x,
+                y: this.position.y,
             },
         });
         if (Game.debug) {
@@ -59,7 +58,11 @@ export default class JudgementBomb extends Enemy {
             this.animationStage = Math.min(this.animationStage, 5);
         }
         if (this._spawning) {
-            this.position = Object.assign({}, this.positionFollow);
+            const pVector = new PolarVector(this.offset, this.angle);
+            this.position = Vector.parse({
+                x: DistanceHelper.getHorizontalValue(pVector, this.positionFollow.x),
+                y: DistanceHelper.getVerticalValue(pVector, this.positionFollow.y),
+            });
         }
         this.handleExplosion();
         if (this._spawning) {
@@ -72,22 +75,19 @@ export default class JudgementBomb extends Enemy {
     }
     drawBomb() {
         const judgementBomb = AssetManager.getNumberedImage('judgement_bomb', this.animationStage);
-        const pVector = new PolarVector(this.offset, this.angle);
         const imageSize = Box.parse({
-            x: DistanceHelper.getHorizontalValue(pVector, this.position.x),
-            y: DistanceHelper.getVerticalValue(pVector, this.position.y),
+            x: this.position.x,
+            y: this.position.y,
             w: judgementBomb.width * GameSettings.GAME.GAME_SCALE,
             h: judgementBomb.height * GameSettings.GAME.GAME_SCALE,
         });
         DrawHelper.drawImage(judgementBomb, imageSize, true);
     }
     drawExplosion() {
-        // console.log(this.animationStage - 3);
         const judgementExplosion = AssetManager.getNumberedImage('judgement_explosion', this.animationStage - 3);
-        const pVector = new PolarVector(this.offset, this.angle);
         const imageSize = Box.parse({
-            x: DistanceHelper.getHorizontalValue(pVector, this.position.x),
-            y: DistanceHelper.getVerticalValue(pVector, this.position.y),
+            x: this.position.x,
+            y: this.position.y,
             w: judgementExplosion.width * GameSettings.GAME.GAME_SCALE,
             h: judgementExplosion.height * GameSettings.GAME.GAME_SCALE,
         });
@@ -96,29 +96,40 @@ export default class JudgementBomb extends Enemy {
     isAboutToExplode() {
         return this.lifeTime <= 160;
     }
+    handleDamage({ amount, angle }) {
+        if (this._spawning) {
+            return;
+        }
+        super.handleDamage({ amount, angle });
+    }
     handleExplosion() {
         const { player } = Game.getInstance();
         if (this.exploding) {
             this.drawExplosion();
             this.advanceAnimationStage(7);
             this.animationStage = Math.min(this.animationStage, 11);
-            const pVector = new PolarVector(this.offset, this.angle);
             const distance = DistanceHelper.getManhattanDistance({
-                x: player.centerPosition.x - DistanceHelper.getHorizontalValue(pVector, this.position.x),
-                y: player.centerPosition.y - DistanceHelper.getVerticalValue(pVector, this.position.y),
+                x: player.centerPosition.x - this.position.x,
+                y: player.centerPosition.y - this.position.y,
             });
             if (distance < 150) {
-                player.damage({
-                    amount: 3,
-                    angle: 0,
-                });
+                player.damage(3);
             }
         }
         if (!this.exploding) {
-            if (this.animationStage === 5 && this.checkCounter(10) && RandomHelper.getRandomBoolean(0.15)) {
+            if (this.animationStage === 5 && this.checkCounter(10) && RandomHelper.getRandomBoolean(0.05)) {
                 this.animationStage--;
                 if (!this._spawning) {
-                    this.moveAngle = Math.random() * Math.PI * 2;
+                    if (RandomHelper.getRandomBoolean(0.25)) {
+                        this.moveAngle = Math.random() * Math.PI * 2;
+                    }
+                    else {
+                        const angle = AngleHelper.getAngle({
+                            x: player.centerPosition.x - this.position.x,
+                            y: player.centerPosition.y - this.position.y,
+                        });
+                        this.moveAngle = angle;
+                    }
                 }
             }
             const pVector = new PolarVector(3 * Game.deltaTime, this.moveAngle);

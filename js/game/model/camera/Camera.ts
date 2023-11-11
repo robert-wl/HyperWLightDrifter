@@ -8,7 +8,7 @@ import CameraBaseState from './state/CameraBaseState.js';
 import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
 import Medkit from '../interactables/Medkit.js';
-import Key from '../interactables/Key.js';
+import Coin from '../interactables/Coin.js';
 import Elevator from '../interactables/Elevator/Elevator.js';
 import SetPiece from '../map/setPieces/SetPiece.js';
 import { CombinedPiece } from '../utility/interfaces/Piece.js';
@@ -34,8 +34,8 @@ export default class Camera {
     public normalState: CameraNormalState;
     public followState: CameraFollowState;
     public currState: CameraBaseState;
-    private screenSize: number;
-    private game: Game;
+    private readonly screenSize: number;
+    private readonly game: Game;
 
     public constructor(game: Game) {
         this.game = game;
@@ -180,7 +180,7 @@ export default class Camera {
 
         const { objects, colliders } = this.getObjects();
 
-        const interactables: (Medkit | Key | Elevator)[] = [];
+        const interactables: (Medkit | Coin | Elevator)[] = [];
         const elevators: Elevator[] = [];
 
         objects.forEach((piece) => {
@@ -301,8 +301,8 @@ export default class Camera {
         return object instanceof CrystalSpider || object instanceof CrystalBrute;
     }
 
-    checkInteractables(object: CombinedPiece): object is Medkit | Key {
-        return object instanceof Medkit || object instanceof Key;
+    checkInteractables(object: CombinedPiece): object is Medkit | Coin {
+        return object instanceof Medkit || object instanceof Coin;
     }
 
     checkElevator(object: CombinedPiece): object is Elevator {

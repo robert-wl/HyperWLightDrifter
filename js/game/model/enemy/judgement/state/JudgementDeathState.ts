@@ -33,7 +33,7 @@ export default class JudgementDeathState extends JudgementBaseState {
         }
 
         if (this.deadTime >= 0 && !this.playedAudio) {
-            AudioManager.playAudio('boss/death.wav');
+            AudioManager.playAudio('judgement_death_audio').then();
 
             this.playedAudio = true;
         }
@@ -43,7 +43,7 @@ export default class JudgementDeathState extends JudgementBaseState {
         }
 
         if (backgroundOpacity <= 0.01 && currState !== endState) {
-            Game.getInstance().switchState(endState);
+            Game.getInstance().switchState(endState).then();
         }
     }
 

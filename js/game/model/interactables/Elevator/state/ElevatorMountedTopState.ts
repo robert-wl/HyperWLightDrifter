@@ -7,10 +7,6 @@ import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
 
 export default class ElevatorMountedTopState extends ElevatorBaseState {
-    public updateState(elevator: Elevator) {
-        //
-    }
-
     public drawImage(elevator: Elevator) {
         const elevatorImage = AssetManager.getImage('elevator');
         elevator.width = -0.5 * elevatorImage.width;
@@ -25,7 +21,7 @@ export default class ElevatorMountedTopState extends ElevatorBaseState {
 
         DrawHelper.drawImage(elevatorImage, imageSize);
 
-        if (Game.getInstance().keyCount >= 10) {
+        if (Game.getInstance().coinCount >= 10) {
             return;
         }
 

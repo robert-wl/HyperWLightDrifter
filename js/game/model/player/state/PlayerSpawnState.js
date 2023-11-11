@@ -13,7 +13,7 @@ export default class PlayerSpawnState extends PlayerBaseState {
     enterState(currPlayer) {
         super.enterState(currPlayer);
         this.spawnDelay = 0;
-        AudioManager.playAudio('player/teleport_arrive.wav');
+        AudioManager.playAudio('player_teleport_arrive_audio');
     }
     updateState(currPlayer) {
         this.spawnDelay += Game.deltaTime;

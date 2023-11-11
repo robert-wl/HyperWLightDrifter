@@ -31,14 +31,12 @@ export default class PauseModal extends Modal {
     };
 
     private handleInteraction() {
-        this.continueButton.off();
-        this.continueButton.on('mousedown', () => {
+        this.continueButton.off('mousedown.pauseModal').on('mousedown.pauseModal', () => {
             this.eventEmitter.notify('continueGame');
             this.close();
         });
 
-        this.exitButton.off();
-        this.exitButton.on('mousedown', () => {
+        this.exitButton.off('mousedown.pauseModal').on('mousedown.pauseModal', () => {
             this.eventEmitter.notify('backToStartScreen');
             this.close();
         });

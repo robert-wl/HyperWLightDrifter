@@ -18,7 +18,7 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
         if (RandomHelper.getRandomBoolean(0.5)) {
             currBrute.enemyObserver.notify('spawnKey', currBrute.position);
         }
-        AudioManager.playAudio('enemy/crystal_brute/death.wav');
+        AudioManager.playAudio('player_key_pickup_audio');
     }
     updateState(currBrute) {
         const { player } = Game.getInstance();

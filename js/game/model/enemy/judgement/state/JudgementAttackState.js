@@ -42,7 +42,7 @@ export default class JudgementAttackState extends JudgementBaseState {
             w: judgementAttack.width * GameSettings.GAME.GAME_SCALE,
             h: judgementAttack.height * GameSettings.GAME.GAME_SCALE,
         });
-        DrawHelper.drawMirroredY(judgementAttack, imageSize, true);
+        DrawHelper.drawImage(judgementAttack, imageSize, true, DirectionHelper.getFaceDirection(currJudgement.angle) === 'left');
     }
     updateState(currJudgement) {
         super.updateState(currJudgement);
@@ -72,8 +72,8 @@ export default class JudgementAttackState extends JudgementBaseState {
             });
             this.attackNumber = 0;
         }
-        if (this.attacking && !this.playedAudio && this.number >= 8) {
-            AudioManager.playAudio('boss/bullet.wav');
+        if (this.attacking && !this.playedAudio && this.number >= 14) {
+            AudioManager.playAudio('judgement_bullet_audio');
             this.playedAudio = true;
         }
     }

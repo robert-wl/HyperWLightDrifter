@@ -10,24 +10,37 @@ import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class PlayerMoveState extends PlayerBaseState {
     private direction: string;
+    private canPlayAudio: boolean;
 
     constructor() {
         super();
         this.direction = '';
+        this.canPlayAudio = true;
     }
 
-    enterState(currPlayer: Player) {}
+    enterState(currPlayer: Player) {
+        this.canPlayAudio = true;
+    }
 
     updateState(currPlayer: Player) {
         super.updateState(currPlayer);
 
-        this.advanceAnimationStage(4, 12);
+        console.log(this.number);
+        if (Math.round(this.animationStage) % 6 === 0 && this.canPlayAudio) {
+            if (RandomHelper.getRandomBoolean(0.5)) {
+                AudioManager.playAudio('player_footstep_forest_one_audio').then();
+            } else {
+                AudioManager.playAudio('player_footstep_forest_two_audio').then();
+            }
 
-        if (this.animationStage % 6 === 0) {
-            const randomValue = RandomHelper.randomValue(1, 2, true);
-
-            AudioManager.playAudio('player/footstep_forest.wav', randomValue);
+            this.canPlayAudio = false;
         }
+
+        if (Math.round(this.animationStage) % 7 === 0) {
+            this.canPlayAudio = true;
+        }
+
+        this.advanceAnimationStage(4, 12);
 
         currPlayer.regenerateStamina();
 

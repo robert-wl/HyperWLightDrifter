@@ -35,7 +35,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         super.updateState(elevator);
 
         if (this.checkCounter(100)) {
-            AudioManager.playAudio('elevator/move.wav');
+            AudioManager.playAudio('elevator_move_audio').then();
 
             this.number = 0;
         }
@@ -44,7 +44,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         this.handleVelocity(elevator);
 
         const velocity = this.velocity * Game.movementDeltaTime;
-        console.log(velocity, elevator.travelDistance);
+
         player.velocity.y = 0;
         if (this.counter > 140) {
             player.velocity.y = velocity;
@@ -97,7 +97,7 @@ export default class ElevatorMoveState extends ElevatorBaseState {
         this.aboutToMount = false;
         this.bottomCropAmount = 0;
         this.counter = 0;
-        this.number = 49;
+        this.number = 99;
     }
 
     private handleVelocity(elevator: Elevator) {

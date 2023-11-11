@@ -20,7 +20,7 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
         if (RandomHelper.getRandomBoolean(0.05)) {
             currSpider.enemyObserver.notify('spawnKey', currSpider.position);
         }
-        AudioManager.playAudio('enemy/crystal_spider/death.wav');
+        AudioManager.playAudio('crystal_spider_death_audio');
     }
     updateState(currSpider) {
         const { centerPosition } = Game.getInstance().player;

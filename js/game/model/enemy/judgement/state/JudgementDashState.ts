@@ -118,7 +118,7 @@ export default class JudgementDashState extends JudgementBaseState {
                 h: judgementMove.height * GameSettings.GAME.GAME_SCALE,
             });
 
-            DrawHelper.drawMirroredY(judgementMove, imageSize, true);
+            DrawHelper.drawImage(judgementMove, imageSize, true, DirectionHelper.getFaceDirection(angle) === 'left');
 
             return;
         }

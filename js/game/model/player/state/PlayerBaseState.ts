@@ -6,12 +6,12 @@ export default class PlayerBaseState extends Animateable {
         this.updateNumberCounter();
     }
 
+    public exitState(currPlayer: Player) {}
+
     public drawImage(currPlayer: Player) {}
 
     public enterState(currPlayer: Player) {
         this.number = 0;
         this.animationStage = 1;
     }
-
-    public exitState(currPlayer: Player) {}
 }

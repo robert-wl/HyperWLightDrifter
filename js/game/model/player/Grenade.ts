@@ -1,6 +1,4 @@
 import Game from '../game/Game.js';
-import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
-import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 import Animateable from '../utility/Animateable.js';
 import GameSettings from '../../constants.js';
 import RandomHelper from '../utility/helper/RandomHelper.js';
@@ -15,20 +13,20 @@ import DrawHelper from '../utility/helper/DrawHelper.js';
 
 export default class Grenade extends Animateable {
     private position: Vector;
-    private width: number;
-    private height: number;
-    private angle: number;
+    private readonly width: number;
+    private readonly height: number;
+    private readonly angle: number;
     private velocity: number;
-    private friction: number;
+    private readonly friction: number;
     private rotationNumber: number;
-    private rotation: number;
+    private readonly rotation: number;
     private playedAudio: boolean;
 
-    constructor({ x, y, w, h, angle, velocity }) {
+    constructor(position: Vector, width: number, height: number, angle: number, velocity: number) {
         super();
-        this.position = new Vector(x, y);
-        this.width = w;
-        this.height = h;
+        this.position = position;
+        this.width = width;
+        this.height = height;
         this.angle = angle;
         this.velocity = velocity;
         this.friction = 0.03;
@@ -37,20 +35,6 @@ export default class Grenade extends Animateable {
         this.rotationNumber = 0;
         this.rotation = RandomHelper.randomValue(0, Math.PI * 3);
         this.playedAudio = false;
-    }
-
-    static generate({ x, y, angle }) {
-        //TODO
-        const newGrenade = new Grenade({
-            x: x,
-            y: y,
-            w: 16,
-            h: 16,
-            angle: angle,
-            velocity: 10,
-        });
-
-        Game.getInstance().player.projectiles.push(newGrenade);
     }
 
     public update() {
@@ -79,7 +63,7 @@ export default class Grenade extends Animateable {
         const { projectiles } = player;
 
         if (!this.playedAudio && this.animationStage >= 2) {
-            AudioManager.playAudio('player/grenade/explode.wav');
+            AudioManager.playAudio('player_grenade_explode_audio').then();
             this.playedAudio = true;
             this.handleDamage();
         }
@@ -128,13 +112,6 @@ export default class Grenade extends Animateable {
                 return;
             }
 
-            if (enemy instanceof CrystalSpider) {
-                AudioManager.playAudio('enemy/crystal_spider/hurt.wav');
-            }
-
-            if (enemy instanceof CrystalBrute) {
-                AudioManager.playAudio('enemy/crystal_brute/hurt.wav');
-            }
             enemy.handleDamage({
                 amount: GameSettings.PLAYER.DAMAGE.GRENADE,
                 angle: -angle,

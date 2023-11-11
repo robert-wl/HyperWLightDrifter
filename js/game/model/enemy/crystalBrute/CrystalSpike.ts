@@ -10,13 +10,13 @@ import { Box } from '../../utility/interfaces/Box.js';
 import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class CrystalSpike extends Animateable {
-    private position: Vector;
+    private readonly position: Vector;
     private attackObserver: Observable;
-    private width: number;
-    private height: number;
+    private readonly width: number;
+    private readonly height: number;
     private hitbox: HitBoxComponent;
-    private isLeft: boolean;
-    private damaged: boolean;
+    private readonly isLeft: boolean;
+    private readonly damaged: boolean;
 
     public constructor(position: Vector, attackObserver: Observable) {
         super();

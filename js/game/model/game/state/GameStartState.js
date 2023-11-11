@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import GameBaseState from './GameBaseState.js';
-import Game from '../Game.js';
 import GameSettings from '../../../constants.js';
 import Navbar from '../../htmlElements/Navbar.js';
 import AssetManager from '../../utility/manager/AssetManager.js';
@@ -25,17 +24,17 @@ export default class GameStartState extends GameBaseState {
         });
         return __awaiter(this, void 0, void 0, function* () {
             _super.enterState.call(this, game);
+            AudioManager.enableSound();
+            AudioManager.stopAll();
             Navbar.open();
-            game.toggleFullscreen(false);
             this.spawnParticles = true;
-            // game.instance = null;
-            Game.getInstance();
+            game.toggleFullscreen(false);
             game.prepareCanvas();
             yield game.init();
             game.htmlHandlers.notify('startScreen');
             game.changeState();
             yield AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
-            AudioManager.playAudio('menu/background.ogg', undefined, true);
+            AudioManager.playAudio('menu_background_audio', true);
         });
     }
     updateState(game) {
@@ -51,7 +50,6 @@ export default class GameStartState extends GameBaseState {
     }
     exitState(game) {
         game.htmlHandlers.eventRemover();
-        console.log('hai');
         AudioManager.stopAll();
     }
 }

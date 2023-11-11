@@ -6,7 +6,7 @@
   position: fixed;
   transition: background-color 0.5s;
   background: black;
-  z-index: 100;
+  z-index: 10;
 
   .navbar-container {
     @include flex-rules(row, space-between, center);

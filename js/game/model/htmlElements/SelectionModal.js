@@ -1,5 +1,6 @@
 import Modal from './Modal.js';
 import GameSettings from '../../constants.js';
+import AudioManager from '../utility/manager/AudioManager.js';
 export default class SelectionModal extends Modal {
     constructor(eventEmitter) {
         super($('#selection-modal'), eventEmitter);
@@ -24,18 +25,16 @@ export default class SelectionModal extends Modal {
         this.eventEmitter.subscribe(this.eventFunction);
     }
     handleInteraction() {
-        this.cancelButton.off();
-        this.cancelButton.on('mousedown', () => {
+        this.cancelButton.off().on('mousedown', () => {
             this.eventEmitter.notify('menuModal:open');
             this.close();
         });
-        this.playButton.off();
-        this.playButton.on('mousedown', () => {
+        this.playButton.off().on('mousedown', () => {
             this.eventEmitter.notify('playGame');
             this.close();
         });
-        this.arrowLeft.off();
-        this.arrowLeft.on('mousedown', () => {
+        this.arrowLeft.off().on('mousedown', () => {
+            AudioManager.playAudio('menu_move_audio').then();
             this.selectedImage -= 1;
             if (this.selectedImage === -1) {
                 this.selectedImage = 2;
@@ -43,8 +42,8 @@ export default class SelectionModal extends Modal {
             this.imagePreview.attr('src', this.imageList[this.selectedImage]);
             this.eventEmitter.notify('changeOutfit', this.outfit[this.selectedImage]);
         });
-        this.arrowRight.off();
-        this.arrowRight.on('mousedown', () => {
+        this.arrowRight.off().on('mousedown', () => {
+            AudioManager.playAudio('menu_move_audio').then();
             this.selectedImage += 1;
             if (this.selectedImage === 3) {
                 this.selectedImage = 0;

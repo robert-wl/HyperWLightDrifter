@@ -2,6 +2,8 @@ import AudioVisualizer from './AudioVisualizer.js';
 import AudioPlayer from './AudioPlayer.js';
 $(() => {
     navbarHandler();
+    iframeHandler();
+    jumbotronHandler();
     parallaxHandler();
     carouselHandler();
     onLoadAnimationHandler();
@@ -17,6 +19,26 @@ $(() => {
         audioToggleButton: audioToggleButton,
     });
 });
+function iframeHandler() {
+    $(document).on('click', () => {
+        $('#iframe').css('pointer-events', 'auto');
+        setTimeout(() => {
+            $('#iframe').css('pointer-events', 'none');
+        }, 1000);
+    });
+}
+function jumbotronHandler() {
+    $(document).on('mousemove', (e) => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        const screenCenterX = window.innerWidth / 2;
+        const relativeX = mouseX - screenCenterX;
+        const relativeY = mouseY - 300;
+        $('#jumbotron-image-back').css('transform', `translate(${-relativeX / 60}px, ${-relativeY / 60}px) scale(1.1)`);
+        $('#jumbotron-image-middle').css('transform', `translate(${-relativeX / 20}px, ${-relativeY / 20}px) scale(1.1)`);
+        $('#jumbotron-image-front').css('transform', `translate(${-relativeX / 5}px, ${-50 - relativeY / 5}px) scale(1.1)`);
+    });
+}
 function carouselHandler() {
     $('.arrow-right').on('click', () => {
         const carousel = $('.inner-container-carousel');
@@ -83,8 +105,8 @@ function navbarHandler() {
     });
 }
 function parallaxHandler() {
-    $('body').on('scroll', () => {
-        const scrollY = $('#scroll-body').scrollTop();
+    $(document).on('scroll', () => {
+        const scrollY = document.documentElement.scrollTop;
         if (scrollY < 3000) {
             return;
         }
@@ -108,32 +130,29 @@ function onLoadAnimationHandler() {
     elements.forEach((element) => observer.observe(element));
 }
 function cursorHandler() {
-    const cursor = document.querySelector('.cursor');
-    let documentTop = 0;
     let yPos = 0;
     let xPos = 0;
     const body = $('body');
-    document.addEventListener('mousemove', (e) => {
-        documentTop = document.documentElement.scrollTop;
+    $(document).on('mousemove', (e) => {
+        const documentTop = $(document).scrollTop();
         yPos = e.clientY;
-        xPos = e.clientX - 10;
-        cursor.setAttribute('style', `top: ${yPos + documentTop}px; left: ${xPos}px;`);
+        xPos = e.clientX - 25;
+        $('#cursor')
+            .css('top', `${yPos + documentTop}px`)
+            .css('left', `${xPos}px`);
     });
-    document.addEventListener('scroll', () => {
-        cursor.setAttribute('style', `top: ${yPos + document.documentElement.scrollTop}px; left: ${xPos}px;`);
+    $(document).on('scroll', () => {
+        $('#cursor')
+            .css('top', `${yPos + $(document).scrollTop()}px`)
+            .css('left', `${xPos}px`);
     });
-    const iframe = document.querySelector('iframe');
-    // iframe.contentWindow!.addEventListener('mousemove', (e) => {
-    //     // console.log(e.clientY + body.scrollTop()!, e.clientX);
-    //     bodyPos = body.scrollTop()!;
-    //     yPos = e.clientY + bodyPos;
-    //     xPos = e.clientX - 10;
-    //     cursor!.setAttribute('style', `top: ${yPos}px; left: ${xPos}px;`);
-    // });
-    // //
-    // iframe.contentWindow!.addEventListener('scroll', () => {
-    //     cursor!.setAttribute('style', `top: ${yPos - (bodyPos - body.scrollTop()!)}px; left: ${xPos}px;`);
-    // });
+    $('.pointer')
+        .on('mouseenter', () => {
+        $('#cursor').css('animation', 'cursorPointerAnimation 1s ease-in-out infinite');
+    })
+        .on('mouseleave', () => {
+        $('#cursor').css('animation', 'cursorAnimation 1s ease-in-out infinite');
+    });
 }
 function mapBossHandler() {
     const markers = $('.boss-marker');

@@ -28,6 +28,7 @@ export default class PlayerAimingState extends PlayerBaseState {
         this.canAim = true;
         this.length = 0;
         this.hasKnockedBack = false;
+        AudioManager.playAudio('player_gun_aim_audio');
     }
     updateState(currPlayer) {
         this.angle = currPlayer.lookAngle;
@@ -49,28 +50,24 @@ export default class PlayerAimingState extends PlayerBaseState {
             this.shooting = 20;
         }
         if (this.shooting >= 10) {
-            this.shootHandler({
-                currPlayer,
-                clicks: currPlayer.clicks,
-                angle: this.angle,
-                length: this.length,
-                first: this.shooting === 20,
-            });
-            this.drawExplosion({
-                distance: this.length,
-                currPlayer: currPlayer,
-                angle: this.angle,
-                number: this.shooting >= 16 ? 1 : 2,
-            });
-            this.canAim = false;
-            this.exploding = 5;
-        }
-        if (this.shooting >= 20) {
-            GunHelper.damageTargetPosition(this.finalTracePosition);
-        }
-        if (this.canAim) {
-            AudioManager.playAudio('player/gun_aim.wav');
-            this.canAim = false;
+            this.shootHandler(currPlayer, this.angle, this.length, this.shooting === 20);
+            {
+                currPlayer.clicks.splice(currPlayer.clicks.indexOf('left'), 1);
+                this.drawExplosion({
+                    distance: this.length,
+                    currPlayer: currPlayer,
+                    angle: this.angle,
+                    number: this.shooting >= 16 ? 1 : 2,
+                });
+                this.canAim = false;
+                this.exploding = 5;
+            }
+            if (this.shooting >= 20) {
+                GunHelper.damageTargetPosition(this.finalTracePosition);
+            }
+            if (this.canAim) {
+                this.canAim = false;
+            }
         }
     }
     drawImage(currPlayer) {
@@ -233,32 +230,27 @@ export default class PlayerAimingState extends PlayerBaseState {
         ctx.stroke();
         return length;
     }
-    shootHandler({ currPlayer, clicks, angle, length, first }) {
-        this.drawRay({
-            length: length,
-            currPlayer: currPlayer,
-            lookAngle: angle,
-        });
-        clicks.splice(clicks.indexOf('left'), 1);
+    shootHandler(currPlayer, angle, length, first) {
+        this.drawRay(currPlayer, angle, length);
         if (first) {
             currPlayer.bullets -= 1;
-            AudioManager.playAudio('player/gun_fire.wav');
+            AudioManager.playAudio('player_gun_fire_audio');
         }
     }
-    drawRay({ length, currPlayer, lookAngle }) {
+    drawRay(currPlayer, angle, length) {
         const rayImage = AssetManager.getImage('gun_ray');
-        let { x: lastX, y: lastY } = currPlayer.centerPosition;
+        let { x, y } = currPlayer.centerPosition;
         for (let i = 0; i < length; i += 3) {
-            const pVector = new PolarVector(3, lookAngle);
-            lastX = DistanceHelper.getHorizontalValue(pVector, lastX);
-            lastY = DistanceHelper.getVerticalValue(pVector, lastX);
+            const pVector = new PolarVector(3, angle);
+            x = DistanceHelper.getHorizontalValue(pVector, x);
+            y = DistanceHelper.getVerticalValue(pVector, y);
             const imageSize = Box.parse({
-                x: lastX,
-                y: lastY,
+                x: x,
+                y: y,
                 w: rayImage.width * GameSettings.GAME.GAME_SCALE,
                 h: rayImage.height * GameSettings.GAME.GAME_SCALE,
             });
-            DrawHelper.drawRotated(rayImage, imageSize, lookAngle);
+            DrawHelper.drawRotatedRay(rayImage, imageSize, angle);
         }
     }
 }

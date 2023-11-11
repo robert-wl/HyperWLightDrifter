@@ -6,7 +6,7 @@ import { Vector } from '../utility/interfaces/Vector.js';
 import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
 import Medkit from '../interactables/Medkit.js';
-import Key from '../interactables/Key.js';
+import Coin from '../interactables/Coin.js';
 import Elevator from '../interactables/Elevator/Elevator.js';
 import DistanceHelper from '../utility/helper/DistanceHelper.js';
 import { PolarVector } from '../utility/interfaces/PolarVector.js';
@@ -227,7 +227,7 @@ export default class Camera {
         return object instanceof CrystalSpider || object instanceof CrystalBrute;
     }
     checkInteractables(object) {
-        return object instanceof Medkit || object instanceof Key;
+        return object instanceof Medkit || object instanceof Coin;
     }
     checkElevator(object) {
         return object instanceof Elevator;

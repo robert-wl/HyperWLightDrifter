@@ -40,6 +40,7 @@ export default class SettingsModal extends Modal {
     };
 
     private handleVolumeInteraction(type: string) {
+        AudioManager.playAudio('menu_move_audio').then();
         if (type === 'lower') {
             AudioManager.decreaseVolume();
         }
@@ -59,6 +60,7 @@ export default class SettingsModal extends Modal {
     }
 
     private handleFPSCounterInteraction() {
+        AudioManager.playAudio('menu_move_audio').then();
         if (this.showFPS) {
             this.showFPS = false;
             this.fpsCounterText.text('Off');

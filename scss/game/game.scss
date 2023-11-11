@@ -10,6 +10,7 @@
 @import "./game/settingsModal";
 @import "./game/pauseModal";
 @import "../game/modal";
+@import "./front/modal";
 
 $pink-color: rgb(254, 31, 136);
 
@@ -22,7 +23,7 @@ body {
 * {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: hidden !important;
   background-color: black;
   user-select: none;
 }
@@ -76,97 +77,19 @@ body {
     position: absolute;
     image-rendering: high-quality;
     background-color: transparent;
-    opacity: 0;
+    opacity: 1;
   }
 
 
   #ending-screen {
+    @include max-size(1920px, 1080px);
+    @include size(100vw, fit-content);
+    position: absolute;
+    image-rendering: high-quality;
+    background-color: transparent;
+    opacity: 1;
     display: none;
     z-index: 10;
   }
 }
 
-@keyframes arrowMoveLeft {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-10%);
-  }
-}
-
-@keyframes arrowMoveRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(10%);
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 100%;
-  }
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 100%;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-
-@mixin flex-rules($direction, $justify, $align) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: $justify;
-  align-items: $align;
-}
-
-@mixin max-size($width, $height) {
-  max-width: $width;
-  max-height: $height;
-}
-
-@mixin size($width, $height) {
-  width: $width;
-  height: $height;
-}
-
-@mixin background-image-settings {
-  background-repeat: no-repeat;
-  background-size: cover;
-  image-rendering: pixelated;
-}
-
-@mixin animationArrow($direction) {
-  @if ($direction == left) {
-    animation: arrowMoveLeft 0.5s steps(2) infinite;
-  }
-  @if ($direction == right) {
-    animation: arrowMoveRight 0.5s steps(2) infinite;
-  }
-}
-
-@mixin hoverable {
-  cursor: pointer;
-  background-color: transparent;
-
-  &:hover {
-    background-color: $pink-color;
-  }
-}
-
-@mixin absolute($top, $left) {
-  position: absolute;
-  top: $top;
-  left: $left;
-  transform: translate(-50%, -50%);
-}

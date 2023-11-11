@@ -7,6 +7,7 @@
 @import "front/trailer";
 @import "front/mainCharacter";
 @import "front/world";
+@import "front/modal";
 @import "front/news.css";
 @import "front/ost.css";
 @import "mixins";
@@ -15,6 +16,9 @@
 
 $pink-color: rgb(253, 27, 94);
 
+iframe {
+  pointer-events: none;
+}
 
 section {
   opacity: 0;
@@ -40,6 +44,7 @@ body {
 *, html:focus-within {
   overflow-x: hidden;
   scroll-behavior: smooth !important;
+  cursor: none !important;
 }
 
 
@@ -64,7 +69,7 @@ html {
   overflow-y: scroll;
   margin: 0;
   padding: 0;
-  cursor: none !important;
+  cursor: pointer !important;
 }
 
 .cursor {
@@ -73,7 +78,7 @@ html {
   height: 3rem;
   z-index: 1000;
   pointer-events: none;
-  animation: cursorAnimation 1s ease-in-out infinite;
+  //animation: cursorAnimation 1s ease-in-out infinite;
 }
 
 @keyframes cursorAnimation {
@@ -85,6 +90,21 @@ html {
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+@keyframes cursorPointerAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  33% {
+    transform: rotate(30deg);
+  }
+  66% {
+    transform: rotate(-30deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }
 
@@ -155,18 +175,30 @@ html {
 
 .video-container {
   position: relative;
+  overflow: hidden;
+  height: 50vw;
 
-
-  > video {
-    height: 50rem;
+  .jumbotron-holder {
+    height: 50vw;
     width: 100vw;
     object-fit: cover;
+    position: relative;
+    overflow: hidden;
+
+    img {
+      position: absolute;
+      top: 0;
+      width: 100vw;
+      transform: scale(1.1) translateY(-10%);
+      object-fit: cover;
+      overflow: hidden;
+    }
   }
 
 
   .video-cover {
-    @include absolute(0, 50%);
-    height: 100rem;
+    @include absolute(40%, 50%);
+    height: 60vw;
     width: 100vw;
     box-shadow: 0 0 1rem 1rem inset black;
   }

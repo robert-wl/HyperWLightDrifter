@@ -22,7 +22,7 @@ export default class JudgementDeathState extends JudgementBaseState {
             this.animationStage = 21;
         }
         if (this.deadTime >= 0 && !this.playedAudio) {
-            AudioManager.playAudio('boss/death.wav');
+            AudioManager.playAudio('judgement_death_audio');
             this.playedAudio = true;
         }
         if (this.deadTime > 100) {

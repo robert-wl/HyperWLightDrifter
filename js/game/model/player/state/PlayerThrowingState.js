@@ -16,7 +16,7 @@ export default class PlayerThrowingState extends PlayerBaseState {
         super.enterState(currPlayer);
         this.hasThrown = false;
         this.direction = DirectionHelper.getMouseDirection(currPlayer.lookAngle);
-        AudioManager.playAudio('player/grenade/throw.wav');
+        AudioManager.playAudio('player_grenade_throw_audio');
     }
     updateState(currPlayer) {
         super.updateState(currPlayer);

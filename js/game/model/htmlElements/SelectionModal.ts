@@ -2,6 +2,7 @@ import Modal from './Modal.js';
 import Observable from '../utility/Observable.js';
 import GameSettings from '../../constants.js';
 import { Outfit } from '../utility/enums/Outfit.js';
+import AudioManager from '../utility/manager/AudioManager.js';
 
 export default class SelectionModal extends Modal {
     protected imageList: string[];
@@ -39,20 +40,18 @@ export default class SelectionModal extends Modal {
     };
 
     private handleInteraction() {
-        this.cancelButton.off();
-        this.cancelButton.on('mousedown', () => {
+        this.cancelButton.off().on('mousedown', () => {
             this.eventEmitter.notify('menuModal:open');
             this.close();
         });
 
-        this.playButton.off();
-        this.playButton.on('mousedown', () => {
+        this.playButton.off().on('mousedown', () => {
             this.eventEmitter.notify('playGame');
             this.close();
         });
 
-        this.arrowLeft.off();
-        this.arrowLeft.on('mousedown', () => {
+        this.arrowLeft.off().on('mousedown', () => {
+            AudioManager.playAudio('menu_move_audio').then();
             this.selectedImage -= 1;
 
             if (this.selectedImage === -1) {
@@ -64,8 +63,8 @@ export default class SelectionModal extends Modal {
             this.eventEmitter.notify('changeOutfit', this.outfit[this.selectedImage]);
         });
 
-        this.arrowRight.off();
-        this.arrowRight.on('mousedown', () => {
+        this.arrowRight.off().on('mousedown', () => {
+            AudioManager.playAudio('menu_move_audio').then();
             this.selectedImage += 1;
 
             if (this.selectedImage === 3) {

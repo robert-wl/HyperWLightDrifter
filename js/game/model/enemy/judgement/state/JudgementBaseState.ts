@@ -6,12 +6,12 @@ export default class JudgementBaseState extends Animateable {
         this.updateNumberCounter();
     }
 
-    public drawImage(currJudgement: Judgement) {}
+    public exitState(currJudgement: Judgement) {}
 
     public enterState(currJudgement: Judgement) {
         this.number = 0;
         this.animationStage = 1;
     }
 
-    public exitState(currJudgement: Judgement) {}
+    public drawImage(currJudgement: Judgement) {}
 }

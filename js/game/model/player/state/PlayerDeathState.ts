@@ -9,13 +9,21 @@ import { Box } from '../../utility/interfaces/Box.js';
 import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class PlayerDeathState extends PlayerBaseState {
+    private lastLookAngle: number;
+
+    public constructor() {
+        super();
+        this.lastLookAngle = 0;
+    }
+
     enterState(currPlayer: Player) {
         super.enterState(currPlayer);
+        this.lastLookAngle = currPlayer.lookAngle;
 
         const { loseState } = Game.getInstance();
-        Game.getInstance().switchState(loseState);
+        Game.getInstance().switchState(loseState).then();
 
-        AudioManager.playAudio('player/die.wav', null, false, true);
+        AudioManager.playAudio('player_death_audio').then();
     }
 
     updateState(currPlayer: Player) {
@@ -38,6 +46,6 @@ export default class PlayerDeathState extends PlayerBaseState {
             h: death.height * GameSettings.GAME.GAME_SCALE,
         });
 
-        DrawHelper.drawImage(death, imageSize, true, DirectionHelper.getFaceDirection(currPlayer.lookAngle) === 'left');
+        DrawHelper.drawImage(death, imageSize, true, DirectionHelper.getFaceDirection(this.lastLookAngle) === 'left');
     }
 }

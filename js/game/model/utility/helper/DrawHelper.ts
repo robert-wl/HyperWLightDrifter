@@ -64,14 +64,12 @@ export default class DrawHelper {
         ctx.restore();
     }
 
-    public static drawMirroredY(img: HTMLImageElement, imageBox: Box, translate = false) {
+    public static drawRotatedRay(img: HTMLImageElement, imageBox: Box, angle = 0) {
         this.ctx.save();
-        if (translate) {
-            this.ctx.translate(-imageBox.w / 2, -imageBox.h / 2);
-        }
-        this.ctx.translate(img.width * 2, 0);
-        this.ctx.scale(-1, 1);
-        this.ctx.drawImage(img, -imageBox.x, imageBox.y, imageBox.w, imageBox.h);
+        this.ctx.translate(imageBox.x, imageBox.y);
+        this.ctx.rotate(angle + Math.PI);
+        this.ctx.translate(-(imageBox.w / 2), -(imageBox.w / 2));
+        this.ctx.drawImage(img, 0, 0, imageBox.w, imageBox.h);
         this.ctx.restore();
     }
 

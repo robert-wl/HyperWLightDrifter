@@ -9,6 +9,7 @@ import AudioManager from '../../../utility/manager/AudioManager.js';
 import { Vector } from '../../../utility/interfaces/Vector.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import DirectionHelper from '../../../utility/helper/DirectionHelper.js';
 
 export default class JudgementBombState extends JudgementBaseState {
     private attackCount: number;
@@ -71,7 +72,7 @@ export default class JudgementBombState extends JudgementBaseState {
                 angle: this.startAngle + (this.attackCount * Math.PI) / 3,
             });
 
-            AudioManager.playAudio('boss/bomb_summon.wav');
+            AudioManager.playAudio('judgement_bomb_summon_audio').then();
 
             this.number = 0;
             this.attackCount += 1;
@@ -98,7 +99,7 @@ export default class JudgementBombState extends JudgementBaseState {
 
         if (backgroundOpacity === 1 && this.finished && this.checkCounter(7)) {
             if (this.animationStage === 2 && !this.playedSpawnAudio) {
-                AudioManager.playAudio('boss/spawn.wav');
+                AudioManager.playAudio('judgement_spawn_audio').then();
                 this.playedSpawnAudio = true;
             }
 
@@ -107,7 +108,7 @@ export default class JudgementBombState extends JudgementBaseState {
         }
 
         if (this.animationStage === 14 && !this.playedSmashAudio) {
-            AudioManager.playAudio('boss/smash_ground.wav');
+            AudioManager.playAudio('judgement_smash_ground_audio').then();
             this.playedSmashAudio = true;
         }
 
@@ -129,7 +130,7 @@ export default class JudgementBombState extends JudgementBaseState {
             h: judgementMove.height * GameSettings.GAME.GAME_SCALE,
         });
 
-        DrawHelper.drawMirroredY(judgementMove, imageSize, true);
+        DrawHelper.drawImage(judgementMove, imageSize, true, DirectionHelper.getFaceDirection(currJudgement.angle) === 'left');
 
         Game.getInstance().setTransparency(1);
     }

@@ -36,7 +36,7 @@ export default class JudgementLaserState extends JudgementBaseState {
         this.angleConstant = 0;
         this.attackAngle = currJudgement.angle;
 
-        this.audio = await AudioManager.playAudio('boss/laser.wav');
+        this.audio = await AudioManager.playAudio('judgement_laser_audio');
     }
 
     drawImage(currJudgement: Judgement) {

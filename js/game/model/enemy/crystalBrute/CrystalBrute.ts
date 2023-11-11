@@ -1,6 +1,5 @@
 import Enemy from '../Enemy.js';
 import Game from '../../game/Game.js';
-import renderShadow from '../../../helper/renderer/shadow.js';
 import CrystalBruteBaseState from './state/CrystalBruteBaseState.js';
 import CrystalBruteAttackState from './state/CrystalBruteAttackState.js';
 import CrystalBruteDieState from './state/CrystalBruteDieState.js';
@@ -11,6 +10,8 @@ import HitBoxComponent from '../../utility/HitBoxComponent.js';
 import CrystalAttack from './CrystalAttack.js';
 import { Vector } from '../../utility/interfaces/Vector.js';
 import Observable from '../../utility/Observable.js';
+import AudioManager from '../../utility/manager/AudioManager.js';
+import Shadow from '../../shadow/Shadow.js';
 
 export default class CrystalBrute extends Enemy {
     public attack: CrystalAttack[];
@@ -22,6 +23,7 @@ export default class CrystalBrute extends Enemy {
     public idleState: CrystalBruteIdleState;
     private _speed: number;
     private _angle: number;
+    private shadow: Shadow;
 
     constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, enemyObserver: Observable, attackObserver: Observable) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
@@ -36,6 +38,7 @@ export default class CrystalBrute extends Enemy {
         this.moveState = new CrystalBruteMoveState();
         this.dieState = new CrystalBruteDieState();
         this.idleState = new CrystalBruteIdleState();
+        this.shadow = new Shadow(3);
         this.switchState(this.idleState);
     }
 
@@ -55,6 +58,13 @@ export default class CrystalBrute extends Enemy {
         this._angle = value;
     }
 
+    handleDamage({ amount, angle }: { amount: any; angle: any }) {
+        super.handleDamage({ amount, angle });
+        if (this.health > 0) {
+            AudioManager.playAudio('crystal_brute_hurt_audio').then();
+        }
+    }
+
     switchState(newState: CrystalBruteBaseState) {
         this.currState.exitState(this);
         this.currState = newState;
@@ -71,13 +81,7 @@ export default class CrystalBrute extends Enemy {
         this.currState.updateState(this);
 
         if (this.currState !== this.dieState) {
-            renderShadow({
-                position: {
-                    x: this.position.x,
-                    y: this.position.y + 27.5,
-                },
-                sizeMultiplier: 3,
-            });
+            this.shadow.renderShadow(new Vector(this.position.x, this.position.y + 27.5));
         }
 
         if (this.currState !== this.dieState) {

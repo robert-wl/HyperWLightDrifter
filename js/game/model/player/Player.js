@@ -5,7 +5,6 @@ import PlayerAttackState from './state/PlayerAttackState.js';
 import PlayerAttackTwoState from './state/PlayerAttackTwoState.js';
 import PlayerDashState from './state/PlayerDashState.js';
 import Game from '../game/Game.js';
-import renderShadow from '../../helper/renderer/shadow.js';
 import PlayerAimingState from './state/PlayerAimingState.js';
 import PlayerHurtState from './state/PlayerHurtState.js';
 import PlayerThrowingState from './state/PlayerThrowingState.js';
@@ -18,11 +17,10 @@ import HitBoxComponent from '../utility/HitBoxComponent.js';
 import { Vector } from '../utility/interfaces/Vector.js';
 import { Box } from '../utility/interfaces/Box.js';
 import InteractionBar from '../interactables/InteractionBar.js';
-import { PolarVector } from '../utility/interfaces/PolarVector.js';
-import DistanceHelper from '../utility/helper/DistanceHelper.js';
 import AngleHelper from '../utility/helper/AngleHelper.js';
 import AudioManager from '../utility/manager/AudioManager.js';
 import { Outfit } from '../utility/enums/Outfit.js';
+import Shadow from '../shadow/Shadow.js';
 export default class Player {
     constructor(inputEventEmitter) {
         const { player: playerDefault } = GameSettings;
@@ -69,6 +67,7 @@ export default class Player {
         this._clicks = [];
         this._attackObserver = new Observable();
         this._isBelowGround = false;
+        this.shadow = new Shadow(1.5);
         this.eventHandler();
     }
     get maxhealth() {
@@ -257,13 +256,7 @@ export default class Player {
         }
         this.updateBombs();
         if (this.currState !== this.spawnState) {
-            renderShadow({
-                position: {
-                    x: this._centerPosition.x,
-                    y: this._centerPosition.y + 12.5,
-                },
-                sizeMultiplier: 1.5,
-            });
+            this.shadow.renderShadow(new Vector(this.centerPosition.x, this.centerPosition.y + 12.5));
         }
         this.updateCounter();
         this.currState.updateState(this);
@@ -289,7 +282,7 @@ export default class Player {
         //
         // Game.getInstance().ctx.fillRect(x, y, w, h);
     }
-    damage({ amount, angle }) {
+    damage(amount) {
         if (this.currState === this.deathState) {
             return;
         }
@@ -301,9 +294,6 @@ export default class Player {
         if (this.currState !== this.hurtState) {
             this.switchState(this.hurtState);
         }
-        const pVector = new PolarVector(5, angle);
-        this._velocity.x += DistanceHelper.getHorizontalValue(pVector);
-        this._velocity.y += DistanceHelper.getVerticalValue(pVector);
     }
     regenerateStamina() {
         if (this._stamina < 100) {
@@ -394,6 +384,9 @@ export default class Player {
             };
         }
     }
+    isInElevator() {
+        return this.currState === this.inElevatorState;
+    }
     checkCollision({ colliders, x, y, w, h }) {
         return colliders.every((c) => {
             return c.checkCollision({
@@ -451,7 +444,6 @@ export default class Player {
                 return;
             }
             if (event === 'mousemove') {
-                //TODo: fix this
                 const playerX = this._centerPosition.x * GameSettings.GAME.GAME_SCALE;
                 const playerY = this._centerPosition.y * GameSettings.GAME.GAME_SCALE;
                 this._lookAngle = AngleHelper.getAngle({
@@ -482,10 +474,11 @@ export default class Player {
             return false;
         }
         if (this.detectCollisionBox(box)) {
-            this.damage({
-                amount: 1,
-                angle: Math.PI,
+            const angle = AngleHelper.getAngle({
+                x: box.x + box.w / 2 - this.centerPosition.x,
+                y: box.y + box.h / 2 - this.centerPosition.y,
             });
+            this.damage(1);
             return true;
         }
         return false;
@@ -498,10 +491,7 @@ export default class Player {
             return false;
         }
         if (this.detectCollision(position)) {
-            this.damage({
-                amount: 1,
-                angle: Math.PI,
-            });
+            this.damage(1);
             return true;
         }
         return false;
@@ -538,7 +528,7 @@ export default class Player {
     }
     healingHandler() {
         if (this.healing === 6) {
-            AudioManager.playAudio('player/medkit/use.wav');
+            AudioManager.playAudio('player_medkit_use_audio');
         }
         if (this.healing > 0) {
             this.healing -= Game.deltaTime;

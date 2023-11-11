@@ -11,7 +11,7 @@ import DrawHelper from '../../utility/helper/DrawHelper.js';
 
 export default class JudgementBullet extends Enemy {
     private lifetime: number;
-    private maxLifetime: number;
+    private readonly maxLifetime: number;
 
     constructor(position: Vector, width: number, height: number, hitbox: HitBoxComponent, maxHealth: number, velocity: PolarVector, lifetime: number, enemyObserver: Observable, attackObserver: Observable) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);

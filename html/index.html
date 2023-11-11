@@ -1,4 +1,5 @@
 <!doctype html>
+<!--suppress HtmlFormInputWithoutLabel -->
 <html lang='en'>
 <head>
     <meta charset='UTF-8' />
@@ -13,33 +14,170 @@
     />
 </head>
 <body id='scroll-body'>
-<img alt='' class='cursor' src='../assets/web/cursor/cursor_normal.png'>
-<img alt='' class='background-color one' src='../assets/web/color.png'>
-<img alt='' class='background-color two' src='../assets/web/color.png'>
-<img alt='' class='background-color three' src='../assets/web/color.png'>
-<img alt='' class='background-color four' src='../assets/web/color.png'>
-<img alt='' class='background-color five' src='../assets/web/color.png'>
-<img alt='' class='background-color six' src='../assets/web/color.png'>
-<img alt='' class='background-color seven' src='../assets/web/color.png'>
-<img alt='' class='background-color eight' src='../assets/web/color.png'>
-<img alt='' class='background-color nine' src='../assets/web/color.png'>
+<img alt='' class='cursor' id='cursor' src='../assets/web/cursor/cursor_normal.png'>
+<img alt='' class='background-color one' src='../assets/web/background/color.png'>
+<img alt='' class='background-color two' src='../assets/web/background/color.png'>
+<img alt='' class='background-color three' src='../assets/web/background/color.png'>
+<img alt='' class='background-color four' src='../assets/web/background/color.png'>
+<img alt='' class='background-color five' src='../assets/web/background/color.png'>
+<img alt='' class='background-color six' src='../assets/web/background/color.png'>
+<img alt='' class='background-color seven' src='../assets/web/background/color.png'>
+<img alt='' class='background-color eight' src='../assets/web/background/color.png'>
+<img alt='' class='background-color nine' src='../assets/web/background/color.png'>
+<div class='modal-container' id='how-to-play-modal'>
+    <div class='modal-inner-container modal-inner-first'>
+        <div class='modal-content-image'>
+            <img alt='' class='modal-image' src='../assets/web/modal/modal_background.png'>
+        </div>
+        <div class='modal-content'>
+            <div class='modal-left'>
+                <header>
+                    <div
+                        class='clickable arrow-left-modal arrow-left pointer'
+                    >
+                        <
+                    </div>
+                    <span> How To Play </span>
+                    <div
+                        class='clickable arrow-right-modal arrow-right pointer'
+                    >
+                        >
+                    </div>
+                </header>
+                <img alt='' src='../assets/web/modal/input_image.png'>
+                <button class='clickable modal-close-button pointer'>
+                    Close
+                </button>
+            </div>
+            <div class='modal-right'>
+                <ul>
+                    <li>
+                        <p>•</p>
+                        <p>Explore the infinite procedural world</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Conquer enemies and collect their drops</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Amass coins from vanquished foes</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Collect medkits and heal yourself</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Descend through the elevator</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class='modal-inner-container modal-inner-second hidden'>
+        <div class='modal-content-image'>
+            <img alt='' class='modal-image' src='../assets/web/modal/modal_background.png'>
+        </div>
+        <div class='modal-content'>
+            <div class='modal-left'>
+                <header>
+                    <div
+                        class='clickable arrow-left-modal arrow-left pointer'
+                    >
+                        <
+                    </div>
+                    <span> &nbsp;Controls&nbsp; </span>
+                    <div
+                        class='clickable arrow-right-modal arrow-right pointer'
+                    >
+                        >
+                    </div>
+                </header>
+                <img alt='' src='../assets/web/modal/input_image.png'>
+                <button class='clickable modal-close-button pointer'>
+                    Close
+                </button>
+            </div>
+            <div class='modal-right-second-page'>
+                <div class='modal-right-first'>
+                    <ul>
+                        <li>
+                            <p>Move</p>
+                            <div>
+                                <p class='key' id='key-w'>W</p>
+                                <p class='key' id='key-a'>A</p>
+                                <p class='key' id='key-s'>S</p>
+                                <p class='key' id='key-d'>D</p>
+                            </div>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p>Attack</p>
+                            <p class='key' id='key-left'>LEFT</p>
+                        </li>
+                        <li>
+                            <p>Aim</p>
+                            <p class='key' id='key-right'>RIGHT</p>
+                        </li>
+                        <li>
+                            <p>Grenade</p>
+                            <p class='key' id='key-c'>C</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class='modal-right-second'>
+                    <ul>
+                        <li>
+                            <p>Dash</p>
+                            <p class='key' id='key-space'>SPACE</p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p>Heal</p>
+                            <p class='key' id='key-q'>Q</p>
+                        </li>
+                        <li>
+                            <p>Interact</p>
+                            <p class='key' id='key-e'>E</p>
+                        </li>
+                        <li>
+                            <p>Pause</p>
+                            <p class='key' id='key-p'>P</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <section class='navbar section' id='navbar'>
     <div class='navbar-container'>
         <div class='navbar-container-left'>
-            <img alt='' src='../assets/web/title.png'>
+            <img alt='' src='../assets/web/jumbotron/title.png'>
             <button>
-                <a href='index.html'>
+                <a class='pointer' href='index.html'>
                     HOME
                     <div class='underline'></div>
                 </a>
             </button>
-            <button>
+            <button class='pointer' id='how-to-play'>
                 HOW TO PLAY
                 <div class='underline'></div>
             </button>
         </div>
         <div class='navbar-container-right'>
-            <button>
+            <button class='pointer'>
                 <a href='game.html'>
                     PLAY DEMO
                 </a>
@@ -48,24 +186,28 @@
     </div>
 </section>
 <section class='video-container section'>
-    <video autoplay loop muted>
-        <source src='../assets/web/trailer.mkv' type='video/mp4' />
-    </video>
+    <div class='jumbotron-holder'>
+        <img alt='' id='jumbotron-image-back' src='../assets/web/jumbotron/image_back.png'>
+        <img alt='' id='jumbotron-image-middle' src='../assets/web/jumbotron/image_middle.png'>
+        <img alt='' id='jumbotron-image-front' src='../assets/web/jumbotron/image_front.png'>
+    </div>
     <div class='video-cover'>
     </div>
     <div class='video-text'>
-        <img alt='' src='../assets/web/title.png'>
+        <img alt='' src='../assets/web/jumbotron/title.png'>
         <!--        <a class='try-demo-button' href='game.html'>TRY DEMO</a>-->
     </div>
 </section>
 <section class='trailer section'>
     <h3>WATCH TRAILER</h3>
-    <iframe
-        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-        allowfullscreen frameborder='0'
-        height='630' src='https://www.youtube.com/embed/nWufEJ1Ava0?si=XJZkwktmk2fYI12I'
-        title='YouTube video player'
-        width='1120'></iframe>
+    <iframe allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            allowfullscreen
+            class='pointer' frameborder='0'
+            height='630'
+            id='iframe' src='https://www.youtube.com/embed/nWufEJ1Ava0?si=XJZkwktmk2fYI12I'
+            title='YouTube video player'
+            width='1120'></iframe>
+
 </section>
 <section class='latest-news-container section'>
     <div class='title-container'>
@@ -74,7 +216,7 @@
         </h3>
     </div>
     <div class='horizontal-news-container'>
-        <div class='news-container'>
+        <div class='news-container pointer'>
             <img alt='' src='../assets/web/news/news_1.png'>
             <div class='news-content'>
                 <div class='header'>
@@ -101,7 +243,7 @@
                 </div>
             </div>
         </div>
-        <div class='news-container'>
+        <div class='news-container pointer'>
             <img alt='' src='../assets/web/news/news_2.png'>
             <div class='news-content'>
                 <div class='header'>
@@ -124,7 +266,7 @@
                 </div>
             </div>
         </div>
-        <div class='news-container'>
+        <div class='news-container pointer'>
             <img alt='' src='../assets/web/news/news_3.png'>
             <div class='news-content'>
                 <div class='header'>
@@ -155,19 +297,19 @@
 <section class='score-container section'>
     <div class='score-content'>
         <div class='score-container'>
-            <div class='score'>
+            <div class='score pointer'>
                 <h3>90/100</h3>
                 <p>GAMEGRIN</p>
                 <div class='score-fill'>
                 </div>
             </div>
-            <div class='score'>
+            <div class='score pointer'>
                 <h3>9/10</h3>
                 <p>NINTENDO LIFE</p>
                 <div class='score-fill'>
                 </div>
             </div>
-            <div class='score'>
+            <div class='score pointer'>
                 <h3>4/5</h3>
                 <p>EUROGAMER</p>
                 <div class='score-fill'>
@@ -180,19 +322,19 @@
     </div>
     <div class='score-content'>
         <div class='score-container'>
-            <div class='score'>
+            <div class='score pointer'>
                 <h3>8.5/10</h3>
                 <p>POLYGON.COM</p>
                 <div class='score-fill'>
                 </div>
             </div>
-            <div class='score'>
+            <div class='score pointer'>
                 <h3>9.5/10</h3>
                 <p>GAMEINFORMER</p>
                 <div class='score-fill'>
                 </div>
             </div>
-            <div class='score'>
+            <div class='score pointer'>
                 <h3>90/100</h3>
                 <p>IGN</p>
                 <div class='score-fill'>
@@ -282,7 +424,6 @@
     </div>
 </section>
 <section class='main-character-container section'>
-    <!--    <img alt='' src='../assets/web/campfire.png'>-->
     <div class='image-cover'>
     </div>
     <div class='main-character-text-container'>
@@ -311,14 +452,14 @@
             <div class='image-carousel'>
                 <div class='image-box'>
                     <img alt='' src='../assets/web/carousel/carousel_1.png'>
-                    <div class='arrow arrow-left'>
+                    <div class='arrow arrow-left pointer'>
                         <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
                             <path
                                 d='M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z'
                                 fill='white' />
                         </svg>
                     </div>
-                    <div class='arrow arrow-right'>
+                    <div class='arrow arrow-right pointer'>
                         <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
                             <path
                                 d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z'
@@ -327,16 +468,16 @@
                     </div>
                 </div>
                 <div class='image-list'>
-                    <div class='image-list-box bordered first-carousel'>
+                    <div class='image-list-box bordered first-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_1.png'>
                     </div>
-                    <div class='image-list-box second-carousel'>
+                    <div class='image-list-box second-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_2.png'>
                     </div>
-                    <div class='image-list-box third-carousel'>
+                    <div class='image-list-box third-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_3.png'>
                     </div>
-                    <div class='image-list-box fourth-carousel'>
+                    <div class='image-list-box fourth-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_4.png'>
                     </div>
                 </div>
@@ -379,14 +520,14 @@
             <div class='image-carousel'>
                 <div class='image-box'>
                     <img alt='' src='../assets/web/carousel/carousel_2.png'>
-                    <div class='arrow arrow-left'>
+                    <div class='arrow arrow-left pointer'>
                         <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
                             <path
                                 d='M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z'
                                 fill='white' />
                         </svg>
                     </div>
-                    <div class='arrow arrow-right'>
+                    <div class='arrow arrow-right pointer'>
                         <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
                             <path
                                 d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z'
@@ -395,16 +536,16 @@
                     </div>
                 </div>
                 <div class='image-list'>
-                    <div class='image-list-box first-carousel'>
+                    <div class='image-list-box first-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_1.png'>
                     </div>
-                    <div class='image-list-box bordered second-carousel'>
+                    <div class='image-list-box bordered second-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_2.png'>
                     </div>
-                    <div class='image-list-box third-carousel'>
+                    <div class='image-list-box third-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_3.png'>
                     </div>
-                    <div class='image-list-box fourth-carousel'>
+                    <div class='image-list-box fourth-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_4.png'>
                     </div>
                 </div>
@@ -448,14 +589,14 @@
             <div class='image-carousel'>
                 <div class='image-box'>
                     <img alt='' src='../assets/web/carousel/carousel_3.png'>
-                    <div class='arrow arrow-left'>
+                    <div class='arrow arrow-left pointer'>
                         <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
                             <path
                                 d='M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z'
                                 fill='white' />
                         </svg>
                     </div>
-                    <div class='arrow arrow-right'>
+                    <div class='arrow arrow-right pointer'>
                         <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
                             <path
                                 d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z'
@@ -464,16 +605,16 @@
                     </div>
                 </div>
                 <div class='image-list'>
-                    <div class='image-list-box first-carousel'>
+                    <div class='image-list-box first-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_1.png'>
                     </div>
-                    <div class='image-list-box second-carousel'>
+                    <div class='image-list-box second-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_2.png'>
                     </div>
-                    <div class='image-list-box bordered third-carousel'>
+                    <div class='image-list-box bordered third-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_3.png'>
                     </div>
-                    <div class='image-list-box fourth-carousel'>
+                    <div class='image-list-box fourth-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_4.png'>
                     </div>
                 </div>
@@ -516,14 +657,14 @@
             <div class='image-carousel'>
                 <div class='image-box'>
                     <img alt='' src='../assets/web/carousel/carousel_4.png'>
-                    <div class='arrow arrow-left'>
+                    <div class='arrow arrow-left pointer'>
                         <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
                             <path
                                 d='M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z'
                                 fill='white' />
                         </svg>
                     </div>
-                    <div class='arrow arrow-right'>
+                    <div class='arrow arrow-right pointer'>
                         <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
                             <path
                                 d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z'
@@ -532,16 +673,16 @@
                     </div>
                 </div>
                 <div class='image-list'>
-                    <div class='image-list-box first-carousel'>
+                    <div class='image-list-box first-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_1.png'>
                     </div>
-                    <div class='image-list-box second-carousel'>
+                    <div class='image-list-box second-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_2.png'>
                     </div>
-                    <div class='image-list-box third-carousel'>
+                    <div class='image-list-box third-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_3.png'>
                     </div>
-                    <div class='image-list-box bordered fourth-carousel'>
+                    <div class='image-list-box bordered fourth-carousel pointer'>
                         <img alt='' src='../assets/web/carousel/carousel_4.png'>
                     </div>
                 </div>
@@ -587,14 +728,14 @@
     <div class='image-container'>
         <img alt='Color' class='map-top' src='../assets/web/world/map_upground.png' />
         <img alt='B/W' class='map-bottom' src='../assets/web/world/map_underground.png' />
-        <input class='image-range' max='100' min='0'
+        <input class='image-range pointer' max='100' min='0'
                oninput="this.parentNode.style.setProperty('--value', `${this.value}%`)"
                step='0.001' type='range'
                value='50' />
         <div class='boss-marker first'>
             <div class='boss-image first hidden'>
                 <h3>
-                    The Mechanicals
+                    The Sentinels
                 </h3>
                 <img alt='' src='../assets/web/world/boss_south.png'>
             </div>
@@ -654,14 +795,14 @@
                 </div>
                 <div class='content-right-header'>
                     <div class='left-content'>
-                        <button class='audio-toggle-button'>
+                        <button class='audio-toggle-button pointer pause-button'>
                             <svg class='bi bi-play-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
                                  width='64' xmlns='http://www.w3.org/2000/svg'>
                                 <path
                                     d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z' />
                             </svg>
                         </button>
-                        <button class='audio-toggle-button disabled'>
+                        <button class='audio-toggle-button disabled pointer play-button'>
                             <svg class='bi bi-pause-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
                                  width='64' xmlns='http://www.w3.org/2000/svg'>
                                 <path
@@ -678,7 +819,7 @@
                         </div>
                     </div>
                     <div class='right-content'>
-                        <a class='download-button' download='ost.mp3' href='../assets/web/ost/audio.mp3'>
+                        <a class='download-button pointer' download='ost.mp3' href='../assets/web/ost/audio.mp3'>
                             <svg fill='none' height='32' viewBox='0 0 24 24' width='32'
                                  xmlns='http://www.w3.org/2000/svg'>
                                 <path
@@ -689,22 +830,17 @@
                         </a>
                     </div>
                 </div>
-                <div class='content-right-slider'>
-                    <input class='slider' max='100' min='0' step='0.0001' type='range' value='0'>
+                <div class='content-right-slider pointer'>
+                    <input class='slider pointer' max='100' min='0' step='0.0001' type='range' value='0'>
                 </div>
             </div>
         </div>
-        <!--        <div class='ost-player'>-->
-        <!--            <div class='content-right-slider'>-->
-        <!--                <input class='slider' max='100' min='0' step='0.0001' type='range' value='0'>-->
-        <!--            </div>-->
-        <!--        </div>-->
     </div>
 </section>
 <section class='footer-container-box'>
 </section>
 <section class='footer section'>
-    <img alt='' src='../assets/web/footer.png'>
+    <img alt='' src='../assets/web/footer/footer.png'>
     <div class='footer-container'>
         <div class='footer-header'>
             <div class='icons'>
@@ -739,6 +875,7 @@
     integrity='sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM='
     src='https://code.jquery.com/jquery-3.7.0.js'
 ></script>
+<script src='../js/web/modal.js' type='module'></script>
 <script src='../js/web/web.js' type='module'></script>
 </body>
 </html>

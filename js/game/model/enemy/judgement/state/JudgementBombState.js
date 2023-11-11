@@ -8,6 +8,7 @@ import AudioManager from '../../../utility/manager/AudioManager.js';
 import { Vector } from '../../../utility/interfaces/Vector.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import DirectionHelper from '../../../utility/helper/DirectionHelper.js';
 export default class JudgementBombState extends JudgementBaseState {
     constructor() {
         super();
@@ -51,7 +52,7 @@ export default class JudgementBombState extends JudgementBaseState {
                 position: player.centerPosition,
                 angle: this.startAngle + (this.attackCount * Math.PI) / 3,
             });
-            AudioManager.playAudio('boss/bomb_summon.wav');
+            AudioManager.playAudio('judgement_bomb_summon_audio');
             this.number = 0;
             this.attackCount += 1;
         }
@@ -71,14 +72,14 @@ export default class JudgementBombState extends JudgementBaseState {
         }
         if (backgroundOpacity === 1 && this.finished && this.checkCounter(7)) {
             if (this.animationStage === 2 && !this.playedSpawnAudio) {
-                AudioManager.playAudio('boss/spawn.wav');
+                AudioManager.playAudio('judgement_spawn_audio');
                 this.playedSpawnAudio = true;
             }
             this.animationStage += 1;
             this.number = 0;
         }
         if (this.animationStage === 14 && !this.playedSmashAudio) {
-            AudioManager.playAudio('boss/smash_ground.wav');
+            AudioManager.playAudio('judgement_smash_ground_audio');
             this.playedSmashAudio = true;
         }
         if (this.animationStage === 21 && this.finished) {
@@ -95,7 +96,7 @@ export default class JudgementBombState extends JudgementBaseState {
             w: judgementMove.width * GameSettings.GAME.GAME_SCALE,
             h: judgementMove.height * GameSettings.GAME.GAME_SCALE,
         });
-        DrawHelper.drawMirroredY(judgementMove, imageSize, true);
+        DrawHelper.drawImage(judgementMove, imageSize, true, DirectionHelper.getFaceDirection(currJudgement.angle) === 'left');
         Game.getInstance().setTransparency(1);
     }
     drawSpawn(currJudgement) {

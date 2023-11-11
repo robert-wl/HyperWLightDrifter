@@ -13,17 +13,154 @@
     />
 </head>
 <body>
+<div class='modal-container' id='how-to-play-modal'>
+    <div class='modal-inner-container modal-inner-first'>
+        <div class='modal-content-image'>
+            <img alt='' class='modal-image' src='../assets/web/modal/modal_background.png'>
+        </div>
+        <div class='modal-content'>
+            <div class='modal-left'>
+                <header>
+                    <div
+                        class='clickable arrow-left-modal arrow-left pointer'
+                    >
+                        <
+                    </div>
+                    <span> How To Play </span>
+                    <div
+                        class='clickable arrow-right-modal arrow-right pointer'
+                    >
+                        >
+                    </div>
+                </header>
+                <img alt='' src='../assets/web/modal/input_image.png'>
+                <button class='clickable modal-close-button pointer'>
+                    Close
+                </button>
+            </div>
+            <div class='modal-right'>
+                <ul>
+                    <li>
+                        <p>•</p>
+                        <p>Explore the infinite procedural world</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Conquer enemies and collect their drops</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Amass coins from vanquished foes</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Collect medkits and heal yourself</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Descend through the elevator</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class='modal-inner-container modal-inner-second hidden'>
+        <div class='modal-content-image'>
+            <img alt='' class='modal-image' src='../assets/web/modal/modal_background.png'>
+        </div>
+        <div class='modal-content'>
+            <div class='modal-left'>
+                <header>
+                    <div
+                        class='clickable arrow-left-modal arrow-left pointer'
+                    >
+                        <
+                    </div>
+                    <span> &nbsp;Controls&nbsp; </span>
+                    <div
+                        class='clickable arrow-right-modal arrow-right pointer'
+                    >
+                        >
+                    </div>
+                </header>
+                <img alt='' src='../assets/web/modal/input_image.png'>
+                <button class='clickable modal-close-button pointer'>
+                    Close
+                </button>
+            </div>
+            <div class='modal-right-second-page'>
+                <div class='modal-right-first'>
+                    <ul>
+                        <li>
+                            <p>Move</p>
+                            <div>
+                                <p class='key' id='key-w'>W</p>
+                                <p class='key' id='key-a'>A</p>
+                                <p class='key' id='key-s'>S</p>
+                                <p class='key' id='key-d'>D</p>
+                            </div>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p>Attack</p>
+                            <p class='key' id='key-left'>LEFT</p>
+                        </li>
+                        <li>
+                            <p>Aim</p>
+                            <p class='key' id='key-right'>RIGHT</p>
+                        </li>
+                        <li>
+                            <p>Grenade</p>
+                            <p class='key' id='key-c'>C</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class='modal-right-second'>
+                    <ul>
+                        <li>
+                            <p>Dash</p>
+                            <p class='key' id='key-space'>SPACE</p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p>Heal</p>
+                            <p class='key' id='key-q'>Q</p>
+                        </li>
+                        <li>
+                            <p>Interact</p>
+                            <p class='key' id='key-e'>E</p>
+                        </li>
+                        <li>
+                            <p>Pause</p>
+                            <p class='key' id='key-p'>P</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <section class='navbar section' id='navbar'>
     <div class='navbar-container'>
         <div class='navbar-container-left'>
-            <img alt='' src='../assets/web/title.png'>
+            <img alt='' src='../assets/web/jumbotron/title.png'>
             <button>
                 <a href='index.html'>
                     HOME
                     <div class='underline'></div>
                 </a>
             </button>
-            <button>
+            <button id='how-to-play'>
                 HOW TO PLAY
                 <div class='underline'></div>
             </button>
@@ -37,9 +174,6 @@
         </div>
     </div>
 </section>
-<!--<section class='game section'>-->
-<!--    test-->
-<!--</section>-->
 <div class='container'>
     <div id='loading-modal'>
         <h3>
@@ -191,7 +325,7 @@
         ></canvas>
     </div>
 </div>
-<script>var exports = {};</script>
+<script>let exports = {};</script>
 <script
     crossorigin='anonymous'
     integrity='sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM='
@@ -201,10 +335,10 @@
     src='../js/index.js'
     type='module'
 ></script>
+<script src='../js/web/modal.js' type='module'></script>
 <script>
     console.log(localStorage.getItem('finished'));
     if (localStorage.getItem('finished') === 'true') {
-        console.log('nya');
         $('#opening-screen').attr('src', '../assets/ui/start_end.png');
     }
 

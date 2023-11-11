@@ -1,20 +1,43 @@
-import Game from '../game/Game.js';
-class EndingVideo {
-    static handleClose() {
-        this.video.on('ended', () => {
-            const { startState } = Game.getInstance();
-            Game.getInstance().switchState(startState);
+export default class EndingVideo {
+    constructor(eventEmitter) {
+        this.video = $('#ending-screen');
+        this.eventFunction = ({ event }) => {
+            if (event === 'endingVideo:open') {
+                this.open();
+                return;
+            }
+            if (event === 'endingVideo:close') {
+                this.close();
+                return;
+            }
+        };
+        this.eventEmitter = eventEmitter;
+        this.eventHandler();
+        this.handleClose();
+    }
+    handleClose() {
+        this.video
+            .off()
+            .on('ended', () => {
+            this.eventEmitter.notify('finishGame');
+            this.close();
+        })
+            .on('mousedown', () => {
+            this.eventEmitter.notify('finishGame');
+            this.close();
         });
     }
-    static open() {
+    open() {
         this.video.css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '100%');
         this.video.get(0).play().then();
     }
-    static close() {
+    close() {
         this.video.css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '100%').css('display', 'none');
         this.video.get(0).pause();
         this.video.get(0).currentTime = 0;
     }
+    eventHandler() {
+        this.eventEmitter.unsubscribe(this.eventFunction);
+        this.eventEmitter.subscribe(this.eventFunction);
+    }
 }
-EndingVideo.video = $('#ending-screen');
-export default EndingVideo;

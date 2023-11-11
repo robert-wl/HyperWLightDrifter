@@ -13,7 +13,7 @@ export default class ElevatorMountedDownState extends ElevatorBaseState {
         player.switchState(player.idleState);
         camera.switchState(camera.normalState);
 
-        AudioManager.playAudio('elevator/mount.wav');
+        AudioManager.playAudio('elevator_mount_audio').then();
     }
 
     public drawImage(elevator: Elevator) {

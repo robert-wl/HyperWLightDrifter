@@ -38,8 +38,6 @@ export default class GameStageTwoState extends GameBaseState {
         if (!this.hasInitialized) {
             return;
         }
-        game.pauseHandler();
-
         const { camera, player, enemyManager, backgroundOpacity, elevator } = game;
 
         if (player.currState === player.inElevatorState && player.isBelowGround) {
@@ -96,8 +94,6 @@ export default class GameStageTwoState extends GameBaseState {
 
         enemyManager.clearEntities();
 
-        game.keys = [];
-        game.clicks = [];
         const mapGround = AssetManager.getImage('map_ground_second');
 
         camera.init(new Map().set('0,0', mapGround));

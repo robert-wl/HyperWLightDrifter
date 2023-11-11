@@ -41,7 +41,6 @@ export default class GameStageTwoState extends GameBaseState {
         if (!this.hasInitialized) {
             return;
         }
-        game.pauseHandler();
         const { camera, player, enemyManager, backgroundOpacity, elevator } = game;
         if (player.currState === player.inElevatorState && player.isBelowGround) {
             game.brightenBackground();
@@ -84,8 +83,6 @@ export default class GameStageTwoState extends GameBaseState {
             yield AssetManager.assetLoader([GameSettings.ASSETS.STAGE_TWO, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], game.player.outfit);
             const { camera, player, elevator, enemyManager } = game;
             enemyManager.clearEntities();
-            game.keys = [];
-            game.clicks = [];
             const mapGround = AssetManager.getImage('map_ground_second');
             camera.init(new Map().set('0,0', mapGround));
             colliders.forEach((collider) => {

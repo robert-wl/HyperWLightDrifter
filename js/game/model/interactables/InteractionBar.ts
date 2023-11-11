@@ -1,7 +1,7 @@
 import GameSettings from '../../constants.js';
 import Game from '../game/Game.js';
 import Medkit from './Medkit.js';
-import Key from './Key.js';
+import Coin from './Coin.js';
 import Player from '../player/Player.js';
 import Observable from '../utility/Observable.js';
 import { Interactables } from '../utility/interfaces/Interactables';
@@ -13,7 +13,7 @@ import { Box } from '../utility/interfaces/Box.js';
 import DrawHelper from '../utility/helper/DrawHelper.js';
 
 export default class InteractionBar {
-    private player: Player;
+    private readonly player: Player;
     private inputEventEmitter: Observable;
     private animationStage: number;
     private number: number;
@@ -37,10 +37,6 @@ export default class InteractionBar {
 
     public setAllowDraw(boolean: boolean) {
         this.allowDraw = boolean;
-    }
-
-    public setTransparency(transparency: number) {
-        this.transparency = transparency;
     }
 
     public update() {
@@ -143,7 +139,7 @@ export default class InteractionBar {
                 if (object instanceof Medkit) {
                     object.activate(this.player);
                 }
-                if (object instanceof Key) {
+                if (object instanceof Coin) {
                     object.activate();
                 }
                 if (object instanceof Elevator) {
@@ -154,7 +150,7 @@ export default class InteractionBar {
             }
 
             if (this.checkCounter(10)) {
-                AudioManager.playAudio('player/interact/interact.wav');
+                AudioManager.playAudio('player_interact_audio').then();
             }
 
             this.advanceAnimationStage(10);

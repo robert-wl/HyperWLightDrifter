@@ -39,7 +39,7 @@ export default class PlayerAttackTwoState extends PlayerBaseState {
         currPlayer.attackObserver.notify('playerAttack');
 
         currPlayer.clicks.splice(currPlayer.clicks.indexOf('left'), 1);
-        AudioManager.playAudio('player/attack.wav', 2);
+        AudioManager.playAudio('player_attack_two_audio').then();
     }
 
     exitState(currPlayer: Player) {

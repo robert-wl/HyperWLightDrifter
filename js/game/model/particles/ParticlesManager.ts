@@ -4,9 +4,9 @@ import ParticlesFactory from './ParticlesFactory.js';
 import Observable from '../utility/Observable.js';
 
 export default class ParticlesManager {
-    private eventEmitter: Observable;
+    private readonly eventEmitter: Observable;
     private particleList: Particles[];
-    private _particleFactory: ParticlesFactory;
+    private readonly _particleFactory: ParticlesFactory;
 
     constructor() {
         this.eventEmitter = new Observable();
@@ -18,10 +18,6 @@ export default class ParticlesManager {
 
     get particleFactory(): ParticlesFactory {
         return this._particleFactory;
-    }
-
-    set particleFactory(value: ParticlesFactory) {
-        this._particleFactory = value;
     }
 
     public update = () => this.particleList.forEach((particle) => particle.update());

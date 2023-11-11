@@ -7,14 +7,14 @@ import { PolarVector } from '../../utility/interfaces/PolarVector.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
 
 export default class CrystalAttack {
-    private position: Vector;
-    private angle: number;
+    private readonly position: Vector;
+    private readonly angle: number;
     private spikes: CrystalSpike[];
-    private speed: number;
+    private readonly speed: number;
     private number: number;
     private lifetime: number;
-    private playAudio: boolean;
-    private attackObserver: Observable;
+    private readonly playAudio: boolean;
+    private readonly attackObserver: Observable;
 
     constructor(position: Vector, angle: number, playAudio: boolean, attackObserver: Observable) {
         this.position = position;
@@ -44,7 +44,7 @@ export default class CrystalAttack {
             this.spikes.push(spike);
 
             if (this.playAudio) {
-                AudioManager.playAudio('enemy/crystal_brute/spike_spawn.wav');
+                AudioManager.playAudio('crystal_brute_spike_spawn_audio').then();
             }
             this.number = 0;
         }

@@ -1,0 +1,10 @@
+.game {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 4rem;
+}
+
+/*# sourceMappingURL=gameContent.css.map */

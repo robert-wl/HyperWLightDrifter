@@ -24,9 +24,9 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
         this.friction = 0.1;
 
         if (RandomHelper.getRandomBoolean(0.05)) {
-            currSpider.enemyObserver.notify('spawnKey', currSpider.position);
+            currSpider.enemyObserver.notify('spawnCoin', currSpider.position);
         }
-        AudioManager.playAudio('enemy/crystal_spider/death.wav');
+        AudioManager.playAudio('crystal_spider_death_audio').then();
     }
 
     updateState(currSpider: CrystalSpider) {

@@ -27,7 +27,7 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
 
         currSpider.attackSpeed = 20;
 
-        AudioManager.playAudio('enemy/crystal_spider/attack.wav');
+        AudioManager.playAudio('crystal_spider_attack_audio').then();
     }
 
     public updateState(currSpider: CrystalSpider) {

@@ -12,12 +12,12 @@ import DrawHelper from '../utility/helper/DrawHelper.js';
 
 export default class Medkit extends Animateable {
     private _position: Vector;
-    private width: number;
-    private height: number;
+    private readonly width: number;
+    private readonly height: number;
     private _collider: Collider;
     private _key: string;
     private interactableEventEmitter: Observable;
-    private interactionDistance: number;
+    private readonly interactionDistance: number;
 
     constructor(position: Vector, width: number, height: number, key: string, interactableEventEmitter: Observable) {
         super();
@@ -59,8 +59,6 @@ export default class Medkit extends Animateable {
         this._position = value;
     }
 
-    static generate(position, key) {}
-
     update() {
         this.updateNumberCounter();
 
@@ -96,7 +94,7 @@ export default class Medkit extends Animateable {
         player.healthPack += 1;
         player.healthPack = Math.min(player.healthPack, 3);
 
-        AudioManager.playAudio('player/medkit/use.wav');
+        AudioManager.playAudio('player_medkit_use_audio').then();
         this.interactableEventEmitter.notify('medkit:collected', this);
     }
 }

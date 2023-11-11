@@ -6,33 +6,31 @@ export default class AudioManager {
     private static allowSound = true;
     private static _volume = 0.1;
 
-    private constructor() {
-        //
-    }
-
     static get volume(): number {
         return this._volume;
-    }
-
-    static set volume(value: number) {
-        this._volume = value;
     }
 
     public static increaseVolume() {
         if (this._volume < 1) {
             this._volume += 0.1;
         }
+        this.playList.forEach((player) => (player.volume = this._volume));
     }
 
     public static decreaseVolume() {
         if (this._volume > 0) {
             this._volume -= 0.1;
         }
+        this.playList.forEach((player) => (player.volume = this._volume));
     }
 
     public static disableSound() {
         this.allowSound = false;
         this.stopAll();
+    }
+
+    public static enableSound() {
+        this.allowSound = true;
     }
 
     public static stopAll() {
@@ -52,21 +50,18 @@ export default class AudioManager {
         audio.src = audio.src;
     }
 
-    public static async playAudio(audio: string, number?: number | null, loop = false, bypass = false) {
+    public static async playAudio(audio: string, loop = false, bypass = false) {
         if (!this.allowSound && !bypass) {
             return null;
         }
 
-        let audioName = audio;
-        if (number) {
-            audioName = `${audio.split('.')[0]}_${number}.${audio.split('.')[1]}`;
-        }
-
-        let player = this.assetList.get(audioName) as HTMLAudioElement;
+        let player = this.assetList.get(audio) as HTMLAudioElement;
 
         if (player == null) {
-            player = new Audio(`../assets/audio/${audioName}`);
+            return null;
         }
+
+        player = player.cloneNode(true) as HTMLAudioElement;
 
         player.volume = this._volume;
         await player.play();

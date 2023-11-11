@@ -1,7 +1,7 @@
 import GameSettings from '../../constants.js';
 import Game from '../game/Game.js';
 import Medkit from './Medkit.js';
-import Key from './Key.js';
+import Coin from './Coin.js';
 import Elevator from './Elevator/Elevator.js';
 import AssetManager from '../utility/manager/AssetManager.js';
 import AudioManager from '../utility/manager/AudioManager.js';
@@ -103,7 +103,7 @@ export default class InteractionBar {
                 if (object instanceof Medkit) {
                     object.activate(this.player);
                 }
-                if (object instanceof Key) {
+                if (object instanceof Coin) {
                     object.activate();
                 }
                 if (object instanceof Elevator) {
@@ -113,7 +113,7 @@ export default class InteractionBar {
                 return true;
             }
             if (this.checkCounter(10)) {
-                AudioManager.playAudio('player/interact/interact.wav');
+                AudioManager.playAudio('player_interact_audio');
             }
             this.advanceAnimationStage(10);
         }

@@ -31,7 +31,7 @@ export default class JudgementSpawnState extends JudgementBaseState {
         }
 
         if (this.animationStage === 14 && !this.playedSmash) {
-            AudioManager.playAudio('boss/smash_ground.wav');
+            AudioManager.playAudio('judgement_smash_ground_audio').then();
             this.playedSmash = true;
         }
 
@@ -57,12 +57,12 @@ export default class JudgementSpawnState extends JudgementBaseState {
         super.enterState(currJudgement);
         this.playedSmash = false;
 
-        AudioManager.playAudio('boss/spawn.wav');
+        AudioManager.playAudio('judgement_spawn_audio').then();
     }
 
     exitState(currJudgement: Judgement) {
         if (this.firstSpawn) {
-            AudioManager.playAudio('boss/music.wav', null, true);
+            AudioManager.playAudio('boss_stage_background_audio', true).then();
         }
 
         this.firstSpawn = false;

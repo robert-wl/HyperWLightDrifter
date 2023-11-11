@@ -4,6 +4,7 @@ import ElevatorMoveState from './state/ElevatorMoveState.js';
 import ElevatorMountedDownState from './state/ElevatorMountedDownState.js';
 import GameSettings from '../../../constants.js';
 import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import Game from '../../game/Game.js';
 export default class Elevator {
     constructor(position, interactableEventEmitter) {
         this._position = position;
@@ -64,7 +65,12 @@ export default class Elevator {
         this._stageLocation = 2;
     }
     detectInteraction(position) {
-        //if()
+        if (Game.getInstance().keyCount < 10) {
+            return false;
+        }
+        if (Game.getInstance().player.isInElevator()) {
+            return false;
+        }
         const distance = DistanceHelper.getMagnitude({
             x: position.x - (this.position.x + this.width / 2),
             y: position.y - (this.position.y + this.height / 2),

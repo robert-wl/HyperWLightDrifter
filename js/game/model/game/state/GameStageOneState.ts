@@ -4,6 +4,7 @@ import GameSettings from '../../../constants.js';
 import Navbar from '../../htmlElements/Navbar.js';
 import AssetManager from '../../utility/manager/AssetManager.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
 
 export default class GameStageOneState extends GameBaseState {
     async enterState(game: Game) {
@@ -15,12 +16,11 @@ export default class GameStageOneState extends GameBaseState {
 
         player.switchState(player.spawnState);
 
-        AudioManager.playAudio('forest_stage/background.ogg', null, true);
+        AudioManager.playAudio('forest_stage_background_audio', true).then();
     }
 
     updateState(game: Game) {
         super.updateState(game);
-        game.pauseHandler();
         game.mapGenerator.update();
 
         const { camera, player, elevators, interactablesManager } = game;
@@ -53,7 +53,7 @@ export default class GameStageOneState extends GameBaseState {
         camera.renderTopBackground();
         game.setTransparency(1);
 
-        interactablesManager.updateKeys();
+        interactablesManager.updateCoins();
 
         camera.updateCamera();
         camera.resetShakeCamera();
@@ -71,28 +71,23 @@ export default class GameStageOneState extends GameBaseState {
     handleStageChange(game: Game) {
         const { player, backgroundOpacity } = game;
         if (player.isBelowGround && backgroundOpacity === 0) {
-            game.switchState(game.stageTwoState);
+            game.switchState(game.stageTwoState).then();
         }
     }
 
     async stageInitializer(game: Game) {
-        $('#menu-modal').css('display', 'none');
-        const { camera, player, htmlHandlers } = game;
-
-        game.keys = [];
-        game.clicks = [];
+        game.prepareCanvas();
+        const { camera, player } = game;
 
         await AssetManager.assetLoader([GameSettings.ASSETS.STAGE_ONE, GameSettings.ASSETS.PLAYER, GameSettings.ASSETS.PLAYER], game.player.outfit);
 
         game.mapGenerator.init();
 
         camera.init();
-        player.centerPosition = {
+        player.centerPosition = Vector.parse({
             x: 512 + player.width / 2,
             y: 512 + player.height / 2,
-        };
-
-        game.prepareCanvas();
+        });
 
         camera.setCameraPosition({
             position: game.player.centerPosition,

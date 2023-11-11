@@ -1,25 +1,25 @@
 import Medkit from './Medkit.js';
-import Key from './Key.js';
+import Coin from './Coin.js';
 import Elevator from './Elevator/Elevator.js';
 import { Vector } from '../utility/interfaces/Vector.js';
 import Observable from '../utility/Observable.js';
 import RandomHelper from '../utility/helper/RandomHelper.js';
 
 export default class InteractablesFactory {
-    private eventEmitter: Observable;
+    private readonly eventEmitter: Observable;
 
     public constructor(eventEmitter: Observable) {
         this.eventEmitter = eventEmitter;
     }
 
-    public generateKey(position: Vector) {
+    public generateCoin(position: Vector) {
         const x = Math.round(position.x / 256);
         const y = Math.round(position.y / 256);
         const key = `${y},${x}`;
 
-        const keyObject = new Key(position, 10, 10, key, this.eventEmitter);
+        const coinObject = new Coin(position, 10, 10, key, this.eventEmitter);
 
-        this.eventEmitter.notify('addInteractable:key', keyObject);
+        this.eventEmitter.notify('addInteractable:coin', coinObject);
     }
 
     public generateMedkit(position: Vector, key: string) {

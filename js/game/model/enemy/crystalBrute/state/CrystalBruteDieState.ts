@@ -12,7 +12,7 @@ import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
 
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
-    private friction: number;
+    private readonly friction: number;
 
     public constructor() {
         super();
@@ -21,10 +21,10 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
 
     public enterState(currBrute: CrystalBrute) {
         if (RandomHelper.getRandomBoolean(0.5)) {
-            currBrute.enemyObserver.notify('spawnKey', currBrute.position);
+            currBrute.enemyObserver.notify('spawnCoin', currBrute.position);
         }
 
-        AudioManager.playAudio('enemy/crystal_brute/death.wav');
+        AudioManager.playAudio('player_key_pickup_audio').then();
     }
 
     public updateState(currBrute: CrystalBrute) {

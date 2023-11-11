@@ -7,11 +7,16 @@ import AudioManager from '../../utility/manager/AudioManager.js';
 import { Box } from '../../utility/interfaces/Box.js';
 import DrawHelper from '../../utility/helper/DrawHelper.js';
 export default class PlayerDeathState extends PlayerBaseState {
+    constructor() {
+        super();
+        this.lastLookAngle = 0;
+    }
     enterState(currPlayer) {
         super.enterState(currPlayer);
+        this.lastLookAngle = currPlayer.lookAngle;
         const { loseState } = Game.getInstance();
         Game.getInstance().switchState(loseState);
-        AudioManager.playAudio('player/die.wav', null, false, true);
+        AudioManager.playAudio('player_death_audio');
     }
     updateState(currPlayer) {
         super.updateState(currPlayer);
@@ -28,6 +33,6 @@ export default class PlayerDeathState extends PlayerBaseState {
             w: death.width * GameSettings.GAME.GAME_SCALE,
             h: death.height * GameSettings.GAME.GAME_SCALE,
         });
-        DrawHelper.drawImage(death, imageSize, true, DirectionHelper.getFaceDirection(currPlayer.lookAngle) === 'left');
+        DrawHelper.drawImage(death, imageSize, true, DirectionHelper.getFaceDirection(this.lastLookAngle) === 'left');
     }
 }

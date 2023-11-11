@@ -10,7 +10,7 @@ import { Box } from '../utility/interfaces/Box.js';
 export default abstract class Enemy extends Animateable {
     private _hitbox: HitBoxComponent;
     private _health: number;
-    private _maxHealth: number;
+    private readonly _maxHealth: number;
     private _width: number;
     private _height: number;
     private _position: Vector;
@@ -67,10 +67,6 @@ export default abstract class Enemy extends Animateable {
 
     get maxHealth(): number {
         return this._maxHealth;
-    }
-
-    set maxHealth(value: number) {
-        this._maxHealth = value;
     }
 
     get width(): number {

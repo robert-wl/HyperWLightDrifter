@@ -26,7 +26,7 @@ export default class CrystalAttack {
             const spike = new CrystalSpike(this.position, this.attackObserver);
             this.spikes.push(spike);
             if (this.playAudio) {
-                AudioManager.playAudio('enemy/crystal_brute/spike_spawn.wav');
+                AudioManager.playAudio('crystal_brute_spike_spawn_audio');
             }
             this.number = 0;
         }

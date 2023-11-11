@@ -1,16 +1,11 @@
 import GameBaseState from './GameBaseState.js';
-import EndingVideo from '../../htmlElements/EndingVideo.js';
 import Game from '../Game.js';
 
 export default class GameEndState extends GameBaseState {
     enterState(game: Game) {
-        EndingVideo.open();
-        EndingVideo.handleClose();
+        game.hudManager.clearHUD();
+        game.ctx.clearRect(game.camera.position.x, game.camera.position.y, game.canvas.width * 2, game.canvas.height * 2);
+        game.htmlHandlers.notify('endGame');
         localStorage.setItem('finished', 'true');
-    }
-
-    exitState(game: Game) {
-        EndingVideo.close();
-        $('#opening-screen').attr('src', '../assets/ui/start_end.png').css('animation', 'fadeIn 0.5s ease-in-out');
     }
 }

@@ -10,10 +10,11 @@ import JudgementBullet from './judgement/JudgementBullet.js';
 import RandomHelper from '../utility/helper/RandomHelper.js';
 import { PolarVector } from '../utility/interfaces/PolarVector.js';
 import JudgementLaser from './judgement/JudgementLaser.js';
+import DistanceHelper from '../utility/helper/DistanceHelper.js';
 
 export default class EnemyFactory {
-    private enemyObserver: Observable;
-    private attackObserver: Observable;
+    private readonly enemyObserver: Observable;
+    private readonly attackObserver: Observable;
 
     public constructor(eventEmitter: Observable, attackObserver: Observable) {
         this.enemyObserver = eventEmitter;
@@ -57,7 +58,9 @@ export default class EnemyFactory {
     public generateBossBomb(position: Vector, angle: number) {
         const { WIDTH, HEIGHT, MAX_HEALTH, OFFSET, LIFETIME } = GameSettings.GAME.ENEMY.JUDGEMENT_BOMB;
         const hitbox = new HitBoxComponent(-WIDTH / 2, -HEIGHT / 2, 0, 0);
-        const judgementBomb = new JudgementBomb(position, WIDTH, HEIGHT, hitbox, MAX_HEALTH, angle, OFFSET, LIFETIME, this.enemyObserver, this.attackObserver);
+        const pVector = new PolarVector(OFFSET, angle);
+        const newPosition = new Vector(DistanceHelper.getHorizontalValue(pVector, position.x), DistanceHelper.getVerticalValue(pVector, position.y));
+        const judgementBomb = new JudgementBomb(newPosition, position, OFFSET, WIDTH, HEIGHT, hitbox, MAX_HEALTH, angle, LIFETIME, this.enemyObserver, this.attackObserver);
 
         this.enemyObserver.notify('spawnBossEntity', judgementBomb);
     }

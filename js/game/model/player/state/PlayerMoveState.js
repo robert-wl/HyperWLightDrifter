@@ -10,15 +10,27 @@ export default class PlayerMoveState extends PlayerBaseState {
     constructor() {
         super();
         this.direction = '';
+        this.canPlayAudio = true;
     }
-    enterState(currPlayer) { }
+    enterState(currPlayer) {
+        this.canPlayAudio = true;
+    }
     updateState(currPlayer) {
         super.updateState(currPlayer);
-        this.advanceAnimationStage(4, 12);
-        if (this.animationStage % 6 === 0) {
-            const randomValue = RandomHelper.randomValue(1, 2, true);
-            AudioManager.playAudio('player/footstep_forest.wav', randomValue);
+        console.log(this.number);
+        if (Math.round(this.animationStage) % 6 === 0 && this.canPlayAudio) {
+            if (RandomHelper.getRandomBoolean(0.5)) {
+                AudioManager.playAudio('player_footstep_forest_one_audio');
+            }
+            else {
+                AudioManager.playAudio('player_footstep_forest_two_audio');
+            }
+            this.canPlayAudio = false;
         }
+        if (Math.round(this.animationStage) % 7 === 0) {
+            this.canPlayAudio = true;
+        }
+        this.advanceAnimationStage(4, 12);
         currPlayer.regenerateStamina();
         const { direction, playerDirection } = DirectionHelper.getMoveDirection(currPlayer);
         this.direction = direction;

@@ -16,14 +16,13 @@ export default class GameStartState extends GameBaseState {
 
     async enterState(game: Game) {
         super.enterState(game);
+
+        AudioManager.enableSound();
+        AudioManager.stopAll();
         Navbar.open();
-        game.toggleFullscreen(false);
         this.spawnParticles = true;
 
-        // game.instance = null;
-
-        Game.getInstance();
-
+        game.toggleFullscreen(false);
         game.prepareCanvas();
 
         await game.init();
@@ -32,7 +31,7 @@ export default class GameStartState extends GameBaseState {
         game.changeState();
         await AssetManager.assetLoader([GameSettings.ASSETS.SPAWN]);
 
-        AudioManager.playAudio('menu/background.ogg', undefined, true);
+        AudioManager.playAudio('menu_background_audio', true).then();
     }
 
     updateState(game: Game) {
@@ -53,7 +52,6 @@ export default class GameStartState extends GameBaseState {
 
     exitState(game: Game) {
         game.htmlHandlers.eventRemover();
-        console.log('hai');
         AudioManager.stopAll();
     }
 }

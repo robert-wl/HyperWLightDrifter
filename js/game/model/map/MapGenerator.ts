@@ -9,7 +9,7 @@ const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
 export default class MapGenerator {
     private lowerLayers: Map<string, HTMLImageElement>;
-    private pieceFactory: PieceFactory;
+    private readonly pieceFactory: PieceFactory;
     private setPieceGenerator: SetPieceGenerator;
 
     constructor(game: Game) {
@@ -81,7 +81,7 @@ export default class MapGenerator {
     generateElevatorFloor({ x, y }) {
         const { SETPIECE_ELEVATOR_INITIAL_CHANCE, SETPIECE_ELEVATOR_MAX_CHANCE } = GameSettings.GAME.FOREST_STAGE;
 
-        const chance = Math.min(SETPIECE_ELEVATOR_INITIAL_CHANCE + Game.getInstance().keyCount * 0.0005, SETPIECE_ELEVATOR_MAX_CHANCE);
+        const chance = Math.min(SETPIECE_ELEVATOR_INITIAL_CHANCE + Game.getInstance().coinCount * 0.0005, SETPIECE_ELEVATOR_MAX_CHANCE);
 
         if (RandomHelper.getRandomBoolean(chance)) {
             this.lowerLayers.set(`${x},${y}`, this.getFloorImage(true));

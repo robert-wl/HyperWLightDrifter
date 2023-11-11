@@ -4,10 +4,6 @@ import { Vector } from '../interfaces/Vector.js';
 export default class GunHelper {
     private static enemyManager: EnemyManager;
 
-    private constructor() {
-        //
-    }
-
     public static setEnemyManager(enemyManager: EnemyManager) {
         this.enemyManager = enemyManager;
     }

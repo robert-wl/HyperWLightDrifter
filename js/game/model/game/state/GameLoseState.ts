@@ -26,7 +26,7 @@ export default class GameLoseState extends GameBaseState {
         }
 
         if (this.transparency < -1) {
-            game.switchState(game.startState);
+            game.switchState(game.startState).then();
             return;
         }
 

@@ -5,7 +5,7 @@ export default abstract class Modal {
     protected eventEmitter: Observable;
     private readonly _modal: JQuery;
 
-    constructor(modal: JQuery, eventEmitter: Observable) {
+    protected constructor(modal: JQuery, eventEmitter: Observable) {
         this._modal = modal;
         this.eventEmitter = eventEmitter;
     }
@@ -21,7 +21,7 @@ export default abstract class Modal {
     protected open() {
         this._modal?.css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '100%');
 
-        AudioManager.playAudio('menu/action.wav');
+        AudioManager.playAudio('menu_action_audio').then();
     }
 
     protected toggle() {

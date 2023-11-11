@@ -3,27 +3,23 @@ import InteractablesFactory from './InteractablesFactory.js';
 import { Interactables } from '../utility/interfaces/Interactables.js';
 import Game from '../game/Game.js';
 import { Vector } from '../utility/interfaces/Vector.js';
-import Key from './Key.js';
+import Coin from './Coin.js';
 
 export default class InteractablesManager {
     private game: Game;
-    private eventEmitter: Observable;
+    private readonly eventEmitter: Observable;
     private _interactablesList: Interactables[];
-    private keyList: Key[];
-    private _interactablesFactory: InteractablesFactory;
+    private coinList: Coin[];
+    private readonly _interactablesFactory: InteractablesFactory;
 
     public constructor(game: Game) {
         this.game = game;
         this.eventEmitter = new Observable();
         this._interactablesList = [];
-        this.keyList = [];
+        this.coinList = [];
         this._interactablesFactory = new InteractablesFactory(this.eventEmitter);
 
         this.eventHandler();
-    }
-
-    get interactablesList(): Interactables[] {
-        return this._interactablesList;
     }
 
     set interactablesList(value: Interactables[]) {
@@ -34,18 +30,14 @@ export default class InteractablesManager {
         return this._interactablesFactory;
     }
 
-    set interactablesFactory(value: InteractablesFactory) {
-        this._interactablesFactory = value;
-    }
-
-    public updateKeys() {
-        this.keyList.forEach((key) => {
-            key.update();
+    public updateCoins() {
+        this.coinList.forEach((coin) => {
+            coin.update();
         });
     }
 
     public detectInteractable(playerPosition: Vector) {
-        const validKey = this.keyList.filter((key) => {
+        const validCoins = this.coinList.filter((key) => {
             return key.detectInteraction(playerPosition);
         });
 
@@ -53,7 +45,7 @@ export default class InteractablesManager {
             return interactable.detectInteraction(playerPosition);
         });
 
-        const resultList = [...validKey, ...validInteractable];
+        const resultList = [...validCoins, ...validInteractable];
         if (resultList.length > 0) {
             return resultList[0];
         }
@@ -66,13 +58,13 @@ export default class InteractablesManager {
                 this._interactablesList.push(data);
                 return;
             }
-            if (event === 'addInteractable:key') {
-                this.keyList.push(data);
+            if (event === 'addInteractable:coin') {
+                this.coinList.push(data);
                 return;
             }
-            if (event === 'key:collected') {
-                Game.getInstance().keyCount += 1;
-                this.keyList.splice(this.keyList.indexOf(data), 1);
+            if (event === 'coin:collected') {
+                Game.getInstance().coinCount += 1;
+                this.coinList.splice(this.coinList.indexOf(data), 1);
                 return;
             }
             if (event === 'medkit:collected') {

@@ -15,8 +15,8 @@ export default class EnemyManager {
     private readonly enemyObserver: Observable;
     private _enemyList: Enemy[];
     private _boss: Judgement | null;
-    private _bossEntities: Enemy[];
-    private _enemyFactory: EnemyFactory;
+    private readonly _bossEntities: Enemy[];
+    private readonly _enemyFactory: EnemyFactory;
 
     public constructor(game: Game) {
         this.game = game;
@@ -34,24 +34,12 @@ export default class EnemyManager {
         return this._boss;
     }
 
-    set boss(value: Judgement) {
-        this._boss = value;
-    }
-
     get bossEntities(): Enemy[] {
         return this._bossEntities;
     }
 
-    set bossEntities(value: Enemy[]) {
-        this._bossEntities = value;
-    }
-
     get enemyList(): Enemy[] {
         return this._enemyList;
-    }
-
-    set enemyList(value: Enemy[]) {
-        this._enemyList = value;
     }
 
     get enemyFactory(): EnemyFactory {
@@ -72,7 +60,7 @@ export default class EnemyManager {
         });
     }
 
-    public handleDetectPoint(position: Vector, enemy: Enemy, notifyData?: any) {
+    public handleDetectPoint(position: Vector, enemy: Enemy) {
         if (enemy instanceof CrystalSpider || enemy instanceof CrystalBrute) {
             if (enemy.currState == enemy.dieState) return false;
         }
@@ -130,8 +118,8 @@ export default class EnemyManager {
                 this._bossEntities.push(data);
                 return;
             }
-            if (event === 'spawnKey') {
-                this.game.interactablesFactory.generateKey(data);
+            if (event === 'spawnCoin') {
+                this.game.interactablesFactory.generateCoin(data);
                 return;
             }
             if (event === 'clearEnemy') {
@@ -155,7 +143,7 @@ export default class EnemyManager {
             }
         });
 
-        this.attackObserver.subscribe(({ event, data }) => {
+        this.attackObserver.subscribe(({ event }) => {
             if (event === 'playerAttack') {
                 this.enemyList.forEach((enemy) => {
                     this.handleDamageBox(enemy);
@@ -165,11 +153,6 @@ export default class EnemyManager {
                 });
                 if (this.boss) this.handleDamageBox(this.boss);
             }
-            // if (event === 'gunAim') {
-            //     if (this.gunAimHandler(data)) {
-            //         this.attackObserver.notify('playerHit', data.length);
-            //     }
-            // }
         });
     }
 }

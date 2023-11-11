@@ -10,10 +10,6 @@ export default class AssetManager {
     private static assetAmount: number;
     private static _assetList: Map<string, HTMLImageElement | HTMLAudioElement> = new Map();
 
-    private constructor() {
-        //
-    }
-
     static get assetList(): Map<string, HTMLImageElement | HTMLAudioElement> {
         return this._assetList;
     }

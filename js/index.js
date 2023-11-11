@@ -3,7 +3,7 @@ import Game from './game/model/game/Game.js';
 
 $(async () => {
     const game = Game.getInstance();
-    Game.debug = false;
+    Game.debug = true;
 
     let lastTimestamp = 0;
     let isTabVisible = true;

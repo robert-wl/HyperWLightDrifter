@@ -71,7 +71,6 @@ export default class CheatCodeManager {
         }
         if (cheatCodesKey === 'obert') {
             Game.renderCollider = !Game.renderCollider;
-            return;
         }
     }
 }

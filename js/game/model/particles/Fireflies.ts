@@ -8,8 +8,8 @@ import { Box } from '../utility/interfaces/Box.js';
 import DrawHelper from '../utility/helper/DrawHelper.js';
 
 export default class Fireflies extends Particles {
-    private size: number;
-    private angle: number;
+    private readonly size: number;
+    private readonly angle: number;
     private rotation: number;
 
     constructor({ position, speed, angle, lifeSpan, size, canvas, eventEmitter }) {

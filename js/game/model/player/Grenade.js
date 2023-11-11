@@ -1,6 +1,4 @@
 import Game from '../game/Game.js';
-import CrystalBrute from '../enemy/crystalBrute/CrystalBrute.js';
-import CrystalSpider from '../enemy/crystalSpider/CrystalSpider.js';
 import Animateable from '../utility/Animateable.js';
 import GameSettings from '../../constants.js';
 import RandomHelper from '../utility/helper/RandomHelper.js';
@@ -59,7 +57,7 @@ export default class Grenade extends Animateable {
         const { player } = Game.getInstance();
         const { projectiles } = player;
         if (!this.playedAudio && this.animationStage >= 2) {
-            AudioManager.playAudio('player/grenade/explode.wav');
+            AudioManager.playAudio('player_grenade_explode_audio');
             this.playedAudio = true;
             this.handleDamage();
         }
@@ -96,12 +94,6 @@ export default class Grenade extends Animateable {
             });
             if (distance >= 250) {
                 return;
-            }
-            if (enemy instanceof CrystalSpider) {
-                AudioManager.playAudio('enemy/crystal_spider/hurt.wav');
-            }
-            if (enemy instanceof CrystalBrute) {
-                AudioManager.playAudio('enemy/crystal_brute/hurt.wav');
             }
             enemy.handleDamage({
                 amount: GameSettings.PLAYER.DAMAGE.GRENADE,

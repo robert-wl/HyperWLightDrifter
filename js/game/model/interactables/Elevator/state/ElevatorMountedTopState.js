@@ -4,14 +4,14 @@ import Game from '../../../game/Game.js';
 import AssetManager from '../../../utility/manager/AssetManager.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
+
 export default class ElevatorMountedTopState extends ElevatorBaseState {
-    updateState(elevator) {
-        //
-    }
     drawImage(elevator) {
         const elevatorImage = AssetManager.getImage('elevator');
+
         elevator.width = -0.5 * elevatorImage.width;
         elevator.height = -2 * elevatorImage.height;
+
         const imageSize = Box.parse({
             x: elevator.position.x - elevatorImage.width,
             y: elevator.position.y - elevatorImage.height,
@@ -19,7 +19,7 @@ export default class ElevatorMountedTopState extends ElevatorBaseState {
             h: elevatorImage.height * GameSettings.GAME.GAME_SCALE,
         });
         DrawHelper.drawImage(elevatorImage, imageSize);
-        if (Game.getInstance().keyCount >= 10) {
+        if (Game.getInstance().coinCount >= 10) {
             return;
         }
         const lock = AssetManager.getImage('lock');

@@ -36,7 +36,7 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         this.moveTime += Game.deltaTime;
 
         if (Math.round(this.moveTime) % 20 === 0) {
-            AudioManager.playAudio('enemy/crystal_spider/walk.wav');
+            AudioManager.playAudio('crystal_spider_walk_audio').then();
         }
 
         this.advanceAnimationStage(4, 4);
