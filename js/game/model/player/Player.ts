@@ -196,7 +196,7 @@ export default class Player {
         this._healing = value;
     }
 
-    get projectiles(): any[] {
+    get projectiles(): Grenade[] {
         return this._projectiles;
     }
 
@@ -327,6 +327,8 @@ export default class Player {
 
         this.playerEffectsHandler(true);
 
+        this.projectiles.forEach((projectile) => projectile.update());
+        
         this.heal();
 
         this._interactionBar.update();

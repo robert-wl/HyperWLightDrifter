@@ -138,7 +138,7 @@ function parallaxHandler() {
         }
 
         // const constant = 4200 * (window.innerWidth / 1920);
-        const parallaxVal = (scrollY - 4700) * 0.5;
+        const parallaxVal = (scrollY - 4600) * 0.5;
 
         $('.image-cover')[0].style.transform = `translateY(${parallaxVal}px)`;
     });

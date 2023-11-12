@@ -13,5 +13,9 @@
   font-size: 48px;
   border-bottom: 0.3rem solid rgb(253, 27, 94);
 }
+.trailer iframe {
+  width: 70vw;
+  height: 39.375vw;
+}
 
 /*# sourceMappingURL=trailer.css.map */

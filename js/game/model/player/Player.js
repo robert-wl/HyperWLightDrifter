@@ -223,6 +223,7 @@ export default class Player {
         }
         this.currState.drawImage(this);
         this.playerEffectsHandler(true);
+        this.projectiles.forEach((projectile) => projectile.update());
         this.heal();
         this._interactionBar.update();
         if (Game.debug) {
