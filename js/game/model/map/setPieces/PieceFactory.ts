@@ -80,7 +80,7 @@ export default class PieceFactory {
     }
 
     public generateLargeStonePiece(position: Vector) {
-        const random = RandomHelper.randomValue(1, 4, true);
+        const random = RandomHelper.randomValue(1, 3, true);
 
         const image = AssetManager.getNumberedImage('set_pieces_stone_big', random);
 

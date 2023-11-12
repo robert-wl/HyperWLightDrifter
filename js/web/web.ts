@@ -14,12 +14,17 @@ $(() => {
     const audioSlider = $('.slider')[0] as HTMLInputElement;
     const audioToggleButton = $('.audio-toggle-button').toArray() as HTMLElement[];
 
-    new AudioPlayer({
-        audioVisualizer: new AudioVisualizer({
-            source: '../assets/web/ost/audio.mp3',
-        }),
-        audioSlider: audioSlider,
-        audioToggleButton: audioToggleButton,
+    let player: AudioPlayer | null = null;
+    $(document).on('click', () => {
+        if (!player) {
+            player = new AudioPlayer({
+                audioVisualizer: new AudioVisualizer({
+                    source: '../assets/web/ost/audio.mp3',
+                }),
+                audioSlider: audioSlider,
+                audioToggleButton: audioToggleButton,
+            });
+        }
     });
 });
 

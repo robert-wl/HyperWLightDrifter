@@ -11,12 +11,17 @@ $(() => {
     mapBossHandler();
     const audioSlider = $('.slider')[0];
     const audioToggleButton = $('.audio-toggle-button').toArray();
-    new AudioPlayer({
-        audioVisualizer: new AudioVisualizer({
-            source: '../assets/web/ost/audio.mp3',
-        }),
-        audioSlider: audioSlider,
-        audioToggleButton: audioToggleButton,
+    let player = null;
+    $(document).on('click', () => {
+        if (!player) {
+            player = new AudioPlayer({
+                audioVisualizer: new AudioVisualizer({
+                    source: '../assets/web/ost/audio.mp3',
+                }),
+                audioSlider: audioSlider,
+                audioToggleButton: audioToggleButton,
+            });
+        }
     });
 });
 function iframeHandler() {

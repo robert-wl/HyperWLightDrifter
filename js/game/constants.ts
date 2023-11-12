@@ -508,7 +508,7 @@ const GameSettings = {
             {
                 ref: 'world/forest/set_pieces/stone/big/stone.png',
                 name: 'set_pieces_stone_big',
-                amount: 4,
+                amount: 3,
             },
             {
                 ref: 'world/forest/set_pieces/stone/small/stone.png',
