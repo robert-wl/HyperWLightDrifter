@@ -34,6 +34,7 @@ const GameSettings = {
                 WIDTH: 66,
                 HEIGHT: 50,
                 MAX_HEALTH: 1,
+                ATTACK_SPEED: 20,
                 COIN_DROP_CHANCE: 0.1,
             },
             CRYSTAL_BRUTE: {
@@ -44,6 +45,7 @@ const GameSettings = {
                 WIDTH: 136,
                 HEIGHT: 140,
                 MAX_HEALTH: 10,
+                SPEED: 3,
                 ATTACK_PATTERN: [[0], [0, -1 / 6, 1 / 6], [1 / 10, -1 / 10, 2 / 10, -2 / 10]],
                 COIN_DROP_CHANCE: 0.75,
             },
@@ -66,6 +68,7 @@ const GameSettings = {
                 MAX_HEALTH: 5,
                 LIFETIME: 300,
                 OFFSET: 120,
+                SPEED: 3,
             },
             JUDGEMENT_BULLET: {
                 WIDTH: 20,
@@ -76,7 +79,7 @@ const GameSettings = {
                 WIDTH: 20,
                 HEIGHT: 20,
                 MAX_HEALTH: 1000,
-                MAX_LIFETIME: 2000,
+                MAX_LIFETIME: 200,
                 SPEED: 12.5,
             },
         },
@@ -460,13 +463,13 @@ const GameSettings = {
                 isAudio: true,
             },
             {
-                ref: 'player/footstep_forest_1.wav',
-                name: 'player_footstep_forest_one_audio',
+                ref: 'player/footstep_1.wav',
+                name: 'player_footstep_one_audio',
                 isAudio: true,
             },
             {
-                ref: 'player/footstep_forest_2.wav',
-                name: 'player_footstep_forest_two_audio',
+                ref: 'player/footstep_2.wav',
+                name: 'player_footstep_two_audio',
                 isAudio: true,
             },
             {

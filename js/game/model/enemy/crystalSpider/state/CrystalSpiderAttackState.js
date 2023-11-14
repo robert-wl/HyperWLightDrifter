@@ -18,7 +18,7 @@ export default class CrystalSpiderAttackState extends CrystalSpiderBaseState {
         super.enterState(currSpider);
         this.angle = currSpider.angle;
         this.attackDrag = 0.25;
-        currSpider.attackSpeed = 20;
+        currSpider.attackSpeed = GameSettings.GAME.ENEMY.CRYSTAL_SPIDER.ATTACK_SPEED;
         AudioManager.playAudio('crystal_spider_attack_audio').then();
     }
     updateState(currSpider) {

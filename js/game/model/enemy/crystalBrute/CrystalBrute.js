@@ -9,10 +9,11 @@ import CrystalBruteIdleState from './state/CrystalBruteIdleState.js';
 import { Vector } from '../../utility/interfaces/Vector.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
 import Shadow from '../../shadow/Shadow.js';
+import GameSettings from '../../../constants.js';
 export default class CrystalBrute extends Enemy {
     constructor(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver) {
         super(position, width, height, hitbox, maxHealth, enemyObserver, attackObserver);
-        this._speed = 3;
+        this._speed = GameSettings.GAME.ENEMY.CRYSTAL_BRUTE.SPEED;
         this._angle = 0;
         this.attack = [];
         const offset = new Vector(5, 75);

@@ -170,7 +170,7 @@ export default class JudgementBomb extends Enemy {
                 }
             }
 
-            const pVector = new PolarVector(3 * Game.deltaTime, this.moveAngle);
+            const pVector = new PolarVector(GameSettings.GAME.ENEMY.JUDGEMENT_BOMB.SPEED * Game.deltaTime, this.moveAngle);
             this.position.x += DistanceHelper.getHorizontalValue(pVector);
             this.position.y += DistanceHelper.getVerticalValue(pVector);
         }

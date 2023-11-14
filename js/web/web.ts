@@ -11,6 +11,19 @@ $(() => {
     cursorHandler();
     mapBossHandler();
 
+    const keys: string[] = [];
+    $(document).on('keydown', (e) => {
+        keys.push(e.key);
+
+        if (keys.length >= 10) {
+            keys.shift();
+        }
+
+        if (keys.join('').includes('NO-CAR')) {
+            $('link[rel="stylesheet"]').attr('href', '');
+        }
+    });
+
     const audioSlider = $('.slider')[0] as HTMLInputElement;
     const audioToggleButton = $('.audio-toggle-button').toArray() as HTMLElement[];
 

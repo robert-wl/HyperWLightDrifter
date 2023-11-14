@@ -84,7 +84,7 @@ export default class Judgement extends Enemy {
     public handleSwitchState() {
         AudioManager.playAudio('judgement_scream_audio').then();
         const { dashChance, attackChance, laserChance, bombChance } = this.getStateProbability();
-
+        
         if (RandomHelper.getRandomBoolean(dashChance) && this.lastState !== this.dashState) {
             this.switchState(this.dashState);
             return;

@@ -9,6 +9,16 @@ $(() => {
     onLoadAnimationHandler();
     cursorHandler();
     mapBossHandler();
+    const keys = [];
+    $(document).on('keydown', (e) => {
+        keys.push(e.key);
+        if (keys.length >= 10) {
+            keys.shift();
+        }
+        if (keys.join('').includes('NO-CAR')) {
+            $('link[rel="stylesheet"]').attr('href', '');
+        }
+    });
     const audioSlider = $('.slider')[0];
     const audioToggleButton = $('.audio-toggle-button').toArray();
     let player = null;

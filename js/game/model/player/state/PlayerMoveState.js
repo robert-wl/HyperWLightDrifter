@@ -17,13 +17,12 @@ export default class PlayerMoveState extends PlayerBaseState {
     }
     updateState(currPlayer) {
         super.updateState(currPlayer);
-        console.log(this.number);
         if (Math.round(this.animationStage) % 6 === 0 && this.canPlayAudio) {
             if (RandomHelper.getRandomBoolean(0.5)) {
-                AudioManager.playAudio('player_footstep_forest_one_audio').then();
+                AudioManager.playAudio('player_footstep_one_audio').then();
             }
             else {
-                AudioManager.playAudio('player_footstep_forest_two_audio').then();
+                AudioManager.playAudio('player_footstep_two_audio').then();
             }
             this.canPlayAudio = false;
         }
