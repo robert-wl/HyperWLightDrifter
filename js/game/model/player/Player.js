@@ -238,6 +238,9 @@ export default class Player {
         // Game.getInstance().ctx.fillRect(x, y, w, h);
     }
     damage(amount) {
+        if (GameSettings.PLAYER.IS_INVULNERABLE) {
+            return;
+        }
         if (this.currState === this.deathState) {
             return;
         }
@@ -430,7 +433,7 @@ export default class Player {
             return false;
         }
         if (this.detectCollisionBox(box)) {
-            this.damage(1);
+            this.damage(GameSettings.PLAYER.DAMAGE.SELF);
             return true;
         }
         return false;
@@ -443,7 +446,7 @@ export default class Player {
             return false;
         }
         if (this.detectCollision(position)) {
-            this.damage(1);
+            this.damage(GameSettings.PLAYER.DAMAGE.SELF);
             return true;
         }
         return false;

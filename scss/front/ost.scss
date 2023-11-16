@@ -8,7 +8,7 @@
     @include flex-rules(column, start, center);
 
     > h3 {
-      @include headerTitle;
+      @include headerTitleCenter;
       margin-bottom: 3vw;
     }
 

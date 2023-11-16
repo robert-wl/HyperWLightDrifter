@@ -32,7 +32,7 @@ export default class CheatCodeManager {
         }
     }
     handleCheatCodes(cheatCodesKey) {
-        if (cheatCodesKey === 'candi') {
+        if (cheatCodesKey === 'erwinganteng') {
             GameSettings.GAME.GAME_SPEED *= 0.5;
             return;
         }
@@ -68,6 +68,15 @@ export default class CheatCodeManager {
             GameSettings.PLAYER.DAMAGE.HIT = 1000;
             GameSettings.PLAYER.DAMAGE.GRENADE = 1000;
             GameSettings.PLAYER.DAMAGE.BULLET = 1000;
+            return;
+        }
+        if (cheatCodesKey === 'deeplearner') {
+            GameSettings.PLAYER.DAMAGE.SELF_BOMB = 1000;
+            GameSettings.PLAYER.DAMAGE.SELF = 1000;
+            return;
+        }
+        if (cheatCodesKey === 'dbdesigner') {
+            GameSettings.PLAYER.IS_INVULNERABLE = !GameSettings.PLAYER.IS_INVULNERABLE;
         }
     }
 }

@@ -110,7 +110,7 @@ export default class JudgementBomb extends Enemy {
                 y: player.centerPosition.y - this.position.y,
             });
             if (distance < 150) {
-                player.damage(3);
+                player.damage(GameSettings.PLAYER.DAMAGE.SELF_BOMB);
             }
         }
         if (!this.exploding) {
