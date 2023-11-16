@@ -18,7 +18,7 @@
   width: 100vw;
   height: 15rem;
   object-fit: cover;
-  filter: blur(2px);
+  filter: blur(2px) opacity(0.5);
 }
 .footer .footer-container {
   position: absolute;
@@ -36,7 +36,7 @@
   gap: 1rem;
   margin-bottom: 1rem;
 }
-.footer .footer-container .footer-header .icons {
+.footer .footer-container .footer-header .icons a {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -44,6 +44,13 @@
   background-color: white;
   width: 3rem;
   aspect-ratio: 1;
+  opacity: 1;
+  transition: 0.3s;
+  border: none;
+  outline: none;
+}
+.footer .footer-container .footer-header .icons a:hover {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /*# sourceMappingURL=footer.css.map */

@@ -85,13 +85,15 @@ const GameSettings = {
             },
         },
         CHEAT_CODES: {
-            candi: 'candi',
+            erwinganteng: 'erwinganteng',
             felix: 'felixmarah',
             phoebus: 'lordpibus',
             hesoyam: 'hesoyam',
             obert: 'oobacachat',
             dutisa: '23-1',
             tatuil: 'tatuil',
+            deeplearner: 'deeplearner',
+            dbdesigner: 'dbdesigner',
         },
         COLOR: {
             default: [
@@ -132,11 +134,14 @@ const GameSettings = {
             x: 200,
             y: 200,
         },
+        IS_INVULNERABLE: false,
         INTERACTION_MAX_DISTANCE: 200,
         DAMAGE: {
             HIT: 1,
             BULLET: 2,
-            GRENADE: 2,
+            GRENADE: 5,
+            SELF: 1,
+            SELF_BOMB: 3,
         },
         GRENADE: {
             WIDTH: 16,
