@@ -10,6 +10,7 @@ import AngleHelper from '../../../utility/helper/AngleHelper.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
 import GameSettings from '../../../../constants.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
     constructor() {
         super();
@@ -49,10 +50,10 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         const { player } = Game.getInstance();
         const { centerPosition } = player;
         const speed = currSpider.speed * Game.deltaTime;
-        const distance = DistanceHelper.getMagnitude({
+        const distance = DistanceHelper.getMagnitude(Vector.parse({
             x: centerPosition.x - currSpider.position.x,
             y: centerPosition.y - currSpider.position.y,
-        });
+        }));
         if (distance > 500) {
             currSpider.switchState(currSpider.idleState);
             return;
@@ -61,10 +62,10 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
             currSpider.switchState(currSpider.attackState);
             return;
         }
-        let angle = AngleHelper.getAngle({
+        let angle = AngleHelper.getAngle(Vector.parse({
             x: centerPosition.x - currSpider.position.x,
             y: centerPosition.y - currSpider.position.y,
-        });
+        }));
         currSpider.angle = angle;
         if (distance < 100) {
             angle = this.getRotateAngle(currSpider.angle);

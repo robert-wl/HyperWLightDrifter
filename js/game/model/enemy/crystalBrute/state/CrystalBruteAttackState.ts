@@ -9,6 +9,7 @@ import RandomHelper from '../../../utility/helper/RandomHelper.js';
 import AngleHelper from '../../../utility/helper/AngleHelper.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 
 export default class CrystalBruteAttackState extends CrystalBruteBaseState {
     private angle: number;
@@ -30,10 +31,12 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
         const { centerPosition } = Game.getInstance().player;
 
         currBrute.speed = 0;
-        currBrute.angle = AngleHelper.getAngle({
-            x: centerPosition.x - currBrute.position.x,
-            y: centerPosition.y - currBrute.position.y,
-        });
+        currBrute.angle = AngleHelper.getAngle(
+            Vector.parse({
+                x: centerPosition.x - currBrute.position.x,
+                y: centerPosition.y - currBrute.position.y,
+            }),
+        );
     }
 
     public updateState(currBrute: CrystalBrute) {
@@ -73,10 +76,12 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
         const { player, camera } = Game.getInstance();
         const { centerPosition } = player;
 
-        const angle = AngleHelper.getAngle({
-            x: centerPosition.x - currBrute.position.x,
-            y: centerPosition.y - currBrute.position.y,
-        });
+        const angle = AngleHelper.getAngle(
+            Vector.parse({
+                x: centerPosition.x - currBrute.position.x,
+                y: centerPosition.y - currBrute.position.y,
+            }),
+        );
 
         const type = RandomHelper.randomValue(0, 3, true);
 
@@ -86,17 +91,7 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
         });
 
         this.attackPattern[type].forEach((num, index) => {
-            currBrute.attack.push(
-                new CrystalAttack(
-                    {
-                        x: currBrute.position.x,
-                        y: currBrute.position.y,
-                    },
-                    angle + Math.PI * num,
-                    index === 0,
-                    currBrute.attackObserver,
-                ),
-            );
+            currBrute.attack.push(new CrystalAttack(new Vector(currBrute.position.x, currBrute.position.y), angle + Math.PI * num, index === 0, currBrute.attackObserver));
         });
     }
 }

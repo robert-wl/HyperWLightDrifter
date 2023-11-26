@@ -11,6 +11,7 @@ import AngleHelper from '../../../utility/helper/AngleHelper.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
 import GameSettings from '../../../../constants.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 
 export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
     private clockwise: boolean;
@@ -65,10 +66,12 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
         const { centerPosition } = player;
         const speed = currSpider.speed * Game.deltaTime;
 
-        const distance = DistanceHelper.getMagnitude({
-            x: centerPosition.x - currSpider.position.x,
-            y: centerPosition.y - currSpider.position.y,
-        });
+        const distance = DistanceHelper.getMagnitude(
+            Vector.parse({
+                x: centerPosition.x - currSpider.position.x,
+                y: centerPosition.y - currSpider.position.y,
+            }),
+        );
 
         if (distance > 500) {
             currSpider.switchState(currSpider.idleState);
@@ -79,10 +82,12 @@ export default class CrystalSpiderMoveState extends CrystalSpiderBaseState {
             return;
         }
 
-        let angle = AngleHelper.getAngle({
-            x: centerPosition.x - currSpider.position.x,
-            y: centerPosition.y - currSpider.position.y,
-        });
+        let angle = AngleHelper.getAngle(
+            Vector.parse({
+                x: centerPosition.x - currSpider.position.x,
+                y: centerPosition.y - currSpider.position.y,
+            }),
+        );
 
         currSpider.angle = angle;
 

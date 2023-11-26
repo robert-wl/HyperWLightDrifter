@@ -11,6 +11,7 @@ import AudioManager from '../utility/manager/AudioManager.js';
 import DistanceHelper from '../utility/helper/DistanceHelper.js';
 import { Box } from '../utility/interfaces/Box.js';
 import DrawHelper from '../utility/helper/DrawHelper.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 
 export default class InteractionBar {
     private readonly player: Player;
@@ -53,10 +54,12 @@ export default class InteractionBar {
             return;
         }
 
-        const distance = DistanceHelper.getMagnitude({
-            x: player.centerPosition.x - object.position.x,
-            y: player.centerPosition.y - object.position.y,
-        });
+        const distance = DistanceHelper.getMagnitude(
+            Vector.parse({
+                x: player.centerPosition.x - object.position.x,
+                y: player.centerPosition.y - object.position.y,
+            }),
+        );
 
         if (distance < interactDistance) {
             this.setAllowDraw(true);

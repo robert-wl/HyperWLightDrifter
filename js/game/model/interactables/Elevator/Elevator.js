@@ -2,6 +2,7 @@ import ElevatorBaseState from './state/ElevatorBaseState.js';
 import ElevatorMountedTopState from './state/ElevatorMountedTopState.js';
 import ElevatorMoveState from './state/ElevatorMoveState.js';
 import ElevatorMountedDownState from './state/ElevatorMountedDownState.js';
+import { Vector } from '../../utility/interfaces/Vector.js';
 import GameSettings from '../../../constants.js';
 import DistanceHelper from '../../utility/helper/DistanceHelper.js';
 import Game from '../../game/Game.js';
@@ -71,10 +72,10 @@ export default class Elevator {
         if (Game.getInstance().player.isInElevator()) {
             return false;
         }
-        const distance = DistanceHelper.getMagnitude({
+        const distance = DistanceHelper.getMagnitude(Vector.parse({
             x: position.x - (this.position.x + this.width / 2),
             y: position.y - (this.position.y + this.height / 2),
-        });
+        }));
         return distance < this.interactionDistance;
     }
     activate() {

@@ -10,6 +10,7 @@ import DistanceHelper from '../../../utility/helper/DistanceHelper.js';
 import { PolarVector } from '../../../utility/interfaces/PolarVector.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
     private readonly friction: number;
@@ -36,10 +37,12 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
         currBrute.speed *= 1 - this.friction * Game.movementDeltaTime;
 
         const { centerPosition } = player;
-        const distance = DistanceHelper.getManhattanDistance({
-            x: currBrute.position.x - centerPosition.x,
-            y: currBrute.position.y - centerPosition.y,
-        });
+        const distance = DistanceHelper.getManhattanDistance(
+            Vector.parse({
+                x: currBrute.position.x - centerPosition.x,
+                y: currBrute.position.y - centerPosition.y,
+            }),
+        );
 
         if (distance > 1000) {
             currBrute.enemyObserver.notify('clearEnemy', currBrute);

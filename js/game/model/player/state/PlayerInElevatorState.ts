@@ -18,7 +18,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
     enterState(currPlayer: Player) {
         currPlayer.velocity.x = 0;
         currPlayer.velocity.y = 0;
-        this.initialPosition = { ...currPlayer.centerPosition };
+        this.initialPosition = currPlayer.centerPosition.copy();
     }
 
     updateState(currPlayer: Player) {

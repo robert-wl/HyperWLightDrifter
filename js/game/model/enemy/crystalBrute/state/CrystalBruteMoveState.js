@@ -10,6 +10,7 @@ import AngleHelper from '../../../utility/helper/AngleHelper.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
 import GameSettings from '../../../../constants.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 export default class CrystalBruteMoveState extends CrystalBruteBaseState {
     constructor() {
         super(...arguments);
@@ -53,14 +54,14 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
     handleMovement(currBrute) {
         const { player } = Game.getInstance();
         const { centerPosition } = player;
-        const distance = DistanceHelper.getMagnitude({
+        const distance = DistanceHelper.getMagnitude(Vector.parse({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
-        });
-        let angle = AngleHelper.getAngle({
+        }));
+        let angle = AngleHelper.getAngle(Vector.parse({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
-        });
+        }));
         currBrute.angle = angle;
         if (distance > 750) {
             currBrute.switchState(currBrute.idleState);

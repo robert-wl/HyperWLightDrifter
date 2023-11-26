@@ -1,5 +1,6 @@
 import Game from '../game/Game.js';
 import GameSettings from '../../constants.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import DrawHelper from '../utility/helper/DrawHelper.js';
 import { Box } from '../utility/interfaces/Box.js';
 const CAMERA_X_CONSTANT = -45;
@@ -7,10 +8,7 @@ const CAMERA_Y_CONSTANT = -25;
 export default class CameraBox {
     constructor(game) {
         this.game = game;
-        this._position = {
-            x: 0,
-            y: 0,
-        };
+        this._position = Vector.Zero();
         this._width = 800;
         this._height = 500;
     }

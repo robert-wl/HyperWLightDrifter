@@ -15,10 +15,7 @@ export default class CameraBox {
 
     public constructor(game: Game) {
         this.game = game;
-        this._position = {
-            x: 0,
-            y: 0,
-        };
+        this._position = Vector.Zero();
         this._width = 800;
         this._height = 500;
     }

@@ -99,10 +99,7 @@ export default class Camera {
 
     public shakeCamera() {
         if (this.shakeStartTime === -1) {
-            this.translateOffset = {
-                x: 0,
-                y: 0,
-            };
+            this.translateOffset = Vector.Zero();
 
             return;
         }
@@ -152,10 +149,7 @@ export default class Camera {
     public renderLowerLayer() {
         const { GAME_SCALE } = GameSettings.GAME;
         this.lowerLayers.forEach((background, positionStr) => {
-            const position = {
-                x: Number(positionStr.split(',')[0]) * (background.width - 1) * GAME_SCALE,
-                y: Number(positionStr.split(',')[1]) * (background.height - 1) * GAME_SCALE,
-            };
+            const position = Vector.fromKey(positionStr).multiply((background.width - 1) * GAME_SCALE);
 
             if (!this.isInScreen(position)) {
                 return;
@@ -232,10 +226,7 @@ export default class Camera {
         const enemyList = enemyManager!.enemyList;
 
         this.upperLayers.forEach((object: SetPiece, positionStr) => {
-            const position = {
-                x: Number(positionStr.split(',')[0]) * FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE,
-                y: Number(positionStr.split(',')[1]) * FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE,
-            };
+            const position = Vector.fromKey(positionStr).multiply(FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE);
 
             if (!this.isInScreen(position)) {
                 return;
@@ -254,10 +245,12 @@ export default class Camera {
                     return;
                 }
 
-                const distance = DistanceHelper.getManhattanDistance({
-                    x: collider.x - player!.centerPosition.x,
-                    y: collider.y - player!.centerPosition.y,
-                });
+                const distance = DistanceHelper.getManhattanDistance(
+                    Vector.parse({
+                        x: collider.x - player!.centerPosition.x,
+                        y: collider.y - player!.centerPosition.y,
+                    }),
+                );
 
                 if (distance < 300) {
                     colliders.push(collider);
@@ -310,7 +303,7 @@ export default class Camera {
         return object instanceof Elevator;
     }
 
-    updatePlayer(yAbsPosition: number, colliders) {
+    updatePlayer(yAbsPosition: number, colliders: Collider[]) {
         const { player } = this.game;
 
         if (player!.currState === player!.inElevatorState) {

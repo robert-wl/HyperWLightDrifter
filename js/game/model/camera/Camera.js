@@ -67,10 +67,7 @@ export default class Camera {
     }
     shakeCamera() {
         if (this.shakeStartTime === -1) {
-            this.translateOffset = {
-                x: 0,
-                y: 0,
-            };
+            this.translateOffset = Vector.Zero();
             return;
         }
         const tDiff = Date.now() - this.shakeStartTime;
@@ -107,10 +104,7 @@ export default class Camera {
     renderLowerLayer() {
         const { GAME_SCALE } = GameSettings.GAME;
         this.lowerLayers.forEach((background, positionStr) => {
-            const position = {
-                x: Number(positionStr.split(',')[0]) * (background.width - 1) * GAME_SCALE,
-                y: Number(positionStr.split(',')[1]) * (background.height - 1) * GAME_SCALE,
-            };
+            const position = Vector.fromKey(positionStr).multiply((background.width - 1) * GAME_SCALE);
             if (!this.isInScreen(position)) {
                 return;
             }
@@ -171,10 +165,7 @@ export default class Camera {
         const colliders = [];
         const enemyList = enemyManager.enemyList;
         this.upperLayers.forEach((object, positionStr) => {
-            const position = {
-                x: Number(positionStr.split(',')[0]) * FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE,
-                y: Number(positionStr.split(',')[1]) * FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE,
-            };
+            const position = Vector.fromKey(positionStr).multiply(FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE);
             if (!this.isInScreen(position)) {
                 return;
             }
@@ -188,10 +179,10 @@ export default class Camera {
                     objects.push(piece);
                     return;
                 }
-                const distance = DistanceHelper.getManhattanDistance({
+                const distance = DistanceHelper.getManhattanDistance(Vector.parse({
                     x: collider.x - player.centerPosition.x,
                     y: collider.y - player.centerPosition.y,
-                });
+                }));
                 if (distance < 300) {
                     colliders.push(collider);
                 }

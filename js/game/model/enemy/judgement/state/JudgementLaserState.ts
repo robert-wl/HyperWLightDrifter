@@ -63,10 +63,12 @@ export default class JudgementLaserState extends JudgementBaseState {
         this.attackAmount += Game.deltaTime;
 
         if (this.animationStage === 8) {
-            this.attackAngle = AngleHelper.getAngle({
-                x: player.centerPosition.x - currJudgement.position.x,
-                y: player.centerPosition.y - (currJudgement.position.y + 40),
-            });
+            this.attackAngle = AngleHelper.getAngle(
+                Vector.parse({
+                    x: player.centerPosition.x - currJudgement.position.x,
+                    y: player.centerPosition.y - (currJudgement.position.y + 40),
+                }),
+            );
 
             currJudgement.angle = this.attackAngle;
         }

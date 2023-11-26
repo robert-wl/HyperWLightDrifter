@@ -10,6 +10,7 @@ import { PolarVector } from '../../../utility/interfaces/PolarVector.js';
 import AngleHelper from '../../../utility/helper/AngleHelper.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 
 export default class JudgementMoveState extends JudgementBaseState {
     private walkAmount: number;
@@ -56,15 +57,19 @@ export default class JudgementMoveState extends JudgementBaseState {
         const { player } = Game.getInstance();
         const { centerPosition } = player;
 
-        const distance = DistanceHelper.getMagnitude({
-            x: centerPosition.x - currJudgement.position.x,
-            y: centerPosition.y - currJudgement.position.y,
-        });
+        const distance = DistanceHelper.getMagnitude(
+            Vector.parse({
+                x: centerPosition.x - currJudgement.position.x,
+                y: centerPosition.y - currJudgement.position.y,
+            }),
+        );
 
-        currJudgement.angle = AngleHelper.getAngle({
-            x: centerPosition.x - currJudgement.position.x,
-            y: centerPosition.y - currJudgement.position.y,
-        });
+        currJudgement.angle = AngleHelper.getAngle(
+            Vector.parse({
+                x: centerPosition.x - currJudgement.position.x,
+                y: centerPosition.y - currJudgement.position.y,
+            }),
+        );
 
         if (Math.abs(distance) < 100) {
             currJudgement.angle += Math.PI / 2;

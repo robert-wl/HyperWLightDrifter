@@ -98,15 +98,19 @@ export default class Grenade extends Animateable {
                 return;
             }
 
-            const distance = DistanceHelper.getMagnitude({
-                x: this.position.x - enemy.position.x,
-                y: this.position.y - enemy.position.y,
-            });
+            const distance = DistanceHelper.getMagnitude(
+                Vector.parse({
+                    x: this.position.x - enemy.position.x,
+                    y: this.position.y - enemy.position.y,
+                }),
+            );
 
-            const angle = AngleHelper.getAngle({
-                x: this.position.x - enemy.position.x,
-                y: this.position.y - enemy.position.y,
-            });
+            const angle = AngleHelper.getAngle(
+                Vector.parse({
+                    x: this.position.x - enemy.position.x,
+                    y: this.position.y - enemy.position.y,
+                }),
+            );
 
             if (distance >= 250) {
                 return;
@@ -116,10 +120,12 @@ export default class Grenade extends Animateable {
         });
 
         bossEntities.forEach((entity) => {
-            const distance = DistanceHelper.getMagnitude({
-                x: this.position.x - entity.position.x,
-                y: this.position.y - entity.position.y,
-            });
+            const distance = DistanceHelper.getMagnitude(
+                Vector.parse({
+                    x: this.position.x - entity.position.x,
+                    y: this.position.y - entity.position.y,
+                }),
+            );
 
             if (distance >= 250) {
                 return;
@@ -132,10 +138,12 @@ export default class Grenade extends Animateable {
             return;
         }
 
-        const distance = DistanceHelper.getMagnitude({
-            x: this.position.x - boss.position.x,
-            y: this.position.y - boss.position.y,
-        });
+        const distance = DistanceHelper.getMagnitude(
+            Vector.parse({
+                x: this.position.x - boss.position.x,
+                y: this.position.y - boss.position.y,
+            }),
+        );
 
         if (distance >= 250) {
             return;

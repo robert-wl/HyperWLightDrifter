@@ -41,10 +41,12 @@ export default class JudgementAttackState extends JudgementBaseState {
         const { player } = Game.getInstance();
         const { centerPosition } = player;
 
-        currJudgement.angle = AngleHelper.getAngle({
-            x: centerPosition.x - currJudgement.position.x,
-            y: centerPosition.y - currJudgement.position.y,
-        });
+        currJudgement.angle = AngleHelper.getAngle(
+            Vector.parse({
+                x: centerPosition.x - currJudgement.position.x,
+                y: centerPosition.y - currJudgement.position.y,
+            }),
+        );
     }
 
     drawImage(currJudgement: Judgement) {

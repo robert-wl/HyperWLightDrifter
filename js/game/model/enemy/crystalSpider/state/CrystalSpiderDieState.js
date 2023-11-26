@@ -9,6 +9,7 @@ import { PolarVector } from '../../../utility/interfaces/PolarVector.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
 import GameSettings from '../../../../constants.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
     constructor() {
         super();
@@ -24,10 +25,10 @@ export default class CrystalSpiderDieState extends CrystalSpiderBaseState {
     }
     updateState(currSpider) {
         const { centerPosition } = Game.getInstance().player;
-        const distance = DistanceHelper.getManhattanDistance({
+        const distance = DistanceHelper.getManhattanDistance(Vector.parse({
             x: currSpider.position.x - centerPosition.x,
             y: currSpider.position.y - centerPosition.y,
-        });
+        }));
         if (distance > 1000) {
             currSpider.enemyObserver.notify('clearEnemy', currSpider);
         }

@@ -9,7 +9,7 @@ import DrawHelper from '../../utility/helper/DrawHelper.js';
 export default class CrystalSpike extends Animateable {
     constructor(position, attackObserver) {
         super();
-        this.position = Object.assign({}, position);
+        this.position = position.copy();
         this.attackObserver = attackObserver;
         this.isLeft = RandomHelper.getRandomBoolean(0.5);
         this.damaged = false;

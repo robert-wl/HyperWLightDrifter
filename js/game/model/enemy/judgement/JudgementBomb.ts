@@ -144,10 +144,12 @@ export default class JudgementBomb extends Enemy {
 
             this.animationStage = Math.min(this.animationStage, 11);
 
-            const distance = DistanceHelper.getManhattanDistance({
-                x: player.centerPosition.x - this.position.x,
-                y: player.centerPosition.y - this.position.y,
-            });
+            const distance = DistanceHelper.getManhattanDistance(
+                Vector.parse({
+                    x: player.centerPosition.x - this.position.x,
+                    y: player.centerPosition.y - this.position.y,
+                }),
+            );
 
             if (distance < 150) {
                 player.damage(GameSettings.PLAYER.DAMAGE.SELF_BOMB);
@@ -162,10 +164,12 @@ export default class JudgementBomb extends Enemy {
                     if (RandomHelper.getRandomBoolean(0.25)) {
                         this.moveAngle = Math.random() * Math.PI * 2;
                     } else {
-                        this.moveAngle = AngleHelper.getAngle({
-                            x: player.centerPosition.x - this.position.x,
-                            y: player.centerPosition.y - this.position.y,
-                        });
+                        this.moveAngle = AngleHelper.getAngle(
+                            Vector.parse({
+                                x: player.centerPosition.x - this.position.x,
+                                y: player.centerPosition.y - this.position.y,
+                            }),
+                        );
                     }
                 }
             }

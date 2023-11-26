@@ -538,10 +538,7 @@ export default class Player {
                 const playerX = this._centerPosition.x * GameSettings.GAME.GAME_SCALE;
                 const playerY = this._centerPosition.y * GameSettings.GAME.GAME_SCALE;
 
-                this._lookAngle = AngleHelper.getAngle({
-                    x: data.x - playerX,
-                    y: data.y - playerY,
-                });
+                this._lookAngle = AngleHelper.getAngle(new Vector(data.x - playerX, data.y - playerY));
             }
         });
 

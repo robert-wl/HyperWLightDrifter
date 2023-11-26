@@ -11,6 +11,7 @@ import AngleHelper from '../../../utility/helper/AngleHelper.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
 import GameSettings from '../../../../constants.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 
 export default class CrystalBruteMoveState extends CrystalBruteBaseState {
     private clockwise = true;
@@ -65,15 +66,19 @@ export default class CrystalBruteMoveState extends CrystalBruteBaseState {
         const { player } = Game.getInstance();
         const { centerPosition } = player;
 
-        const distance = DistanceHelper.getMagnitude({
-            x: centerPosition.x - currBrute.position.x,
-            y: centerPosition.y - currBrute.position.y,
-        });
+        const distance = DistanceHelper.getMagnitude(
+            Vector.parse({
+                x: centerPosition.x - currBrute.position.x,
+                y: centerPosition.y - currBrute.position.y,
+            }),
+        );
 
-        let angle = AngleHelper.getAngle({
-            x: centerPosition.x - currBrute.position.x,
-            y: centerPosition.y - currBrute.position.y,
-        });
+        let angle = AngleHelper.getAngle(
+            Vector.parse({
+                x: centerPosition.x - currBrute.position.x,
+                y: centerPosition.y - currBrute.position.y,
+            }),
+        );
 
         currBrute.angle = angle;
 

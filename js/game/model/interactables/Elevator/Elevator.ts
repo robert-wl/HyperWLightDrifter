@@ -103,10 +103,12 @@ export default class Elevator {
             return false;
         }
 
-        const distance = DistanceHelper.getMagnitude({
-            x: position.x - (this.position.x + this.width / 2),
-            y: position.y - (this.position.y + this.height / 2),
-        });
+        const distance = DistanceHelper.getMagnitude(
+            Vector.parse({
+                x: position.x - (this.position.x + this.width / 2),
+                y: position.y - (this.position.y + this.height / 2),
+            }),
+        );
 
         return distance < this.interactionDistance;
     }

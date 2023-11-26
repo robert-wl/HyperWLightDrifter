@@ -8,6 +8,7 @@ import RandomHelper from '../../../utility/helper/RandomHelper.js';
 import AngleHelper from '../../../utility/helper/AngleHelper.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 export default class CrystalBruteAttackState extends CrystalBruteBaseState {
     constructor() {
         super();
@@ -21,10 +22,10 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
         this.hasAttacked = false;
         const { centerPosition } = Game.getInstance().player;
         currBrute.speed = 0;
-        currBrute.angle = AngleHelper.getAngle({
+        currBrute.angle = AngleHelper.getAngle(Vector.parse({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
-        });
+        }));
     }
     updateState(currBrute) {
         super.updateState(currBrute);
@@ -54,20 +55,17 @@ export default class CrystalBruteAttackState extends CrystalBruteBaseState {
     handleAttack(currBrute) {
         const { player, camera } = Game.getInstance();
         const { centerPosition } = player;
-        const angle = AngleHelper.getAngle({
+        const angle = AngleHelper.getAngle(Vector.parse({
             x: centerPosition.x - currBrute.position.x,
             y: centerPosition.y - currBrute.position.y,
-        });
+        }));
         const type = RandomHelper.randomValue(0, 3, true);
         camera.setShakeCamera({
             duration: 200,
             strength: 10,
         });
         this.attackPattern[type].forEach((num, index) => {
-            currBrute.attack.push(new CrystalAttack({
-                x: currBrute.position.x,
-                y: currBrute.position.y,
-            }, angle + Math.PI * num, index === 0, currBrute.attackObserver));
+            currBrute.attack.push(new CrystalAttack(new Vector(currBrute.position.x, currBrute.position.y), angle + Math.PI * num, index === 0, currBrute.attackObserver));
         });
     }
 }

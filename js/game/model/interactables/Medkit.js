@@ -1,6 +1,7 @@
 import GameSettings from '../../constants.js';
 import Animateable from '../utility/Animateable.js';
 import Collider from '../collideable/Collider.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import AssetManager from '../utility/manager/AssetManager.js';
 import AudioManager from '../utility/manager/AudioManager.js';
 import DistanceHelper from '../utility/helper/DistanceHelper.js';
@@ -56,10 +57,10 @@ export default class Medkit extends Animateable {
         DrawHelper.drawImage(medKit, imageSize, false);
     }
     detectInteraction(position) {
-        const distance = DistanceHelper.getMagnitude({
+        const distance = DistanceHelper.getMagnitude(Vector.parse({
             x: position.x - (this.position.x + this.width / 2),
             y: position.y - (this.position.y + this.height / 2),
-        });
+        }));
         return distance < this.interactionDistance;
     }
     activate(player) {

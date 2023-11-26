@@ -6,13 +6,14 @@ import DistanceHelper from '../../../utility/helper/DistanceHelper.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
 import GameSettings from '../../../../constants.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 export default class CrystalSpiderIdleState extends CrystalSpiderBaseState {
     updateState(currSpider) {
         const { player } = Game.getInstance();
-        const distance = DistanceHelper.getMagnitude({
+        const distance = DistanceHelper.getMagnitude(Vector.parse({
             x: player.centerPosition.x - currSpider.position.x,
             y: player.centerPosition.y - currSpider.position.y,
-        });
+        }));
         if (distance < 250) {
             currSpider.switchState(currSpider.moveState);
         }

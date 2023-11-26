@@ -13,7 +13,7 @@ export default class PlayerInElevatorState extends PlayerBaseState {
     enterState(currPlayer) {
         currPlayer.velocity.x = 0;
         currPlayer.velocity.y = 0;
-        this.initialPosition = Object.assign({}, currPlayer.centerPosition);
+        this.initialPosition = currPlayer.centerPosition.copy();
     }
     updateState(currPlayer) {
         currPlayer.regenerateStamina();

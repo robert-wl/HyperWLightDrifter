@@ -23,7 +23,7 @@ export default class PlayerDashState extends PlayerBaseState {
         this.angle = currPlayer.lookAngle;
         const direction = DirectionHelper.getMouseDirection(this.angle);
         this.direction = direction;
-        this.lastPosition = Object.assign({}, currPlayer.centerPosition);
+        this.lastPosition = currPlayer.centerPosition.copy();
         this.finished = false;
         currPlayer.lastDirection = direction;
         currPlayer.stamina -= 20;
@@ -107,10 +107,7 @@ export default class PlayerDashState extends PlayerBaseState {
     }
     generateDashData(currPlayer) {
         return {
-            currPosition: {
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-            },
+            currPosition: new Vector(currPlayer.centerPosition.x, currPlayer.centerPosition.y),
             animationStage: this.animationStage,
             angle: this.angle,
             lastPosition: this.lastPosition,

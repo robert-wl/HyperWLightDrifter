@@ -34,7 +34,7 @@ export default class PlayerThrowingState extends PlayerBaseState {
 
         if (this.animationStage >= 4 && !this.hasThrown) {
             const { WIDTH, HEIGHT, VELOCITY } = GameSettings.PLAYER.GRENADE;
-            const grenade = new Grenade({ ...currPlayer.centerPosition }, WIDTH, HEIGHT, currPlayer.lookAngle, VELOCITY);
+            const grenade = new Grenade(currPlayer.centerPosition.copy(), WIDTH, HEIGHT, currPlayer.lookAngle, VELOCITY);
             currPlayer.projectiles.push(grenade);
             this.hasThrown = true;
         }

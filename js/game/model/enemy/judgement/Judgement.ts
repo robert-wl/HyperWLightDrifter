@@ -38,7 +38,7 @@ export default class Judgement extends Enemy {
 
         this._angle = 0;
         this.damaged = 0;
-        this._attackPosition = GameSettings.GAME.ENEMY.JUDGEMENT.ATTACK_POSITION;
+        this._attackPosition = Vector.parseAll(GameSettings.GAME.ENEMY.JUDGEMENT.ATTACK_POSITION);
         this._moveSpeed = GameSettings.GAME.ENEMY.JUDGEMENT.MOVE_SPEED;
         this.currState = new JudgementBaseState();
         this.lastState = new JudgementBaseState();
@@ -171,10 +171,12 @@ export default class Judgement extends Enemy {
 
         const { player } = Game.getInstance();
 
-        const distance = DistanceHelper.getManhattanDistance({
-            x: this.position.x - player.centerPosition.x,
-            y: this.position.y - player.centerPosition.y,
-        });
+        const distance = DistanceHelper.getManhattanDistance(
+            Vector.parse({
+                x: this.position.x - player.centerPosition.x,
+                y: this.position.y - player.centerPosition.y,
+            }),
+        );
 
         if (distance < 400) {
             dashChance = 0.15;

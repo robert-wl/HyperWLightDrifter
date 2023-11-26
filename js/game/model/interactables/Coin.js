@@ -1,5 +1,6 @@
 import Animateable from '../utility/Animateable.js';
 import GameSettings from '../../constants.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import AssetManager from '../utility/manager/AssetManager.js';
 import DistanceHelper from '../utility/helper/DistanceHelper.js';
 import { Box } from '../utility/interfaces/Box.js';
@@ -45,10 +46,10 @@ export default class Coin extends Animateable {
         DrawHelper.drawImage(medKit, imageSize);
     }
     detectInteraction(position) {
-        const distance = DistanceHelper.getMagnitude({
+        const distance = DistanceHelper.getMagnitude(Vector.parse({
             x: position.x - (this.position.x + this.width / 2),
             y: position.y - (this.position.y + this.height / 2),
-        });
+        }));
         return distance < this.interactionDistance;
     }
     activate() {

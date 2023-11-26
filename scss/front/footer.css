@@ -48,6 +48,12 @@
   transition: 0.3s;
   border: none;
   outline: none;
+  overflow: hidden;
+}
+.footer .footer-container .footer-header .icons a > img {
+  width: 2rem;
+  height: 2rem;
+  object-fit: cover;
 }
 .footer .footer-container .footer-header .icons a:hover {
   background-color: rgba(0, 0, 0, 0.5);

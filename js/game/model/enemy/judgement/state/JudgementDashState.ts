@@ -65,19 +65,25 @@ export default class JudgementDashState extends JudgementBaseState {
 
         this.shadowCounter += Game.deltaTime;
 
-        currJudgement.angle = AngleHelper.getAngle({
-            x: player.centerPosition.x - currJudgement.position.x,
-            y: player.centerPosition.y - (currJudgement.position.y + 40),
-        });
-        this.angle = AngleHelper.getAngle({
-            x: this.destination.x - (currJudgement.position.x + currJudgement.width / 2),
-            y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2),
-        });
+        currJudgement.angle = AngleHelper.getAngle(
+            Vector.parse({
+                x: player.centerPosition.x - currJudgement.position.x,
+                y: player.centerPosition.y - (currJudgement.position.y + 40),
+            }),
+        );
+        this.angle = AngleHelper.getAngle(
+            Vector.parse({
+                x: this.destination.x - (currJudgement.position.x + currJudgement.width / 2),
+                y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2),
+            }),
+        );
 
-        const dist = DistanceHelper.getMagnitude({
-            x: this.destination.x - (currJudgement.position.x + currJudgement.width / 2),
-            y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2),
-        });
+        const dist = DistanceHelper.getMagnitude(
+            Vector.parse({
+                x: this.destination.x - (currJudgement.position.x + currJudgement.width / 2),
+                y: this.destination.y - (currJudgement.position.y + currJudgement.height / 2),
+            }),
+        );
 
         if (Math.abs(dist) < 20) {
             currJudgement.handleSwitchState();

@@ -1,6 +1,7 @@
 import Medkit from './Medkit.js';
 import Coin from './Coin.js';
 import Elevator from './Elevator/Elevator.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import RandomHelper from '../utility/helper/RandomHelper.js';
 export default class InteractablesFactory {
     constructor(eventEmitter) {
@@ -15,10 +16,7 @@ export default class InteractablesFactory {
     }
     generateMedkit(position, key) {
         const angle = RandomHelper.randomValue(0, 4) * Math.PI;
-        position = {
-            x: position.x + Math.cos(angle) * 100,
-            y: position.y + Math.sin(angle) * 100,
-        };
+        position = new Vector(position.x, position.y).add(new Vector(Math.cos(angle) * 100, Math.sin(angle) * 100));
         const medkit = new Medkit(position, 10, 10, key, this.eventEmitter);
         this.eventEmitter.notify('addInteractable', medkit);
         return medkit;

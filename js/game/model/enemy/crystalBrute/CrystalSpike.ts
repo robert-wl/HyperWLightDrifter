@@ -20,7 +20,7 @@ export default class CrystalSpike extends Animateable {
 
     public constructor(position: Vector, attackObserver: Observable) {
         super();
-        this.position = { ...position };
+        this.position = position.copy();
         this.attackObserver = attackObserver;
         this.isLeft = RandomHelper.getRandomBoolean(0.5);
         this.damaged = false;

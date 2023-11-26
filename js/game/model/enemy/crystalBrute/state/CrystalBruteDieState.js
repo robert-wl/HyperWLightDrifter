@@ -9,6 +9,7 @@ import DistanceHelper from '../../../utility/helper/DistanceHelper.js';
 import { PolarVector } from '../../../utility/interfaces/PolarVector.js';
 import { Box } from '../../../utility/interfaces/Box.js';
 import DrawHelper from '../../../utility/helper/DrawHelper.js';
+import { Vector } from '../../../utility/interfaces/Vector.js';
 export default class CrystalBruteDieState extends CrystalBruteBaseState {
     constructor() {
         super();
@@ -27,10 +28,10 @@ export default class CrystalBruteDieState extends CrystalBruteBaseState {
         currBrute.position.y += DistanceHelper.getVerticalValue(pVector);
         currBrute.speed *= 1 - this.friction * Game.movementDeltaTime;
         const { centerPosition } = player;
-        const distance = DistanceHelper.getManhattanDistance({
+        const distance = DistanceHelper.getManhattanDistance(Vector.parse({
             x: currBrute.position.x - centerPosition.x,
             y: currBrute.position.y - centerPosition.y,
-        });
+        }));
         if (distance > 1000) {
             currBrute.enemyObserver.notify('clearEnemy', currBrute);
         }

@@ -29,10 +29,10 @@ export default class JudgementAttackState extends JudgementBaseState {
         this.maxAttackCount = RandomHelper.randomValue(5, 8, true);
         const { player } = Game.getInstance();
         const { centerPosition } = player;
-        currJudgement.angle = AngleHelper.getAngle({
+        currJudgement.angle = AngleHelper.getAngle(Vector.parse({
             x: centerPosition.x - currJudgement.position.x,
             y: centerPosition.y - currJudgement.position.y,
-        });
+        }));
     }
     drawImage(currJudgement) {
         const judgementAttack = AssetManager.getNumberedImage('judgement_attack', this.animationStage);

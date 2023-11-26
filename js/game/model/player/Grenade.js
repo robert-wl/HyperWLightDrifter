@@ -2,6 +2,7 @@ import Game from '../game/Game.js';
 import Animateable from '../utility/Animateable.js';
 import GameSettings from '../../constants.js';
 import RandomHelper from '../utility/helper/RandomHelper.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 import AssetManager from '../utility/manager/AssetManager.js';
 import AudioManager from '../utility/manager/AudioManager.js';
 import DistanceHelper from '../utility/helper/DistanceHelper.js';
@@ -71,24 +72,24 @@ export default class Grenade extends Animateable {
             if ('currState' in enemy && 'dieState' in enemy && enemy.currState === enemy.dieState) {
                 return;
             }
-            const distance = DistanceHelper.getMagnitude({
+            const distance = DistanceHelper.getMagnitude(Vector.parse({
                 x: this.position.x - enemy.position.x,
                 y: this.position.y - enemy.position.y,
-            });
-            const angle = AngleHelper.getAngle({
+            }));
+            const angle = AngleHelper.getAngle(Vector.parse({
                 x: this.position.x - enemy.position.x,
                 y: this.position.y - enemy.position.y,
-            });
+            }));
             if (distance >= 250) {
                 return;
             }
             enemy.handleDamage(new PolarVector(GameSettings.PLAYER.DAMAGE.GRENADE, -angle));
         });
         bossEntities.forEach((entity) => {
-            const distance = DistanceHelper.getMagnitude({
+            const distance = DistanceHelper.getMagnitude(Vector.parse({
                 x: this.position.x - entity.position.x,
                 y: this.position.y - entity.position.y,
-            });
+            }));
             if (distance >= 250) {
                 return;
             }
@@ -97,10 +98,10 @@ export default class Grenade extends Animateable {
         if (!boss) {
             return;
         }
-        const distance = DistanceHelper.getMagnitude({
+        const distance = DistanceHelper.getMagnitude(Vector.parse({
             x: this.position.x - boss.position.x,
             y: this.position.y - boss.position.y,
-        });
+        }));
         if (distance >= 250) {
             return;
         }

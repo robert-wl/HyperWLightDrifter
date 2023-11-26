@@ -33,7 +33,7 @@ export default class PlayerDashState extends PlayerBaseState {
 
         const direction = DirectionHelper.getMouseDirection(this.angle);
         this.direction = direction;
-        this.lastPosition = { ...currPlayer.centerPosition };
+        this.lastPosition = currPlayer.centerPosition.copy();
         this.finished = false;
 
         currPlayer.lastDirection = direction;
@@ -139,10 +139,7 @@ export default class PlayerDashState extends PlayerBaseState {
 
     private generateDashData(currPlayer: Player): PlayerDashData {
         return {
-            currPosition: {
-                x: currPlayer.centerPosition.x,
-                y: currPlayer.centerPosition.y,
-            },
+            currPosition: new Vector(currPlayer.centerPosition.x, currPlayer.centerPosition.y),
             animationStage: this.animationStage,
             angle: this.angle,
             lastPosition: this.lastPosition,
