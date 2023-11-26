@@ -16,6 +16,7 @@ import GameSettings from '../../../constants.js';
 import RandomHelper from '../../utility/helper/RandomHelper.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
 import DistanceHelper from '../../utility/helper/DistanceHelper.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
 
 export default class Judgement extends Enemy {
     public currState: JudgementBaseState;
@@ -84,7 +85,7 @@ export default class Judgement extends Enemy {
     public handleSwitchState() {
         AudioManager.playAudio('judgement_scream_audio').then();
         const { dashChance, attackChance, laserChance, bombChance } = this.getStateProbability();
-        
+
         if (RandomHelper.getRandomBoolean(dashChance) && this.lastState !== this.dashState) {
             this.switchState(this.dashState);
             return;
@@ -126,7 +127,7 @@ export default class Judgement extends Enemy {
         }
     }
 
-    public handleDamage({ amount, angle = 0 }) {
+    public handleDamage(damage: PolarVector) {
         if (this.currState === this.bombState) {
             return;
         }
@@ -148,7 +149,7 @@ export default class Judgement extends Enemy {
             this.switchState(this.dieState);
         }
 
-        super.handleDamage({ amount, angle });
+        super.handleDamage(damage);
 
         if (RandomHelper.getRandomBoolean(0.3)) {
             AudioManager.playAudio('judgement_hurt_audio').then();

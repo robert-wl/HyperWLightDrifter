@@ -52,6 +52,7 @@ class AssetManager {
                 }
                 yield this.assetLoadImage(asset, outfit);
             }
+            console.log(this.assetList);
             if (this.showLoading)
                 this.htmlHandler.notify('loadingModal:close');
         });

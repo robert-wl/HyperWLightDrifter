@@ -82,10 +82,7 @@ export default class Grenade extends Animateable {
             if (distance >= 250) {
                 return;
             }
-            enemy.handleDamage({
-                amount: GameSettings.PLAYER.DAMAGE.GRENADE,
-                angle: -angle,
-            });
+            enemy.handleDamage(new PolarVector(GameSettings.PLAYER.DAMAGE.GRENADE, -angle));
         });
         bossEntities.forEach((entity) => {
             const distance = DistanceHelper.getMagnitude({
@@ -107,8 +104,6 @@ export default class Grenade extends Animateable {
         if (distance >= 250) {
             return;
         }
-        boss.handleDamage({
-            amount: GameSettings.PLAYER.DAMAGE.GRENADE,
-        });
+        boss.handleDamage(new PolarVector(GameSettings.PLAYER.DAMAGE.GRENADE, -this.angle));
     }
 }

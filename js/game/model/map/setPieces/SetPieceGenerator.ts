@@ -7,6 +7,7 @@ import InteractablesFactory from '../../interactables/InteractablesFactory.js';
 import EnemyFactory from '../../enemy/EnemyFactory.js';
 import { Vector } from '../../utility/interfaces/Vector.js';
 import RandomHelper from '../../utility/helper/RandomHelper.js';
+import { SetpieceType } from '../../utility/enums/SetpieceType.js';
 
 const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
@@ -69,24 +70,28 @@ export default class SetPieceGenerator {
         }
     }
 
-    public generateElevator({ x, y }) {
+    public generateElevator(position: Vector) {
         const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
         const { FLOOR_WIDTH } = FOREST_STAGE;
         const pieces: CombinedPiece[] = [];
 
-        const objectX = x * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - x * GAME_SCALE;
-        const objectY = y * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - y * GAME_SCALE + 12;
+        const elevatorPosition = Vector.parse({
+            x: position.x * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - position.x * GAME_SCALE,
+            y: position.y * FLOOR_WIDTH * GAME_SCALE + (FLOOR_WIDTH * GAME_SCALE) / 2 - position.y * GAME_SCALE + 12,
+        });
 
-        const elevator = this.interactablesFactory.generateElevator({ x: objectX, y: objectY });
+        const elevator = this.interactablesFactory.generateElevator(elevatorPosition);
 
-        const key = `${y},${x}`;
+        const key = Vector.toKey(position);
         pieces.push(elevator);
 
         const { objects } = Game.getInstance();
-        objects.set(key, new SetPiece(pieces, 'elevator'));
+        objects.set(key, new SetPiece(pieces, SetpieceType.ELEVATOR));
 
         for (let i = 0; i < 8; i++) {
-            const key = `${y + directionY[i]},${x + directionX[i]}`;
+            const positionTwo = Vector.add(position, new Vector(directionX[i], directionY[i]));
+
+            const key = Vector.toKey(positionTwo);
 
             if (!objects.has(key)) {
                 continue;
@@ -96,137 +101,137 @@ export default class SetPieceGenerator {
         }
     }
 
-    private generateHealth({ x, y }) {
+    private generateHealth(position: Vector) {
         const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
         const { FLOOR_WIDTH } = FOREST_STAGE;
         const pieces: CombinedPiece[] = [];
 
-        const objectX = x * FLOOR_WIDTH * GAME_SCALE;
-        const objectY = y * FLOOR_WIDTH * GAME_SCALE;
+        const healthPosition = Vector.parse({
+            x: position.x * FLOOR_WIDTH * GAME_SCALE,
+            y: position.y * FLOOR_WIDTH * GAME_SCALE,
+        });
 
-        const healthPiece = this.pieceFactory.generateHealthPiece({ x: objectX, y: objectY });
+        const healthPiece = this.pieceFactory.generateHealthPiece(healthPosition);
 
-        const key = `${y},${x}`;
+        const key = Vector.toKey(position);
+        const medkitPosition = Vector.parse({
+            x: healthPosition.x + healthPiece.collider!.width / 2,
+            y: healthPosition.y - healthPiece.collider!.height / 2,
+        });
+
         pieces.push(healthPiece);
-        pieces.push(
-            this.interactablesFactory.generateMedkit(
-                {
-                    x: objectX + healthPiece.collider!.width / 2,
-                    y: objectY - healthPiece.collider!.height / 2,
-                },
-                key,
-            ),
-        );
+        pieces.push(this.interactablesFactory.generateMedkit(medkitPosition, key));
 
         const random = RandomHelper.randomValue(1, 5, true);
 
         const generateAmount = RandomHelper.randomValue(1, 8, true);
 
         for (let i = 0; i < generateAmount; i++) {
-            const { objectX, objectY } = this.getRandomCoordinates({ x, y });
-            pieces.push(this.pieceFactory.generatePlantsPiece({ x: objectX, y: objectY }, random));
+            const plantPosition = this.getRandomCoordinates(position);
+            pieces.push(this.pieceFactory.generatePlantsPiece(plantPosition, random));
         }
 
-        Game.getInstance().objects.set(key, new SetPiece(pieces, 'health'));
+        Game.getInstance().objects.set(key, new SetPiece(pieces, SetpieceType.HEALTH));
     }
 
-    private generateEnemy({ x, y }) {
+    private generateEnemy(position: Vector) {
         const pieces: CombinedPiece[] = [];
 
         for (let i = 0; i < Math.random() * 5; i++) {
-            const { objectX, objectY } = this.getRandomCoordinates({ x, y });
+            const enemyPosition = this.getRandomCoordinates(position);
 
-            pieces.push(this.pieceFactory.generateEnemyPiece({ x: objectX, y: objectY }));
+            pieces.push(this.pieceFactory.generateEnemyPiece(enemyPosition));
 
-            this.enemyFactory.generateEnemy({ x: objectX, y: objectY });
+            this.enemyFactory.generateEnemy(Vector.copy(enemyPosition));
         }
 
-        Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'enemy'));
+        Game.getInstance().objects.set(Vector.toKey(position), new SetPiece(pieces, SetpieceType.ENEMY));
     }
 
-    private generateTree({ x, y }) {
+    private generateTree(position: Vector) {
         const pieces: CombinedPiece[] = [];
 
         for (let i = 0; i < Math.random() * 5; i++) {
-            const { objectX, objectY } = this.getRandomCoordinates({ x, y });
+            const treePosition = this.getRandomCoordinates(position);
 
             if (RandomHelper.getRandomBoolean(0.4)) {
-                pieces.push(this.pieceFactory.generateLargeTreePiece({ x: objectX, y: objectY }));
+                pieces.push(this.pieceFactory.generateLargeTreePiece(treePosition));
             }
 
-            pieces.push(this.pieceFactory.generateTreePiece({ x: objectX, y: objectY }));
+            pieces.push(this.pieceFactory.generateTreePiece(treePosition));
         }
 
         if (RandomHelper.getRandomBoolean(0.85)) {
-            Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'tree'));
+            Game.getInstance().objects.set(Vector.toKey(position), new SetPiece(pieces, SetpieceType.TREE));
             return;
         }
 
         const generateAmount = RandomHelper.randomValue(1, 8, true);
 
         for (let i = 0; i < generateAmount; i++) {
-            const { objectX, objectY } = this.getRandomCoordinates({ x, y });
+            const plantPosition = this.getRandomCoordinates(position);
 
             const random = RandomHelper.randomValue(1, 5, true);
 
-            pieces.push(this.pieceFactory.generatePlantsPiece({ x: objectX, y: objectY }, random));
+            pieces.push(this.pieceFactory.generatePlantsPiece(plantPosition, random));
         }
 
-        Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'tree'));
+        Game.getInstance().objects.set(Vector.toKey(position), new SetPiece(pieces, SetpieceType.TREE));
     }
 
-    private generateStone({ x, y }) {
+    private generateStone(position: Vector) {
         const pieces: CombinedPiece[] = [];
-        const { objectX, objectY } = this.getRandomCoordinates({ x, y });
+        const stonePosition = this.getRandomCoordinates(position);
 
         if (RandomHelper.getRandomBoolean(0.4)) {
-            pieces.push(this.pieceFactory.generateLargeStonePiece({ x: objectX, y: objectY }));
+            pieces.push(this.pieceFactory.generateLargeStonePiece(stonePosition));
 
-            Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'stone'));
+            Game.getInstance().objects.set(Vector.toKey(position), new SetPiece(pieces, SetpieceType.STONE));
             return;
         }
 
         for (let i = 0; i < Math.random() * 3; i++) {
-            const { objectX, objectY } = this.getRandomCoordinates({ x, y });
+            const plantPosition = this.getRandomCoordinates(position);
 
-            pieces.push(this.pieceFactory.generateStonePiece({ x: objectX, y: objectY }));
+            pieces.push(this.pieceFactory.generateStonePiece(plantPosition));
         }
 
-        Game.getInstance().objects.set(`${y},${x}`, new SetPiece(pieces, 'stone'));
+        Game.getInstance().objects.set(Vector.toKey(position), new SetPiece(pieces, SetpieceType.STONE));
     }
 
     private updateChance(position: Vector) {
         const { objects } = Game.getInstance();
         for (let i = 0; i < 8; i++) {
-            const key = `${position.y + directionY[i]},${position.x + directionX[i]}`;
+            const positionTwo = Vector.add(position, new Vector(directionX[i], directionY[i]));
+            const key = Vector.toKey(positionTwo);
 
             if (!objects.has(key)) {
                 continue;
             }
-            if (objects.get(key)?.type === 'tree') {
+            if (objects.get(key)?.type === SetpieceType.TREE) {
                 this.treeChance += 0.1;
                 this.healthChance += 0.05;
                 this.stoneChance += 0.05;
                 continue;
             }
-            if (objects.get(key)?.type === 'enemy') {
+            if (objects.get(key)?.type === SetpieceType.ENEMY) {
                 this.enemyChance += 0.05;
                 this.treeChance -= 0.2;
                 this.stoneChance -= 0.01;
                 continue;
             }
-            if (objects.get(key)?.type === 'health') {
+            if (objects.get(key)?.type === SetpieceType.HEALTH) {
                 this.treeChance = 0;
                 this.healthChance = 0;
                 this.stoneChance = 0;
             }
-            if (objects.get(key)?.type === 'elevator') {
+            if (objects.get(key)?.type === SetpieceType.ELEVATOR) {
                 this.treeChance = 0;
                 this.enemyChance = 0;
                 this.healthChance = 0;
                 this.stoneChance = 0;
             }
-            if (objects.get(key)?.type === 'stone') {
+            if (objects.get(key)?.type === SetpieceType.ELEVATOR) {
                 this.treeChance += 0.05;
                 this.healthChance += 0.05;
                 this.stoneChance += 0.2;
@@ -238,30 +243,32 @@ export default class SetPieceGenerator {
         const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
         const { FLOOR_WIDTH } = FOREST_STAGE;
         const pieces: CombinedPiece[] = [];
-        const key = `${position.y},${position.x}`;
+        const key = Vector.toKey(position);
 
         const random = RandomHelper.randomValue(1, 5, true);
 
         const generateAmount = RandomHelper.randomValue(1, 8, true);
 
         for (let i = 0; i < generateAmount; i++) {
-            const objectX = position.x * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
-            const objectY = position.y * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3;
+            const plantPosition = Vector.parse({
+                x: position.x * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3,
+                y: position.y * FLOOR_WIDTH * GAME_SCALE + Math.random() * FLOOR_WIDTH * 3,
+            });
 
-            pieces.push(this.pieceFactory.generatePlantsPiece({ x: objectX, y: objectY }, random));
+            pieces.push(this.pieceFactory.generatePlantsPiece(plantPosition, random));
         }
 
-        Game.getInstance().objects.set(key, new SetPiece(pieces, 'plant'));
+        Game.getInstance().objects.set(key, new SetPiece(pieces, SetpieceType.PLANT));
     }
 
-    private getRandomCoordinates({ x, y }, distance = 0) {
+    private getRandomCoordinates(position: Vector, distance = 0) {
         const { FOREST_STAGE, GAME_SCALE } = GameSettings.GAME;
         const { FLOOR_WIDTH } = FOREST_STAGE;
         distance = distance || FLOOR_WIDTH;
 
-        const objectX = x * FLOOR_WIDTH * GAME_SCALE + Math.random() * distance * 3;
-        const objectY = y * FLOOR_WIDTH * GAME_SCALE + Math.random() * distance * 3;
-
-        return { objectX, objectY };
+        return Vector.parse({
+            x: position.x * FLOOR_WIDTH * GAME_SCALE + Math.random() * distance * 3,
+            y: position.y * FLOOR_WIDTH * GAME_SCALE + Math.random() * distance * 3,
+        });
     }
 }

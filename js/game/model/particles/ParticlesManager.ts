@@ -1,4 +1,3 @@
-import Game from '../game/Game.js';
 import Particles from './Particles.js';
 import ParticlesFactory from './ParticlesFactory.js';
 import Observable from '../utility/Observable.js';
@@ -21,11 +20,6 @@ export default class ParticlesManager {
     }
 
     public update = () => this.particleList.forEach((particle) => particle.update());
-
-    public clear() {
-        const { currState } = Game.getInstance();
-        currState.spawnParticles = false;
-    }
 
     private eventHandler() {
         this.eventEmitter.subscribe(({ event, data }) => {

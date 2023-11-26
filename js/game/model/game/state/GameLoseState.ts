@@ -5,18 +5,18 @@ import AudioManager from '../../utility/manager/AudioManager.js';
 export default class GameLoseState extends GameBaseState {
     private transparency: number;
 
-    constructor() {
+    public constructor() {
         super();
         this.transparency = 1;
     }
 
-    enterState(game: Game) {
+    public async enterState(game: Game) {
         super.enterState(game);
         this.transparency = 1;
         AudioManager.disableSound();
     }
 
-    updateState(game: Game) {
+    public updateState(game: Game) {
         super.updateState(game);
 
         const { camera, player, enemyManager } = game;
@@ -51,7 +51,7 @@ export default class GameLoseState extends GameBaseState {
         camera.updateCamera();
     }
 
-    exitState(game: Game) {
+    public async exitState(game: Game) {
         game.htmlHandlers.notify('loseGameFinished');
     }
 }

@@ -12,8 +12,8 @@ export default class JudgementBullet extends Enemy {
         this.maxLifetime = lifetime;
         this.lifetime = lifetime;
     }
-    handleDamage({ amount, angle }) {
-        super.handleDamage({ amount, angle });
+    handleDamage(damage) {
+        super.handleDamage(damage);
         this.knockback();
     }
     knockback() {

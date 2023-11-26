@@ -2,13 +2,13 @@ import GameBaseState from './GameBaseState.js';
 import Game from '../Game.js';
 
 export default class GamePausedState extends GameBaseState {
-    public enterState(game: Game) {
+    public async enterState(game: Game) {
         game.htmlHandlers.notify('pauseModal:open');
 
         this.eventHandler(game);
     }
 
-    public exitState(game: Game) {
+    public async exitState(game: Game) {
         game.htmlHandlers.notify('pauseModal:close');
         this.eventRemover(game);
     }

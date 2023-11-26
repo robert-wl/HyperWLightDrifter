@@ -109,19 +109,16 @@ export default abstract class Enemy extends Animateable {
         this._velocity = value;
     }
 
-    public handleDamage({ amount, angle }) {
+    public handleDamage({ value, angle }: PolarVector) {
         if (this._health <= 0) {
             return;
         }
-        this._health -= amount;
+        this._health -= value;
         this._damaged = 5;
         if (this._health <= 0) {
             this._health = 0;
         }
-        this._velocity = {
-            value: 1,
-            angle: angle,
-        };
+        this._velocity = new PolarVector(1, angle);
     }
 
     public knockback() {

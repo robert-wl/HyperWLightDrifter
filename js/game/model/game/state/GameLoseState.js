@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import GameBaseState from './GameBaseState.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
 export default class GameLoseState extends GameBaseState {
@@ -6,9 +15,14 @@ export default class GameLoseState extends GameBaseState {
         this.transparency = 1;
     }
     enterState(game) {
-        super.enterState(game);
-        this.transparency = 1;
-        AudioManager.disableSound();
+        const _super = Object.create(null, {
+            enterState: { get: () => super.enterState }
+        });
+        return __awaiter(this, void 0, void 0, function* () {
+            _super.enterState.call(this, game);
+            this.transparency = 1;
+            AudioManager.disableSound();
+        });
     }
     updateState(game) {
         super.updateState(game);
@@ -34,6 +48,8 @@ export default class GameLoseState extends GameBaseState {
         camera.updateCamera();
     }
     exitState(game) {
-        game.htmlHandlers.notify('loseGameFinished');
+        return __awaiter(this, void 0, void 0, function* () {
+            game.htmlHandlers.notify('loseGameFinished');
+        });
     }
 }

@@ -43,8 +43,8 @@ export default class CrystalSpider extends Enemy {
     set attackSpeed(value) {
         this._attackSpeed = value;
     }
-    handleDamage({ amount, angle }) {
-        super.handleDamage({ amount, angle });
+    handleDamage(damage) {
+        super.handleDamage(damage);
         if (this.health > 0) {
             AudioManager.playAudio('crystal_spider_hurt_audio').then();
         }

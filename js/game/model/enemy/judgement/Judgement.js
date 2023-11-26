@@ -91,7 +91,7 @@ export default class Judgement extends Enemy {
             this.damaged -= Game.deltaTime;
         }
     }
-    handleDamage({ amount, angle = 0 }) {
+    handleDamage(damage) {
         if (this.currState === this.bombState) {
             return;
         }
@@ -108,7 +108,7 @@ export default class Judgement extends Enemy {
         if (this.health <= 0 && (player.currState === player.attackState || player.currState === player.attackTwoState)) {
             this.switchState(this.dieState);
         }
-        super.handleDamage({ amount, angle });
+        super.handleDamage(damage);
         if (RandomHelper.getRandomBoolean(0.3)) {
             AudioManager.playAudio('judgement_hurt_audio').then();
         }

@@ -1,10 +1,11 @@
-import { CombinedPiece } from '../../utility/interfaces/Piece';
+import { CombinedPiece } from '../../utility/interfaces/Piece.js';
+import { SetpieceType } from '../../utility/enums/SetpieceType.js';
 
 export default class SetPiece {
     private readonly _pieces: CombinedPiece[];
-    private _type: any;
+    private _type: SetpieceType;
 
-    constructor(pieces: CombinedPiece[], type: string) {
+    constructor(pieces: CombinedPiece[], type: SetpieceType) {
         pieces = pieces.sort((pieceOne, pieceTwo) => {
             return pieceOne.position.y - pieceTwo.position.y;
         });
@@ -16,11 +17,11 @@ export default class SetPiece {
         return this._pieces;
     }
 
-    get type(): any {
+    get type(): SetpieceType {
         return this._type;
     }
 
-    set type(value: any) {
+    set type(value: SetpieceType) {
         this._type = value;
     }
 }

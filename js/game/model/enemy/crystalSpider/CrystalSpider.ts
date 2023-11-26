@@ -13,6 +13,7 @@ import DrawHelper from '../../utility/helper/DrawHelper.js';
 import { Box } from '../../utility/interfaces/Box.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
 import Shadow from '../../shadow/Shadow.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
 
 export default class CrystalSpider extends Enemy {
     public currState: CrystalSpiderBaseState;
@@ -64,8 +65,8 @@ export default class CrystalSpider extends Enemy {
         this._attackSpeed = value;
     }
 
-    public handleDamage({ amount, angle }: { amount: any; angle: any }) {
-        super.handleDamage({ amount, angle });
+    public handleDamage(damage: PolarVector) {
+        super.handleDamage(damage);
         if (this.health > 0) {
             AudioManager.playAudio('crystal_spider_hurt_audio').then();
         }

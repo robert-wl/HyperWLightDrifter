@@ -127,11 +127,11 @@ export default class JudgementBomb extends Enemy {
         return this.lifeTime <= 160;
     }
 
-    handleDamage({ amount, angle }: { amount: any; angle: any }) {
+    handleDamage(damage: PolarVector) {
         if (this._spawning) {
             return;
         }
-        super.handleDamage({ amount, angle });
+        super.handleDamage(damage);
     }
 
     handleExplosion() {

@@ -23,5 +23,6 @@ $(async () => {
 
     await game.switchState(game.startState);
 
+    console.log('gelo');
     updateLoop();
 });

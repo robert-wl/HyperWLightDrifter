@@ -13,6 +13,7 @@ import Observable from '../../utility/Observable.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
 import Shadow from '../../shadow/Shadow.js';
 import GameSettings from '../../../constants.js';
+import { PolarVector } from '../../utility/interfaces/PolarVector.js';
 
 export default class CrystalBrute extends Enemy {
     public attack: CrystalAttack[];
@@ -59,8 +60,8 @@ export default class CrystalBrute extends Enemy {
         this._angle = value;
     }
 
-    handleDamage({ amount, angle }: { amount: any; angle: any }) {
-        super.handleDamage({ amount, angle });
+    handleDamage(damage: PolarVector) {
+        super.handleDamage(damage);
         if (this.health > 0) {
             AudioManager.playAudio('crystal_brute_hurt_audio').then();
         }

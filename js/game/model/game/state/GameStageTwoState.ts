@@ -24,7 +24,7 @@ export default class GameStageTwoState extends GameBaseState {
         this.hasBossSpawned = false;
     }
 
-    async enterState(game: Game) {
+    public async enterState(game: Game) {
         this.hasInitialized = false;
         this.colliders = [];
         AudioManager.stopAll();
@@ -34,7 +34,7 @@ export default class GameStageTwoState extends GameBaseState {
         this.hasInitialized = true;
     }
 
-    updateState(game: Game) {
+    public updateState(game: Game) {
         if (!this.hasInitialized) {
             return;
         }
@@ -48,7 +48,7 @@ export default class GameStageTwoState extends GameBaseState {
             }
         }
 
-        if (elevator.currState === elevator.mountedDownState && !this.hasBossSpawned) {
+        if (elevator!.currState === elevator!.mountedDownState && !this.hasBossSpawned) {
             game.enemyManager.enemyFactory.generateBoss(new Vector(1000, 300));
             this.hasBossSpawned = true;
         }
@@ -58,7 +58,7 @@ export default class GameStageTwoState extends GameBaseState {
         game.ctx.fillRect(0, 0, game.canvas.width * 2, game.canvas.height * 3);
         camera.shakeCamera();
 
-        if (elevator.currState === elevator.mountedDownState) {
+        if (elevator!.currState === elevator!.mountedDownState) {
             game.setTransparency(game.backgroundOpacity);
             elevator?.update();
             game.setTransparency(1);
@@ -67,7 +67,7 @@ export default class GameStageTwoState extends GameBaseState {
         camera.renderLowerBackground();
         game.setTransparency(1);
 
-        if (elevator.currState === elevator.moveState) {
+        if (elevator!.currState === elevator!.moveState) {
             elevator?.update();
         }
 
@@ -84,7 +84,7 @@ export default class GameStageTwoState extends GameBaseState {
         camera.updateCamera();
     }
 
-    async stageInitializer(game: Game) {
+    public async stageInitializer(game: Game) {
         game.prepareCanvas();
         game.changeState();
 
@@ -102,10 +102,10 @@ export default class GameStageTwoState extends GameBaseState {
             this.colliders.push(new Collider(collider));
         });
 
-        elevator.changeStage();
+        elevator!.changeStage();
         const oldYPosition = player.centerPosition.y;
 
-        elevator.position.x = 970;
+        elevator!.position.x = 970;
         player.centerPosition.x = 960;
 
         camera.switchState(camera.followState);
@@ -117,8 +117,8 @@ export default class GameStageTwoState extends GameBaseState {
             },
         });
 
-        const yDiff = oldYPosition - elevator.position.y;
-        elevator.position.y = 0;
+        const yDiff = oldYPosition - elevator!.position.y;
+        elevator!.position.y = 0;
         player.centerPosition.y = yDiff;
     }
 }

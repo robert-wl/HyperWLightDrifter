@@ -7,7 +7,7 @@ import AudioManager from '../../utility/manager/AudioManager.js';
 import { Vector } from '../../utility/interfaces/Vector.js';
 
 export default class GameStageOneState extends GameBaseState {
-    async enterState(game: Game) {
+    public async enterState(game: Game) {
         Navbar.close();
         game.toggleFullscreen(true);
         game.stage = 1;
@@ -19,7 +19,7 @@ export default class GameStageOneState extends GameBaseState {
         AudioManager.playAudio('forest_stage_background_audio', true).then();
     }
 
-    updateState(game: Game) {
+    public updateState(game: Game) {
         super.updateState(game);
         game.mapGenerator.update();
 
@@ -38,7 +38,7 @@ export default class GameStageOneState extends GameBaseState {
         if (player.currState === player.inElevatorState) {
             player.updateState([]);
         }
-
+        
         game.setTransparency(game.backgroundOpacity);
         camera.renderLowerBackground();
         game.setTransparency(1);
@@ -68,14 +68,14 @@ export default class GameStageOneState extends GameBaseState {
         this.handleStageChange(game);
     }
 
-    handleStageChange(game: Game) {
+    public handleStageChange(game: Game) {
         const { player, backgroundOpacity } = game;
         if (player.isBelowGround && backgroundOpacity === 0) {
             game.switchState(game.stageTwoState).then();
         }
     }
 
-    async stageInitializer(game: Game) {
+    public async stageInitializer(game: Game) {
         game.prepareCanvas();
         const { camera, player } = game;
 

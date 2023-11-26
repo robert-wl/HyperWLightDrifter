@@ -49,7 +49,9 @@ export default class GameStartState extends GameBaseState {
         game.particlesManager.update();
     }
     exitState(game) {
-        game.htmlHandlers.eventRemover();
-        AudioManager.stopAll();
+        return __awaiter(this, void 0, void 0, function* () {
+            game.htmlHandlers.eventRemover();
+            AudioManager.stopAll();
+        });
     }
 }

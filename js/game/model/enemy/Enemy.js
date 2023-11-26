@@ -74,19 +74,16 @@ export default class Enemy extends Animateable {
     set velocity(value) {
         this._velocity = value;
     }
-    handleDamage({ amount, angle }) {
+    handleDamage({ value, angle }) {
         if (this._health <= 0) {
             return;
         }
-        this._health -= amount;
+        this._health -= value;
         this._damaged = 5;
         if (this._health <= 0) {
             this._health = 0;
         }
-        this._velocity = {
-            value: 1,
-            angle: angle,
-        };
+        this._velocity = new PolarVector(1, angle);
     }
     knockback() {
         this._position.x += DistanceHelper.getHorizontalValue(this._velocity);

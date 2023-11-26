@@ -20,8 +20,8 @@ export default class JudgementBullet extends Enemy {
         this.lifetime = lifetime;
     }
 
-    public handleDamage({ amount, angle }) {
-        super.handleDamage({ amount, angle });
+    public handleDamage(damage: PolarVector) {
+        super.handleDamage(damage);
         this.knockback();
     }
 

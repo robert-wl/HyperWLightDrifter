@@ -3,7 +3,7 @@ import Game from '../Game.js';
 export default class GameBaseState {
     protected number = 0;
 
-    public enterState(game: Game) {
+    public async enterState(game: Game) {
         this.number = 0;
     }
 
@@ -12,8 +12,8 @@ export default class GameBaseState {
             this.number += Game.deltaTime;
         }
     }
-    
-    public exitState(game: Game) {}
+
+    public async exitState(game: Game) {}
 
     protected checkCounter(number: number) {
         return this.number >= number;

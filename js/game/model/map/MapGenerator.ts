@@ -4,6 +4,7 @@ import SetPieceGenerator from './setPieces/SetPieceGenerator.js';
 import PieceFactory from './setPieces/PieceFactory.js';
 import AssetManager from '../utility/manager/AssetManager.js';
 import RandomHelper from '../utility/helper/RandomHelper.js';
+import { Vector } from '../utility/interfaces/Vector.js';
 
 const directionX = [1, 0, -1, 0, 1, 1, -1, -1];
 const directionY = [0, 1, 0, -1, 1, -1, 1, -1];
@@ -23,11 +24,13 @@ export default class MapGenerator {
         const { FLOOR_WIDTH } = GameSettings.GAME.FOREST_STAGE;
         for (let i = 0; i < FLOOR_WIDTH * 3; i += FLOOR_WIDTH) {
             for (let j = 0; j < FLOOR_WIDTH * 3; j += FLOOR_WIDTH) {
-                const x = Math.round(i / FLOOR_WIDTH);
-                const y = Math.round(j / FLOOR_WIDTH);
+                const position = Vector.parse({
+                    x: Math.round(i / FLOOR_WIDTH),
+                    y: Math.round(j / FLOOR_WIDTH),
+                });
 
-                this.setPieceGenerator.generate({ x, y }, true);
-                this.lowerLayers.set(`${x},${y}`, this.getFloorImage());
+                this.setPieceGenerator.generate(position, true);
+                this.lowerLayers.set(Vector.toKey(position), this.getFloorImage());
             }
         }
     }
@@ -52,43 +55,47 @@ export default class MapGenerator {
         const { player } = Game.getInstance();
         const { FLOOR_WIDTH, GENERATE_DISTANCE } = GameSettings.GAME.FOREST_STAGE;
 
-        const pos1 = {
+        const pos1 = Vector.parse({
             x: player.centerPosition.x - FLOOR_WIDTH * GENERATE_DISTANCE,
             y: player.centerPosition.y - FLOOR_WIDTH * GENERATE_DISTANCE,
-        };
-        const pos2 = {
+        });
+        const pos2 = Vector.parse({
             x: player.centerPosition.x + FLOOR_WIDTH * GENERATE_DISTANCE,
             y: player.centerPosition.y + FLOOR_WIDTH * GENERATE_DISTANCE,
-        };
+        });
         for (let i = pos1.x - FLOOR_WIDTH; i <= pos2.x + FLOOR_WIDTH; i += FLOOR_WIDTH) {
             for (let j = pos1.y - FLOOR_WIDTH; j <= pos2.y + FLOOR_WIDTH; j += FLOOR_WIDTH) {
-                const x = Math.round(i / (FLOOR_WIDTH * GameSettings.GAME.GAME_SCALE));
-                const y = Math.round(j / (FLOOR_WIDTH * GameSettings.GAME.GAME_SCALE));
+                const position = Vector.parse({
+                    x: Math.round(i / (FLOOR_WIDTH * GameSettings.GAME.GAME_SCALE)),
+                    y: Math.round(j / (FLOOR_WIDTH * GameSettings.GAME.GAME_SCALE)),
+                });
 
-                if (this.lowerLayers.has(`${x},${y}`)) {
+                if (this.lowerLayers.has(Vector.toKey(position))) {
                     continue;
                 }
 
-                if (this.generateElevatorFloor({ x, y })) {
+                if (this.generateElevatorFloor(position)) {
                     continue;
                 }
 
-                this.generateNormalFloor({ x, y });
+                this.generateNormalFloor(position);
             }
         }
     }
 
-    generateElevatorFloor({ x, y }) {
+    generateElevatorFloor(position: Vector) {
         const { SETPIECE_ELEVATOR_INITIAL_CHANCE, SETPIECE_ELEVATOR_MAX_CHANCE } = GameSettings.GAME.FOREST_STAGE;
 
         const chance = Math.min(SETPIECE_ELEVATOR_INITIAL_CHANCE + Game.getInstance().coinCount * 0.0005, SETPIECE_ELEVATOR_MAX_CHANCE);
 
         if (RandomHelper.getRandomBoolean(chance)) {
-            this.lowerLayers.set(`${x},${y}`, this.getFloorImage(true));
-            this.setPieceGenerator.generateElevator({ x, y });
+            this.lowerLayers.set(Vector.toKey(position), this.getFloorImage(true));
+            this.setPieceGenerator.generateElevator(position);
 
             for (let i = 0; i < 8; i++) {
-                this.lowerLayers.set(`${x + directionX[i]},${y + directionY[i]}`, this.getFloorImage());
+                const positionTwo = Vector.add(position, new Vector(directionX[i], directionY[i]));
+
+                this.lowerLayers.set(Vector.toKey(positionTwo), this.getFloorImage());
             }
             return true;
         }
@@ -96,9 +103,9 @@ export default class MapGenerator {
         return false;
     }
 
-    generateNormalFloor({ x, y }) {
-        this.lowerLayers.set(`${x},${y}`, this.getFloorImage());
+    generateNormalFloor(position: Vector) {
+        this.lowerLayers.set(Vector.toKey(position), this.getFloorImage());
 
-        this.setPieceGenerator.generate({ x, y });
+        this.setPieceGenerator.generate(position);
     }
 }

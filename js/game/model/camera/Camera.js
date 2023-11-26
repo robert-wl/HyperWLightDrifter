@@ -120,6 +120,7 @@ export default class Camera {
                 w: background.width * GAME_SCALE,
                 h: background.height * GAME_SCALE,
             });
+            // console.log(background);
             DrawHelper.drawImage(background, imageSize);
         });
     }
@@ -171,8 +172,8 @@ export default class Camera {
         const enemyList = enemyManager.enemyList;
         this.upperLayers.forEach((object, positionStr) => {
             const position = {
-                y: Number(positionStr.split(',')[0]) * FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE,
-                x: Number(positionStr.split(',')[1]) * FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE,
+                x: Number(positionStr.split(',')[0]) * FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE,
+                y: Number(positionStr.split(',')[1]) * FOREST_STAGE.FLOOR_WIDTH * GAME_SCALE,
             };
             if (!this.isInScreen(position)) {
                 return;

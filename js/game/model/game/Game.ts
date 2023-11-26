@@ -22,6 +22,8 @@ import SetPiece from '../map/setPieces/SetPiece.js';
 import GunHelper from '../utility/helper/GunHelper.js';
 import DrawHelper from '../utility/helper/DrawHelper.js';
 import HUDManager from '../utility/manager/HUDManager.js';
+import Elevator from '../interactables/Elevator/Elevator';
+import Coin from '../interactables/Coin';
 
 export default class Game {
     private static _deltaTime: number = 0;
@@ -38,21 +40,21 @@ export default class Game {
     public width: number;
     public height: number;
     public objects: Map<string, SetPiece>;
-    public coins: any[];
-    public elevators: any[];
-    public elevator: any;
+    public coins: Coin[];
+    public elevators: Elevator[];
+    public elevator: Elevator | null;
     public enemyManager!: EnemyManager;
     public canvas!: HTMLCanvasElement;
     public ctx!: CanvasRenderingContext2D;
     public backgroundOpacity: number;
     public coinCount: number;
-    public currState: any;
-    public startState: any;
-    public stageOneState: any;
-    public stageTwoState: any;
-    public pausedState: any;
-    public loseState: any;
-    public endState: any;
+    public currState: GameBaseState;
+    public startState: GameStartState;
+    public stageOneState: GameStageOneState;
+    public stageTwoState: GameStageTwoState;
+    public pausedState: GamePausedState;
+    public loseState: GameLoseState;
+    public endState: GameEndState;
     public interactablesManager!: InteractablesManager;
     public interactablesFactory!: InteractablesFactory;
     public htmlHandlers!: HTMLHandlers;
@@ -78,6 +80,7 @@ export default class Game {
         this.elevators = [];
         this.elevator = null;
         this.backgroundOpacity = 1;
+        this.coinCount = 0;
         this.coinCount = 0;
         this.currState = new GameBaseState();
         this.startState = new GameStartState();
@@ -175,7 +178,6 @@ export default class Game {
 
     async playGame() {
         this.loading = true;
-        this.particlesManager!.clear();
         await new Promise((resolve) => setTimeout(resolve, 2000));
         await this.switchState(this.stageOneState);
         this.loading = false;

@@ -3,6 +3,7 @@ import EnemyFactory from './EnemyFactory.js';
 import GameSettings from '../../constants.js';
 import CrystalSpider from './crystalSpider/CrystalSpider.js';
 import CrystalBrute from './crystalBrute/CrystalBrute.js';
+import { PolarVector } from '../utility/interfaces/PolarVector.js';
 export default class EnemyManager {
     constructor(game) {
         this.game = game;
@@ -47,19 +48,13 @@ export default class EnemyManager {
     }
     handleDamagePoint(position, enemy) {
         if (this.detectCollisionPoint(position, enemy)) {
-            enemy.handleDamage({
-                amount: GameSettings.PLAYER.DAMAGE.HIT,
-                angle: this.game.player.lookAngle,
-            });
+            enemy.handleDamage(new PolarVector(GameSettings.PLAYER.DAMAGE.HIT, this.game.player.lookAngle));
         }
         this.attackObserver.notify('playerHitPoint');
     }
     handleDamageBox(enemy) {
         if (this.detectCollisionBox(enemy, this.game.player)) {
-            enemy.handleDamage({
-                amount: GameSettings.PLAYER.DAMAGE.HIT,
-                angle: this.game.player.lookAngle,
-            });
+            enemy.handleDamage(new PolarVector(GameSettings.PLAYER.DAMAGE.HIT, this.game.player.lookAngle));
             this.attackObserver.notify('playerHitArea');
         }
     }

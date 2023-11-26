@@ -50,6 +50,7 @@ class Game {
         this.elevator = null;
         this.backgroundOpacity = 1;
         this.coinCount = 0;
+        this.coinCount = 0;
         this.currState = new GameBaseState();
         this.startState = new GameStartState();
         this.stageOneState = new GameStageOneState();
@@ -134,7 +135,6 @@ class Game {
     playGame() {
         return __awaiter(this, void 0, void 0, function* () {
             this.loading = true;
-            this.particlesManager.clear();
             yield new Promise((resolve) => setTimeout(resolve, 2000));
             yield this.switchState(this.stageOneState);
             this.loading = false;

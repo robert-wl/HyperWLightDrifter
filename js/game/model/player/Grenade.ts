@@ -112,10 +112,7 @@ export default class Grenade extends Animateable {
                 return;
             }
 
-            enemy.handleDamage({
-                amount: GameSettings.PLAYER.DAMAGE.GRENADE,
-                angle: -angle,
-            });
+            enemy.handleDamage(new PolarVector(GameSettings.PLAYER.DAMAGE.GRENADE, -angle));
         });
 
         bossEntities.forEach((entity) => {
@@ -144,8 +141,6 @@ export default class Grenade extends Animateable {
             return;
         }
 
-        boss.handleDamage({
-            amount: GameSettings.PLAYER.DAMAGE.GRENADE,
-        });
+        boss.handleDamage(new PolarVector(GameSettings.PLAYER.DAMAGE.GRENADE, -this.angle));
     }
 }

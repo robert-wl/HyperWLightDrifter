@@ -59,7 +59,6 @@ export default class Player {
     private _healing: number;
     private _immunity: number;
     private readonly _projectiles: Grenade[];
-    private _playerDefault: any;
     private _outfit: Outfit;
     private _inputEventEmitter: Observable;
     private readonly _interactionBar: InteractionBar;
@@ -71,7 +70,7 @@ export default class Player {
     private shadow: Shadow;
 
     public constructor(inputEventEmitter: Observable) {
-        const { PLAYER: playerDefault } = GameSettings;
+        const playerDefault = GameSettings.PLAYER;
         this._maxHealth = playerDefault.MAX_HEALTH;
         this._health = playerDefault.MAX_HEALTH;
         this._healthPack = playerDefault.MAX_HEALTHPACKS;
@@ -104,7 +103,6 @@ export default class Player {
         this.throwState = new PlayerThrowingState();
         this.deathState = new PlayerDeathState();
         this.inElevatorState = new PlayerInElevatorState();
-        this._playerDefault = playerDefault;
         this._healing = 0;
         this._immunity = playerDefault.MAX_IMMUNITY;
         this._projectiles = [];
@@ -435,34 +433,34 @@ export default class Player {
     public getAttackBox({ direction }) {
         if (direction === 'w') {
             this._attackBox = {
-                x: this._centerPosition.x + this._playerDefault.ATTACK_BOX.UP.X,
-                y: this._centerPosition.y + this._playerDefault.ATTACK_BOX.UP.Y,
-                w: this._playerDefault.ATTACK_BOX.UP.W,
-                h: this._playerDefault.ATTACK_BOX.UP.H,
+                x: this._centerPosition.x + GameSettings.PLAYER.ATTACK_BOX.UP.X,
+                y: this._centerPosition.y + GameSettings.PLAYER.ATTACK_BOX.UP.Y,
+                w: GameSettings.PLAYER.ATTACK_BOX.UP.W,
+                h: GameSettings.PLAYER.ATTACK_BOX.UP.H,
             };
         }
         if (direction === 'a') {
             this._attackBox = {
-                x: this._centerPosition.x + this._playerDefault.ATTACK_BOX.LEFT.X,
-                y: this._centerPosition.y + this._playerDefault.ATTACK_BOX.LEFT.Y,
-                w: this._playerDefault.ATTACK_BOX.LEFT.W,
-                h: this._playerDefault.ATTACK_BOX.LEFT.H,
+                x: this._centerPosition.x + GameSettings.PLAYER.ATTACK_BOX.LEFT.X,
+                y: this._centerPosition.y + GameSettings.PLAYER.ATTACK_BOX.LEFT.Y,
+                w: GameSettings.PLAYER.ATTACK_BOX.LEFT.W,
+                h: GameSettings.PLAYER.ATTACK_BOX.LEFT.H,
             };
         }
         if (direction === 'd') {
             this._attackBox = {
-                x: this._centerPosition.x + this._playerDefault.ATTACK_BOX.RIGHT.X,
-                y: this._centerPosition.y + this._playerDefault.ATTACK_BOX.RIGHT.Y,
-                w: this._playerDefault.ATTACK_BOX.RIGHT.W,
-                h: this._playerDefault.ATTACK_BOX.RIGHT.H,
+                x: this._centerPosition.x + GameSettings.PLAYER.ATTACK_BOX.RIGHT.X,
+                y: this._centerPosition.y + GameSettings.PLAYER.ATTACK_BOX.RIGHT.Y,
+                w: GameSettings.PLAYER.ATTACK_BOX.RIGHT.W,
+                h: GameSettings.PLAYER.ATTACK_BOX.RIGHT.H,
             };
         }
         if (direction === 's') {
             this._attackBox = {
-                x: this._centerPosition.x + this._playerDefault.ATTACK_BOX.DOWN.X,
-                y: this._centerPosition.y + this._playerDefault.ATTACK_BOX.DOWN.Y,
-                w: this._playerDefault.ATTACK_BOX.DOWN.W,
-                h: this._playerDefault.ATTACK_BOX.DOWN.H,
+                x: this._centerPosition.x + GameSettings.PLAYER.ATTACK_BOX.DOWN.X,
+                y: this._centerPosition.y + GameSettings.PLAYER.ATTACK_BOX.DOWN.Y,
+                w: GameSettings.PLAYER.ATTACK_BOX.DOWN.W,
+                h: GameSettings.PLAYER.ATTACK_BOX.DOWN.H,
             };
         }
     }
@@ -558,7 +556,7 @@ export default class Player {
             }
             if (event === 'playerHitArea') {
                 this.bullets += 1;
-                this.bullets = Math.min(this.bullets, this._playerDefault.MAX_BULLETS);
+                this.bullets = Math.min(this.bullets, GameSettings.PLAYER.MAX_BULLETS);
             }
         });
     }

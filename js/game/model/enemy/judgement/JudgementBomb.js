@@ -93,11 +93,11 @@ export default class JudgementBomb extends Enemy {
     isAboutToExplode() {
         return this.lifeTime <= 160;
     }
-    handleDamage({ amount, angle }) {
+    handleDamage(damage) {
         if (this._spawning) {
             return;
         }
-        super.handleDamage({ amount, angle });
+        super.handleDamage(damage);
     }
     handleExplosion() {
         const { player } = Game.getInstance();

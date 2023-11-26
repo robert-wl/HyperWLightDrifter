@@ -29,6 +29,7 @@ export default class GameStartState extends GameBaseState {
 
         game.htmlHandlers.notify('startScreen');
         game.changeState();
+
         await AssetManager.assetLoader([GameSettings.ASSETS.SPAWN], undefined, false);
 
         AudioManager.playAudio('menu_background_audio', true).then();
@@ -50,7 +51,7 @@ export default class GameStartState extends GameBaseState {
         game.particlesManager.update();
     }
 
-    exitState(game: Game) {
+    async exitState(game: Game) {
         game.htmlHandlers.eventRemover();
         AudioManager.stopAll();
     }

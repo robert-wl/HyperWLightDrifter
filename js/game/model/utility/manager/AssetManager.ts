@@ -58,6 +58,7 @@ export default class AssetManager {
             }
             await this.assetLoadImage(asset, outfit);
         }
+        console.log(this.assetList);
 
         if (this.showLoading) this.htmlHandler.notify('loadingModal:close');
     }

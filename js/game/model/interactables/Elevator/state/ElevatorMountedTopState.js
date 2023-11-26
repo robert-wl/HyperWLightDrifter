@@ -15,6 +15,14 @@ export default class ElevatorMountedTopState extends ElevatorBaseState {
             w: elevatorImage.width * GameSettings.GAME.GAME_SCALE,
             h: elevatorImage.height * GameSettings.GAME.GAME_SCALE,
         });
+        const box = {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0,
+        };
+        const box2 = Box.Zero();
+        const boxIsi = new Box(1, 2, 3, 4);
         DrawHelper.drawImage(elevatorImage, imageSize);
         if (Game.getInstance().coinCount >= 10) {
             return;

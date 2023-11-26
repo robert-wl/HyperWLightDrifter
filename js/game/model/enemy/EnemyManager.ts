@@ -8,6 +8,7 @@ import Player from '../player/Player.js';
 import GameSettings from '../../constants.js';
 import CrystalSpider from './crystalSpider/CrystalSpider.js';
 import CrystalBrute from './crystalBrute/CrystalBrute.js';
+import { PolarVector } from '../utility/interfaces/PolarVector.js';
 
 export default class EnemyManager {
     private readonly game: Game;
@@ -69,20 +70,14 @@ export default class EnemyManager {
 
     public handleDamagePoint(position: Vector, enemy: Enemy) {
         if (this.detectCollisionPoint(position, enemy)) {
-            enemy.handleDamage({
-                amount: GameSettings.PLAYER.DAMAGE.HIT,
-                angle: this.game.player.lookAngle,
-            });
+            enemy.handleDamage(new PolarVector(GameSettings.PLAYER.DAMAGE.HIT, this.game.player.lookAngle));
         }
         this.attackObserver.notify('playerHitPoint');
     }
 
     private handleDamageBox(enemy: Enemy | Judgement) {
         if (this.detectCollisionBox(enemy, this.game.player)) {
-            enemy.handleDamage({
-                amount: GameSettings.PLAYER.DAMAGE.HIT,
-                angle: this.game.player.lookAngle,
-            });
+            enemy.handleDamage(new PolarVector(GameSettings.PLAYER.DAMAGE.HIT, this.game.player.lookAngle));
             this.attackObserver.notify('playerHitArea');
         }
     }
