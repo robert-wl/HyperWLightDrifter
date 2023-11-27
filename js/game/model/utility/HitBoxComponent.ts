@@ -1,4 +1,5 @@
 import { Vector } from './interfaces/Vector.js';
+import { Box } from './interfaces/Box';
 
 export default class HitBoxComponent {
     private readonly _xOffset: number;
@@ -29,7 +30,7 @@ export default class HitBoxComponent {
         return this._hOffset;
     }
 
-    public getPoints(position: Vector, width: number, height: number) {
+    public getPoints(position: Vector, width: number, height: number): Box {
         return {
             x: position.x + this._xOffset,
             y: position.y + this._yOffset,

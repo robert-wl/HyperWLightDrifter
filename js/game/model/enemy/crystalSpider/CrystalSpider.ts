@@ -10,7 +10,6 @@ import { Vector } from '../../utility/interfaces/Vector.js';
 import Observable from '../../utility/Observable.js';
 import RandomHelper from '../../utility/helper/RandomHelper.js';
 import DrawHelper from '../../utility/helper/DrawHelper.js';
-import { Box } from '../../utility/interfaces/Box.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
 import Shadow from '../../shadow/Shadow.js';
 import { PolarVector } from '../../utility/interfaces/PolarVector.js';
@@ -74,10 +73,8 @@ export default class CrystalSpider extends Enemy {
 
     debugMode() {
         DrawHelper.setFillStyle('rgb(255, 255, 0, 0.5)');
-
-        const { x, y, w, h } = this.hitbox.getPoints(this.position, this.width, this.height);
-
-        DrawHelper.drawRectangle(new Box(x, y, w, h));
+        
+        DrawHelper.drawRectangle(this.hitbox.getPoints(this.position, this.width, this.height));
     }
 
     switchState(newState: CrystalSpiderBaseState) {

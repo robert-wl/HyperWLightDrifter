@@ -1,0 +1,542 @@
+{
+  "ASSETS": {
+    "SPAWN": {
+      "IMAGES": [
+        {
+          "ref": "particles/firefly/fireflies.png",
+          "name": "fireflies",
+          "amount": 4
+        }
+      ],
+      "AUDIOS": [
+        {
+          "ref": "menu/action.wav",
+          "name": "menu_action_audio"
+        },
+        {
+          "ref": "menu/move.wav",
+          "name": "menu_move_audio"
+        },
+        {
+          "ref": "menu/background.ogg",
+          "name": "menu_background_audio"
+        }
+      ]
+    },
+    "PLAYER": {
+      "IMAGES": [
+        {
+          "ref": "player/aim/gun/railgun.png",
+          "name": "railgun"
+        },
+        {
+          "ref": "player/aim/aim_top.png",
+          "name": "aim_top",
+          "isOutfit": true
+        },
+        {
+          "ref": "player/aim/aim_bottom.png",
+          "name": "aim_bottom",
+          "isOutfit": true
+        },
+        {
+          "ref": "player/move/up/move_up.png",
+          "name": "move_up",
+          "amount": 12,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/move/down/move_down.png",
+          "name": "move_down",
+          "amount": 12,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/move/left/move_left.png",
+          "name": "move_left",
+          "amount": 12,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/move/right/move_right.png",
+          "name": "move_right",
+          "amount": 12,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/idle/idle_up.png",
+          "name": "idle_up",
+          "isOutfit": true
+        },
+        {
+          "ref": "player/idle/idle_left.png",
+          "name": "idle_left",
+          "isOutfit": true
+        },
+        {
+          "ref": "player/idle/idle_right.png",
+          "name": "idle_right",
+          "isOutfit": true
+        },
+        {
+          "ref": "player/idle/idle_down.png",
+          "name": "idle_down",
+          "isOutfit": true
+        },
+        {
+          "ref": "player/hurt/player_hurt.png",
+          "name": "player_hurt",
+          "amount": 3,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/dash/animation/dash_animation.png",
+          "name": "dash_animation",
+          "amount": 4,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/dash/down/dash.png",
+          "name": "dash_down",
+          "amount": 11,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/dash/side/dash.png",
+          "name": "dash_side",
+          "amount": 11,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/dash/up/dash.png",
+          "name": "dash_up",
+          "amount": 11,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/attack/up/attack.png",
+          "name": "attack_up",
+          "amount": 11,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/attack/side/attack.png",
+          "name": "attack_side",
+          "amount": 19,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/attack/down/attack.png",
+          "name": "attack_down",
+          "amount": 11,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/attack_two/up/attack.png",
+          "name": "attack_two_up",
+          "amount": 11,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/attack_two/side/attack.png",
+          "name": "attack_two_side",
+          "amount": 19,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/attack_two/down/attack.png",
+          "name": "attack_two_down",
+          "amount": 11,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/spawn/spawn.png",
+          "name": "player_spawn",
+          "amount": 15,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/aim/aim_side.png",
+          "name": "aim_side",
+          "isOutfit": true
+        },
+        {
+          "ref": "player/aim/gun/ray.png",
+          "name": "gun_ray"
+        },
+        {
+          "ref": "player/aim/gun/impact.png",
+          "name": "gun_impact",
+          "amount": 2
+        },
+        {
+          "ref": "player/grenade/grenade.png",
+          "name": "grenade",
+          "amount": 11
+        },
+        {
+          "ref": "player/grenade/throw/side/throw.png",
+          "name": "player_throw_side",
+          "amount": 8,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/grenade/throw/down/throw.png",
+          "name": "player_throw_down",
+          "amount": 8,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/grenade/throw/up/throw.png",
+          "name": "player_throw_up",
+          "amount": 8,
+          "isOutfit": true
+        },
+        {
+          "ref": "player/death/death.png",
+          "name": "player_death",
+          "amount": 6,
+          "isOutfit": true
+        },
+        {
+          "ref": "ui/damaged.png",
+          "name": "damaged_ui"
+        }
+      ],
+      "AUDIO": [
+        {
+          "ref": "player/medkit/use.wav",
+          "name": "player_medkit_use_audio"
+        },
+        {
+          "ref": "player/coin/pickup.wav",
+          "name": "player_coin_pickup_audio"
+        },
+        {
+          "ref": "player/gun_fire.wav",
+          "name": "player_gun_fire_audio"
+        },
+        {
+          "ref": "player/gun_aim.wav",
+          "name": "player_gun_aim_audio"
+        },
+        {
+          "ref": "player/interact.wav",
+          "name": "player_interact_audio"
+        },
+        {
+          "ref": "player/grenade/explode.wav",
+          "name": "player_grenade_explode_audio"
+        },
+        {
+          "ref": "player/grenade/throw.wav",
+          "name": "player_grenade_throw_audio"
+        },
+        {
+          "ref": "player/dash.wav",
+          "name": "player_dash_audio"
+        },
+        {
+          "ref": "player/attack_1.wav",
+          "name": "player_attack_one_audio"
+        },
+        {
+          "ref": "player/attack_2.wav",
+          "name": "player_attack_two_audio"
+        },
+        {
+          "ref": "player/death.wav",
+          "name": "player_death_audio"
+        },
+        {
+          "ref": "player/footstep_1.wav",
+          "name": "player_footstep_one_audio"
+        },
+        {
+          "ref": "player/footstep_2.wav",
+          "name": "player_footstep_two_audio"
+        },
+        {
+          "ref": "player/teleport_arrive.wav",
+          "name": "player_teleport_arrive_audio"
+        },
+        {
+          "ref": "player/hurt.wav",
+          "name": "player_hurt_audio"
+        }
+      ]
+    },
+    "STAGE_ONE": {
+      "IMAGES": [
+        {
+          "ref": "particles/firefly/fireflies.png",
+          "name": "fireflies",
+          "amount": 4
+        },
+        {
+          "ref": "ui/interaction_bar/interaction_bar.png",
+          "name": "interaction_bar",
+          "amount": 4
+        },
+        {
+          "ref": "world/elevator/elevator.png",
+          "name": "elevator"
+        },
+        {
+          "ref": "world/elevator/lock.png",
+          "name": "lock"
+        },
+        {
+          "ref": "world/forest/set_pieces/plant/plant.png",
+          "name": "set_pieces_plants",
+          "amount": 5
+        },
+        {
+          "ref": "world/forest/set_pieces/stone/big/stone.png",
+          "name": "set_pieces_stone_big",
+          "amount": 3
+        },
+        {
+          "ref": "world/forest/set_pieces/stone/small/stone.png",
+          "name": "set_pieces_stone_small",
+          "amount": 5
+        },
+        {
+          "ref": "enemy/crystal_brute/idle/idle.png",
+          "name": "crystal_brute_idle"
+        },
+        {
+          "ref": "enemy/crystal_brute/walk/crystal_brute_walk.png",
+          "name": "crystal_brute_walk",
+          "amount": 6
+        },
+        {
+          "ref": "enemy/crystal_brute/attack/attack.png",
+          "name": "crystal_brute_attack",
+          "amount": 20
+        },
+        {
+          "ref": "enemy/crystal_brute/die/crystal_brute_die.png",
+          "name": "crystal_brute_die"
+        },
+        {
+          "ref": "enemy/crystal_brute/spike/spike.png",
+          "name": "crystal_spike",
+          "amount": 11
+        },
+        {
+          "ref": "enemy/crystal_spider/idle/idle.png",
+          "name": "crystal_spider_idle"
+        },
+        {
+          "ref": "enemy/crystal_spider/walk/walk.png",
+          "name": "crystal_spider_walk",
+          "amount": 4
+        },
+        {
+          "ref": "enemy/crystal_spider/attack/attack.png",
+          "name": "crystal_spider_attack"
+        },
+        {
+          "ref": "enemy/crystal_spider/die/die.png",
+          "name": "crystal_spider_die"
+        },
+        {
+          "ref": "other/shadow/shadow.png",
+          "name": "shadow"
+        },
+        {
+          "ref": "world/forest/floor/floor.png",
+          "name": "forest_floor",
+          "amount": 8
+        },
+        {
+          "ref": "world/forest/floor/floor_elevator.png",
+          "name": "forest_floor_elevator"
+        },
+        {
+          "ref": "world/forest/set_pieces/tree/tree.png",
+          "name": "set_pieces_tree",
+          "amount": 8
+        },
+        {
+          "ref": "world/forest/set_pieces/enemy/enemy.png",
+          "name": "set_pieces_enemy",
+          "amount": 7
+        },
+        {
+          "ref": "world/forest/set_pieces/health/health.png",
+          "name": "set_pieces_health",
+          "amount": 5
+        },
+        {
+          "ref": "other/medkit/medkit.png",
+          "name": "medkit",
+          "amount": 2
+        },
+        {
+          "ref": "other/keys/keys.png",
+          "name": "keys",
+          "amount": 6
+        },
+        {
+          "ref": "ui/HUD.png",
+          "name": "HUD"
+        }
+      ],
+      "AUDIO": [
+        {
+          "ref": "enemy/crystal_spider/attack.wav",
+          "name": "crystal_spider_attack_audio"
+        },
+        {
+          "ref": "enemy/crystal_spider/death.wav",
+          "name": "crystal_spider_death_audio"
+        },
+        {
+          "ref": "enemy/crystal_spider/hurt.wav",
+          "name": "crystal_spider_hurt_audio"
+        },
+        {
+          "ref": "enemy/crystal_spider/walk.wav",
+          "name": "crystal_spider_walk_audio"
+        },
+        {
+          "ref": "enemy/crystal_brute/spike_spawn.wav",
+          "name": "crystal_brute_spike_spawn_audio"
+        },
+        {
+          "ref": "enemy/crystal_brute/walk.wav",
+          "name": "crystal_brute_walk_audio"
+        },
+        {
+          "ref": "enemy/crystal_brute/hurt.wav",
+          "name": "crystal_brute_hurt_audio"
+        },
+        {
+          "ref": "enemy/crystal_brute/death.wav",
+          "name": "crystal_brute_death_audio"
+        },
+        {
+          "ref": "forest_stage/background.ogg",
+          "name": "forest_stage_background_audio"
+        },
+        {
+          "ref": "elevator/move.wav",
+          "name": "elevator_move_audio"
+        },
+        {
+          "ref": "elevator/mount.wav",
+          "name": "elevator_mount_audio"
+        }
+      ]
+    },
+    "STAGE_TWO": {
+      "IMAGES": [
+        {
+          "ref": "boss/bomb/judgement_bomb.png",
+          "name": "judgement_bomb",
+          "amount": 11
+        },
+        {
+          "ref": "boss/bomb/explosion/judgement_explosion.png",
+          "name": "judgement_explosion",
+          "amount": 8
+        },
+        {
+          "ref": "boss/move/judgement_move.png",
+          "name": "judgement_move",
+          "amount": 4
+        },
+        {
+          "ref": "boss/spawn/judgement_spawn.png",
+          "name": "judgement_spawn",
+          "amount": 21
+        },
+        {
+          "ref": "boss/attack/judgement_attack.png",
+          "name": "judgement_attack",
+          "amount": 6
+        },
+        {
+          "ref": "boss/laser/judgement_laser.png",
+          "name": "judgement_laser",
+          "amount": 13
+        },
+        {
+          "ref": "boss/attack/bullet/judgement_bullet.png",
+          "name": "judgement_bullet",
+          "amount": 4
+        },
+        {
+          "ref": "boss/death/judgement_death.png",
+          "name": "judgement_death",
+          "amount": 21
+        },
+        {
+          "ref": "boss/laser/bullet/judgement_laser_bullet.png",
+          "name": "judgement_laser_bullet"
+        },
+        {
+          "ref": "ui/interaction_bar/interaction_bar.png",
+          "name": "interaction_bar",
+          "amount": 4
+        },
+        {
+          "ref": "world/boss/boss_room.png",
+          "name": "map_ground_second"
+        },
+        {
+          "ref": "other/shadow/shadow.png",
+          "name": "shadow"
+        }
+      ],
+      "AUDIOS": [
+        {
+          "ref": "elevator/move.wav",
+          "name": "elevator_move_audio"
+        },
+        {
+          "ref": "elevator/mount.wav",
+          "name": "elevator_mount_audio"
+        },
+        {
+          "ref": "boss/scream.wav",
+          "name": "judgement_scream_audio"
+        },
+        {
+          "ref": "boss/hurt.wav",
+          "name": "judgement_hurt_audio"
+        },
+        {
+          "ref": "boss/bullet.wav",
+          "name": "judgement_bullet_audio"
+        },
+        {
+          "ref": "boss/laser.wav",
+          "name": "judgement_laser_audio"
+        },
+        {
+          "ref": "boss/bomb_summon.wav",
+          "name": "judgement_bomb_summon_audio"
+        },
+        {
+          "ref": "boss/smash_ground.wav",
+          "name": "judgement_smash_ground_audio"
+        },
+        {
+          "ref": "boss/death.wav",
+          "name": "judgement_death_audio"
+        },
+        {
+          "ref": "boss/spawn.wav",
+          "name": "judgement_spawn_audio"
+        },
+        {
+          "ref": "boss_stage/background.ogg",
+          "name": "boss_stage_background_audio"
+        }
+      ]
+    }
+  }
+}
