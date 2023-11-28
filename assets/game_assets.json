@@ -209,10 +209,6 @@
           "name": "player_medkit_use_audio"
         },
         {
-          "ref": "player/coin/pickup.wav",
-          "name": "player_coin_pickup_audio"
-        },
-        {
           "ref": "player/gun_fire.wav",
           "name": "player_gun_fire_audio"
         },
@@ -434,9 +430,18 @@
     "STAGE_TWO": {
       "IMAGES": [
         {
-          "ref": "boss/bomb/judgement_bomb.png",
-          "name": "judgement_bomb",
-          "amount": 11
+          "ref": "boss/bomb/spawn/spawn.png",
+          "name": "judgement_bomb_spawn",
+          "amount": 4
+        },
+        {
+          "ref": "boss/bomb/move/move.png",
+          "name": "judgement_bomb_move"
+        },
+        {
+          "ref": "boss/bomb/death/death.png",
+          "name": "judgement_bomb_death",
+          "amount": 3
         },
         {
           "ref": "boss/bomb/explosion/judgement_explosion.png",
@@ -472,6 +477,11 @@
           "ref": "boss/death/judgement_death.png",
           "name": "judgement_death",
           "amount": 21
+        },
+        {
+          "ref": "boss/dash/judgement_dash.png",
+          "name": "judgement_dash",
+          "amount": 4
         },
         {
           "ref": "boss/laser/bullet/judgement_laser_bullet.png",

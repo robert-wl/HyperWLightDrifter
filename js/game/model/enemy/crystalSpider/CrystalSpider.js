@@ -8,7 +8,6 @@ import CrystalSpiderIdleState from './state/CrystalSpiderIdleState.js';
 import { Vector } from '../../utility/interfaces/Vector.js';
 import RandomHelper from '../../utility/helper/RandomHelper.js';
 import DrawHelper from '../../utility/helper/DrawHelper.js';
-import { Box } from '../../utility/interfaces/Box.js';
 import AudioManager from '../../utility/manager/AudioManager.js';
 import Shadow from '../../shadow/Shadow.js';
 export default class CrystalSpider extends Enemy {
@@ -51,8 +50,7 @@ export default class CrystalSpider extends Enemy {
     }
     debugMode() {
         DrawHelper.setFillStyle('rgb(255, 255, 0, 0.5)');
-        const { x, y, w, h } = this.hitbox.getPoints(this.position, this.width, this.height);
-        DrawHelper.drawRectangle(new Box(x, y, w, h));
+        DrawHelper.drawRectangle(this.hitbox.getPoints(this.position, this.width, this.height));
     }
     switchState(newState) {
         this.currState.exitState(this);
