@@ -178,7 +178,7 @@
             </button>
         </div>
         <div class='navbar-container-right'>
-            <button class='pointer'>
+            <button class='pointer' onclick="window.location.href='/html/game.html'">
                 <a href='game.html'>
                     PLAY DEMO
                 </a>
@@ -734,7 +734,7 @@
                step='0.001' type='range'
                value='50' />
         <div class='boss-marker first'>
-            <div class='boss-image first hidden'>
+            <div class='boss-image first'>
                 <h3>
                     The Sentinels
                 </h3>
@@ -743,7 +743,7 @@
             <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
         </div>
         <div class='boss-marker second'>
-            <div class='boss-image second hidden'>
+            <div class='boss-image second'>
                 <h3>
                     The Hierophant
                 </h3>
@@ -752,7 +752,7 @@
             <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
         </div>
         <div class='boss-marker third'>
-            <div class='boss-image third hidden'>
+            <div class='boss-image third'>
                 <h3>
                     The Emperor
                 </h3>
@@ -761,7 +761,7 @@
             <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
         </div>
         <div class='boss-marker fourth'>
-            <div class='boss-image fourth hidden'>
+            <div class='boss-image fourth'>
                 <h3>
                     The Hanged Man
                 </h3>
@@ -770,7 +770,7 @@
             <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
         </div>
         <div class='boss-marker fifth'>
-            <div class='boss-image fifth hidden'>
+            <div class='boss-image fifth'>
                 <h3>
                     Judgement
                 </h3>
@@ -787,6 +787,7 @@
         </h3>
         <div class='ost-content'>
             <div class='content-left'>
+                <canvas id='audio-progress'></canvas>
                 <img alt='' src='../assets/web/ost/ost.png'>
             </div>
             <div class='content-right'>

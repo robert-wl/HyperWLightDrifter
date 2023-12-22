@@ -21,6 +21,10 @@
         position: relative;
         width: 30vw;
 
+        .audio-progress {
+          position: absolute;
+        }
+
         > img {
           width: 100%;
           height: 100%;

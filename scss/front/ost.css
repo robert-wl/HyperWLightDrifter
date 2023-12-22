@@ -31,6 +31,9 @@
   position: relative;
   width: 30vw;
 }
+.ost-container .inner-container-ost .ost-content .content-left .audio-progress {
+  position: absolute;
+}
 .ost-container .inner-container-ost .ost-content .content-left > img {
   width: 100%;
   height: 100%;
