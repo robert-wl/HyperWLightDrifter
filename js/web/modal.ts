@@ -1,4 +1,4 @@
-$(() => {
+$(function () {
     const keys = {
         w: 'key-w',
         a: 'key-a',
@@ -10,8 +10,10 @@ $(() => {
         q: 'key-q',
         p: 'key-p',
     };
+
     const modal = $('#how-to-play-modal');
     const innerContainer = $('.modal-inner-container');
+
     $('#how-to-play').on('click', () => {
         $('#selection-modal').css('display', 'none');
         $('#settings-modal').css('display', 'none');
@@ -19,21 +21,25 @@ $(() => {
         $('.modal-inner-first').removeClass('hidden');
         $('.modal-inner-second').addClass('hidden');
         $('html').css('overflow', 'hidden');
+
         modal.css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '1');
     });
 
     $('.modal-close-button').on('click', async () => {
         await modal.css('opacity', '0').css('animation', 'fadeOut 0.25s ease-in-out').promise();
+
         modal.on('animationend', () => {
             modal.css('display', 'none');
             modal.off();
         });
+
         $('html').css('overflow', 'auto');
     });
 
     $('.arrow-left-modal').on('click', () => {
         innerContainer.toggleClass('hidden');
     });
+
     $('.arrow-right-modal').on('click', () => {
         innerContainer.toggleClass('hidden');
     });

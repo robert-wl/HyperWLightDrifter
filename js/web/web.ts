@@ -212,6 +212,7 @@ function mapBossHandler() {
     bossImages.animate({
         opacity: 0,
     });
+
     markers.on('click', (marker) => {
         bossImages.animate(
             {
@@ -226,17 +227,4 @@ function mapBossHandler() {
             500,
         );
     });
-    // for (const marker of markers) {
-    //     marker.getElementsByClassName('skull')[0].addEventListener('click', () => {
-    //         const current = marker.getElementsByClassName('boss-image')[0];
-    //
-    //         if (!current.classList.contains('hidden')) {
-    //             bossImages.addClass('hidden');
-    //             return;
-    //         }
-    //
-    //         bossImages.addClass('hidden');
-    //         current.classList.remove('hidden');
-    //     });
-    // }
 }

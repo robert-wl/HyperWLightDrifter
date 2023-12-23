@@ -3,6 +3,14 @@ interface AudioVisualizerConstructor {
 }
 
 export default class AudioVisualizer {
+    private _audio: HTMLAudioElement;
+    private _canvas: HTMLCanvasElement;
+    private _ctx: CanvasRenderingContext2D;
+    private readonly analyser: AnalyserNode;
+    private readonly bufferLength: number;
+    private readonly dataArray: Uint8Array;
+    private readonly barWidth: number;
+
     constructor({ source }: AudioVisualizerConstructor) {
         this._audio = new Audio(source);
 
@@ -10,7 +18,7 @@ export default class AudioVisualizer {
         this._ctx = this._canvas.getContext('2d')!;
 
         const audioCtx = new window.AudioContext();
-        let audioSource;
+        let audioSource: MediaElementAudioSourceNode;
 
         audioSource = audioCtx.createMediaElementSource(this._audio);
         this.analyser = audioCtx.createAnalyser();
@@ -25,8 +33,6 @@ export default class AudioVisualizer {
         this.animateCanvas();
     }
 
-    private _audio: HTMLAudioElement;
-
     get audio(): HTMLAudioElement {
         return this._audio;
     }
@@ -34,8 +40,6 @@ export default class AudioVisualizer {
     set audio(value: HTMLAudioElement) {
         this._audio = value;
     }
-
-    private _canvas: HTMLCanvasElement;
 
     get canvas(): HTMLCanvasElement {
         return this._canvas;
@@ -45,8 +49,6 @@ export default class AudioVisualizer {
         this._canvas = value;
     }
 
-    private _ctx: CanvasRenderingContext2D;
-
     get ctx(): CanvasRenderingContext2D {
         return this._ctx;
     }
@@ -54,14 +56,6 @@ export default class AudioVisualizer {
     set ctx(value: CanvasRenderingContext2D) {
         this._ctx = value;
     }
-
-    private readonly analyser: AnalyserNode;
-
-    private readonly bufferLength: number;
-
-    private readonly dataArray: Uint8Array;
-
-    private readonly barWidth: number;
 
     public playAudio() {
         this._audio.play().then();
