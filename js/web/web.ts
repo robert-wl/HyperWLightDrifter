@@ -67,6 +67,8 @@ function jumbotronHandler() {
     });
 }
 
+let translate = 0;
+
 function carouselHandler() {
     $('.arrow-right').on('click', () => {
         const carousel = $('.inner-container-carousel');

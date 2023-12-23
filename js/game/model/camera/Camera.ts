@@ -302,7 +302,7 @@ export default class Camera {
     checkElevator(object: CombinedPiece): object is Elevator {
         return object instanceof Elevator;
     }
-
+    
     updatePlayer(yAbsPosition: number, colliders: Collider[]) {
         const { player } = this.game;
 

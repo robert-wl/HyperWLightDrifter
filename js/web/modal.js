@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-$(() => {
+$(function () {
     const keys = {
         w: 'key-w',
         a: 'key-a',
@@ -31,7 +31,7 @@ $(() => {
         $('html').css('overflow', 'hidden');
         modal.css('display', 'flex').css('animation', 'fadeIn 0.25s ease-in-out').css('opacity', '1');
     });
-    $('.modal-close-button').on('click', () => __awaiter(void 0, void 0, void 0, function* () {
+    $('.modal-close-button').on('click', () => __awaiter(this, void 0, void 0, function* () {
         yield modal.css('opacity', '0').css('animation', 'fadeOut 0.25s ease-in-out').promise();
         modal.on('animationend', () => {
             modal.css('display', 'none');

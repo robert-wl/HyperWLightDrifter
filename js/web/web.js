@@ -54,6 +54,7 @@ function jumbotronHandler() {
         $('#jumbotron-image-front').css('transform', `translate(${-relativeX / 5}px, ${-50 - relativeY / 5}px) scale(1.1)`);
     });
 }
+let translate = 0;
 function carouselHandler() {
     $('.arrow-right').on('click', () => {
         const carousel = $('.inner-container-carousel');
