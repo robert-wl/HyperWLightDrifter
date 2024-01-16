@@ -7,9 +7,9 @@
         name='viewport'
     />
     <title>Hyper WLight Drifter</title>
-    <link href='../assets/web/logo.png' rel='icon' type='image/png'>
+    <link href='assets/web/logo.png' rel='icon' type='image/png'>
     <link
-        href='../scss/game/game.css'
+        href='scss/game/game.css'
         rel='stylesheet'
     />
 </head>
@@ -17,7 +17,7 @@
 <div class='modal-container' id='how-to-play-modal'>
     <div class='modal-inner-container modal-inner-first'>
         <div class='modal-content-image'>
-            <img alt='' class='modal-image' src='../assets/web/modal/modal_background.png'>
+            <img alt='' class='modal-image' src='assets/web/modal/modal_background.png'>
         </div>
         <div class='modal-content'>
             <div class='modal-left'>
@@ -34,7 +34,7 @@
                         >
                     </div>
                 </header>
-                <img alt='' src='../assets/web/modal/input_image.png'>
+                <img alt='' src='assets/web/modal/input_image.png'>
                 <button class='clickable modal-close-button pointer'>
                     Close
                 </button>
@@ -67,7 +67,7 @@
     </div>
     <div class='modal-inner-container modal-inner-second hidden'>
         <div class='modal-content-image'>
-            <img alt='' class='modal-image' src='../assets/web/modal/modal_background.png'>
+            <img alt='' class='modal-image' src='assets/web/modal/modal_background.png'>
         </div>
         <div class='modal-content'>
             <div class='modal-left'>
@@ -84,7 +84,7 @@
                         >
                     </div>
                 </header>
-                <img alt='' src='../assets/web/modal/input_image.png'>
+                <img alt='' src='assets/web/modal/input_image.png'>
                 <button class='clickable modal-close-button pointer'>
                     Close
                 </button>
@@ -154,7 +154,7 @@
 <section class='navbar section' id='navbar'>
     <div class='navbar-container'>
         <div class='navbar-container-left'>
-            <img alt='' src='../assets/web/jumbotron/title.png'>
+            <img alt='' src='assets/web/jumbotron/title.png'>
             <button>
                 <a href='index.html'>
                     HOME
@@ -210,7 +210,7 @@
                 <img
                     alt=''
                     id='player-preview'
-                    src='../assets/ui/player_select/player-red.png'
+                    src='assets/ui/player_select/player-red.png'
                 />
                 <div class='clickable arrow-right' id='image-arrow-right'>></div>
             </main>
@@ -311,13 +311,13 @@
             alt=''
             height='1080'
             id='opening-screen'
-            src='../assets/ui/start.png'
+            src='assets/ui/start.png'
             width='1920'
         />
         <video
             id='ending-screen'
         >
-            <source src='../assets/ui/ending.mp4' type='video/mp4' />
+            <source src='assets/ui/ending.mp4' type='video/mp4' />
         </video>
         <canvas
             height='1080'
@@ -333,10 +333,10 @@
     src='https://code.jquery.com/jquery-3.7.0.js'
 ></script>
 <script
-    src='../js/index.js'
+    src='js/index.js'
     type='module'
 ></script>
-<script src='../js/web/modal.js' type='module'></script>
+<script src='js/web/modal.js' type='module'></script>
 <script>
     console.log(localStorage.getItem('finished'));
     if (localStorage.getItem('finished') === 'true') {
