@@ -1,22 +1,17 @@
 # Hyper WLight Drifter
-
-A selfremake of the indie game Hyper Light Drifter in web form using like HTML, TS, and SCSS. 
-This project uses the original game's asset in order to create a similar game and mechanics.
+A self-remake of the indie game Hyper Light Drifter in web form using HTML, TypeScript, and SCSS. This project uses the original game's assets to create a similar game and mechanics.
 
 ## Additional Contents
-The first page of the website consists of a HTML page that is made to advertise the game, several elements like
-- Audio Player with the game's soundtrack
-- GIFs advertising the game
-- Videos promoting the game
-are included in the website.
+The first page of the website includes elements such as:
+- An audio player with the game's soundtrack.
+- GIFs advertising the game.
+- Videos promoting the game.
 
-
-In the game itself, I added/remade several new elements such as:
-- Coin based system based on the original game's modules system
-- Infinite map along with randomly generated structures
-- Cheat codes
-- and more!
+In the game itself, several new elements have been added or remade, including:
+- A coin-based system based on the original game's modules system.
+- An infinite map with randomly generated structures.
+- Cheat codes.
+- And more!
 
 ## Website
-The deployed version of the website can be previewed here:
-[Hyper WLight Drifter](https://yahkerobertkertasnya.github.io/HyperWLightDrifter/)
+The deployed version of the website can be previewed [here](https://github.com/yahkerobertkertasnya/HyperWLightDrifter/tree/master?tab=readme-ov-file).
