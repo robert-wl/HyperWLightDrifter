@@ -51,14 +51,16 @@ export default class AssetManager {
             this.assetAmount++;
         }
 
+        const promises: Promise<void>[] = [];
         for (const asset of assets) {
             if (asset.isAudio) {
-                await this.assetLoadAudio(asset);
+                promises.push(this.assetLoadAudio(asset));
                 continue;
             }
-            await this.assetLoadImage(asset, outfit);
+            promises.push(this.assetLoadImage(asset, outfit));
         }
-        console.log(this.assetList);
+
+        await Promise.all(promises);
 
         if (this.showLoading) this.htmlHandler.notify('loadingModal:close');
     }

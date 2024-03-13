@@ -1,0 +1,885 @@
+<!doctype html>
+<!--suppress HtmlFormInputWithoutLabel -->
+<html lang='en'>
+<head>
+    <meta charset='UTF-8' />
+    <meta
+        content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'
+        name='viewport'
+    />
+    <title>Hyper WLight Drifter</title>
+    <link href='../assets/web/logo.png' rel='icon' type='image/png'>
+    <link
+        href='../scss/index.css'
+        rel='stylesheet'
+    />
+</head>
+<body id='scroll-body'>
+<img alt='' class='cursor' id='cursor' src='../assets/web/cursor/cursor_normal.png'>
+<img alt='' class='background-color one' src='../assets/web/background/color.png'>
+<img alt='' class='background-color two' src='../assets/web/background/color.png'>
+<img alt='' class='background-color three' src='../assets/web/background/color.png'>
+<img alt='' class='background-color four' src='../assets/web/background/color.png'>
+<img alt='' class='background-color five' src='../assets/web/background/color.png'>
+<img alt='' class='background-color six' src='../assets/web/background/color.png'>
+<img alt='' class='background-color seven' src='../assets/web/background/color.png'>
+<img alt='' class='background-color eight' src='../assets/web/background/color.png'>
+<img alt='' class='background-color nine' src='../assets/web/background/color.png'>
+<div class='modal-container' id='how-to-play-modal'>
+    <div class='modal-inner-container modal-inner-first'>
+        <div class='modal-content-image'>
+            <img alt='' class='modal-image' src='../assets/web/modal/modal_background.png'>
+        </div>
+        <div class='modal-content'>
+            <div class='modal-left'>
+                <header>
+                    <div
+                        class='clickable arrow-left-modal arrow-left pointer'
+                    >
+                        <
+                    </div>
+                    <span> How To Play </span>
+                    <div
+                        class='clickable arrow-right-modal arrow-right pointer'
+                    >
+                        >
+                    </div>
+                </header>
+                <img alt='' src='../assets/web/modal/input_image.png'>
+                <button class='clickable modal-close-button pointer'>
+                    Close
+                </button>
+            </div>
+            <div class='modal-right'>
+                <ul>
+                    <li>
+                        <p>•</p>
+                        <p>Explore the infinite procedural world</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Conquer enemies and collect their drops</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Amass coins from vanquished foes</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Collect medkits and heal yourself</p>
+                    </li>
+                    <li>
+                        <p>•</p>
+                        <p>Descend through the elevator</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class='modal-inner-container modal-inner-second hidden'>
+        <div class='modal-content-image'>
+            <img alt='' class='modal-image' src='../assets/web/modal/modal_background.png'>
+        </div>
+        <div class='modal-content'>
+            <div class='modal-left'>
+                <header>
+                    <div
+                        class='clickable arrow-left-modal arrow-left pointer'
+                    >
+                        <
+                    </div>
+                    <span> &nbsp;Controls&nbsp; </span>
+                    <div
+                        class='clickable arrow-right-modal arrow-right pointer'
+                    >
+                        >
+                    </div>
+                </header>
+                <img alt='' src='../assets/web/modal/input_image.png'>
+                <button class='clickable modal-close-button pointer'>
+                    Close
+                </button>
+            </div>
+            <div class='modal-right-second-page'>
+                <div class='modal-right-first'>
+                    <ul>
+                        <li>
+                            <p>Move</p>
+                            <div>
+                                <p class='key' id='key-w'>W</p>
+                                <p class='key' id='key-a'>A</p>
+                                <p class='key' id='key-s'>S</p>
+                                <p class='key' id='key-d'>D</p>
+                            </div>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p>Attack</p>
+                            <p class='key' id='key-left'>LEFT</p>
+                        </li>
+                        <li>
+                            <p>Aim</p>
+                            <p class='key' id='key-right'>RIGHT</p>
+                        </li>
+                        <li>
+                            <p>Grenade</p>
+                            <p class='key' id='key-c'>C</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class='modal-right-second'>
+                    <ul>
+                        <li>
+                            <p>Dash</p>
+                            <p class='key' id='key-space'>SPACE</p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                        <li>
+                            <p>Heal</p>
+                            <p class='key' id='key-q'>Q</p>
+                        </li>
+                        <li>
+                            <p>Interact</p>
+                            <p class='key' id='key-e'>E</p>
+                        </li>
+                        <li>
+                            <p>Pause</p>
+                            <p class='key' id='key-p'>P</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class='navbar section' id='navbar'>
+    <div class='navbar-container'>
+        <div class='navbar-container-left'>
+            <img alt='' src='../assets/web/jumbotron/title.png'>
+            <button>
+                <a class='pointer' href='index.html'>
+                    HOME
+                    <div class='underline'></div>
+                </a>
+            </button>
+            <button class='pointer' id='how-to-play'>
+                HOW TO PLAY
+                <div class='underline'></div>
+            </button>
+        </div>
+        <div class='navbar-container-right'>
+            <button class='pointer' onclick="window.location.href='game.html'">
+                <a href='game.html'>
+                    PLAY DEMO
+                </a>
+            </button>
+        </div>
+    </div>
+</section>
+<section class='video-container section'>
+    <div class='jumbotron-holder'>
+        <img alt='' id='jumbotron-image-back' src='../assets/web/jumbotron/image_back.png'>
+        <img alt='' id='jumbotron-image-middle' src='../assets/web/jumbotron/image_middle.png'>
+        <img alt='' id='jumbotron-image-front' src='../assets/web/jumbotron/image_front.png'>
+    </div>
+    <div class='video-cover'>
+    </div>
+    <div class='video-text'>
+        <img alt='' src='../assets/web/jumbotron/title.png'>
+        <!--        <a class='try-demo-button' href='game.html'>TRY DEMO</a>-->
+    </div>
+</section>
+<section class='trailer section'>
+    <h3>WATCH TRAILER</h3>
+    <iframe allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            allowfullscreen
+            class='pointer' frameborder='0'
+            height='630'
+            id='iframe' src='https://www.youtube.com/embed/nWufEJ1Ava0?si=XJZkwktmk2fYI12I'
+            title='YouTube video player'
+            width='1120'></iframe>
+
+</section>
+<section class='latest-news-container section'>
+    <div class='title-container'>
+        <h3>
+            LATEST NEWS
+        </h3>
+    </div>
+    <div class='horizontal-news-container'>
+        <div class='news-container pointer'>
+            <img alt='' src='../assets/web/news/news_1.png'>
+            <div class='news-content'>
+                <div class='header'>
+                    <p>
+                        3/11/2016
+                    </p>
+                    <p>
+                        ANNOUNCEMENT
+                    </p>
+                </div>
+                <div class='content'>
+                    <h3>
+                        Fast Collision
+                    </h3>
+                    <p>
+                        Hi everyone,
+
+                        Our Fast Collision change is now live, along with a few bug fixes. If you spot any issues
+                        with
+                        the build, please send an email to support@heart-machine.com detailing the problem along
+                        with
+                        your hardware specs and OS.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class='news-container pointer'>
+            <img alt='' src='../assets/web/news/news_2.png'>
+            <div class='news-content'>
+                <div class='header'>
+                    <p>
+                        13/4/2016
+                    </p>
+                    <p>
+                        ANNOUNCEMENT
+                    </p>
+                </div>
+                <div class='content'>
+                    <h3>
+                        HLD Original Soundtrack now available!
+                    </h3>
+                    <p>
+                        Disasterpeace just spent the past couple of weeks mastering all the music from the game into
+                        one
+                        neat package of 28 tracks.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class='news-container pointer'>
+            <img alt='' src='../assets/web/news/news_3.png'>
+            <div class='news-content'>
+                <div class='header'>
+                    <p>
+                        7/4/2016
+                    </p>
+                    <p>
+                        PATCH
+                    </p>
+                </div>
+                <div class='content'>
+                    <h3>
+                        The Speedy Patch
+                    </h3>
+                    <p>
+                        Hello Drifters!
+
+                        We've been hard at work since yesterday's release, with many life-saving updates for you.
+                        Thank
+                        you for all the support and well-wishes. We'll continue to monitor the forums to hear what
+                        you're enjoying and any further fixes required.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class='score-container section'>
+    <div class='score-content'>
+        <div class='score-container'>
+            <div class='score pointer'>
+                <h3>90/100</h3>
+                <p>GAMEGRIN</p>
+                <div class='score-fill'>
+                </div>
+            </div>
+            <div class='score pointer'>
+                <h3>9/10</h3>
+                <p>NINTENDO LIFE</p>
+                <div class='score-fill'>
+                </div>
+            </div>
+            <div class='score pointer'>
+                <h3>4/5</h3>
+                <p>EUROGAMER</p>
+                <div class='score-fill'>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='score-content'>
+        <img alt='' src='../assets/web/score/score.png'>
+    </div>
+    <div class='score-content'>
+        <div class='score-container'>
+            <div class='score pointer'>
+                <h3>8.5/10</h3>
+                <p>POLYGON.COM</p>
+                <div class='score-fill'>
+                </div>
+            </div>
+            <div class='score pointer'>
+                <h3>9.5/10</h3>
+                <p>GAMEINFORMER</p>
+                <div class='score-fill'>
+                </div>
+            </div>
+            <div class='score pointer'>
+                <h3>90/100</h3>
+                <p>IGN</p>
+                <div class='score-fill'>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class='about-container section'>
+    <div class='inner-container'>
+        <div class='images-container'>
+            <div class='image-box-first'>
+                <img alt='' src='../assets/web/about/gif_1.gif'>
+                <img alt='' src='../assets/web/about/gif_2.gif'>
+            </div>
+        </div>
+        <div class='about-content'>
+            <h1>
+                ABOUT
+            </h1>
+            <div class='line'></div>
+            <p>
+                Echoes of a dark and violent past resonate throughout a savage land, steeped in treasure and blood.
+                Hyper Light Drifter is an action adventure RPG in the vein of the best 16­bit classics, with
+                modernized
+                mechanics and designs on a much grander scale
+            </p>
+            <p>
+                Drifters of this world are the collectors of forgotten knowledge, lost technologies and broken
+                histories. Our Drifter is haunted by an insatiable illness, traveling further into the lands of
+                Buried
+                Time, hoping to discover a way to quiet the vicious disease.
+            </p>
+        </div>
+    </div>
+    <div class='inner-container'>
+        <div class='about-content'>
+            <h1>
+                FEATURES
+            </h1>
+            <div class='line'></div>
+            <p>
+                From each character to subtle background elements, everything is lovingly hand-animated.
+            </p>
+            <p>
+                Easy to pick up, difficult to master; enemies are vicious and numerous, hazards will easily crush your
+                frail body, and friendly faces remain rare.
+            </p>
+            <p>
+                Upgrade weapons, learn new skills, discover equipment and traverse a dark, detailed world with
+                branching paths and secrets abound.
+            </p>
+        </div>
+        <div class='images-container'>
+            <div class='image-box'>
+                <img alt='' class='drifter-attack-image' src='../assets/web/about/gif_3.gif'>
+            </div>
+        </div>
+    </div>
+    <div class='inner-container'>
+        <div class='images-container'>
+            <div class='image-box'>
+                <img alt='' src='../assets/web/about/gif_4.gif'>
+            </div>
+        </div>
+        <div class='about-content'>
+            <h1>
+                OVERVIEW
+            </h1>
+            <div class='line'></div>
+            <p>
+                Rip through enemies with responsive, fun combat; engaging and brutal. Upgrade weapons, discover new
+                equipment and trek deeper than ever.
+            </p>
+            <p>
+                Traverse a dark, detailed and interconnected world with alternate paths and secret loot. Miyazaki's
+                films
+                have taught me that beautiful animation and design add life to a world. From characters to background
+                elements, everything is lovingly crafted while I hum show-tunes and squint suspiciously at the
+                flickering pixels until they perform as intended.
+            </p>
+            <p>
+                A challenge - The game is accessible and easy to pick up, but difficult to master and complete; enemies
+                and hazards become more vicious and numerous, so players must use clever tactics to avoid death.
+            </p>
+        </div>
+    </div>
+</section>
+<section class='main-character-container section'>
+    <div class='image-cover'>
+    </div>
+    <div class='main-character-text-container'>
+        <h1>MAIN CHARACTER</h1>
+        <p>
+            The Drifter, a member of the feline Blu species who has been infected with a strange terminal
+            disease. The Drifter came to the Land of Light from the Northern Realms and travels the new continent in
+            search of a cure.
+        </p>
+        <p>
+            The Drifter is well versed in multiple combat abilities. He is more than capable with a sword, and with
+            any
+            form of energy-based firearm.
+        </p>
+        <p>
+            “A lonely soul, in a desperate search.“
+        </p>
+    </div>
+</section>
+<section class='world-container section'>
+    <div class='inner-container-carousel'>
+        <h3>
+            EXPLORE THE WORLD OF LIGHT
+        </h3>
+        <div class='content active'>
+            <div class='image-carousel'>
+                <div class='image-box'>
+                    <img alt='' src='../assets/web/carousel/carousel_1.png'>
+                    <div class='arrow arrow-left pointer'>
+                        <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z'
+                                fill='white' />
+                        </svg>
+                    </div>
+                    <div class='arrow arrow-right pointer'>
+                        <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z'
+                                fill='white' />
+                        </svg>
+                    </div>
+                </div>
+                <div class='image-list'>
+                    <div class='image-list-box bordered first-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_1.png'>
+                    </div>
+                    <div class='image-list-box second-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_2.png'>
+                    </div>
+                    <div class='image-list-box third-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_3.png'>
+                    </div>
+                    <div class='image-list-box fourth-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_4.png'>
+                    </div>
+                </div>
+            </div>
+            <div class='image-description'>
+                <h3>
+                    The Midnight Woods
+                </h3>
+                <h5>
+                    Difficulty
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
+                    </svg>
+
+                </h5>
+                <p>
+                    The Crystal Forest or Midnight Woods is a biome on the West area of the land of light.
+
+                </p>
+                <p>
+                    It is filled with various green regenerative Hard Light Crystals. The crystals seem infectious, as
+                    the inhabitors of the forest can become encased in them.Various Crystal Beasts seem to be the
+                    outcome of being infected by these crystals.
+                </p>
+            </div>
+        </div>
+        <div class='content'>
+            <div class='image-carousel'>
+                <div class='image-box'>
+                    <img alt='' src='../assets/web/carousel/carousel_2.png'>
+                    <div class='arrow arrow-left pointer'>
+                        <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z'
+                                fill='white' />
+                        </svg>
+                    </div>
+                    <div class='arrow arrow-right pointer'>
+                        <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z'
+                                fill='white' />
+                        </svg>
+                    </div>
+                </div>
+                <div class='image-list'>
+                    <div class='image-list-box first-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_1.png'>
+                    </div>
+                    <div class='image-list-box bordered second-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_2.png'>
+                    </div>
+                    <div class='image-list-box third-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_3.png'>
+                    </div>
+                    <div class='image-list-box fourth-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_4.png'>
+                    </div>
+                </div>
+            </div>
+            <div class='image-description'>
+                <h3>
+                    The Divine Path
+                </h3>
+                <h5>
+                    Difficulty
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
+                    </svg>
+
+                </h5>
+                <p>
+                    The Mountains, also called Divine Path, the North and the Crystal Cliffs, are the northern area of
+                    the land of light.
+
+                </p>
+                <p>
+                    The Mountains are a collection of snowy mountaintops, abandoned structures, and underground cave
+                    systems. The area is inhabited by the Bird People, a tribe of Vultures.
+                    The Vultures, Vulture Acolytes, and Vulture Shamans are enemies exclusive to this area.
+                </p>
+            </div>
+        </div>
+        <div class='content'>
+            <div class='image-carousel'>
+                <div class='image-box'>
+                    <img alt='' src='../assets/web/carousel/carousel_3.png'>
+                    <div class='arrow arrow-left pointer'>
+                        <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z'
+                                fill='white' />
+                        </svg>
+                    </div>
+                    <div class='arrow arrow-right pointer'>
+                        <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z'
+                                fill='white' />
+                        </svg>
+                    </div>
+                </div>
+                <div class='image-list'>
+                    <div class='image-list-box first-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_1.png'>
+                    </div>
+                    <div class='image-list-box second-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_2.png'>
+                    </div>
+                    <div class='image-list-box bordered third-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_3.png'>
+                    </div>
+                    <div class='image-list-box fourth-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_4.png'>
+                    </div>
+                </div>
+            </div>
+            <div class='image-description'>
+                <h3>
+                    The Eastern Watershelf
+                </h3>
+                <h5>
+                    Difficulty
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='transparent' r='10' stroke='white' />
+                    </svg>
+
+                </h5>
+                <p>
+                    The Eastern Watershelf or lake is a biome on the East area of the land of light.
+
+                </p>
+                <p>
+                    The Lake requires hopping between various decayed platforms, and the player is primarily dependent
+                    on moving platforms with large safe areas in between. Along with the moving platforms, the player
+                    goes underground to skip between areas.
+                </p>
+            </div>
+        </div>
+        <div class='content'>
+            <div class='image-carousel'>
+                <div class='image-box'>
+                    <img alt='' src='../assets/web/carousel/carousel_4.png'>
+                    <div class='arrow arrow-left pointer'>
+                        <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z'
+                                fill='white' />
+                        </svg>
+                    </div>
+                    <div class='arrow arrow-right pointer'>
+                        <svg height='24' width='24' xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z'
+                                fill='white' />
+                        </svg>
+                    </div>
+                </div>
+                <div class='image-list'>
+                    <div class='image-list-box first-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_1.png'>
+                    </div>
+                    <div class='image-list-box second-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_2.png'>
+                    </div>
+                    <div class='image-list-box third-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_3.png'>
+                    </div>
+                    <div class='image-list-box bordered fourth-carousel pointer'>
+                        <img alt='' src='../assets/web/carousel/carousel_4.png'>
+                    </div>
+                </div>
+            </div>
+            <div class='image-description'>
+                <h3>
+                    The Barren Hills
+                </h3>
+                <h5>
+                    Difficulty
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+                    <svg height='25' width='25' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='12.5' cy='12.5' fill='white' r='10' />
+                    </svg>
+
+                </h5>
+                <p>
+                    The Barren Hills or simply Wastes is the South region of the land of light.
+                </p>
+                <p>
+                    The Barren Hills is home to a large underground laboratory
+                    complex that also serves as a robot factory and is responsible for the creation of various creatures
+                    seen around the world such as the Dirks and blue-skins. Scattered about the desert are a number of
+                    ruined mechanical structures resembling pieces of a large spacecraft possibly also created in the
+                    labs.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class='map-container'>
+    <div class='image-container'>
+        <img alt='Color' class='map-top' src='../assets/web/world/map_upground.png' />
+        <img alt='B/W' class='map-bottom' src='../assets/web/world/map_underground.png' />
+        <input class='image-range pointer' max='100' min='0'
+               oninput="this.parentNode.style.setProperty('--value', `${this.value}%`)"
+               step='0.001' type='range'
+               value='50' />
+        <div class='boss-marker first'>
+            <div class='boss-image first'>
+                <h3>
+                    The Sentinels
+                </h3>
+                <img alt='' src='../assets/web/world/boss_south.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
+        <div class='boss-marker second'>
+            <div class='boss-image second'>
+                <h3>
+                    The Hierophant
+                </h3>
+                <img alt='' src='../assets/web/world/boss_north.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
+        <div class='boss-marker third'>
+            <div class='boss-image third'>
+                <h3>
+                    The Emperor
+                </h3>
+                <img alt='' src='../assets/web/world/boss_east.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
+        <div class='boss-marker fourth'>
+            <div class='boss-image fourth'>
+                <h3>
+                    The Hanged Man
+                </h3>
+                <img alt='' src='../assets/web/world/boss_west.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
+        <div class='boss-marker fifth'>
+            <div class='boss-image fifth'>
+                <h3>
+                    Judgement
+                </h3>
+                <img alt='' src='../assets/web/world/boss_center.png'>
+            </div>
+            <img alt='' class='skull' src='../assets/web/world/boss_skull.png'>
+        </div>
+    </div>
+</section>
+<section class='ost-container section'>
+    <div class='inner-container-ost'>
+        <h3>
+            ORIGINAL SOUNDTRACK
+        </h3>
+        <div class='ost-content'>
+            <div class='content-left'>
+                <canvas id='audio-progress'></canvas>
+                <img alt='' src='../assets/web/ost/ost.png'>
+            </div>
+            <div class='content-right'>
+                <div class='content-audio-visualizer'>
+                    <canvas height='1080' id='audio-visualizer' width='1920'>
+                    </canvas>
+                </div>
+                <div class='content-right-header'>
+                    <div class='left-content'>
+                        <button class='audio-toggle-button pointer pause-button'>
+                            <svg class='bi bi-play-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
+                                 width='64' xmlns='http://www.w3.org/2000/svg'>
+                                <path
+                                    d='m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z' />
+                            </svg>
+                        </button>
+                        <button class='audio-toggle-button disabled pointer play-button'>
+                            <svg class='bi bi-pause-fill' fill='currentColor' height='64' viewBox='0 0 16 16'
+                                 width='64' xmlns='http://www.w3.org/2000/svg'>
+                                <path
+                                    d='M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z' />
+                            </svg>
+                        </button>
+                        <div class='audio-content'>
+                            <h3>
+                                Cult of the Zealous
+                            </h3>
+                            <p>
+                                By Disasterpiece
+                            </p>
+                        </div>
+                    </div>
+                    <div class='right-content'>
+                        <a class='download-button pointer' download='ost.mp3' href='../assets/web/ost/audio.mp3'>
+                            <svg fill='none' height='32' viewBox='0 0 24 24' width='32'
+                                 xmlns='http://www.w3.org/2000/svg'>
+                                <path
+                                    d='M20 15V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18L4 15M8 11L12 15M12 15L16 11M12 15V3'
+                                    stroke='white' stroke-linecap='round' stroke-linejoin='round'
+                                    stroke-width='1.5' />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class='content-right-slider pointer'>
+                    <input class='slider pointer' max='100' min='0' step='0.0001' type='range' value='0'>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class='footer-container-box'>
+</section>
+<section class='footer section'>
+    <img alt='' src='../assets/web/footer/footer.png'>
+    <div class='footer-container'>
+        <div class='footer-header'>
+            <div class='icons pointer'>
+                <a href='https://www.instagram.com/heartmachinehq/'>
+                    <svg class='bi bi-instagram' fill='red' height='24' viewBox='0 0 16 16'
+                         width='24' xmlns='http://www.w3.org/2000/svg'>
+                        <path
+                            d='M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z' />
+                    </svg>
+                </a>
+            </div>
+            <div class='icons pointer'>
+                <a href='https://www.tokopedia.com/'>
+                    <img src='/assets/web/footer/tokopedia.png'>
+                </a>
+            </div>
+            <div class='icons pointer'>
+                <a href='https://www.youtube.com/channel/UCa51fhR6WdJz29f66hAmh5g'>
+                    <svg class='bi bi-youtube' fill='red' height='24' viewBox='0 0 16 16' width='24'
+                         xmlns='http://www.w3.org/2000/svg'>
+                        <path
+                            d='M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z' />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class='footer-content'>
+            Copyright © 2023 Yahkerobertkertasnya
+        </div>
+    </div>
+</section>
+<script
+    crossorigin='anonymous'
+    integrity='sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM='
+    src='https://code.jquery.com/jquery-3.7.0.js'
+></script>
+<script src='../js/web/modal.js' type='module'></script>
+<script src='../js/web/web.js' type='module'></script>
+</body>
+</html>

@@ -45,14 +45,15 @@ class AssetManager {
                 }
                 this.assetAmount++;
             }
+            const promises = [];
             for (const asset of assets) {
                 if (asset.isAudio) {
-                    yield this.assetLoadAudio(asset);
+                    promises.push(this.assetLoadAudio(asset));
                     continue;
                 }
-                yield this.assetLoadImage(asset, outfit);
+                promises.push(this.assetLoadImage(asset, outfit));
             }
-            console.log(this.assetList);
+            yield Promise.all(promises);
             if (this.showLoading)
                 this.htmlHandler.notify('loadingModal:close');
         });
