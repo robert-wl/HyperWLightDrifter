@@ -14,4 +14,4 @@ In the game itself, several new elements have been added or remade, including:
 - And more!
 
 ## Website
-The deployed version of the website can be previewed [here](https://github.com/yahkerobertkertasnya/HyperWLightDrifter/tree/master?tab=readme-ov-file).
+The deployed version of the website can be previewed [here](https://yahkerobertkertasnya.github.io/HyperWLightDrifter/html/).
