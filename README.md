@@ -4,6 +4,9 @@ A self-remake of the indie game Hyper Light Drifter in web form using HTML, Type
 ## Website
 The deployed version of the website can be previewed [here](https://yahkerobertkertasnya.github.io/HyperWLightDrifter).
 
+## Built With
+This project is built using HTML, Typescript with JQuery, dan SCSS. A Typescript compiler is used to compile typescript codes into javascript code. SCSS compiler is also used to compile SCSS codes into CSS. 
+
 ## Contents
 The first page of the website advertises the game and includes elements such as:
 - An audio player with the game's soundtrack.
