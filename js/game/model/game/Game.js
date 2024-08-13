@@ -178,7 +178,7 @@ class Game {
         }
         else {
             if (document.exitFullscreen) {
-                document.exitFullscreen().then(); // Standard
+                document.exitFullscreen().then().catch(); // Standard
             }
         }
     }

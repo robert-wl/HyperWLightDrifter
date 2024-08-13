@@ -16,7 +16,7 @@ export default class JudgementLaserState extends JudgementBaseState {
     private attackAmount: number;
     private angleConstant: number;
     private attackAngle: number;
-    private audio: HTMLAudioElement | null;
+    private audio: AudioBufferSourceNode | null;
 
     public constructor() {
         super();
@@ -25,7 +25,7 @@ export default class JudgementLaserState extends JudgementBaseState {
         this.attackAmount = 0;
         this.angleConstant = 0;
         this.attackAngle = 0;
-        this.audio = new Audio();
+        this.audio = null;
     }
 
     async enterState(currJudgement: Judgement) {

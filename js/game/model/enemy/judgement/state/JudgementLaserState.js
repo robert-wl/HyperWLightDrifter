@@ -25,7 +25,7 @@ export default class JudgementLaserState extends JudgementBaseState {
         this.attackAmount = 0;
         this.angleConstant = 0;
         this.attackAngle = 0;
-        this.audio = new Audio();
+        this.audio = null;
     }
     enterState(currJudgement) {
         const _super = Object.create(null, {

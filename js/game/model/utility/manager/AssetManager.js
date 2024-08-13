@@ -11,11 +11,17 @@ import Game from '../../game/Game.js';
 import GameSettings from '../../../constants.js';
 import { Outfit } from '../enums/Outfit.js';
 class AssetManager {
+    static getAudio(name) {
+        return this._assetList.get(name);
+    }
     static get assetList() {
         return this._assetList;
     }
     static set assetList(value) {
         this._assetList = value;
+    }
+    static get source() {
+        return this.audioSource;
     }
     static setHTMLHandler(htmlHandler) {
         this.htmlHandler = htmlHandler;
@@ -143,23 +149,29 @@ class AssetManager {
     }
     static loadAudio({ ref, name }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const data = yield new Promise((resolve, reject) => {
-                let audio = new Audio();
-                audio.src = '../assets/audio/' + ref;
-                audio.oncanplaythrough = () => {
-                    resolve(audio);
-                };
-                audio.onerror = () => {
-                    reject();
-                };
-            });
-            this._assetList.set(name, data);
+            const data = yield fetch(`../assets/audio/${ref}`).then((response) => response.arrayBuffer());
+            const audioData = yield this.audioSource.decodeAudioData(data);
+            this.assetList.set(name, audioData);
+            // const data: HTMLAudioElement = await new Promise((resolve, reject) => {
+            //     let audio = new Audio();
+            //     audio.src = '../assets/audio/' + ref;
+            //     audio.oncanplaythrough = () => {
+            //         resolve(audio);
+            //     };
+            //     audio.onerror = () => {
+            //         reject();
+            //     };
+            // });
+            //
+            // this._assetList.set(name, data);
         });
     }
     static getEqualPixel(color, pixel, i) {
         return pixel[i] === color[0] && pixel[i + 1] === color[1] && pixel[i + 2] === color[2];
     }
 }
+// @ts-ignore
+AssetManager.audioSource = new (window.AudioContext || window.webkitAudioContext)();
 AssetManager.colors = GameSettings.GAME.COLOR;
 AssetManager._assetList = new Map();
 export default AssetManager;

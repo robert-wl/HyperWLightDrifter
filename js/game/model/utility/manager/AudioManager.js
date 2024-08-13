@@ -16,13 +16,21 @@ class AudioManager {
         if (this._volume < 1) {
             this._volume += 0.1;
         }
-        this.playList.forEach((player) => (player.volume = this._volume));
+        this.playList.forEach((player) => {
+            const gainNode = AssetManager.source.createGain();
+            gainNode.gain.value = this._volume;
+            player.connect(gainNode);
+        });
     }
     static decreaseVolume() {
         if (this._volume > 0) {
             this._volume -= 0.1;
         }
-        this.playList.forEach((player) => (player.volume = this._volume));
+        this.playList.forEach((player) => {
+            const gainNode = AssetManager.source.createGain();
+            gainNode.gain.value = this._volume;
+            player.connect(gainNode);
+        });
     }
     static disableSound() {
         this.allowSound = false;
@@ -33,43 +41,49 @@ class AudioManager {
     }
     static stopAll() {
         this.playList.forEach((player) => {
-            player.pause();
-            player.currentTime = 0;
-            player.src = player.src;
+            player.stop();
         });
+        this.playList = [];
     }
     static stop(audio) {
         if (!audio) {
             return;
         }
-        audio.pause();
-        audio.currentTime = 0;
-        audio.src = audio.src;
+        audio.stop();
     }
     static playAudio(audio, loop = false, bypass = false) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.allowSound && !bypass) {
                 return null;
             }
-            let player = this.assetList.get(audio);
-            if (player == null) {
+            const buffer = AssetManager.getAudio(audio);
+            if (buffer == null) {
                 return null;
             }
-            player = player.cloneNode(true);
-            player.volume = this._volume;
-            yield player.play();
+            const source = AssetManager.source.createBufferSource();
+            source.buffer = buffer;
+            const gainNode = AssetManager.source.createGain();
+            gainNode.gain.value = this._volume;
+            gainNode.connect(AssetManager.source.destination);
+            source.connect(gainNode);
+            source.start();
             if (loop) {
-                player.loop = true;
+                source.loop = true;
             }
-            player.addEventListener('ended', () => {
-                this.playList.splice(this.playList.indexOf(player), 1);
+            source.addEventListener('ended', () => {
+                this.playList.splice(this.playList.indexOf(source), 1);
             });
-            this.playList.push(player);
-            return player;
+            source.addEventListener('abort', () => {
+                this.playList.splice(this.playList.indexOf(source), 1);
+            });
+            source.addEventListener('error', () => {
+                this.playList.splice(this.playList.indexOf(source), 1);
+            });
+            this.playList.push(source);
+            return source;
         });
     }
 }
-AudioManager.assetList = AssetManager.assetList;
 AudioManager.playList = [];
 AudioManager.allowSound = true;
 AudioManager._volume = 0.1;

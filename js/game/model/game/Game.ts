@@ -226,7 +226,7 @@ export default class Game {
             document.documentElement.requestFullscreen().then();
         } else {
             if (document.exitFullscreen) {
-                document.exitFullscreen().then(); // Standard
+                document.exitFullscreen().then().catch(); // Standard
             }
         }
     }

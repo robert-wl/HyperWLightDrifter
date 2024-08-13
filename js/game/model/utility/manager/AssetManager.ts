@@ -4,19 +4,29 @@ import HTMLHandlers from '../../htmlElements/HTMLHandlers.js';
 import { Outfit } from '../enums/Outfit.js';
 
 export default class AssetManager {
+    // @ts-ignore
+    private static audioSource = new (window.AudioContext || window.webkitAudioContext)();
     private static colors = GameSettings.GAME.COLOR;
     private static htmlHandler: HTMLHandlers;
     private static counter: number;
     private static assetAmount: number;
-    private static _assetList: Map<string, HTMLImageElement | HTMLAudioElement> = new Map();
+    private static _assetList: Map<string, HTMLImageElement | AudioBuffer> = new Map();
     private static showLoading: boolean;
 
-    static get assetList(): Map<string, HTMLImageElement | HTMLAudioElement> {
+    public static getAudio(name: string): AudioBuffer {
+        return <AudioBuffer>this._assetList.get(name);
+    }
+
+    static get assetList(): Map<string, HTMLImageElement | AudioBuffer> {
         return this._assetList;
     }
 
-    static set assetList(value: Map<string, HTMLImageElement | HTMLAudioElement>) {
+    static set assetList(value: Map<string, HTMLImageElement | AudioBuffer>) {
         this._assetList = value;
+    }
+
+    static get source(): AudioContext {
+        return this.audioSource;
     }
 
     public static setHTMLHandler(htmlHandler: HTMLHandlers) {
@@ -54,6 +64,7 @@ export default class AssetManager {
         const promises: Promise<void>[] = [];
         for (const asset of assets) {
             if (asset.isAudio) {
+
                 promises.push(this.assetLoadAudio(asset));
                 continue;
             }
@@ -159,18 +170,22 @@ export default class AssetManager {
     }
 
     private static async loadAudio({ ref, name }: Asset) {
-        const data: HTMLAudioElement = await new Promise((resolve, reject) => {
-            let audio = new Audio();
-            audio.src = '../assets/audio/' + ref;
-            audio.oncanplaythrough = () => {
-                resolve(audio);
-            };
-            audio.onerror = () => {
-                reject();
-            };
-        });
+        const data = await fetch(`../assets/audio/${ref}`).then((response) => response.arrayBuffer());
+        const audioData = await this.audioSource.decodeAudioData(data);
 
-        this._assetList.set(name, data);
+        this.assetList.set(name, audioData);
+        // const data: HTMLAudioElement = await new Promise((resolve, reject) => {
+        //     let audio = new Audio();
+        //     audio.src = '../assets/audio/' + ref;
+        //     audio.oncanplaythrough = () => {
+        //         resolve(audio);
+        //     };
+        //     audio.onerror = () => {
+        //         reject();
+        //     };
+        // });
+        //
+        // this._assetList.set(name, data);
     }
 
     private static getEqualPixel(color: number[], pixel: Uint8ClampedArray, i: number) {

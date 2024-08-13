@@ -1,8 +1,7 @@
 import AssetManager from './AssetManager.js';
 
 export default class AudioManager {
-    private static assetList = AssetManager.assetList;
-    private static playList: HTMLAudioElement[] = [];
+    private static playList: AudioBufferSourceNode[] = [];
     private static allowSound = true;
     private static _volume = 0.1;
 
@@ -14,14 +13,22 @@ export default class AudioManager {
         if (this._volume < 1) {
             this._volume += 0.1;
         }
-        this.playList.forEach((player) => (player.volume = this._volume));
+        this.playList.forEach((player) => {
+            const gainNode = AssetManager.source.createGain();
+            gainNode.gain.value = this._volume;
+            player.connect(gainNode);
+        });
     }
 
     public static decreaseVolume() {
         if (this._volume > 0) {
             this._volume -= 0.1;
         }
-        this.playList.forEach((player) => (player.volume = this._volume));
+        this.playList.forEach((player) => {
+            const gainNode = AssetManager.source.createGain();
+            gainNode.gain.value = this._volume;
+            player.connect(gainNode);
+        });
     }
 
     public static disableSound() {
@@ -35,19 +42,16 @@ export default class AudioManager {
 
     public static stopAll() {
         this.playList.forEach((player) => {
-            player.pause();
-            player.currentTime = 0;
-            player.src = player.src;
+            player.stop()
         });
+        this.playList = []
     }
 
-    public static stop(audio: HTMLAudioElement | null) {
+    public static stop(audio: AudioBufferSourceNode | null) {
         if (!audio) {
             return;
         }
-        audio.pause();
-        audio.currentTime = 0;
-        audio.src = audio.src;
+        audio.stop()
     }
 
     public static async playAudio(audio: string, loop = false, bypass = false) {
@@ -55,27 +59,39 @@ export default class AudioManager {
             return null;
         }
 
-        let player = this.assetList.get(audio) as HTMLAudioElement;
+        const buffer = AssetManager.getAudio(audio);
 
-        if (player == null) {
+        if (buffer == null) {
             return null;
         }
 
-        player = player.cloneNode(true) as HTMLAudioElement;
+        const source = AssetManager.source.createBufferSource()
 
-        player.volume = this._volume;
-        await player.play();
+        source.buffer = buffer;
+
+        const gainNode = AssetManager.source.createGain();
+        gainNode.gain.value = this._volume;
+        gainNode.connect(AssetManager.source.destination)
+
+        source.connect(gainNode);
+        source.start();
 
         if (loop) {
-            player.loop = true;
+            source.loop = true;
         }
 
-        player.addEventListener('ended', () => {
-            this.playList.splice(this.playList.indexOf(player), 1);
+        source.addEventListener('ended', () => {
+            this.playList.splice(this.playList.indexOf(source), 1);
+        });
+        source.addEventListener('abort', () => {
+            this.playList.splice(this.playList.indexOf(source), 1);
+        });
+        source.addEventListener('error', () => {
+            this.playList.splice(this.playList.indexOf(source), 1);
         });
 
-        this.playList.push(player);
+        this.playList.push(source);
 
-        return player;
+        return source;
     }
 }

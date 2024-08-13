@@ -1,6 +1,7 @@
 import AudioVisualizer from './AudioVisualizer.js';
 import AudioPlayer from './AudioPlayer.js';
 $(() => {
+    loadingHandler();
     navbarHandler();
     iframeHandler();
     jumbotronHandler();
@@ -34,6 +35,28 @@ $(() => {
         }
     });
 });
+function loadingHandler() {
+    const images = $('img');
+    let loaded = 0;
+    const total = images.length;
+    console.log('LOADING HANDLER');
+    images.each((index, image) => {
+        $(image)
+            .on('loaded', () => {
+            loaded++;
+            console.log('LOADED', loaded, total);
+            if (loaded === total - 1) {
+                $('#loading').fadeOut(1000);
+                console.log('LOADED ALLL');
+            }
+        })
+            .each(function () {
+            if (this.complete) {
+                $(this).trigger('loaded');
+            }
+        });
+    });
+}
 function iframeHandler() {
     $(document).on('click', () => {
         $('#iframe').css('pointer-events', 'auto');
